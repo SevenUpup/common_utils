@@ -12,6 +12,8 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
 rootProject.name = "common_utils"
 include ':app'
 include ':common_base_util'
+include ':common_base_ui'
