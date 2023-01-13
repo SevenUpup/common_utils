@@ -1,0 +1,34 @@
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+// 这个是把源码打入aar包中的任务
+task sourceJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from android.sourceSets.main.java.srcDirs
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                groupId GROUP
+                artifactId POM_ARTIFACT_ID
+                version VERSION_NAME
+
+                from components.release
+                // 运行任务，把源码打进去
+//                artifact sourceJar
+            }
+        }
+        // 添加仓库地址
+//        repositories {
+////          本地仓库
+//            mavenLocal()
+////          当上传到远端仓库
+////            maven {
+////                // 生成的插件位置
+////                url = uri('../repo')
+////            }
+//        }
+    }
+}
