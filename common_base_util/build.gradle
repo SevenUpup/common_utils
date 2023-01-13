@@ -38,8 +38,8 @@ dependencies {
 //    implementation 'com.google.android.material:material:1.5.0'
 
     //仅运行时依赖
-    compileOnly des.android.kt_ktx
-    compileOnly des.android.appcompat
-    compileOnly des.android.material
-    compileOnly des.android.constraint_layout
+    compileOnly deps.android.kt_ktx
+    compileOnly deps.android.appcompat
+    compileOnly deps.android.material
+    compileOnly deps.android.constraint_layout
 }

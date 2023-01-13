@@ -39,9 +39,9 @@ dependencies {
 //    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
 
     //仅运行时依赖
-    compileOnly des.android.kt_ktx
-    compileOnly des.android.appcompat
-    compileOnly des.android.material
-    compileOnly des.android.constraint_layout
+    compileOnly deps.android.kt_ktx
+    compileOnly deps.android.appcompat
+    compileOnly deps.android.material
+    compileOnly deps.android.constraint_layout
 
 }
