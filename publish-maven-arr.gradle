@@ -11,7 +11,7 @@ afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
-                groupId GROUP
+                groupId GROUP_ID
                 artifactId POM_ARTIFACT_ID
                 version VERSION_NAME
 

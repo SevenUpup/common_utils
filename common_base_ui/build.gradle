@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id "com.vanniktech.maven.publish" version "0.23.1"
+    id("org.jetbrains.dokka") version ("1.4.32")
 }
 
 android {
@@ -10,10 +12,6 @@ android {
     defaultConfig {
         minSdk versions.minSdk
         targetSdk versions.targetSdk
-
-//        versionCode 1
-//        versionName "1.0"
-
     }
 
     buildTypes {
@@ -29,9 +27,37 @@ android {
     kotlinOptions {
         jvmTarget = '11'
     }
+
+    // Kotlin项目生成DOC Start
+    tasks.named("dokkaJavadoc") {
+        outputDirectory.set(new File("$rootDir/javadoc"))
+    }
+
+    dokkaJavadoc {
+        dokkaSourceSets {
+            configureEach { // Or source set name, for single-platform the default source sets are `main` and `test`
+                // Disable linking to online kotlin-stdlib documentation
+                noStdlibLink.set(true)
+                // Disable linking to online JDK documentation
+                noJdkLink.set(true)
+                // Disable linking to online Android documentation (only applicable for Android projects)
+                noAndroidSdkLink.set(true)
+            }
+        }
+    }
+
+    task generateJavadoc(type: Jar, dependsOn: dokkaJavadoc) {
+        group = 'jar'
+        archiveClassifier.set('javadoc')
+        from "$rootDir/javadoc"
+    }
+    // Kotlin项目生成DOC End
+
 }
 
 dependencies {
+    // Kotlin项目生成DOC
+    dokkaPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.4.32")
 
 //    implementation 'androidx.core:core-ktx:1.7.0'
 //    implementation 'androidx.appcompat:appcompat:1.4.1'
@@ -45,4 +71,39 @@ dependencies {
     compileOnly deps.android.constraint_layout
 
 }
-apply from: rootProject.file('publish-maven-arr.gradle')
+
+import com.vanniktech.maven.publish.SonatypeHost
+if (!USE_MAVEN_PLUGIN){
+    apply from: rootProject.file('publish-maven-arr.gradle')
+}else {
+    mavenPublishing {
+        coordinates(GROUP_ID, POM_ARTIFACT_ID, VERSION_NAME)
+        pom {
+            name = POM_ARTIFACT_ID
+            description = POM_DESCRIPTION
+            inceptionYear = POM_INCEPTION_YEAR
+            url = POM_URL
+            licenses {
+                license {
+                    name = POM_LICENSE_NAME
+                    url = POM_LICENSE_URL
+                    distribution = POM_LICENSE_DIST
+                }
+            }
+            developers {
+                developer {
+                    id = POM_DEVELOPER_ID
+                    name = POM_DEVELOPER_NAME
+                    url = POM_DEVELOPER_URL
+                }
+            }
+            scm {
+                url = POM_SCM_URL
+                connection = POM_SCM_CONNECTION
+                developerConnection = POM_SCM_DEV_CONNECTION
+            }
+        }
+        publishToMavenCentral(SonatypeHost.S01)
+        signAllPublications()
+    }
+}
