@@ -26,6 +26,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '11'
+        freeCompilerArgs += [
+                "-Xjvm-default=all",
+        ]
     }
 
     // Kotlin项目生成DOC Start

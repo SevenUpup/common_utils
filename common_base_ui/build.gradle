@@ -26,6 +26,14 @@ android {
     }
     kotlinOptions {
         jvmTarget = '11'
+        freeCompilerArgs += [
+                "-Xjvm-default=all",
+        ]
+    }
+
+    buildFeatures {
+        viewBinding = true
+        dataBinding = true
     }
 
     // Kotlin项目生成DOC Start
@@ -70,6 +78,12 @@ dependencies {
     compileOnly deps.android.material
     compileOnly deps.android.constraint_layout
 
+    // brvah-4.0
+    api(deps.support.brvah){
+        exclude group: 'androidx.recyclerview'
+        exclude group: 'androidx.appcompat'
+        exclude group: 'com.google.android.material'
+    }
 }
 
 import com.vanniktech.maven.publish.SonatypeHost

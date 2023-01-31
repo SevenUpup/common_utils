@@ -30,7 +30,16 @@ android {
     }
     kotlinOptions {
         jvmTarget = '11'
+        freeCompilerArgs += [
+                "-Xjvm-default=all",
+        ]
     }
+
+    buildFeatures {
+        viewBinding = true
+        dataBinding = true
+    }
+
 }
 
 dependencies {
@@ -39,9 +48,13 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     implementation deps.android.kt_ktx
+    implementation deps.android.recyclerview
     implementation deps.android.appcompat
     implementation deps.android.material
     implementation deps.android.constraint_layout
+
+    implementation deps.support.retrofit2
+    implementation deps.support.retrofit_gson
 
     implementation project(':common_base_util')
     implementation project(':common_base_ui')
