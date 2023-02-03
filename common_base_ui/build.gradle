@@ -84,6 +84,13 @@ dependencies {
         exclude group: 'androidx.appcompat'
         exclude group: 'com.google.android.material'
     }
+    //smartrefreshlayout
+    api  'io.github.scwang90:refresh-layout-kernel:2.0.5'      //核心必须依赖
+    api  'io.github.scwang90:refresh-header-classics:2.0.5'    //经典刷新头
+    api  'io.github.scwang90:refresh-header-material:2.0.5'    //谷歌刷新头
+    api  'io.github.scwang90:refresh-header-two-level:2.0.5'   //二级刷新头
+    api  'io.github.scwang90:refresh-footer-classics:2.0.5'    //经典加载
+
 }
 
 import com.vanniktech.maven.publish.SonatypeHost

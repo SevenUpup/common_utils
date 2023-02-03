@@ -13,6 +13,13 @@
         android:orientation="vertical"
         tools:context=".MainActivity">
 
+        <Button
+            android:id="@+id/bt_first"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="show smartRefreshRv"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mRv"
             android:layout_width="match_parent"
@@ -24,6 +31,13 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
+
+        <com.fido.common.common_base_ui.base.widget.SmartRefreshRecyclerView
+            android:id="@+id/mSRv"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

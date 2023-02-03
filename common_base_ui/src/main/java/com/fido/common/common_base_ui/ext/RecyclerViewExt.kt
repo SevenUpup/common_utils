@@ -3,8 +3,13 @@ package com.fido.common.common_base_ui.ext
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.util.Log
+import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.util.forEach
+import androidx.core.util.isNotEmpty
+import androidx.core.util.keyIterator
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
@@ -58,6 +63,7 @@ fun RecyclerView.vertical(
     if (isStaggered) {
         layoutManager = StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL)
     }
+    removeFromMapWhenDetch()
     return this
 }
 
@@ -75,7 +81,7 @@ fun RecyclerView.horizontal(spanCount: Int = 0, isStaggered: Boolean = false): R
     if (isStaggered) {
         layoutManager = StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.HORIZONTAL)
     }
-
+    removeFromMapWhenDetch()
     return this
 }
 
@@ -95,21 +101,44 @@ inline val RecyclerView.orientation
 /**
  * 获取adapter数据
  */
-inline val RecyclerView.data
-    get() = (adapter as? BaseQuickAdapter<*, *>)?.items
+internal inline val RecyclerView.itemsData
+    get() = contentAdapter?.items
+
+//多布局Holder bind 方法
+internal var muiltHolderBindFun:((holder: RecyclerView.ViewHolder, position: Int, item: Any?) -> Unit)? = null
 
 // 如果添加了 Header/Footer 用于存储 ConcatAdapter , 获取 ConcatAdapter 里面的 contentAdapter
-val qucikAdapterHelperMap = HashMap<Int, QuickAdapterHelper>()
-
-inline val RecyclerView.contentAdapter
+internal val qucikAdapterHelperMap = HashMap<Int, QuickAdapterHelper>()
+internal inline val RecyclerView.contentAdapter
     get() = qucikAdapterHelperMap[adapter.hashCode()]?.contentAdapter?:(adapter as? BaseQuickAdapter<*, *>)
+
+/**
+ * 用于存储当前 Rv 多布局时 xml是否使用binding 的方式
+ */
+internal val muiltItemUseBindingMap = hashMapOf<Int,Boolean>()
+internal var RecyclerView.itemLayoutUseBinding:Boolean
+    get() = muiltItemUseBindingMap[id]?:false
+    set(value){
+        muiltItemUseBindingMap[id] = value
+    }
+
+internal fun RecyclerView.removeFromMapWhenDetch(){
+    addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+        override fun onViewAttachedToWindow(view: View) {}
+        override fun onViewDetachedFromWindow(view: View) {
+            qucikAdapterHelperMap.remove(adapter.hashCode())
+            muiltItemUseBindingMap.remove(id)
+            removeOnAttachStateChangeListener(this)
+        }
+    })
+}
 
 /**
  * 绑定Rv数据 单一类型
  */
 fun <T> RecyclerView.bindData(
     data: List<T> = emptyList(),
-    resId: Int,
+    layoutResId: Int,
     bindFun: ((holder: QuickViewHolder, position: Int, item: T?) -> Unit)? = null
 ): RecyclerView {
     adapter = object : BaseQuickAdapter<T, QuickViewHolder>(data) {
@@ -118,7 +147,7 @@ fun <T> RecyclerView.bindData(
             parent: ViewGroup,
             viewType: Int
         ): QuickViewHolder {
-            return QuickViewHolder(resId, parent)
+            return QuickViewHolder(layoutResId, parent)
         }
 
         override fun onBindViewHolder(holder: QuickViewHolder, position: Int, item: T?) {
@@ -129,50 +158,20 @@ fun <T> RecyclerView.bindData(
 }
 
 /**
- * 首次设置数据
- */
-fun <T> RecyclerView.submitList(
-    data: List<T>
-) {
-    // 可能添加了 header/footer 用 qucikAdapterHelperMap 判断
-    (contentAdapter as? BaseQuickAdapter<T, *>)?.submitList(data)
-}
-
-/**
- * 添加数据
- */
-fun <T> RecyclerView.addAll(
-    data: List<T>
-) {
-//    val mAdapter = qucikAdapterHelperMap[adapter.hashCode()]
-//    if (mAdapter == null) {
-//        (adapter as BaseQuickAdapter<T, *>).apply {
-//            if (this.items.isEmpty()) {
-//                submitList(data)
-//            } else {
-//                addAll(data)
-//            }
-//        }
-//    } else {
-//        (mAdapter.contentAdapter as BaseQuickAdapter<T,*>).addAll(data)
-//    }
-    (contentAdapter as? BaseQuickAdapter<T,*>)?.addAll(data)
-}
-
-/**
  * 设置 adapter 多布局 Item 样式 需要在设置数据前调用
  * 目前暂时需要一次性传入所有itemType 和 itemLayoutRes
  * 改方法需要将 xml 设置为 DataBinding
- * @param itemTypes  需要 item 的类型 itemType 和 itemLayoutRes
  * @param bindFun    用于onBind 方法回调
  */
-fun <T:BaseMuiltEntity> RecyclerView.setMuiltVBItems(
-    itemTypes: Collection<T>,
+fun <T:BaseMuiltEntity> RecyclerView.bindMuiltVBData(
+    data: List<T>,
     bindFun: ((holder: DataBindingHolder<ViewDataBinding>, position: Int, item: T?) -> Unit)? = null
 ): RecyclerView {
-    adapter = object : BaseMultiItemAdapter<T>() {}.apply {
-        if (itemTypes.isNotEmpty()) {
-            itemTypes.forEach {
+    itemLayoutUseBinding = true
+    muiltHolderBindFun = bindFun as? ((RecyclerView.ViewHolder, Int, Any?) -> Unit)?
+    adapter = object : BaseMultiItemAdapter<T>(data) {}.apply {
+        if (data.isNotEmpty()) {
+            data.forEach {
                 addItemType(it.itemType,
                     object :
                         BaseMultiItemAdapter.OnMultiItemAdapterListener<T, DataBindingHolder<ViewDataBinding>> {
@@ -189,13 +188,13 @@ fun <T:BaseMuiltEntity> RecyclerView.setMuiltVBItems(
                             position: Int,
                             item: T?
                         ) {
-                            bindFun?.invoke(holder, position, item as T)
+                            muiltHolderBindFun?.invoke(holder, position, item)
                         }
                     })
             }
-            onItemViewType { position, list ->
-                list[position].itemType
-            }
+        }
+        onItemViewType { position, list ->
+            list[position].itemType
         }
     }
     return this
@@ -204,16 +203,17 @@ fun <T:BaseMuiltEntity> RecyclerView.setMuiltVBItems(
 /**
  * 设置 adapter 多布局 Item 样式 需要在设置数据前调用
  * 目前暂时需要一次性传入所有itemType 和 itemLayoutRes
- * @param itemTypes  需要 item 的类型 itemType 和 itemLayoutRes
  * @param bindFun    用于onBind 方法回调
  */
-fun <T : BaseMuiltEntity> RecyclerView.setMuiltItems(
-    itemTypes: List<T>,
+fun <T : BaseMuiltEntity> RecyclerView.bindMuiltData(
+    data: List<T>,
     bindFun: ((holder: QuickViewHolder, position: Int, item: T?) -> Unit)? = null
 ): RecyclerView {
-    adapter = object : BaseMultiItemAdapter<T>() {}.apply {
-        if (itemTypes.isNotEmpty()) {
-            itemTypes.forEach {
+    itemLayoutUseBinding = false
+    muiltHolderBindFun = bindFun as? ((RecyclerView.ViewHolder, Int, Any?) -> Unit)?
+    adapter = object : BaseMultiItemAdapter<T>(data) {}.apply {
+        if (data.isNotEmpty()) {
+            data.forEach {
                 addItemType(it.itemType,
                     object : BaseMultiItemAdapter.OnMultiItemAdapterListener<T, QuickViewHolder> {
                         override fun onCreate(
@@ -229,10 +229,58 @@ fun <T : BaseMuiltEntity> RecyclerView.setMuiltItems(
                         }
                     })
             }
-            onItemViewType { position, list ->
-                list[position].itemType
-            }
         }
+        onItemViewType { position, list ->
+            list[position].itemType
+        }
+    }
+    return this
+}
+
+/**
+ * 首次设置数据
+ */
+fun <T> RecyclerView.submitList(
+    data: List<T>,
+) :RecyclerView{
+    // 可能添加了 header/footer 用 qucikAdapterHelperMap 判断
+    (contentAdapter as? BaseQuickAdapter<T, *>)?.apply {
+        if (this is BaseMultiItemAdapter) {
+            addItemsType(data)
+        }
+        submitList(data)
+    }
+    return this
+}
+
+/**
+ * 添加数据
+ */
+fun <T> RecyclerView.addAll(
+    data: List<T>,
+    position: Int = -1,
+) {
+    (contentAdapter as? BaseQuickAdapter<T,*>)?.apply {
+        if (this is BaseMultiItemAdapter) {
+            addItemsType(data)
+        }
+        if (position < 0) {
+            addAll(data)
+        } else {
+            addAll(position,data)
+        }
+    }
+}
+
+/**
+ * 添加单条数据，可以指定位置
+ */
+fun <T> RecyclerView.addData(
+    data:T,
+    position: Int = -1,
+):RecyclerView{
+    (contentAdapter as? BaseQuickAdapter<T,*>)?.apply {
+        addAll(mutableListOf(data),position)
     }
     return this
 }
@@ -313,7 +361,7 @@ fun <T> RecyclerView.addFooter(
 
 
 /**
- * item click
+ * adapter item click
  */
 fun <T> RecyclerView.itemClick(block: (adapter: BaseQuickAdapter<T, *>, view: View, position: Int) -> Unit): RecyclerView {
     adapter?.apply {
@@ -325,7 +373,7 @@ fun <T> RecyclerView.itemClick(block: (adapter: BaseQuickAdapter<T, *>, view: Vi
 }
 
 /**
- * item child click
+ * adapter item child click
  */
 fun <T> RecyclerView.addItemChildClick(
     viewId: Int,
@@ -390,4 +438,71 @@ fun RecyclerView.clearBeforeAndAfterAdapters():RecyclerView{
         qucikAdapterHelperMap.remove(adapter.hashCode())
     }
     return this
+}
+
+internal fun <T> BaseMultiItemAdapter<T>.addItemsType(
+    data: List<T>,
+){
+    /*// 方式一 : 用反射获取 BaseMultiItemAdapter 的 typeViewHolders ( SparseArray 存放 items 的 itemtype和 OnMultiItemAdapterListener)
+    try {
+        val mClazz = BaseMultiItemAdapter::class.java
+        val typeViewHolders = mClazz.getDeclaredField("typeViewHolders").run {
+            isAccessible = true
+            get(this@addItemsType)
+        } as? SparseArray<BaseMultiItemAdapter.OnMultiItemAdapterListener<T,RecyclerView.ViewHolder>>
+    }catch (e:Exception){
+        e.printStackTrace()
+    }*/
+    // 方式二 : adapter data 遍历判断
+    if (data.isNotEmpty()) {
+        // A.subtract(B) => A中去掉和B相同的元素
+        val subtractList = (data as? List<BaseMuiltEntity>)?.map { it.itemType }?.subtract((recyclerView.itemsData as List<BaseMuiltEntity>).map { it.itemType })
+        if (!subtractList.isNullOrEmpty()) {
+            subtractList.forEach { itemType ->
+                val entity = data.find { it.itemType == itemType }
+                entity?.let {
+                    if (it.itemLayoutRes > 0) {
+                        addItemType(it, muiltHolderBindFun)
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ *  用于 BaseMultiItemAdapter addItemType 方法
+ *  @param itemUseDatabinding xml是否使用了 databinding , 创建的Holder不同
+ */
+internal fun <T>BaseMultiItemAdapter<T>.addItemType(
+    baseMuiltEntity: BaseMuiltEntity,
+    vbBindFun: ((holder: RecyclerView.ViewHolder, position: Int, item: T?) -> Unit)? = null
+){
+    if (recyclerView.itemLayoutUseBinding) {
+        addItemType(baseMuiltEntity.itemType,object :BaseMultiItemAdapter.OnMultiItemAdapterListener<T,DataBindingHolder<ViewDataBinding>>{
+            override fun onBind(holder: DataBindingHolder<ViewDataBinding>, position: Int, item: T?) {
+                vbBindFun?.invoke(holder, position, item)
+            }
+            override fun onCreate(
+                context: Context,
+                parent: ViewGroup,
+                viewType: Int
+            ): DataBindingHolder<ViewDataBinding> {
+                return DataBindingHolder(baseMuiltEntity.itemLayoutRes,parent)
+            }
+        })
+    } else {
+        addItemType(baseMuiltEntity.itemType,object :BaseMultiItemAdapter.OnMultiItemAdapterListener<T,QuickViewHolder>{
+            override fun onBind(holder: QuickViewHolder, position: Int, item: T?) {
+                vbBindFun?.invoke(holder,position,item)
+            }
+            override fun onCreate(
+                context: Context,
+                parent: ViewGroup,
+                viewType: Int
+            ): QuickViewHolder {
+                return QuickViewHolder(baseMuiltEntity.itemLayoutRes,parent)
+            }
+        })
+    }
 }
