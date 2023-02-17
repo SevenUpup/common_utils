@@ -3,13 +3,8 @@ package com.fido.common.common_base_ui.ext
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import android.util.Log
-import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.util.forEach
-import androidx.core.util.isNotEmpty
-import androidx.core.util.keyIterator
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager

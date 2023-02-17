@@ -1,5 +1,6 @@
 package com.fido.common.common_utils.rv
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -11,8 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fido.common.common_base_ui.base.entity.BaseMuiltEntity
 import com.fido.common.common_base_ui.base.widget.bind
 import com.fido.common.common_base_ui.ext.*
-import com.fido.common.common_base_util.BaseUtils.getColorCompat
-import com.fido.common.common_base_util.ext.click
+import com.fido.common.common_utils.App
 import com.fido.common.common_utils.R
 import com.fido.common.common_utils.databinding.AcRvBinding
 import com.fido.common.common_utils.databinding.ItemRvImgBinding
@@ -25,6 +25,12 @@ class RvAc:AppCompatActivity() {
     private lateinit var mRv: RecyclerView
     private lateinit var mRv2: RecyclerView
 
+    companion object{
+        fun test(context:Context){
+            Log.d("FiDo", "test: ---")
+            Toast.makeText(context, "调用了test", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

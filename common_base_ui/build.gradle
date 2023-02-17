@@ -73,10 +73,11 @@ dependencies {
 //    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
 
     //仅运行时依赖
-    compileOnly deps.android.kt_ktx
-    compileOnly deps.android.appcompat
-    compileOnly deps.android.material
-    compileOnly deps.android.constraint_layout
+    implementation deps.android.kt_ktx
+    implementation deps.android.recyclerview
+    implementation deps.android.appcompat
+    implementation deps.android.material
+    implementation deps.android.constraint_layout
 
     // brvah-4.0
     api(deps.support.brvah){
@@ -84,6 +85,15 @@ dependencies {
         exclude group: 'androidx.appcompat'
         exclude group: 'com.google.android.material'
     }
+
+    //XPopup弹窗
+    api(deps.support.xpopup) {
+//        exclude group: 'com.github.bumptech.glide', module: 'glide'
+        exclude group: 'androidx.recyclerview'
+        exclude group: 'androidx.appcompat'
+        exclude group: 'com.google.android.material'
+    }
+
     //smartrefreshlayout
     api  'io.github.scwang90:refresh-layout-kernel:2.0.5'      //核心必须依赖
     api  'io.github.scwang90:refresh-header-classics:2.0.5'    //经典刷新头
@@ -91,6 +101,14 @@ dependencies {
     api  'io.github.scwang90:refresh-header-two-level:2.0.5'   //二级刷新头
     api  'io.github.scwang90:refresh-footer-classics:2.0.5'    //经典加载
 
+    // glide
+    api deps.support.glide
+
+    //图片选择
+    api deps.support.picture_selector
+
+    //郭神 permissionX
+    api deps.support.permission
 }
 
 import com.vanniktech.maven.publish.SonatypeHost

@@ -70,6 +70,15 @@ dependencies {
     compileOnly deps.android.appcompat
     compileOnly deps.android.material
     compileOnly deps.android.constraint_layout
+
+    // jetpack app startup
+    implementation deps.android.app_startup
+    //gson
+    implementation deps.support.gson
+    // kotlin-reflect
+    api deps.android.kt_reflect
+
+
 }
 
 import com.vanniktech.maven.publish.SonatypeHost

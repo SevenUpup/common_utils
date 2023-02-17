@@ -1,11 +1,20 @@
 package com.fido.common.common_utils
 
 import android.app.Application
+import com.drake.debugkit.DevTool
+import com.fido.common.common_base_util.util.toast.ToastConfig
+import com.fido.common.common_base_util.util.toast.interfaces.ToastGravityFactory
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 class App: Application() {
+
+    companion object{
+        val instance by lazy {
+            App()
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -18,6 +27,11 @@ class App: Application() {
                 context
             ).setDrawableSize(20F)
         }
+
+        ToastConfig.toastFactory = ToastGravityFactory()
+
+        DevTool.debug = BuildConfig.DEBUG
+
     }
 
 }

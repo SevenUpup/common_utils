@@ -16,14 +16,34 @@ android {
         versionName "0.1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("../common_utils.jks")
+            storePassword "123456"
+            keyAlias "FiDo"
+            keyPassword "123456"
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            //Zipalign
+            zipAlignEnabled true
+            //移除无用的resource文件
+            shrinkResources true
+
+            signingConfig signingConfigs.release
+
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
@@ -58,4 +78,8 @@ dependencies {
 
     implementation project(':common_base_util')
     implementation project(':common_base_ui')
+
+    implementation 'com.github.liangjingkanji:debugkit:1.3.0'
+    //kotlin反射
+//    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.31"
 }
