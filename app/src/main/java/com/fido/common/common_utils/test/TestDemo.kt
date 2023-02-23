@@ -2,12 +2,12 @@ package com.fido.common.common_utils.test
 
 import android.content.Context
 import android.widget.Toast
-import com.fido.common.common_utils.test.reflect.AbsReflectImp
+import com.fido.common.common_base_util.util.time.Interval
+import com.fido.common.common_utils.test.arithmetic.Test
 import com.fido.common.common_utils.test.reflect.AbsReflectTest
 import java.util.*
-import kotlin.reflect.KMutableProperty
+import java.util.concurrent.TimeUnit
 import kotlin.reflect.KMutableProperty1
-import kotlin.reflect.KProperty
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.*
 import kotlin.reflect.jvm.isAccessible
@@ -48,25 +48,97 @@ class TestDemo {
             println(list.shuffled())
             println(list.shuffled(Random(seed)))
 
+            absReflect()
             reflect()
+
+            testArrangeActivity()
+            //找零钱问题
+//            Test.testGiveMoney()
+            giveMoney()
+
+            Test.getMaxWeightValue()
+        }
+
+        private fun absReflect() {
+            val absClz = Class.forName("com.fido.common.common_utils.test.reflect.AbsReflectTest")
+            val absInstanc = object :AbsReflectTest<Int>(){
+                override fun getList(t: Int): List<Int> {
+                    return emptyList()
+                }
+            }
+            absClz.getDeclaredMethod("getMap66").run {
+                invoke(absInstanc)
+            }
+            absClz.getDeclaredMethod("putMap99",Any::class.java).apply {
+                invoke(absInstanc,996)
+            }
+            val absMap = absClz.getDeclaredField("map").run {
+                isAccessible = true
+                get(absInstanc)
+            }
+            println(absMap)
 
         }
 
+        fun giveMoney(){
+            val moneyArray = intArrayOf(50,10,5,1)
+            val target = 99
+            val kindM = giveYouMoney(moneyArray,target)
+            println("找${target}钱的方案")
+            kindM.forEachIndexed { index, i ->
+                println("${kindM[index]}枚 面值：${moneyArray[index]}")
+            }
+        }
+
+        private fun giveYouMoney(moneyArray: IntArray, target: Int):IntArray {
+            var t = target
+            val kindMoney = IntArray(moneyArray.size)
+            for(i in moneyArray.indices){
+                kindMoney[i] = t/moneyArray[i]
+                t %= moneyArray[i]
+            }
+            return kindMoney
+        }
+
+        fun testArrangeActivity() {
+            val start = intArrayOf(1, 3, 0, 5, 3, 5, 6, 8, 8, 2, 12)
+            val end = intArrayOf(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14)
+            val results = arrangeActivity(start, end)
+            results.forEachIndexed { index, i ->
+                val r = results[index]
+                println("开始时间:" + start[r] + ",结束时间:" + end[r])
+            }
+        }
+        fun arrangeActivity(s: IntArray, e: IntArray): List<Int> {
+            val total = s.size
+            var endFlag = e[0]
+            val results: MutableList<Int> = ArrayList()
+            results.add(0)
+            for (i in 0 until total) {
+                if (s[i] > endFlag) {
+                    results.add(i)
+                    endFlag = e[i]
+                }
+            }
+            return results
+        }
+
         private fun reflect() {
+
             try {
                 /**
                  * 获取抽象类成员变量 需 依托 他的实现类 ，通过实现类 获取 抽象类 的 属性 方法 等
                  */
                 println("======================获取抽象类属性/方法 Begain===========================")
                 // 四种 instance 都行
-//                val absInstance = object : AbsReflectTest<String>(){
-//                    override fun getList(): List<String> {
-//                        return emptyList()
-//                    }
-//                }
+                val absInstance = object : AbsReflectTest<String>(){
+                    override fun getList(string: String): List<String> {
+                        return emptyList()
+                    }
+                }
 //                val absInstance = AbsReflectImp()
 //                val absInstance = Class.forName("com.fido.common.common_utils.test.reflect.AbsReflectImp").kotlin.createInstance()
-                val absInstance = Class.forName("com.fido.common.common_utils.test.reflect.AbsReflectImp").newInstance()
+//                val absInstance = Class.forName("com.fido.common.common_utils.test.reflect.AbsReflectImp").newInstance()
 
                 val impClz = Class.forName("com.fido.common.common_utils.test.reflect.AbsReflectImp").kotlin
                 val absClz = impClz.superclasses[0]
@@ -102,12 +174,6 @@ class TestDemo {
 
                 println("======================获取抽象类属性/方法 End===========================")
                 val absImp = Class.forName("com.fido.common.common_utils.test.reflect.AbsReflectImp")
-                absImp.declaredMethods.forEach {
-                    println("method=${it}")
-                }
-                absImp.kotlin.declaredMemberProperties.forEach {
-                    println("field=${it}")
-                }
                 val listMethod = absImp.getDeclaredMethod("getList",String::class.java)
                 val ins = absImp.newInstance()
                 listMethod.invoke(ins,"abc")

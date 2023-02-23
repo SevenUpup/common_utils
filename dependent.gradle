@@ -3,8 +3,8 @@ ext {
             'minSdk'           : 24,
             'targetSdk'        : 32,
             'compileSdk'       : 32,
-//            'buildToolsVersion': '30.0.2'
             'kotlin'           : '1.7.10',
+            'coroutine_version': '1.6.1',
     ]
 
     deps = [
@@ -19,9 +19,9 @@ ext {
                     'navigation'            : 'androidx.navigation:navigation-fragment-ktx:2.3.5',
                     'navigation_ui'         : 'androidx.navigation:navigation-ui-ktx:2.3.5',
 
-                    'kt_ktx'                : 'androidx.core:core-ktx:1.7.0',
-                    'ktx_coroutines_core'   : 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2',
-                    'ktx_coroutines_android': 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2',
+                    'kt_ktx'                : "androidx.core:core-ktx:1.7.0",
+                    'ktx_coroutines_core'   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutine_version}",
+                    'ktx_coroutines_android': "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutine_version}",
 
                     'kt_reflect'            : "org.jetbrains.kotlin:kotlin-reflect:1.7.10",
 

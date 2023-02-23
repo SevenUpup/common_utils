@@ -6,17 +6,22 @@ import android.os.Bundle
 import android.util.Log
 import androidx.core.text.*
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
 import com.fido.common.common_base_ui.ext.image_select.extOpenImageSelect
 import com.fido.common.common_base_ui.ext.permission.extRequestPermission
 import com.fido.common.common_base_ui.util.ImagePreViewUtil
 import com.fido.common.common_base_util.ext.longToast
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.getColorCompat
+import com.fido.common.common_base_util.startActivity
+import com.fido.common.common_base_util.util.time.Interval
 import com.fido.common.common_utils.databinding.ActivityMainBinding
 import com.fido.common.common_utils.rv.RvAc
 import com.fido.common.common_utils.test.reflect.AbsReflectTest
+import com.fido.common.common_utils.time.IntervalTimeAc
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
+import java.util.concurrent.TimeUnit
 import kotlin.reflect.full.companionObject
 import kotlin.reflect.full.companionObjectInstance
 import kotlin.reflect.full.declaredMemberFunctions
@@ -35,7 +40,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     private var index = 0
     private val imgs = listOf(
         "https://gd-hbimg.huaban.com/c14e19ddad0c9c734565ab3a47fa5e2a7e9b3280fadd4-RGSDYm_fw658webp",
@@ -46,24 +50,47 @@ class MainActivity : AppCompatActivity() {
     )
 
     private fun initEvent() {
-        mBinding.permission.setOnClickListener{
-            extRequestPermission(listOf(android.Manifest.permission.ACCESS_FINE_LOCATION,android.Manifest.permission.ACCESS_COARSE_LOCATION),"申请权限前弹窗Title"){
+        mBinding.btInterval.setOnClickListener{
+            startActivity<IntervalTimeAc>()
+        }
+        mBinding.permission.setOnClickListener {
+            extRequestPermission(
+                listOf(
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                ), "申请权限前弹窗Title"
+            ) {
 
             }
         }
-        mBinding.btOpenImage.setOnClickListener{
-            extRequestPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,android.Manifest.permission.CAMERA){
-                extOpenImageSelect(null, isSingleDirectReturn = false, listener = object :OnResultCallbackListener<LocalMedia>{
-                    override fun onResult(result: MutableList<LocalMedia>?) {
-                        longToast(result.toString())
-                    }
-                    override fun onCancel() {
+        mBinding.btOpenImage.setOnClickListener {
+            extRequestPermission(
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.CAMERA
+            ) {
+                extOpenImageSelect(
+                    null,
+                    isSingleDirectReturn = false,
+                    listener = object : OnResultCallbackListener<LocalMedia> {
+                        override fun onResult(result: MutableList<LocalMedia>?) {
+                            longToast(result.toString())
+                        }
 
-                    }
-                })
+                        override fun onCancel() {
+
+                        }
+                    })
             }
         }
         mBinding.btPreview.setOnClickListener {
+            Interval(1, TimeUnit.SECONDS, 1)
+                .life(this)
+                .subscribe {
+                    Log.d("FiDo", "subscribe: ${it}")
+                }.finish {
+                    Log.d("FiDo", "finish: ${it}")
+                }.start()
+
             if (index % 2 == 0) {
                 ImagePreViewUtil.singleImagePreview(
                     this, mBinding.iv, imgs[0]
@@ -78,7 +105,7 @@ class MainActivity : AppCompatActivity() {
                         underline {
                             append("single ")
                         }
-                        color(getColorCompat(R.color.purple_500)){
+                        color(getColorCompat(R.color.purple_500)) {
                             append("pos=$position")
                         }
                     }
@@ -86,11 +113,11 @@ class MainActivity : AppCompatActivity() {
                 }
             } else {
                 ImagePreViewUtil.multipleImagePreview(
-                    this,mBinding.iv,imgs,0,
-                    srcViewUpdateBlock = {popupView, position ->
+                    this, mBinding.iv, imgs, 0,
+                    srcViewUpdateBlock = { popupView, position ->
 
                     },
-                    longPressBlock = {popupView, position ->
+                    longPressBlock = { popupView, position ->
                         toast("long click muilt ${position}")
                     }
                 )

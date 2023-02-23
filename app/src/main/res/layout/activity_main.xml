@@ -28,6 +28,15 @@
 
             <com.google.android.material.button.MaterialButton
                 android:padding="10dp"
+                android:id="@+id/bt_interval"
+                android:textColor="@color/white"
+                android:text="go Interval"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:padding="10dp"
                 android:id="@+id/bt_preview"
                 android:textColor="@color/white"
                 android:text="img preview"

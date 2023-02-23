@@ -48,6 +48,8 @@
 
         <activity android:name=".rv.RvAc"/>
 
+        <activity android:name=".time.IntervalTimeAc"/>
+
     </application>
 
 </manifest>

@@ -74,10 +74,13 @@ dependencies {
     // jetpack app startup
     implementation deps.android.app_startup
     //gson
-    implementation deps.support.gson
+    api deps.support.gson
     // kotlin-reflect
     api deps.android.kt_reflect
 
+    //ktx_coroutines
+    api deps.android.ktx_coroutines_core
+    api deps.android.ktx_coroutines_android
 
 }
 

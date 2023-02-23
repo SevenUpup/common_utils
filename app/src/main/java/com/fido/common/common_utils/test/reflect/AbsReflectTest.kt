@@ -11,7 +11,9 @@ abstract class  AbsReflectTest<T> {
        put("-6","-6")
     }
 
-    abstract fun getList(string:String):List<T>
+    fun putMap99(t:T) = map.put(t.toString(),t.toString())
+
+    abstract fun getList(t:T):List<T>
 }
 
 

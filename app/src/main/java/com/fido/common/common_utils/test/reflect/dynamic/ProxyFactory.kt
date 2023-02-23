@@ -12,12 +12,12 @@ import java.lang.reflect.Proxy
 class ProxyFactory {
     companion object {
         fun getInstance(targetObj: Any): Any? {
-            return Proxy.newProxyInstance(targetObj.javaClass.classLoader, targetObj.javaClass.interfaces, { proxy, method, args ->
+            return Proxy.newProxyInstance(targetObj.javaClass.classLoader, targetObj.javaClass.interfaces) { proxy, method, args ->
                 println("proxy start, you can do some work here")
                 val newArgs = args ?: arrayOfNulls(0)
                 method.invoke(targetObj, *newArgs)
                 println("proxy end, you can also do some work here")
-            })
+            }
         }
     }
 }

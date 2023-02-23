@@ -12,12 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fido.common.common_base_ui.base.entity.BaseMuiltEntity
 import com.fido.common.common_base_ui.base.widget.bind
 import com.fido.common.common_base_ui.ext.*
+import com.fido.common.common_base_util.util.time.Interval
 import com.fido.common.common_utils.App
 import com.fido.common.common_utils.R
 import com.fido.common.common_utils.databinding.AcRvBinding
 import com.fido.common.common_utils.databinding.ItemRvImgBinding
 import com.fido.common.common_utils.databinding.ItemRvTextBinding
 import com.fido.common.common_utils.databinding.LayoutHeaderViewBinding
+import java.util.concurrent.TimeUnit
 
 class RvAc:AppCompatActivity() {
 
@@ -37,6 +39,14 @@ class RvAc:AppCompatActivity() {
         mBinding = DataBindingUtil.setContentView(this, R.layout.ac_rv)
 
         initView()
+
+        Interval(10,2,TimeUnit.SECONDS,1,5).life(this)
+            .subscribe {
+                Log.d("FiDo", "s==>${it}")
+            }
+            .finish {
+                Log.d("FiDo", "finish==>$it")
+            }.start()
 
         initEvent()
     }
