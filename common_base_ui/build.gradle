@@ -106,6 +106,8 @@ dependencies {
 
     //图片选择
     api deps.support.picture_selector
+    api deps.support.picture_compress
+    api deps.support.picture_ucrop
 
     //郭神 permissionX
     api deps.support.permission

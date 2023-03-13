@@ -56,8 +56,15 @@ ext {
                     'brvah'             : 'io.github.cymchad:BaseRecyclerViewAdapterHelper:4.0.0-beta04', // 4.0 版本
                     'smart_refresh_core': 'com.scwang.smart:refresh-layout-kernel:2.0.1',
                     'smart_refresh_head': 'com.scwang.smart:refresh-header-classics:2.0.1',
-                    'picture_selector'  : 'com.github.LuckSiege.PictureSelector:picture_library:v2.6.0',  //图片选择
-//                    'picture_selector'  : 'io.github.lucksiege:pictureselector:v3.10.7',               //图片选择
+                    // PictureSelector 基础 (必须)
+                    'picture_selector'  : 'io.github.lucksiege:pictureselector:v3.10.7',
+                    // 图片压缩 (按需引入)
+                    'picture_compress'  : 'io.github.lucksiege:compress:v3.10.7',
+                    // 图片裁剪 (按需引入)
+                    'picture_ucrop'     : 'io.github.lucksiege:ucrop:v3.10.7',
+                    // 自定义相机 (按需引入)
+                    'picture_camerax'     : 'io.github.lucksiege:camerax:v3.10.7',
+
                     'xpopup'            : 'com.github.li-xiaojun:XPopup:2.9.19',
 
                     'picker_view'       : 'com.contrarywind:Android-PickerView:4.1.9',              //PicierView (可选)

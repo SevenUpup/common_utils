@@ -129,7 +129,7 @@ class TestDemo {
                 /**
                  * 获取抽象类成员变量 需 依托 他的实现类 ，通过实现类 获取 抽象类 的 属性 方法 等
                  */
-                println("======================获取抽象类属性/方法 Begain===========================")
+                println("======================获取抽象类属性/方法 Begin===========================")
                 // 四种 instance 都行
                 val absInstance = object : AbsReflectTest<String>(){
                     override fun getList(string: String): List<String> {

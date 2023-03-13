@@ -47,7 +47,8 @@
             <ImageView
                 android:id="@+id/iv"
                 android:layout_width="200dp"
-                android:layout_height="300dp"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
                 android:src="@mipmap/ic_launcher_round"/>
 
             <Button
@@ -63,6 +64,31 @@
                 android:textAllCaps="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/anim"
+                android:text="anima"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:id="@+id/iv2"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_launcher_round"/>
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:text="click me"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                tools:background="@color/black"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

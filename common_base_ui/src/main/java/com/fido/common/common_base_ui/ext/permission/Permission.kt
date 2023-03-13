@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import com.permissionx.guolindev.PermissionX
 import java.util.ArrayList
 import com.fido.common.common_base_ui.R
+import com.permissionx.guolindev.dialog.RationaleDialog
 
 internal const val positiveText = "允许"
 internal const val nagetiveText = "拒绝"
@@ -14,18 +15,23 @@ internal const val nagetiveText = "拒绝"
 fun FragmentActivity.extRequestPermission(
     permissions: List<String>,
     explainTitleBeforeRequest: String = "",
+    explainDialog:RationaleDialog?=null,
     block: () -> Unit
 ) {
     PermissionX.init(this).permissions(permissions).apply {
         if (explainTitleBeforeRequest.isNotEmpty()) {
             explainReasonBeforeRequest()
             onExplainRequestReason { scope, deniedList, beforeRequest ->
-                scope.showRequestReasonDialog(
-                    deniedList,
-                    explainTitleBeforeRequest,
-                    positiveText,
-                    nagetiveText
-                )
+                if (explainDialog != null) {
+                    scope.showRequestReasonDialog(explainDialog)
+                } else {
+                    scope.showRequestReasonDialog(
+                        deniedList,
+                        explainTitleBeforeRequest,
+                        positiveText,
+                        nagetiveText
+                    )
+                }
             }
         }
     }
@@ -53,8 +59,9 @@ fun Fragment.extRequestPermission(vararg permissions: String, block: () -> Unit)
 fun Fragment.extRequestPermission(
     permissions: List<String>,
     explainTitleBeforeRequest: String = "",
+    explainDialog:RationaleDialog?=null,
     block: () -> Unit,
-) = activity?.extRequestPermission(permissions, explainTitleBeforeRequest, block)
+) = activity?.extRequestPermission(permissions, explainTitleBeforeRequest,explainDialog, block)
 
 /**
  * 根据权限获取提示

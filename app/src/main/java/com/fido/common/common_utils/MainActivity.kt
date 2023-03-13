@@ -1,26 +1,35 @@
 package com.fido.common.common_utils
 
+import android.animation.Animator
+import android.animation.Animator.AnimatorListener
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.*
+import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Lifecycle
-import com.fido.common.common_base_ui.ext.image_select.extOpenImageSelect
+import com.fido.common.common_base_ui.ext.image_select.openImageSelect
+import com.fido.common.common_base_ui.ext.image_select.selectImagesPath
 import com.fido.common.common_base_ui.ext.permission.extRequestPermission
 import com.fido.common.common_base_ui.util.ImagePreViewUtil
+import com.fido.common.common_base_util.ext.DrawableStatus
+import com.fido.common.common_base_util.ext.addStatusableDrawableBg
 import com.fido.common.common_base_util.ext.longToast
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.getColorCompat
 import com.fido.common.common_base_util.startActivity
+import com.fido.common.common_base_util.toJson
+import com.fido.common.common_base_util.util.ImageCodeUtils
 import com.fido.common.common_base_util.util.time.Interval
 import com.fido.common.common_utils.databinding.ActivityMainBinding
 import com.fido.common.common_utils.rv.RvAc
-import com.fido.common.common_utils.test.reflect.AbsReflectTest
 import com.fido.common.common_utils.time.IntervalTimeAc
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import java.util.concurrent.TimeUnit
 import kotlin.reflect.full.companionObject
 import kotlin.reflect.full.companionObjectInstance
@@ -37,8 +46,18 @@ class MainActivity : AppCompatActivity() {
         initView()
 
         initEvent()
+
+        createCode()
     }
 
+    private fun createCode() {
+        mBinding.iv.setOnClickListener {
+            val bitmap = ImageCodeUtils.instance.createBitmap()
+            val code = ImageCodeUtils.instance.code
+            mBinding.iv.setImageBitmap(bitmap)
+            toast(code)
+        }
+    }
 
     private var index = 0
     private val imgs = listOf(
@@ -49,7 +68,49 @@ class MainActivity : AppCompatActivity() {
         "https://gd-hbimg.huaban.com/67eb28da21255d1681880335f341c84258403dda1114b-XmliZB_fw658webp",
     )
 
+    var index0 = 0
     private fun initEvent() {
+        mBinding.tvStatus
+            .addStatusableDrawableBg(R.color.teal_700,20f, isTopCorner = false, status = DrawableStatus.SELECTED)
+            .addStatusableDrawableBg(R.color.teal_200,5f,DrawableStatus.PRESSED)
+            .addStatusableDrawableBg(R.color.purple_700,50f, isDefultDrawable = true)
+
+        mBinding.tvStatus.setOnClickListener {
+            toast("click")
+            it.isSelected = true
+        }
+
+        mBinding.anim.setOnClickListener {
+            val set = AnimatorSet()
+            mBinding.iv2.isGone = false
+
+            mBinding.iv2.post {
+                val height = mBinding.iv2.height.toFloat()
+                val mFrom = if (index0 % 2 == 0) height else 0f
+                val mTo = if (index0 % 2 == 0) 0f else height
+
+                set.play(ObjectAnimator.ofFloat(mBinding.iv2,"translationY",mFrom,mTo))
+                    .with(ObjectAnimator.ofFloat(mBinding.iv2,"alpha",if(index0%2==0) 1f else 0f))
+                set.duration = 500
+                set.addListener(object :AnimatorListener{
+                    override fun onAnimationStart(animation: Animator?) {
+                    }
+
+                    override fun onAnimationEnd(animation: Animator?) {}
+
+                    override fun onAnimationCancel(animation: Animator?) {
+                    }
+
+                    override fun onAnimationRepeat(animation: Animator?) {
+                    }
+
+                })
+                set.start()
+                index0++
+            }
+
+        }
+
         mBinding.btInterval.setOnClickListener{
             startActivity<IntervalTimeAc>()
         }
@@ -58,28 +119,33 @@ class MainActivity : AppCompatActivity() {
                 listOf(
                     android.Manifest.permission.ACCESS_FINE_LOCATION,
                     android.Manifest.permission.ACCESS_COARSE_LOCATION
-                ), "申请权限前弹窗Title"
+                ), "不给权限怎么玩！"
             ) {
 
             }
         }
         mBinding.btOpenImage.setOnClickListener {
             extRequestPermission(
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 android.Manifest.permission.CAMERA
             ) {
-                extOpenImageSelect(
-                    null,
-                    isSingleDirectReturn = false,
-                    listener = object : OnResultCallbackListener<LocalMedia> {
-                        override fun onResult(result: MutableList<LocalMedia>?) {
-                            longToast(result.toString())
-                        }
-
-                        override fun onCancel() {
-
-                        }
-                    })
+                openImageSelect(null,3, canCrop = false,call = object :OnResultCallbackListener<LocalMedia>{
+                    override fun onResult(result: ArrayList<LocalMedia>) {
+                        Log.d("FiDo", "onResult: ${result.toJson()}")
+                        longToast(result.selectImagesPath.toString())
+                    }
+                    override fun onCancel() {}
+                })
+//                openCamera(call = object :OnResultCallbackListener<LocalMedia> {
+//                    override fun onResult(result: ArrayList<LocalMedia>) {
+//                        Log.d("FiDo", "onResult: ${result.toJson()}")
+//                        longToast(result.selectImagesPath.toString())
+//                    }
+//
+//                    override fun onCancel() {
+//                        longToast("cancle")
+//                    }
+//                })
             }
         }
         mBinding.btPreview.setOnClickListener {

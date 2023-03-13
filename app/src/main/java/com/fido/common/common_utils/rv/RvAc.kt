@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fido.common.common_base_ui.base.entity.BaseMuiltEntity
 import com.fido.common.common_base_ui.base.widget.bind
 import com.fido.common.common_base_ui.ext.*
+import com.fido.common.common_base_ui.ext.image_select.clearImageSelectCache
 import com.fido.common.common_base_util.util.time.Interval
-import com.fido.common.common_utils.App
 import com.fido.common.common_utils.R
 import com.fido.common.common_utils.databinding.AcRvBinding
 import com.fido.common.common_utils.databinding.ItemRvImgBinding
@@ -227,6 +227,12 @@ class RvAc:AppCompatActivity() {
             }))
         }, 2000)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        clearImageSelectCache()
+    }
+
 }
 
 class MEntity : BaseMuiltEntity() {

@@ -42,6 +42,27 @@ import kotlin.reflect.full.primaryConstructor
 @SuppressLint("StaticFieldLeak")
 lateinit var app: Context
 
+/*converts dp value into px*/
+val Number.dp
+    get() = (this.toFloat() * Resources.getSystem().displayMetrics.density).toInt()
+
+/*converts sp value into px*/
+val Number.sp
+    get() = (this.toFloat() * Resources.getSystem().displayMetrics.scaledDensity).toInt()
+
+//</editor-fold>
+
+//<editor-fold desc="Memory">
+
+val Number.KB: Long
+    get() = this.toLong() * 1024L
+
+val Number.MB: Long
+    get() = this.KB * 1024
+
+val Number.GB: Long
+    get() = this.MB * 1024
+
 /** dp和px转换 **/
 fun Context.dp2px(dpValue: Float): Int {
     return (dpValue * resources.displayMetrics.density + 0.5f).toInt()
@@ -251,6 +272,12 @@ fun <K, V> Map<K, V?>.print(map: (V?) -> String): String =
 
 // 获取颜色
 fun Context.getColorCompat(colorInt: Int) = ContextCompat.getColor(this, colorInt)
+
+val Int.getColor: Int
+    get() = ContextCompat.getColor(app, this)
+
+val String.getColor: Int
+    get() = Color.parseColor(this)
 
 //获取屏幕 宽 / 高（px）
 fun Context.getScreenWidthPx() = resources.displayMetrics.widthPixels

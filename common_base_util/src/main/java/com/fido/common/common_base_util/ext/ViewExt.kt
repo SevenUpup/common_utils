@@ -8,7 +8,10 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
+import com.fido.common.common_base_util.app
 
 /**
  * View相关
@@ -219,7 +222,6 @@ fun View.longClick(action: (view: View) -> Boolean) {
     }
 }
 
-
 /*** 可见性相关 ****/
 fun View.gone() {
     visibility = View.GONE
@@ -233,19 +235,28 @@ fun View.invisible() {
     visibility = View.INVISIBLE
 }
 
-val View.isGone: Boolean
+var View.isGone: Boolean
     get() {
         return visibility == View.GONE
     }
+    set(value){
+        visibility = if (value) View.GONE else View.VISIBLE
+    }
 
-val View.isVisible: Boolean
+var View.isVisible: Boolean
     get() {
         return visibility == View.VISIBLE
     }
+    set(value){
+        visibility = if (value) View.VISIBLE else View.GONE
+    }
 
-val View.isInvisible: Boolean
+var View.isInvisible: Boolean
     get() {
         return visibility == View.INVISIBLE
+    }
+    set(value){
+        visibility = if (value) View.INVISIBLE else View.VISIBLE
     }
 
 /**
