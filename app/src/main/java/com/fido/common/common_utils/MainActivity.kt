@@ -8,10 +8,14 @@ import android.content.Intent
 import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.*
 import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
+import androidx.recyclerview.widget.DiffUtil
 import com.fido.common.common_base_ui.ext.image_select.openImageSelect
 import com.fido.common.common_base_ui.ext.image_select.selectImagesPath
 import com.fido.common.common_base_ui.ext.permission.extRequestPermission
@@ -25,8 +29,10 @@ import com.fido.common.common_base_util.startActivity
 import com.fido.common.common_base_util.toJson
 import com.fido.common.common_base_util.util.ImageCodeUtils
 import com.fido.common.common_base_util.util.time.Interval
+import com.fido.common.common_utils.anim.AnimUtils
 import com.fido.common.common_utils.databinding.ActivityMainBinding
 import com.fido.common.common_utils.rv.RvAc
+import com.fido.common.common_utils.spannable.SpannableAc
 import com.fido.common.common_utils.time.IntervalTimeAc
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
@@ -48,6 +54,10 @@ class MainActivity : AppCompatActivity() {
         initEvent()
 
         createCode()
+    }
+
+    fun onSpannable(v:View){
+        startActivity<SpannableAc>()
     }
 
     private fun createCode() {
@@ -76,11 +86,15 @@ class MainActivity : AppCompatActivity() {
             .addStatusableDrawableBg(R.color.purple_700,50f, isDefultDrawable = true)
 
         mBinding.tvStatus.setOnClickListener {
-            toast("click")
-            it.isSelected = true
+            it.isSelected = !it.isSelected
+            toast("click isSelected=${it.isSelected}")
         }
 
         mBinding.anim.setOnClickListener {
+            mBinding.iv2.isGone = false
+
+            AnimUtils.beginBounceAnima(mBinding.iv)
+
             val set = AnimatorSet()
             mBinding.iv2.isGone = false
 
@@ -93,16 +107,13 @@ class MainActivity : AppCompatActivity() {
                     .with(ObjectAnimator.ofFloat(mBinding.iv2,"alpha",if(index0%2==0) 1f else 0f))
                 set.duration = 500
                 set.addListener(object :AnimatorListener{
-                    override fun onAnimationStart(animation: Animator?) {
-                    }
+                    override fun onAnimationStart(animation: Animator?) {}
 
                     override fun onAnimationEnd(animation: Animator?) {}
 
-                    override fun onAnimationCancel(animation: Animator?) {
-                    }
+                    override fun onAnimationCancel(animation: Animator?) {}
 
-                    override fun onAnimationRepeat(animation: Animator?) {
-                    }
+                    override fun onAnimationRepeat(animation: Animator?) {}
 
                 })
                 set.start()

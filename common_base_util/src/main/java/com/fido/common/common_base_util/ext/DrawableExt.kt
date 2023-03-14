@@ -92,8 +92,9 @@ fun View.gradiendShapeDrawableBg(
 
 /**
  * 添加指定状态的Drawable
+ * isDefultDrawable 很关键，设置默认状态drawable 为true时,addStatusableDrawableBg 必须放在最后调用哦~~~
  * @param status 选择状态 默认Normal
- * @param isDefultDrawable 是否是默认状态的drawable,为true时,addStatusableDrawableBg()必须放在最后调用
+ * @param isDefultDrawable 是否是默认状态的drawable,
  * PRESSED,SELECTED,ENABLED
  */
 fun View.addStatusableDrawableBg(

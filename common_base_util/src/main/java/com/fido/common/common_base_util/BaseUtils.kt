@@ -279,6 +279,11 @@ val Int.getColor: Int
 val String.getColor: Int
     get() = Color.parseColor(this)
 
+val Int.getDrawable:Drawable
+    get() = ContextCompat.getDrawable(app,this)?:app.resources.getDrawable(this,null)
+
+fun Context.getDrawable(drawableId:Int) = ContextCompat.getDrawable(app,drawableId)
+
 //获取屏幕 宽 / 高（px）
 fun Context.getScreenWidthPx() = resources.displayMetrics.widthPixels
 

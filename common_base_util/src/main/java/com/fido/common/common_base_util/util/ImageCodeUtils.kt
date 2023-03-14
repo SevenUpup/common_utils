@@ -13,8 +13,8 @@ class ImageCodeUtils {
     private var mPaddingTop: Int = 0
     private val mBuilder = StringBuilder()
     private val mRandom = Random()
-    private var DEFAULT_WIDTH = 300//默认宽度.图片的总宽
-    private var DEFAULT_HEIGHT = 100//默认高度.图片的总高
+    private var DEFAULT_WIDTH = 300  //默认宽度.图片的总宽
+    private var DEFAULT_HEIGHT = 100 //默认高度.图片的总高
     /**
      * 得到图片中的验证码字符串
      */
@@ -185,7 +185,6 @@ class ImageCodeUtils {
             'Z'
         )
         //Default Settings
-        //    private static final int DEFAULT_CODE_LENGTH = 6;//验证码的长度  这里是6位
         private val DEFAULT_CODE_LENGTH = 4//验证码的长度  这里是4位
         private val DEFAULT_FONT_SIZE = 60//字体大小
         private val DEFAULT_LINE_NUMBER = 3//多少条干扰线

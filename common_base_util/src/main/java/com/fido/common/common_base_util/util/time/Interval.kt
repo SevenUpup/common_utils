@@ -1,11 +1,9 @@
 package com.fido.common.common_base_util.util.time
 
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import com.fido.common.common_base_util.app
 import com.fido.common.common_base_util.runMain
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.TickerMode

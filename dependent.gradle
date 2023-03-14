@@ -63,12 +63,11 @@ ext {
                     // 图片裁剪 (按需引入)
                     'picture_ucrop'     : 'io.github.lucksiege:ucrop:v3.10.7',
                     // 自定义相机 (按需引入)
-                    'picture_camerax'     : 'io.github.lucksiege:camerax:v3.10.7',
-
+                    'picture_camerax'   : 'io.github.lucksiege:camerax:v3.10.7',
                     'xpopup'            : 'com.github.li-xiaojun:XPopup:2.9.19',
-
                     'picker_view'       : 'com.contrarywind:Android-PickerView:4.1.9',              //PicierView (可选)
                     'banner'            : 'com.youth.banner:banner:2.1.0',                           //轮播 (可选)
+                    'spannable'         : 'com.github.liangjingkanji:spannable:1.2.6',
             ]
 
     ]
