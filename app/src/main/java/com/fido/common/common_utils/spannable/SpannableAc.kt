@@ -2,9 +2,12 @@ package com.fido.common.common_utils.spannable
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.text.TextPaint
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ClickableSpan
 import android.text.style.StyleSpan
+import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.request.RequestOptions
@@ -16,6 +19,7 @@ import com.drake.spannable.span.CenterImageSpan
 import com.drake.spannable.span.ColorSpan
 import com.drake.spannable.span.GlideImageSpan
 import com.drake.spannable.span.HighlightSpan
+import com.fido.common.common_base_ui.widget.edittext.CodeEditText
 import com.fido.common.common_base_util.dp
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.getColor
@@ -33,6 +37,21 @@ class SpannableAc:AppCompatActivity() {
 
         init()
 
+        _binding.etTest.setOnTextChangedListener(object :CodeEditText.OnTextChangedListener{
+            override fun onCodeChanged(changeText: CharSequence?) {
+                Log.e(
+                    "SimpleActivity",
+                    String.format("onCodeChanged -- %s", changeText.toString() + "")
+                )
+            }
+
+            override fun onInputCompleted(text: CharSequence?) {
+                Log.e(
+                    "SimpleActivity",
+                    String.format("onInputCompleted -- %s", text.toString() + "")
+                )
+            }
+        })
     }
 
     private fun init(){
@@ -46,6 +65,7 @@ class SpannableAc:AppCompatActivity() {
                 GlideImageSpan(_binding.tv,R.drawable.ic_gif)
                     .setRequestOption(RequestOptions.centerCropTransform())
                     .setDrawableSize(50.dp)
+                    .setAlign(GlideImageSpan.Align.CENTER)
             }
 
         _binding.tv2.text = " ".addSpan("自适应点9图", listOf(
@@ -88,6 +108,16 @@ class SpannableAc:AppCompatActivity() {
                     toast("click ${matchResult.value}")
                 }
             )
+        }.replaceSpan("《协议》"){
+            listOf(ColorSpan(R.color.teal_200.getColor),object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    toast("click ${it.value}")
+                }
+
+                override fun updateDrawState(ds: TextPaint) {
+                    ds.isUnderlineText = false
+                }
+            })
         }
 
     }

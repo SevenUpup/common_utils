@@ -5,32 +5,26 @@ import android.animation.Animator.AnimatorListener
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
-import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.animation.AnimationUtils
+import android.view.animation.CycleInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.*
 import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Lifecycle
-import androidx.recyclerview.widget.DiffUtil
 import com.fido.common.common_base_ui.ext.image_select.openImageSelect
 import com.fido.common.common_base_ui.ext.image_select.selectImagesPath
 import com.fido.common.common_base_ui.ext.permission.extRequestPermission
 import com.fido.common.common_base_ui.util.ImagePreViewUtil
-import com.fido.common.common_base_util.ext.DrawableStatus
-import com.fido.common.common_base_util.ext.addStatusableDrawableBg
-import com.fido.common.common_base_util.ext.longToast
-import com.fido.common.common_base_util.ext.toast
-import com.fido.common.common_base_util.getColorCompat
-import com.fido.common.common_base_util.startActivity
-import com.fido.common.common_base_util.toJson
+import com.fido.common.common_base_util.*
+import com.fido.common.common_base_util.ext.*
 import com.fido.common.common_base_util.util.ImageCodeUtils
 import com.fido.common.common_base_util.util.time.Interval
+import com.fido.common.common_utils.anim.ShakeAnim
 import com.fido.common.common_utils.anim.AnimUtils
 import com.fido.common.common_utils.databinding.ActivityMainBinding
+import com.fido.common.common_utils.edittext.CustomStyleActivity
 import com.fido.common.common_utils.rv.RvAc
 import com.fido.common.common_utils.spannable.SpannableAc
 import com.fido.common.common_utils.time.IntervalTimeAc
@@ -40,6 +34,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.reflect.full.companionObject
 import kotlin.reflect.full.companionObjectInstance
 import kotlin.reflect.full.declaredMemberFunctions
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -54,10 +49,57 @@ class MainActivity : AppCompatActivity() {
         initEvent()
 
         createCode()
+
     }
 
     fun onSpannable(v:View){
         startActivity<SpannableAc>()
+    }
+
+    fun onAnimShark(v: View){
+        val oa1: ObjectAnimator =
+            ObjectAnimator.ofFloat(mBinding.iv3, View.TRANSLATION_X.name, 0f, 8f) //抖动幅度0到8
+        oa1.duration = 300 //持续时间
+        oa1.interpolator = CycleInterpolator(4f) //抖动次数
+        oa1.start() //开始动画
+    }
+
+    fun onAnimShark2(v: View){
+        ShakeAnim.start(mBinding.iv3)
+    }
+
+    fun codeEditText(v: View){
+        startActivity<CustomStyleActivity>()
+    }
+    fun onAnim(view: View){
+        val locationArray = intArrayOf(0, 0)
+        mBinding.iv.getLocationOnScreen(locationArray)
+//            val xLocation = locationArray[0].toFloat()
+        val xLocation = getScreenWidthPx().toFloat()-mBinding.iv3.width.toFloat()
+        val yLocation = (getScreenHeightPx() - mBinding.iv3.bottom - mBinding.iv3.height/2).toFloat()
+        Log.d("FiDo", "initEvent: xLocation = $xLocation  yLocation = $yLocation mBinding.iv3.bottom=${mBinding.iv3.bottom}")
+
+        /*AnimatorSet().apply {
+            val xDuration = 1000L
+            val xOffset = 100f
+            playSequentially(
+                ObjectAnimator.ofFloat(mBinding.iv3, "translationX", -xOffset)
+                    .setDuration((xDuration / 2)),
+                ObjectAnimator.ofFloat(mBinding.iv3, "translationX", -xOffset, xOffset).apply {
+                    duration = xDuration
+                    repeatMode = ValueAnimator.REVERSE
+                    repeatCount = 2
+                },
+                ObjectAnimator.ofFloat(mBinding.iv3, "translationX", 0f).setDuration((xDuration / 2))
+            )
+        }.start()*/
+
+        val animSet = AnimatorSet()
+        animSet
+            .play(ObjectAnimator.ofFloat(mBinding.iv3, View.TRANSLATION_X.name,0f,xLocation))
+            .with(ObjectAnimator.ofFloat(mBinding.iv3,View.TRANSLATION_Y.name,0f,yLocation))
+        animSet.duration = 2000
+//        animSet.start()
     }
 
     private fun createCode() {
@@ -226,6 +268,11 @@ class MainActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
         }
+
+//        mBinding.container.addView(CodeEditText(this).textMode(codeTextSize = 20),mBinding.container.childCount-1,
+//            LayoutParams(getScreenWidthPx() ,50.dp))
+//        mBinding.container.addView(CodeEditText(this).passwordMode(),mBinding.container.childCount-1,
+//            LayoutParams(getScreenWidthPx(),40.dp))
     }
 
 }

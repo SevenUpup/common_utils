@@ -51,6 +51,7 @@
         <activity android:name=".time.IntervalTimeAc"/>
 
         <activity android:name=".spannable.SpannableAc"/>
+        <activity android:name=".edittext.CustomStyleActivity"/>
 
     </application>
 

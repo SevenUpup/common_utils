@@ -12,6 +12,7 @@
         android:layout_height="match_parent">
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -81,6 +82,14 @@
                 android:scaleType="centerCrop"
                 android:src="@mipmap/ic_launcher_round"/>
 
+            <ImageView
+                android:id="@+id/iv3"
+                android:layout_marginTop="10dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_launcher_round"/>
+
             <TextView
                 android:id="@+id/tv_status"
                 android:text="click me"
@@ -97,6 +106,39 @@
                 android:textAllCaps="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/anim2"
+                android:text="anim2"
+                android:onClick="onAnim"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:text="animShark"
+                android:onClick="onAnimShark"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:text="animShark2"
+                android:onClick="onAnimShark2"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:text="codeEditText"
+                android:onClick="codeEditText"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="200dp" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
