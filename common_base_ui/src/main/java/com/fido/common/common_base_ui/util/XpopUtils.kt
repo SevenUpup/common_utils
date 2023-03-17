@@ -7,6 +7,6 @@ import com.lxj.xpopup.core.BottomPopupView
 
 fun Context.showLoading(title:CharSequence=""): BasePopupView = XPopup.Builder(this).asLoading(title).show()
 
-fun Context.creatCustomPop(popupView: BasePopupView) = XPopup.Builder(this).apply {
+fun Context.creatXPopCustomView(popupView: BasePopupView) = XPopup.Builder(this).apply {
     asCustom(popupView)
 }

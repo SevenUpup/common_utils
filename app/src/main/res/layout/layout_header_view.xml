@@ -8,7 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/black">
 
         <TextView
             android:id="@+id/tv_header_title"
@@ -20,6 +21,13 @@
             android:textColor="@color/white"
             android:background="@color/design_default_color_error"
             android:text="i am Rv header" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mRv"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/tv_header_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

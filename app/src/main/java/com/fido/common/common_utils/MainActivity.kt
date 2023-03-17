@@ -9,14 +9,19 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.animation.CycleInterpolator
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.*
 import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
-import com.fido.common.common_base_ui.base.dialog.showCustomPop
+import androidx.recyclerview.widget.RecyclerView
+import com.fido.common.common_base_ui.base.dialog.createPop
+import com.fido.common.common_base_ui.base.dialog.createVBPop
+import com.fido.common.common_base_ui.ext.bindData
 import com.fido.common.common_base_ui.ext.image_select.openImageSelect
 import com.fido.common.common_base_ui.ext.image_select.selectImagesPath
 import com.fido.common.common_base_ui.ext.permission.extRequestPermission
+import com.fido.common.common_base_ui.ext.vertical
 import com.fido.common.common_base_ui.util.ImagePreViewUtil
 import com.fido.common.common_base_util.*
 import com.fido.common.common_base_util.ext.*
@@ -32,6 +37,8 @@ import com.fido.common.common_utils.spannable.SpannableAc
 import com.fido.common.common_utils.time.IntervalTimeAc
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
+import com.lxj.xpopup.enums.PopupPosition
+import org.w3c.dom.Text
 import java.util.concurrent.TimeUnit
 import kotlin.reflect.full.companionObject
 import kotlin.reflect.full.companionObjectInstance
@@ -132,12 +139,24 @@ class MainActivity : AppCompatActivity() {
 
         mBinding.tvStatus.setOnClickListener {
             it.isSelected = !it.isSelected
-            toast("click isSelected=${it.isSelected}")
-            showCustomPop<DialogTestBinding>(R.layout.dialog_test){
-                it.tvCancle.setOnClickListener {
+            createVBPop<DialogTestBinding>(R.layout.dialog_test, atView = mBinding.iv, popWidth = getScreenWidthPx()){
+                tvCancle.setOnClickListener {
                     toast("click")
                 }
-            }
+            }.show()
+
+            createPop(R.layout.layout_header_view, atView = mBinding.anim, popPosition = PopupPosition.Top){
+                findViewById<TextView>(R.id.tv_header_title).setOnClickListener {
+                    toast("click header")
+                }
+                findViewById<RecyclerView>(R.id.mRv)
+                    .vertical()
+                    .bindData(listOf("1","2","3","4"),R.layout.item_rv_text){holder, position, item ->
+                        holder.setText(R.id.mTitle,item)
+                    }
+                    .isGone = false
+            }.show()
+
         }
 
         mBinding.anim.setOnClickListener {
