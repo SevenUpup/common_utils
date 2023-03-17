@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.*
 import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
+import com.fido.common.common_base_ui.base.dialog.showCustomPop
 import com.fido.common.common_base_ui.ext.image_select.openImageSelect
 import com.fido.common.common_base_ui.ext.image_select.selectImagesPath
 import com.fido.common.common_base_ui.ext.permission.extRequestPermission
@@ -24,6 +25,7 @@ import com.fido.common.common_base_util.util.time.Interval
 import com.fido.common.common_utils.anim.ShakeAnim
 import com.fido.common.common_utils.anim.AnimUtils
 import com.fido.common.common_utils.databinding.ActivityMainBinding
+import com.fido.common.common_utils.databinding.DialogTestBinding
 import com.fido.common.common_utils.edittext.CustomStyleActivity
 import com.fido.common.common_utils.rv.RvAc
 import com.fido.common.common_utils.spannable.SpannableAc
@@ -122,6 +124,7 @@ class MainActivity : AppCompatActivity() {
 
     var index0 = 0
     private fun initEvent() {
+
         mBinding.tvStatus
             .addStatusableDrawableBg(R.color.teal_700,20f, isTopCorner = false, status = DrawableStatus.SELECTED)
             .addStatusableDrawableBg(R.color.teal_200,5f,DrawableStatus.PRESSED)
@@ -130,6 +133,11 @@ class MainActivity : AppCompatActivity() {
         mBinding.tvStatus.setOnClickListener {
             it.isSelected = !it.isSelected
             toast("click isSelected=${it.isSelected}")
+            showCustomPop<DialogTestBinding>(R.layout.dialog_test){
+                it.tvCancle.setOnClickListener {
+                    toast("click")
+                }
+            }
         }
 
         mBinding.anim.setOnClickListener {
