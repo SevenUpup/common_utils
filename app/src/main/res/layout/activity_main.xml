@@ -20,6 +20,15 @@
 
             <com.google.android.material.button.MaterialButton
                 android:padding="10dp"
+                android:id="@+id/bt_pickerView"
+                android:textColor="@color/white"
+                android:text="PickerView"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:padding="10dp"
                 android:id="@+id/bt_rv"
                 android:textColor="@color/white"
                 android:text="go Rv"
@@ -47,8 +56,8 @@
 
             <ImageView
                 android:id="@+id/iv"
-                android:layout_width="250dp"
-                android:layout_height="200dp"
+                android:layout_width="150dp"
+                android:layout_height="100dp"
                 android:scaleType="centerCrop"
                 android:src="@mipmap/ic_launcher_round"/>
 
@@ -77,16 +86,16 @@
                 android:id="@+id/iv2"
                 android:visibility="gone"
                 tools:visibility="visible"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:scaleType="centerCrop"
                 android:src="@mipmap/ic_launcher_round"/>
 
             <ImageView
                 android:id="@+id/iv3"
                 android:layout_marginTop="10dp"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:scaleType="centerCrop"
                 android:src="@mipmap/ic_launcher_round"/>
 
@@ -135,6 +144,32 @@
                 android:textAllCaps="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+
+            <Button
+                android:text="installApk"
+                android:onClick="installApk"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:text="snackBar"
+                android:onClick="snackBar"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TimePicker
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.fido.common.common_utils.widgets.RuleView
+                android:layout_width="match_parent"
+                android:layout_height="80dp"/>
+
+            <com.fido.common.common_utils.widgets.MoneySelectRuleView
+                android:layout_width="match_parent"
+                android:layout_height="80dp"/>
 
             <View
                 android:layout_width="0dp"

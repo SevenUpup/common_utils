@@ -3,6 +3,7 @@ package com.fido.common.common_utils
 import android.app.Application
 import android.util.Log
 import com.drake.debugkit.DevTool
+import com.fido.common.common_base_util.log.LogUtils
 import com.fido.common.common_base_util.util.time.countDown
 import com.fido.common.common_base_util.util.toast.ToastConfig
 import com.fido.common.common_base_util.util.toast.interfaces.ToastGravityFactory
@@ -35,6 +36,8 @@ class App: Application() {
 
         DevTool.debug = BuildConfig.DEBUG
 
+        LogUtils.logEnabled = BuildConfig.DEBUG
+        LogUtils.logGlobalTag = "FiDo"
     }
 
 }

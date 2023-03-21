@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-files-path
+        name="base_utils_apk_files"
+        path="./" />
+
+    <root-path
+        name="base_utils_apk_root"
+        path="" />
+    <external-files-path
+        name="base_utils_apk_external"
+        path="Images/tmp" />
+</paths>

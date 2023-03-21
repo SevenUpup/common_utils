@@ -6,9 +6,13 @@ import android.animation.ValueAnimator
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.os.Build
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import androidx.annotation.FloatRange
 import androidx.core.content.ContextCompat
+import androidx.core.math.MathUtils
 import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
 import com.fido.common.common_base_util.app
@@ -316,3 +320,39 @@ fun View.toBitmap(): Bitmap {
 // 所有子View
 inline val ViewGroup.children
     get() = (0 until childCount).map { getChildAt(it) }
+
+/**
+ * 为view添加OnGlobalLayoutListener监听并在测量完成后自动取消监听同时执行[globalAction]函数
+ *
+ * @param globalAction
+ */
+inline fun <T : View> T.afterMeasured(crossinline globalAction: T.() -> Unit) {
+    viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+            if (measuredWidth > 0 && measuredHeight > 0) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    viewTreeObserver.removeOnGlobalLayoutListener(this)
+                } else {
+                    viewTreeObserver.removeGlobalOnLayoutListener(this)
+                }
+                globalAction()
+            }
+        }
+    })
+}
+
+fun evaluateColor(@FloatRange(from = 0.0, to = 1.0) fraction: Float /*0-1*/, startColor: Int, endColor: Int): Int {
+    val fr = MathUtils.clamp(fraction, 0f, 1f)
+    val startA = startColor shr 24 and 0xff
+    val startR = startColor shr 16 and 0xff
+    val startG = startColor shr 8 and 0xff
+    val startB = startColor and 0xff
+    val endA = endColor shr 24 and 0xff
+    val endR = endColor shr 16 and 0xff
+    val endG = endColor shr 8 and 0xff
+    val endB = endColor and 0xff
+    return startA + (fr * (endA - startA)).toInt() shl 24 or
+            (startR + (fr * (endR - startR)).toInt() shl 16) or
+            (startG + (fr * (endG - startG)).toInt() shl 8) or
+            startB + (fr * (endB - startB)).toInt()
+}

@@ -30,6 +30,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.Serializable
 import java.lang.IllegalStateException
+import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
@@ -78,6 +79,24 @@ fun Context.sp2px(spValue: Float): Int {
 
 fun Context.px2sp(pxValue: Float): Int {
     return (pxValue / resources.displayMetrics.scaledDensity + 0.5f).toInt()
+}
+
+/**
+ * 短促的震动
+ *
+ * @param millis 震动时长
+ */
+fun Context.vibrateShot(millis: Long) {
+    val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
+    vibrator?.let {
+        if (it.hasVibrator()) {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
+                it.vibrate(VibrationEffect.createOneShot(millis, 100))
+            } else {
+                it.vibrate(millis)
+            }
+        }
+    }
 }
 
 fun Fragment.dp2px(dpValue: Float): Int {
@@ -467,3 +486,9 @@ fun isNetworking(): Boolean {
     }
     return true
 }
+
+fun randomColor(): Int = Color.rgb(
+    Random.nextInt(122, 222),
+    Random.nextInt(122, 222),
+    Random.nextInt(122, 222)
+)

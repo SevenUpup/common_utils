@@ -6,6 +6,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.View
 import android.view.animation.CycleInterpolator
@@ -22,9 +23,10 @@ import com.fido.common.common_base_ui.ext.image_select.openImageSelect
 import com.fido.common.common_base_ui.ext.image_select.selectImagesPath
 import com.fido.common.common_base_ui.ext.permission.extRequestPermission
 import com.fido.common.common_base_ui.ext.vertical
-import com.fido.common.common_base_ui.util.ImagePreViewUtil
+import com.fido.common.common_base_ui.util.ImagePreviewUtil
 import com.fido.common.common_base_util.*
 import com.fido.common.common_base_util.ext.*
+import com.fido.common.common_base_util.util.AssetUtils
 import com.fido.common.common_base_util.util.ImageCodeUtils
 import com.fido.common.common_base_util.util.time.Interval
 import com.fido.common.common_utils.anim.ShakeAnim
@@ -32,13 +34,15 @@ import com.fido.common.common_utils.anim.AnimUtils
 import com.fido.common.common_utils.databinding.ActivityMainBinding
 import com.fido.common.common_utils.databinding.DialogTestBinding
 import com.fido.common.common_utils.edittext.CustomStyleActivity
+import com.fido.common.common_utils.picker.PickerViewAc
 import com.fido.common.common_utils.rv.RvAc
 import com.fido.common.common_utils.spannable.SpannableAc
 import com.fido.common.common_utils.time.IntervalTimeAc
+import com.google.android.material.snackbar.Snackbar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.lxj.xpopup.enums.PopupPosition
-import org.w3c.dom.Text
+import java.io.File
 import java.util.concurrent.TimeUnit
 import kotlin.reflect.full.companionObject
 import kotlin.reflect.full.companionObjectInstance
@@ -59,6 +63,16 @@ class MainActivity : AppCompatActivity() {
 
         createCode()
 
+    }
+
+    fun snackBar(v: View){
+        snackbar(v,"i am snackbar","click me"){
+            toast("snackbar")
+        }
+    }
+    fun installApk(v: View){
+        AssetUtils.copyFileFromAssets(this,"debugkit.apk",getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + "/temp.apk")
+        installApp(File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + "/temp.apk"))
     }
 
     fun onSpannable(v:View){
@@ -131,7 +145,9 @@ class MainActivity : AppCompatActivity() {
 
     var index0 = 0
     private fun initEvent() {
-
+        mBinding.btPickerView.click {
+            startActivity<PickerViewAc>()
+        }
         mBinding.tvStatus
             .addStatusableDrawableBg(R.color.teal_700,20f, isTopCorner = false, status = DrawableStatus.SELECTED)
             .addStatusableDrawableBg(R.color.teal_200,5f,DrawableStatus.PRESSED)
@@ -238,7 +254,7 @@ class MainActivity : AppCompatActivity() {
                 }.start()
 
             if (index % 2 == 0) {
-                ImagePreViewUtil.singleImagePreview(
+                ImagePreviewUtil.singleImagePreview(
                     this, mBinding.iv, imgs[0]
                 ) { popupView, position ->
                     val spanned = buildSpannedString {
@@ -258,7 +274,7 @@ class MainActivity : AppCompatActivity() {
                     toast(spanned)
                 }
             } else {
-                ImagePreViewUtil.multipleImagePreview(
+                ImagePreviewUtil.multipleImagePreview(
                     this, mBinding.iv, imgs, 0,
                     srcViewUpdateBlock = { popupView, position ->
 
@@ -273,6 +289,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
+        mBinding.iv.setImageBitmap(AssetUtils.loadBitmapAsset(this,"dog.jpg"))
+        mBinding.iv3.setImageBitmap(AssetUtils.loadBitmapAsset(this,"dog.jpg"))
+
         mBinding.btRv.setOnClickListener {
 //            startActivity<RvAc>()
             Log.d("FiDo", "RvAc : ${RvAc::class.java.name}")

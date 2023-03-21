@@ -111,6 +111,9 @@ dependencies {
 
     //郭神 permissionX
     api deps.support.permission
+
+    //WheelPicker:pickerview
+    api deps.support.wheel_picker
 }
 
 import com.vanniktech.maven.publish.SonatypeHost

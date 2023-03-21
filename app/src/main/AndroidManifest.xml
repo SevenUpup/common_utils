@@ -52,7 +52,9 @@
 
         <activity android:name=".spannable.SpannableAc"/>
         <activity android:name=".edittext.CustomStyleActivity"/>
-
+        <activity android:name=".picker.PickerViewAc"/>
+        <activity android:name=".picker.LinkagePickerActivity"/>
     </application>
+
 
 </manifest>

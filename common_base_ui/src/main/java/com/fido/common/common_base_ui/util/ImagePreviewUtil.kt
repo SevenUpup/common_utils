@@ -8,7 +8,7 @@ import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.core.ImageViewerPopupView
 import com.lxj.xpopup.util.SmartGlideImageLoader
 
-object ImagePreViewUtil {
+object ImagePreviewUtil {
 
     /**
      * 单图片的预览

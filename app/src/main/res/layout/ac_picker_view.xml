@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScroll"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.zyyoona7.demo.DatePickerActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <Button
+                android:id="@+id/link_picker"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:padding="15dp"
+                android:textSize="20sp"
+                android:onClick="goLink"
+                android:text="Go LinkagePicker"/>
+
+            <TextView
+                android:id="@+id/tv_packet"
+                app:layout_constraintTop_toBottomOf="@id/link_picker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="go packet"/>
+
+            <TextView
+                android:id="@+id/tv_url"
+                app:layout_constraintTop_toBottomOf="@+id/tv_packet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:text="https://github.com/zyyoona7/WheelPicker"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_top"
+                app:layout_constraintTop_toBottomOf="@id/tv_url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_auto_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="自动获取系统时制"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.zyyoona7.picker.TimePickerView
+                    android:id="@+id/time_picker_auto"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_auto_title"
+                    app:layout_constraintWidth_default="percent"
+                    app:layout_constraintWidth_percent="0.8"
+                    app:tpv_hourRightText="时"
+                    app:tpv_minuteRightText="分"
+                    app:tpv_rightTextMarginLeft="5dp"
+                    app:tpv_secondRightText="秒"
+                    app:tpv_textSize="22sp"
+                    app:tpv_widthWeightMode="true" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.zyyoona7.picker.DatePickerView
+                android:id="@+id/date_picker_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:dpv_curtainColor="#80FF0000"
+                app:dpv_endYear="2088"
+                app:dpv_rightTextGravity="top"
+                app:dpv_selectedDay="3"
+                app:dpv_selectedMonth="3"
+                app:dpv_selectedYear="1997"
+                app:dpv_showCurtain="true"
+                app:dpv_startYear="1988"
+                app:dpv_textSize="22sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/wheel_year" />
+
+            <com.zyyoona7.picker.DatePickerView
+                android:id="@+id/date_picker_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:dpv_dayRightText="日"
+                app:dpv_dayWeight="1.5"
+                app:dpv_endYear="2088"
+                app:dpv_monthRightText="月"
+                app:dpv_rightTextMarginLeft="10dp"
+                app:dpv_selectedDay="2"
+                app:dpv_selectedMonth="1"
+                app:dpv_selectedYear="1998"
+                app:dpv_showDivider="true"
+                app:dpv_startYear="1988"
+                app:dpv_textSize="22sp"
+                app:dpv_widthWeightMode="true"
+                app:dpv_yearRightText="年"
+                app:dpv_yearWeight="1.5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/date_picker_1" />
+
+            <com.zyyoona7.picker.DatePickerView
+                android:id="@+id/date_picker_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:dpv_dayRightText="日"
+                app:dpv_dayWeight="1.5"
+                app:dpv_dividerType="wrap_all"
+                app:dpv_endYear="2088"
+                app:dpv_monthRightText="月"
+                app:dpv_rightTextMarginLeft="10dp"
+                app:dpv_selectedDay="1"
+                app:dpv_selectedMonth="4"
+                app:dpv_selectedYear="1999"
+                app:dpv_showDivider="true"
+                app:dpv_startYear="1988"
+                app:dpv_textSize="22sp"
+                app:dpv_widthWeightMode="true"
+                app:dpv_yearRightText="年"
+                app:dpv_yearWeight="1.5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/date_picker_2" />
+
+            <com.zyyoona7.picker.DatePickerView
+                android:id="@+id/date_picker_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:dpv_dayRightText="日"
+                app:dpv_dayWeight="1.5"
+                app:dpv_dividerType="wrap"
+                app:dpv_endYear="2088"
+                app:dpv_monthRightText="月"
+                app:dpv_rightTextMarginLeft="10dp"
+                app:dpv_selectedDay="4"
+                app:dpv_selectedMonth="5"
+                app:dpv_selectedYear="2000"
+                app:dpv_showDivider="true"
+                app:dpv_startYear="1988"
+                app:dpv_textSize="22sp"
+                app:dpv_widthWeightMode="true"
+                app:dpv_yearRightText="年"
+                app:dpv_yearWeight="1.5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/date_picker_3" />
+
+            <com.zyyoona7.picker.DatePickerView
+                android:id="@+id/date_picker_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:dpv_cyclic="false"
+                app:dpv_dayRightText="日"
+                app:dpv_dividerType="wrap"
+                app:dpv_endYear="2088"
+                app:dpv_monthRightText="月"
+                app:dpv_rightTextMarginLeft="10dp"
+                app:dpv_selectedDay="4"
+                app:dpv_selectedMonth="5"
+                app:dpv_selectedTextColor="#801BACC9"
+                app:dpv_selectedYear="2000"
+                app:dpv_showDivider="true"
+                app:dpv_startYear="1988"
+                app:dpv_textSize="22sp"
+                app:dpv_yearRightText="年"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/date_picker_4" />
+
+            <com.zyyoona7.picker.DatePickerView
+                android:id="@+id/date_picker_6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:dpv_cyclic="true"
+                app:dpv_dayRightText="日"
+                app:dpv_dividerType="wrap"
+                app:dpv_endYear="2088"
+                app:dpv_monthRightText="月"
+                app:dpv_rightTextMarginLeft="10dp"
+                app:dpv_selectedDay="4"
+                app:dpv_selectedMonth="5"
+                app:dpv_selectedTextColor="#801BACC9"
+                app:dpv_selectedYear="2000"
+                app:dpv_showDivider="true"
+                app:dpv_showYear="false"
+                app:dpv_startYear="1988"
+                app:dpv_textSize="22sp"
+                app:dpv_yearRightText="年"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/date_picker_5" />
+
+            <com.zyyoona7.picker.DatePickerView
+                android:id="@+id/date_picker_7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:dpv_cyclic="true"
+                app:dpv_dayRightText="日"
+                app:dpv_dividerType="wrap"
+                app:dpv_endYear="2088"
+                app:dpv_monthRightText="月"
+                app:dpv_rightTextMarginLeft="10dp"
+                app:dpv_selectedDay="4"
+                app:dpv_selectedMonth="5"
+                app:dpv_selectedTextColor="#801BACC9"
+                app:dpv_selectedYear="2000"
+                app:dpv_showDay="false"
+                app:dpv_showDivider="true"
+                app:dpv_startYear="1988"
+                app:dpv_textSize="22sp"
+                app:dpv_yearRightText="年"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/date_picker_6" />
+
+            <com.zyyoona7.picker.ex.WheelDayView
+                android:id="@+id/wheel_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/wheel_year"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@id/wheel_month"
+                app:layout_constraintTop_toTopOf="@id/wheel_year"
+                app:wv_textSize="18sp" />
+
+            <com.zyyoona7.picker.ex.WheelMonthView
+                android:id="@+id/wheel_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/wheel_year"
+                app:layout_constraintEnd_toStartOf="@id/wheel_day"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@id/wheel_year"
+                app:layout_constraintTop_toTopOf="@id/wheel_year"
+                app:wv_textSize="18sp" />
+
+            <com.zyyoona7.picker.ex.WheelYearView
+                android:id="@+id/wheel_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/wheel_month"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cl_top"
+                app:wv_endYear="2050"
+                app:wv_maxSelectedYear="2019"
+                app:wv_minSelectedYear="2000"
+                app:wv_selectedYear="2019"
+                app:wv_startYear="1980"
+                app:wv_textSize="18sp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>
