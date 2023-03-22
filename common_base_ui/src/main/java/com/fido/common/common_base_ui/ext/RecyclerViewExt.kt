@@ -99,6 +99,9 @@ inline val RecyclerView.orientation
 internal inline val RecyclerView.itemsData
     get() = contentAdapter?.items
 
+inline val RecyclerView.bindAdapter
+    get() = adapter as? BaseQuickAdapter<*,*>?: throw NullPointerException("RecyclerView Without BindAdapter")
+
 //多布局Holder bind 方法
 internal var muiltHolderBindFun:((holder: RecyclerView.ViewHolder, position: Int, item: Any?) -> Unit)? = null
 

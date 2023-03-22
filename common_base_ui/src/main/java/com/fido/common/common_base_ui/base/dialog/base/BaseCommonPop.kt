@@ -7,7 +7,8 @@ import com.lxj.xpopup.core.AttachPopupView
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.core.BottomPopupView
 
-class BaseCommonPop(
+@PublishedApi
+internal class BaseCommonPop(
     context: Context,
     private val layoutResId: Int,
     private val init: (BasePopupView.() -> Unit)? = null,
@@ -24,7 +25,8 @@ class BaseCommonPop(
     }
 }
 
-class BaseCommonAttachPop(
+@PublishedApi
+internal class BaseCommonAttachPop(
     context: Context,
     private val layoutResId: Int,
     private val init: (BasePopupView.() -> Unit)? = null,

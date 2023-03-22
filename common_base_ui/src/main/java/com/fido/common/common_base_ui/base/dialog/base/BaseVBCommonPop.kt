@@ -8,7 +8,8 @@ import com.lxj.xpopup.core.AttachPopupView
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.core.BottomPopupView
 
-class BaseVBCommonPop<VB : ViewDataBinding>(
+@PublishedApi
+internal class BaseVBCommonPop<VB : ViewDataBinding>(
     context: Context,
     private val layoutResId: Int,
     private val init: (VB.() -> Unit)? = null,
@@ -28,7 +29,8 @@ class BaseVBCommonPop<VB : ViewDataBinding>(
     }
 }
 
-class BaseVBCommonAttachPop<VB : ViewDataBinding>(
+@PublishedApi
+internal class BaseVBCommonAttachPop<VB : ViewDataBinding>(
     context: Context,
     private val layoutResId: Int,
     private val init: (VB.() -> Unit)? = null,

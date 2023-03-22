@@ -67,11 +67,6 @@ dependencies {
     // Kotlin项目生成DOC
     dokkaPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.4.32")
 
-//    implementation 'androidx.core:core-ktx:1.7.0'
-//    implementation 'androidx.appcompat:appcompat:1.4.1'
-//    implementation 'com.google.android.material:material:1.5.0'
-//    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
-
     //仅运行时依赖
     implementation deps.android.kt_ktx
     implementation deps.android.recyclerview
@@ -114,6 +109,10 @@ dependencies {
 
     //WheelPicker:pickerview
     api deps.support.wheel_picker
+
+    // immersionbar
+    api deps.support.immersionbar
+    api deps.support.immersionbar_ktx
 }
 
 import com.vanniktech.maven.publish.SonatypeHost

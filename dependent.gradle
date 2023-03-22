@@ -69,6 +69,8 @@ ext {
                     'wheel_picker'      : 'com.github.zyyoona7.WheelPicker:pickerview:2.0.7',       //选择器 https://github.com/zyyoona7/WheelPicker
                     'banner'            : 'com.youth.banner:banner:2.1.0',                          //轮播 (可选)
                     'spannable'         : 'com.github.liangjingkanji:spannable:1.2.6',
+                    'immersionbar'      : 'com.geyifeng.immersionbar:immersionbar:3.2.2',           // 基础依赖包，必须要依赖
+                    'immersionbar_ktx'  : 'com.geyifeng.immersionbar:immersionbar-ktx:3.2.2',       //kotlin扩展（可选）
             ]
 
     ]

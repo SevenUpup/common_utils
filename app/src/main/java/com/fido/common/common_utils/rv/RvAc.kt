@@ -4,15 +4,20 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.fido.common.common_base_ui.base.entity.BaseMuiltEntity
 import com.fido.common.common_base_ui.base.widget.bind
 import com.fido.common.common_base_ui.ext.*
 import com.fido.common.common_base_ui.ext.image_select.clearImageSelectCache
+import com.fido.common.common_base_util.ext.toast
+import com.fido.common.common_base_util.startActivity
 import com.fido.common.common_base_util.util.time.Interval
 import com.fido.common.common_utils.R
 import com.fido.common.common_utils.databinding.AcRvBinding
@@ -32,6 +37,10 @@ class RvAc:AppCompatActivity() {
             Log.d("FiDo", "test: ---")
             Toast.makeText(context, "调用了test", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun goDrag(v: View){
+        startActivity<RvDragSwipeAc>()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,6 +116,8 @@ class RvAc:AppCompatActivity() {
             }
             mTestData.add(d)
         }
+
+
         mRv.vertical()
             .bindMuiltVBData(mutableListOf<MEntity>()){ holder, position, item ->
                 Log.d("FiDo", "initView binding: ${holder.binding}")
@@ -139,6 +150,13 @@ class RvAc:AppCompatActivity() {
             }
             .addItemChildClick<MEntity>(R.id.tv_header_title) { adapter, view, position ->
                 Toast.makeText(this, "click title:$position ", Toast.LENGTH_SHORT).show()
+            }
+            .addItemChildClick<MEntity>(R.id.bt_up){adapter, view, position ->
+                toast("click up")
+
+            }
+            .addItemChildClick<MEntity>(R.id.bt_down){adapter, view, position ->
+                toast("click down")
             }
             .submitList(
                 mutableListOf<MEntity>().apply {
@@ -182,6 +200,12 @@ class RvAc:AppCompatActivity() {
                 Toast.makeText(this, "click rv2${position}", Toast.LENGTH_SHORT).show()
                 mEntity.content = "666666"
                 adapter.notifyDataSetChanged()
+            }
+            .addItemChildClick<MEntity>(R.id.bt_up){adapter, view, position ->
+                toast("click up")
+            }
+            .addItemChildClick<MEntity>(R.id.bt_down){adapter, view, position ->
+                toast("click down")
             }
             .addData(mEntity)
             .addData(mEntity)
@@ -245,3 +269,4 @@ class MEntity : BaseMuiltEntity() {
         }
 
 }
+

@@ -71,6 +71,9 @@ dependencies {
     compileOnly deps.android.material
     compileOnly deps.android.constraint_layout
 
+    // lifecycle-runtime-ktx
+    implementation deps.android.lifecycle
+
     // jetpack app startup
     implementation deps.android.app_startup
     //gson
@@ -82,6 +85,7 @@ dependencies {
     api (deps.support.spannable){
         exclude group: 'androidx.core'
     }
+
 
     //ktx_coroutines
     api deps.android.ktx_coroutines_core
