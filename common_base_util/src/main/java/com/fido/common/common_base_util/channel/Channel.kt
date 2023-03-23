@@ -18,6 +18,32 @@ import kotlinx.coroutines.launch
 internal var channelFlow = MutableSharedFlow<ChannelEvent<Any>>()
 internal val channelScope = ChannelScope()
 
+// ======================= 粘性事件测试 Start =========================
+@PublishedApi
+internal val channelStickEvent = mutableMapOf<Any, Any>()
+
+fun sendStickEvent(event: Any) {
+    channelStickEvent[event::class.hashCode()] = event
+}
+
+inline fun <reified T> receiveStickEvent(
+    block: T.() -> Unit
+) {
+    if (channelStickEvent.contains(T::class.hashCode()) && channelStickEvent[T::class.hashCode()] != null) {
+        block.invoke(channelStickEvent[T::class.hashCode()] as T)
+    }
+}
+
+fun sendStickTag(tag: String) {
+    channelStickEvent[tag] = tag
+}
+
+fun receiveStickTag(tag: String, block: String.() -> Unit) {
+    if (channelStickEvent.contains(tag) && channelStickEvent[tag] != null) {
+        block.invoke(channelStickEvent[tag] as? String ?: "")
+    }
+}
+// ======================= 粘性事件测试 End =========================
 
 // <editor-fold desc="发送">
 

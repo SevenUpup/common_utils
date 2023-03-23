@@ -25,12 +25,15 @@ import com.fido.common.common_base_ui.ext.permission.extRequestPermission
 import com.fido.common.common_base_ui.ext.vertical
 import com.fido.common.common_base_ui.util.ImagePreviewUtil
 import com.fido.common.common_base_util.*
+import com.fido.common.common_base_util.channel.receiveTag
+import com.fido.common.common_base_util.channel.sendStickEvent
 import com.fido.common.common_base_util.ext.*
 import com.fido.common.common_base_util.util.AssetUtils
 import com.fido.common.common_base_util.util.ImageCodeUtils
 import com.fido.common.common_base_util.util.time.Interval
 import com.fido.common.common_utils.anim.ShakeAnim
 import com.fido.common.common_utils.anim.AnimUtils
+import com.fido.common.common_utils.constraintlayout.ConstraintLayoutAc
 import com.fido.common.common_utils.databinding.ActivityMainBinding
 import com.fido.common.common_utils.databinding.DialogTestBinding
 import com.fido.common.common_utils.edittext.CustomStyleActivity
@@ -38,17 +41,17 @@ import com.fido.common.common_utils.picker.PickerViewAc
 import com.fido.common.common_utils.rv.RvAc
 import com.fido.common.common_utils.spannable.SpannableAc
 import com.fido.common.common_utils.time.IntervalTimeAc
-import com.google.android.material.snackbar.Snackbar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.lxj.xpopup.enums.PopupPosition
 import java.io.File
 import java.util.concurrent.TimeUnit
+import kotlin.concurrent.thread
 import kotlin.reflect.full.companionObject
 import kotlin.reflect.full.companionObjectInstance
 import kotlin.reflect.full.declaredMemberFunctions
 
-
+data class P(val name: String)
 class MainActivity : AppCompatActivity() {
 
     lateinit var mBinding: ActivityMainBinding
@@ -57,12 +60,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+        thread {
+            sendStickEvent(P("xpz"))
+            sendStickEvent(P("dpz"))
+        }
+
         initView()
 
         initEvent()
 
         createCode()
 
+        receiveTag("tag_1"){
+            mBinding.btRv.text = "go Rv tag value=$it"
+        }
+
+    }
+
+    fun ConstraintLayout(v: View){
+        startActivity<ConstraintLayoutAc>()
     }
 
     fun snackBar(v: View){

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/A"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="A"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:background="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/B"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="B"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:background="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/C"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="C"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:background="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/D"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="D"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:background="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/E"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="E"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:background="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/F"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="F"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:background="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/G"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="G"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:background="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/H"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="H"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:background="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/I"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="I"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:background="@color/colorPrimary"/>
+
+        <androidx.constraintlayout.helper.widget.Flow
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:flow_verticalGap="10dp"
+            app:flow_wrapMode="aligned"
+            app:flow_horizontalGap="10dp"
+            app:constraint_referenced_ids="A,B,C,D,E,F,G,H,I"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

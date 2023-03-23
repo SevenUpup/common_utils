@@ -1,47 +1,100 @@
 package com.fido.common.common_utils.rv
 
-import android.util.Log
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.drake.debugkit.dev
 import com.fido.common.base.BaseVBActivity
 import com.fido.common.common_base_ui.ext.addItemChildClick
 import com.fido.common.common_base_ui.ext.bindAdapter
 import com.fido.common.common_base_ui.ext.bindData
 import com.fido.common.common_base_ui.ext.vertical
-import com.fido.common.common_base_util.channel.receiveEvent
-import com.fido.common.common_base_util.channel.receiveEventLive
-import com.fido.common.common_base_util.channel.sendEvent
-import com.fido.common.common_base_util.ext.logGson
-import com.fido.common.common_base_util.ext.loge
-import com.fido.common.common_base_util.ext.toast
+import com.fido.common.common_base_util.channel.*
+import com.fido.common.common_base_util.ext.*
 import com.fido.common.common_base_util.toJson
+import com.fido.common.common_base_util.util.AssetUtils
+import com.fido.common.common_utils.P
 import com.fido.common.common_utils.R
 import com.fido.common.common_utils.databinding.AcRvDragSwipeBinding
 import com.gyf.immersionbar.ktx.immersionBar
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
+import kotlin.concurrent.thread
 
 class RvDragSwipeAc : BaseVBActivity<AcRvDragSwipeBinding>() {
 
+    private val C_TAG = "Channel"
     override fun initEvent() {
 
-        runBlocking {
-            delay(200)
-
-            receiveEventLive<String>{
-                toast(it)
-            }
-
-            receiveEvent<String>().collect{
-                loge("flow $it","Channel")
-
-            }
-            
-            sendEvent("123")
+        receiveStickEvent<P> {
+            loge("2${this.toJson()} ${Thread.currentThread().name}",C_TAG)
         }
 
+        lifecycleScope.launch {
+            receiveTag("tag_2").collect{
+                loge(it,C_TAG)
+//                binding.btRecevie.text = withContext(Dispatchers.IO){
+//                    "${binding.btRecevie.text} \n$it"
+//                }
+                binding.btRecevie.text = "${binding.btRecevie.text} \n$it"
+            }
+        }
+
+        binding.btRecevie.click {
+
+            receiveEventLive<String> {
+                loge(it,C_TAG)
+                receiveTag("tag_1").collect{
+                    loge(it,C_TAG)
+                    binding.btRecevie.text = withContext(Dispatchers.IO){
+                        "$it"
+                    }
+                }
+            }
+
+            sendEvent("123")
+
+            receiveTag("tag_2") {
+                toast("receive tag2 value=$it")
+//                binding.btRecevie.text = withContext(Dispatchers.IO){
+//                    "receive tag value=$it"
+//                }
+            }
+
+            sendTag("tag_1")
+            sendTag("tag_2")
+
+
+            thread {
+                loge("thread= ${Thread.currentThread().name}",C_TAG)
+                receiveStickEvent<P> {
+                    loge("1${this.toJson()} ${Thread.currentThread().name}",C_TAG)
+                    binding.mIv.setImageBitmap(AssetUtils.loadBitmapAsset(this@RvDragSwipeAc,"dog.jpg"))
+                }
+            }
+
+            dev {
+                function("round_image") {
+                    Glide.with(this@RvDragSwipeAc)
+                        .applyDefaultRequestOptions(RequestOptions.centerCropTransform())
+                        .load("https://gd-hbimg.huaban.com/6cf0cd75148fa2ea73991c20a1046d2761803c7c4ab87-Om3w94_fw240webp")
+                        .into(binding.mIv)
+                }
+                function("send Tag2") {
+                    sendTag("tag_2")
+                }
+                function("关闭") {
+                    // do something ...
+                    close() // 关闭调试窗口
+                }
+                function("send Tag1") {
+                    sendTag("tag_1")
+                }
+            }
+
+        }
     }
 
     override fun initData() {
@@ -70,12 +123,15 @@ class RvDragSwipeAc : BaseVBActivity<AcRvDragSwipeBinding>() {
                 if (position > 0) {
                     adapter.swap(position, if (position > 0) position - 1 else position)
                 }
-                logGson(binding.mRv.bindAdapter.items,this@RvDragSwipeAc::class.java.simpleName)
+                logGson(binding.mRv.bindAdapter.items, this@RvDragSwipeAc::class.java.simpleName)
             }
             .addItemChildClick<String>(R.id.bt_down) { adapter, view, position ->
                 toast("click down")
-                adapter.swap(position, if (position >= adapter.itemCount-1) position else position + 1)
-                logGson(binding.mRv.bindAdapter.items,this@RvDragSwipeAc::class.java.simpleName)
+                adapter.swap(
+                    position,
+                    if (position >= adapter.itemCount - 1) position else position + 1
+                )
+                logGson(binding.mRv.bindAdapter.items, this@RvDragSwipeAc::class.java.simpleName)
             }
 
         ItemTouchHelper(MyItemTouchHelperCallBack(binding.mRv.bindAdapter).apply {
@@ -112,13 +168,16 @@ class MyItemTouchHelperCallBack(val adapter: BaseQuickAdapter<*, *>) : ItemTouch
         val movePos = viewHolder.bindingAdapterPosition
         val targetPos = target.bindingAdapterPosition
 //        adapter.notifyItemMoved(movePos, targetPos)
-        recyclerView.bindAdapter.swap(movePos,targetPos)
-        loge("onMove ${recyclerView.bindAdapter.items.toJson()} movePos=${movePos} targetPos=${targetPos}","RvDragSwipeAc")
+        recyclerView.bindAdapter.swap(movePos, targetPos)
+        loge(
+            "onMove ${recyclerView.bindAdapter.items.toJson()} movePos=${movePos} targetPos=${targetPos}",
+            "RvDragSwipeAc"
+        )
         return true
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        loge("onSwiped direction=${direction}","RvDragSwipeAc")
+        loge("onSwiped direction=${direction}", "RvDragSwipeAc")
     }
 
     override fun isLongPressDragEnabled(): Boolean {
