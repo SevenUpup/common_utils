@@ -115,38 +115,40 @@ dependencies {
     api deps.support.immersionbar_ktx
 }
 
-import com.vanniktech.maven.publish.SonatypeHost
-if (!USE_MAVEN_PLUGIN){
-    apply from: rootProject.file('publish-maven-arr.gradle')
-}else {
-    mavenPublishing {
-        coordinates(GROUP_ID, POM_ARTIFACT_ID, VERSION_NAME)
-        pom {
-            name = POM_ARTIFACT_ID
-            description = POM_DESCRIPTION
-            inceptionYear = POM_INCEPTION_YEAR
-            url = POM_URL
-            licenses {
-                license {
-                    name = POM_LICENSE_NAME
-                    url = POM_LICENSE_URL
-                    distribution = POM_LICENSE_DIST
-                }
-            }
-            developers {
-                developer {
-                    id = POM_DEVELOPER_ID
-                    name = POM_DEVELOPER_NAME
-                    url = POM_DEVELOPER_URL
-                }
-            }
-            scm {
-                url = POM_SCM_URL
-                connection = POM_SCM_CONNECTION
-                developerConnection = POM_SCM_DEV_CONNECTION
-            }
-        }
-        publishToMavenCentral(SonatypeHost.S01)
-        signAllPublications()
-    }
-}
+apply from: rootProject.file('publish-maven-arr.gradle')
+
+//import com.vanniktech.maven.publish.SonatypeHost
+//if (!USE_MAVEN_PLUGIN){
+//    apply from: rootProject.file('publish-maven-arr.gradle')
+//}else {
+//    mavenPublishing {
+//        coordinates(GROUP_ID, POM_ARTIFACT_ID, VERSION_NAME)
+//        pom {
+//            name = POM_ARTIFACT_ID
+//            description = POM_DESCRIPTION
+//            inceptionYear = POM_INCEPTION_YEAR
+//            url = POM_URL
+//            licenses {
+//                license {
+//                    name = POM_LICENSE_NAME
+//                    url = POM_LICENSE_URL
+//                    distribution = POM_LICENSE_DIST
+//                }
+//            }
+//            developers {
+//                developer {
+//                    id = POM_DEVELOPER_ID
+//                    name = POM_DEVELOPER_NAME
+//                    url = POM_DEVELOPER_URL
+//                }
+//            }
+//            scm {
+//                url = POM_SCM_URL
+//                connection = POM_SCM_CONNECTION
+//                developerConnection = POM_SCM_DEV_CONNECTION
+//            }
+//        }
+//        publishToMavenCentral(SonatypeHost.S01)
+//        signAllPublications()
+//    }
+//}

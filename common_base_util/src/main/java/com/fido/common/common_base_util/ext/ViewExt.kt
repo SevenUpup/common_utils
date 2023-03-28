@@ -16,6 +16,7 @@ import androidx.core.math.MathUtils
 import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
 import com.fido.common.common_base_util.app
+import java.util.concurrent.TimeUnit
 
 /**
  * View相关

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.fido.common.base.BaseVBActivity
 import com.fido.common.common_base_ui.util.ETMoneyValueFilter
+import com.fido.common.common_base_ui.util.throttleClick
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_utils.R
 import com.fido.common.common_utils.databinding.AcViewModelBinding
@@ -29,9 +30,10 @@ class ViewModelAc : BaseVBActivity<AcViewModelBinding>() {
         binding.clickProxy = ClickProxy()
     }
 
-    override fun initData() {}
+    override fun initData() {
+    }
 
-    var index = 1
+    private var index = 1
     override fun initEvent() {
         binding.mInput.doAfterTextChanged {
             toast(it.toString())
