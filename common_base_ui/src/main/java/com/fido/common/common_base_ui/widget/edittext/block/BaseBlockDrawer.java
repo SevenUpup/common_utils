@@ -11,8 +11,6 @@ import com.fido.common.common_base_ui.widget.edittext.style.BlockShape;
 
 
 /**
- * Created by lwj on 2019/1/12.
- * lwjfork@gmail.com
  * 区域块绘制者
  */
 public abstract class BaseBlockDrawer extends BaseDrawer {

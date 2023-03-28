@@ -8,10 +8,6 @@ import android.graphics.Rect;
 
 import java.util.ArrayList;
 
-/**
- * Created by lwj on 2019/1/12.
- * lwjfork@gmail.com
- */
 public abstract class BaseDrawer {
 
     protected Canvas canvas;

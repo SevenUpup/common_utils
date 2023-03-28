@@ -54,7 +54,7 @@ fun Context.installApp(file: File) {
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     var apkUri: Uri? = null
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0以上版本，需要配置权限才能安装未知来源的程序:本代码的处理是使用FileProvider读取Uri资源
-        apkUri = FileProvider.getUriForFile(this, "com.fido.common.common_base_util.fileprovider", file)
+        apkUri = FileProvider.getUriForFile(this, "${applicationContext.packageName}.fido.common.common_base_util.fileprovider", file)
         //添加这一句表示对目标应用临时授权该Uri所代表的文件
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     } else {

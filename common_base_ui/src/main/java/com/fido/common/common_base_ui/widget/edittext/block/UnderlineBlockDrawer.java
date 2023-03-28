@@ -4,8 +4,6 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 
 /**
- * Created by lwj on 2019/1/12.
- * lwjfork@gmail.com
  * 下划线绘制者
  */
 public class UnderlineBlockDrawer extends BaseBlockDrawer {

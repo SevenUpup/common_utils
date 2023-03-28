@@ -8,8 +8,6 @@ import com.fido.common.common_base_ui.widget.edittext.base.BaseDrawer;
 
 
 /**
- * Created by lwj on 2019/1/12.
- * lwjfork@gmail.com
  * 光标绘制者
  */
 public class CursorDrawer extends BaseDrawer {

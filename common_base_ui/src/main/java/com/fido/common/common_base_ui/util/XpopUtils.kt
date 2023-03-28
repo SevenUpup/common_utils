@@ -10,3 +10,20 @@ fun Context.showLoading(title:CharSequence=""): BasePopupView = XPopup.Builder(t
 fun Context.creatXPopCustomView(popupView: BasePopupView) = XPopup.Builder(this).apply {
     asCustom(popupView)
 }
+
+fun Context.showNormalInputDialog(
+    title:CharSequence?=null,
+    content:CharSequence?=null,
+    inputContent:CharSequence?=null,
+    hint:CharSequence?=null,
+    autoOpenSoftInput:Boolean = true,
+    isDarkTheme:Boolean = false,
+    confirmBlock:(String)->Unit,
+) = XPopup.Builder(this).run {
+    isDestroyOnDismiss(true)
+    autoOpenSoftInput(autoOpenSoftInput)
+    isDarkTheme(isDarkTheme)
+    asInputConfirm(title,content,inputContent,hint){
+        confirmBlock.invoke(it)
+    }.show()
+}

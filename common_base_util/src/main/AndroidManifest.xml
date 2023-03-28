@@ -20,7 +20,7 @@
 
       <provider
           android:name="androidx.core.content.FileProvider"
-          android:authorities="com.fido.common.common_base_util.fileprovider"
+          android:authorities="${applicationId}.fido.common.common_base_util.fileprovider"
           android:exported="false"
           android:grantUriPermissions="true">
          <meta-data

@@ -3,8 +3,6 @@ package com.fido.common.common_base_ui.widget.edittext.text;
 import android.graphics.Rect;
 
 /**
- * Created by lwj on 2019/1/12.
- * lwjfork@gmail.com
  * 密文绘制
  */
 public class PasswordTextDrawer extends BaseTextDrawer {

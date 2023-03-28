@@ -7,9 +7,11 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.fido.common.common_base_ui.base.entity.BaseMuiltEntity
+import com.fido.common.common_base_ui.base.widget.bind
 import com.fido.common.common_base_ui.ext.*
 import com.fido.common.common_base_ui.ext.image_select.clearImageSelectCache
 import com.fido.common.common_base_util.ext.toast
@@ -57,44 +59,44 @@ class RvAc:AppCompatActivity() {
     }
 
     private fun initEvent() {
-//        mBinding.mSRv.bind(
-//            mutableListOf("1", "2", "3", "呵呵我嘿嘿","1", "2", "3", "呵呵我嘿嘿","1", "2", "3", "呵呵我嘿嘿","1", "2", "3", "呵呵我嘿嘿"),
-//            R.layout.item_rv_text_img,
-//            holderBindFun = {
-//                holder, position, item ->
-//
-//            },
-//            onRefreshListener = {
-//                mBinding.mSRv.mRecyclerView.submitList(mutableListOf("newData-0","newData-1","newData-2","newData-3"))
-//            },
-//            onLoadMoreListener = {
-//                mBinding.mSRv.mRecyclerView.addAll(mutableListOf("add-0","add-1","add-2","add-3"))
-//            }
-//        )
-//        mBinding.mSRv.mRecyclerView.vertical()
-//            .bindData(
-//                mutableListOf("1", "2", "3", "呵呵我嘿嘿","1", "2", "3", "呵呵我嘿嘿","1", "2", "3", "呵呵我嘿嘿","1", "2", "3", "呵呵我嘿嘿"),
-//                R.layout.item_rv_text_img
-//            ) { holder, position, item ->
-//                holder.setText(R.id.mTv, "$position-->${item}")
-//                holder.setImageResource(R.id.mIcon, R.mipmap.flower)
-//            }
-//        mBinding.mSRv.mSmartRefreshLayout.apply {
-//            setEnableAutoLoadMore(true)
-//            setOnRefreshListener {
-//                mBinding.mSRv.mRecyclerView.submitList(mutableListOf("newData-0","newData-1","newData-2","newData-3"))
-//            }
-//            setOnLoadMoreListener {
-//                mBinding.mSRv.mRecyclerView.addAll(mutableListOf("add-0","add-1","add-2","add-3"))
-//            }
-//        }
+        mBinding.mSRv.bind(
+            mutableListOf("1", "2", "3", "呵呵我嘿嘿","1", "2", "3", "呵呵我嘿嘿","1", "2", "3", "呵呵我嘿嘿","1", "2", "3", "呵呵我嘿嘿"),
+            R.layout.item_rv_text_img,
+            holderBindFun = {
+                holder, position, item ->
+
+            },
+            onRefreshListener = {
+                mBinding.mSRv.mRecyclerView.submitList(mutableListOf("newData-0","newData-1","newData-2","newData-3"))
+            },
+            onLoadMoreListener = {
+                mBinding.mSRv.mRecyclerView.addAll(mutableListOf("add-0","add-1","add-2","add-3"))
+            }
+        )
+        mBinding.mSRv.mRecyclerView.vertical()
+            .bindData(
+                mutableListOf("1", "2", "3", "呵呵我嘿嘿","1", "2", "3", "呵呵我嘿嘿","1", "2", "3", "呵呵我嘿嘿","1", "2", "3", "呵呵我嘿嘿"),
+                R.layout.item_rv_text_img
+            ) { holder, position, item ->
+                holder.setText(R.id.mTv, "$position-->${item}")
+                holder.setImageResource(R.id.mIcon, R.mipmap.flower)
+            }
+        mBinding.mSRv.mSmartRefreshLayout.apply {
+            setEnableAutoLoadMore(true)
+            setOnRefreshListener {
+                mBinding.mSRv.mRecyclerView.submitList(mutableListOf("newData-0","newData-1","newData-2","newData-3"))
+            }
+            setOnLoadMoreListener {
+                mBinding.mSRv.mRecyclerView.addAll(mutableListOf("add-0","add-1","add-2","add-3"))
+            }
+        }
 
         mBinding.btFirst.setOnClickListener {
-//            mBinding.btFirst.text= if(mBinding.mSRv.isVisible) "show muilt Rv" else "show smartRefreshRv"
-//            mBinding.mSRv.isVisible = !mBinding.mSRv.isVisible
+            mBinding.btFirst.text= if(mBinding.mSRv.isVisible) "show muilt Rv" else "show smartRefreshRv"
+            mBinding.mSRv.isVisible = !mBinding.mSRv.isVisible
 
-//            mBinding.mRv.isVisible = !mBinding.mSRv.isVisible
-//            mBinding.mRv2.isVisible = !mBinding.mSRv.isVisible
+            mBinding.mRv.isVisible = !mBinding.mSRv.isVisible
+            mBinding.mRv2.isVisible = !mBinding.mSRv.isVisible
 
         }
     }

@@ -7,12 +7,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.fido.common.base.BaseVBActivity
 import com.fido.common.common_base_ui.util.ETMoneyValueFilter
+import com.fido.common.common_base_ui.util.showNormalInputDialog
 import com.fido.common.common_base_ui.util.throttleClick
+import com.fido.common.common_base_util.ext.loge
+import com.fido.common.common_base_util.ext.longToast
 import com.fido.common.common_base_util.ext.toast
+import com.fido.common.common_base_util.toJson
+import com.fido.common.common_base_util.util.ShellUtils
+import com.fido.common.common_utils.BuildConfig
 import com.fido.common.common_utils.R
 import com.fido.common.common_utils.databinding.AcViewModelBinding
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
+import kotlin.concurrent.thread
 
 class ViewModelAc : BaseVBActivity<AcViewModelBinding>() {
 
@@ -28,9 +35,20 @@ class ViewModelAc : BaseVBActivity<AcViewModelBinding>() {
     override fun initView() {
         binding.viewModel = mViewModel
         binding.clickProxy = ClickProxy()
+
+        toast(applicationInfo.processName)
+        loge("APPLICATION_ID=${BuildConfig.APPLICATION_ID} packageName=${applicationContext.packageName} applicationInfo.packageName=${applicationInfo.packageName}")
     }
 
     override fun initData() {
+        showNormalInputDialog {
+            thread {
+                val execCmd = ShellUtils.execCmd("adb devices", false)
+                loge(execCmd.toJson())
+                longToast(execCmd.toJson())
+            }
+        }
+
     }
 
     private var index = 1

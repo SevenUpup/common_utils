@@ -3,8 +3,6 @@ package com.fido.common.common_base_ui.widget.edittext.cusor;
 import android.graphics.drawable.ShapeDrawable;
 
 /**
- * Created by lwj on 2019/1/12.
- * lwjfork@gmail.com
  * 光标
  */
 public class CursorDrawable extends ShapeDrawable {

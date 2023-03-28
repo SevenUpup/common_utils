@@ -3,8 +3,6 @@ package com.fido.common.common_base_ui.widget.edittext.block;
 import android.graphics.RectF;
 
 /**
- * Created by lwj on 2019/1/12.
- * lwjfork@gmail.com
  * 任性，就是什么都不画
  */
 public class NoneBlockDrawer extends BaseBlockDrawer {

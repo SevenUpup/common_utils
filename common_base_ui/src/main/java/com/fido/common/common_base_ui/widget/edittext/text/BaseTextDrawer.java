@@ -8,11 +8,6 @@ import androidx.annotation.ColorInt;
 import com.fido.common.common_base_ui.widget.edittext.base.BaseDrawer;
 import com.fido.common.common_base_ui.widget.edittext.style.CodeInputType;
 
-
-/**
- * Created by lwj on 2019/1/12.
- * lwjfork@gmail.com
- */
 public abstract class BaseTextDrawer extends BaseDrawer {
 
     @CodeInputType

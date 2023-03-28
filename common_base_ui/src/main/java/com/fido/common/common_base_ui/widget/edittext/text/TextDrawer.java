@@ -6,8 +6,6 @@ import android.graphics.Rect;
 import com.fido.common.common_base_ui.widget.edittext.style.CodeInputType;
 
 /**
- * Created by lwj on 2019/1/12.
- * lwjfork@gmail.com
  * 明文绘制
  */
 public class TextDrawer extends BaseTextDrawer {

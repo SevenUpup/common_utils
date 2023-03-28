@@ -9,6 +9,11 @@ import android.view.WindowManager
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.drake.debugkit.dev
+import com.fido.common.common_base_ui.util.showNormalInputDialog
+import com.fido.common.common_base_util.ext.toast
+import com.fido.common.common_base_util.runMain
+import com.fido.common.common_base_util.util.ShellUtils
 import com.fido.common.common_utils.R
 import com.lxj.xpopup.util.XPopupUtils.getScreenHeight
 import com.lxj.xpopup.util.XPopupUtils.getScreenWidth
@@ -26,6 +31,9 @@ class DebugFragment : Fragment(R.layout.fragment_debug), View.OnTouchListener {
 //            .bindData(listOf("1", "2", "3", "4"), R.layout.item_rv_text) { holder, position, item ->
 //                holder.setText(R.id.mTitle, "$item ->$position")
 //            }
+
+
+
         view.setOnTouchListener(this)
     }
 

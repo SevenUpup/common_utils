@@ -5,10 +5,6 @@ import androidx.annotation.IntDef;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * Created by lwj on 2019/1/17.
- * lwjfork@gmail.com
- */
 @Retention(RetentionPolicy.SOURCE)
 @IntDef({BlockShape.STROKE, BlockShape.SOLID, BlockShape.UNDERLINE, BlockShape.NONE})
 public @interface BlockShape {

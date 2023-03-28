@@ -1,6 +1,6 @@
 ext {
     versions = [
-            'minSdk'           : 24,
+            'minSdk'           : 23,
             'targetSdk'        : 32,
             'compileSdk'       : 32,
             'kotlin'           : '1.7.10',

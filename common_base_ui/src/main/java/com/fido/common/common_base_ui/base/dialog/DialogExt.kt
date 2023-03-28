@@ -37,6 +37,8 @@ inline fun <reified VB : ViewDataBinding> Context.createVBPop(
     popWidth:Int =-1,
     offsetX:Int = -1,
     offsetY:Int = -1,
+    maxHeight:Int = -1,
+    maxWidth:Int = -1,
     popAnima:PopupAnimation = PopupAnimation.TranslateFromBottom,
     popPosition:PopupPosition = PopupPosition.Bottom,
     atView:View?=null,
@@ -51,6 +53,8 @@ inline fun <reified VB : ViewDataBinding> Context.createVBPop(
         isDestroyOnDismiss(isDestroyOnDismiss)
         if (popHeight>0) popupHeight(popHeight)
         if (popWidth>0) popupWidth(popWidth)
+        if (maxHeight>0) maxHeight(maxHeight)
+        if (maxWidth>0) maxWidth(maxWidth)
         if(atView!=null) atView(atView)
         popupAnimation(popAnima)
         popupPosition(popPosition)

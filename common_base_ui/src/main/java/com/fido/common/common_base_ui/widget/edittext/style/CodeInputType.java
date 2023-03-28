@@ -7,10 +7,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 
-/**
- * Created by lwj on 2019/1/17.
- * lwjfork@gmail.com
- */
 @Retention(RetentionPolicy.SOURCE)
 @IntDef({CodeInputType.PASSWORD, CodeInputType.TEXT, CodeInputType.NONE})
 public @interface CodeInputType {

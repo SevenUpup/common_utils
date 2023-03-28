@@ -41,8 +41,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 /**
- * Created by lwj on 2019/1/11.
- * lwjfork@gmail.com
  * 验证码输入框、密码输入框
  */
 @SuppressWarnings("AppcompatCustomView")

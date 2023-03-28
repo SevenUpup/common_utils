@@ -7,8 +7,6 @@ import com.fido.common.common_base_ui.widget.edittext.style.BlockShape;
 
 
 /**
- * Created by lwj on 2019/1/12.
- * lwjfork@gmail.com
  * 填充色绘制者
  */
 public class SolidBlockDrawer extends BaseBlockDrawer {

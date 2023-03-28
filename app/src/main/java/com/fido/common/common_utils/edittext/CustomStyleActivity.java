@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import com.fido.common.common_base_ui.widget.edittext.CodeEditText;
 import com.fido.common.common_utils.R;
