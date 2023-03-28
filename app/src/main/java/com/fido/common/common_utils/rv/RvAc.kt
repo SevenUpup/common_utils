@@ -7,13 +7,9 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.fido.common.common_base_ui.base.entity.BaseMuiltEntity
-import com.fido.common.common_base_ui.base.widget.bind
 import com.fido.common.common_base_ui.ext.*
 import com.fido.common.common_base_ui.ext.image_select.clearImageSelectCache
 import com.fido.common.common_base_util.ext.toast
@@ -94,11 +90,11 @@ class RvAc:AppCompatActivity() {
 //        }
 
         mBinding.btFirst.setOnClickListener {
-            mBinding.btFirst.text= if(mBinding.mSRv.isVisible) "show muilt Rv" else "show smartRefreshRv"
-            mBinding.mSRv.isVisible = !mBinding.mSRv.isVisible
+//            mBinding.btFirst.text= if(mBinding.mSRv.isVisible) "show muilt Rv" else "show smartRefreshRv"
+//            mBinding.mSRv.isVisible = !mBinding.mSRv.isVisible
 
-            mBinding.mRv.isVisible = !mBinding.mSRv.isVisible
-            mBinding.mRv2.isVisible = !mBinding.mSRv.isVisible
+//            mBinding.mRv.isVisible = !mBinding.mSRv.isVisible
+//            mBinding.mRv2.isVisible = !mBinding.mSRv.isVisible
 
         }
     }
