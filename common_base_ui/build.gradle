@@ -4,7 +4,7 @@ plugins {
     id "com.vanniktech.maven.publish" version "0.23.1"
     id("org.jetbrains.dokka") version ("1.4.32")
 }
-
+apply plugin: 'kotlin-kapt'
 android {
     namespace 'com.fido.common.common_base_ui'
     compileSdk versions.compileSdk

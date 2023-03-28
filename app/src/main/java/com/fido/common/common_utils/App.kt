@@ -10,6 +10,8 @@ import com.fido.common.common_base_util.util.toast.interfaces.ToastGravityFactor
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import me.drakeet.library.CrashWoodpecker
+import me.drakeet.library.PatchMode
 
 class App: Application() {
 
@@ -17,7 +19,6 @@ class App: Application() {
         val instance by lazy {
             App()
         }
-
     }
 
     override fun onCreate() {
@@ -38,6 +39,15 @@ class App: Application() {
 
         LogUtils.logEnabled = BuildConfig.DEBUG
         LogUtils.logGlobalTag = "FiDo"
+
+        if (BuildConfig.DEBUG) {
+            CrashWoodpecker.instance()
+                .withKeys("widget", "me.drakeet")
+                .setPatchMode(PatchMode.SHOW_LOG_PAGE)
+                .setPatchDialogUrlToOpen("https://drakeet.me")
+                .setPassToOriginalDefaultHandler(true)
+                .flyTo(this)
+        }
     }
 
 }

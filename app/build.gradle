@@ -73,6 +73,10 @@ dependencies {
     implementation deps.android.material
     implementation deps.android.constraint_layout
 
+    implementation (deps.android.lifecycle_ktx){
+        exclude group: 'androidx.core'
+    }
+
     implementation deps.support.retrofit2
     implementation deps.support.retrofit_gson
 
@@ -80,6 +84,10 @@ dependencies {
     implementation project(':common_base_ui')
 
     implementation 'com.github.liangjingkanji:debugkit:1.3.0'
+
+    //crashwoodpecker
+    debugImplementation 'me.drakeet.library:crashwoodpecker:2.1.1'
+
     //kotlin反射
 //    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.31"
 }

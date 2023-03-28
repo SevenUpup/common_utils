@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.fido.common.common_utils.viewmodel.MViewModel" />
+        <variable
+            name="clickProxy"
+            type="com.fido.common.common_utils.viewmodel.ClickProxy" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tip"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            android:padding="10dp"
+            android:textStyle="bold"
+            android:text="下方输入内容会同步更新ViewModel中的值，因为是双向绑定" />
+
+        <!-- @= 双向绑定
+             @ 单项绑定
+        -->
+        <EditText
+            android:id="@+id/mInput"
+            app:layout_constraintTop_toBottomOf="@id/tip"
+            android:text="@={viewModel.MResult}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/mTv"
+            android:onClick="@{()-> viewModel.bool ? clickProxy.MClick():void}"
+            app:layout_constraintTop_toBottomOf="@id/mInput"
+            app:layout_constraintLeft_toLeftOf="@id/mInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:text='@{viewModel.MResult,default="defult"}' />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

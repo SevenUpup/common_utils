@@ -1,5 +1,7 @@
 package com.fido.common.common_utils.rv
 
+import android.util.DisplayMetrics
+import android.view.WindowManager
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +24,7 @@ import com.fido.common.common_utils.databinding.AcRvDragSwipeBinding
 import com.gyf.immersionbar.ktx.immersionBar
 import kotlinx.coroutines.*
 import kotlin.concurrent.thread
+
 
 class RvDragSwipeAc : BaseVBActivity<AcRvDragSwipeBinding>() {
 

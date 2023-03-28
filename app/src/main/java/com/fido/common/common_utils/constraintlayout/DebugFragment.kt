@@ -1,8 +1,11 @@
 package com.fido.common.common_utils.constraintlayout
 
+import android.content.Context
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.MotionEvent
 import android.view.View
+import android.view.WindowManager
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -58,16 +61,16 @@ class DebugFragment : Fragment(R.layout.fragment_debug), View.OnTouchListener {
                     left = 0
                     right = left + temp!!.width
                 }
-                if (right > getScreenWidth(context)) {
-                    right = getScreenWidth(context)
+                if (right > getScreenWidth()) {
+                    right = getScreenWidth()
                     left = right - temp?.width!!
                 }
                 if (top < 0) {
                     top = 0
                     bottom = top + temp.height
                 }
-                if (bottom > getScreenHeight(context)) {
-                    bottom = getScreenHeight(context)
+                if (bottom > getScreenHeight()) {
+                    bottom = getScreenHeight()
                     top = bottom - temp.height
                 }
                 temp.layout(left, top, right, bottom)
@@ -77,6 +80,20 @@ class DebugFragment : Fragment(R.layout.fragment_debug), View.OnTouchListener {
 
         }
         return true
+    }
+
+    private fun getScreenWidth(): Int {
+        val wm = context?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val metrics = DisplayMetrics()
+        wm.defaultDisplay.getMetrics(metrics)
+        return metrics.widthPixels
+    }
+
+    private fun getScreenHeight(): Int {
+        val wm = context?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val metrics = DisplayMetrics()
+        wm.defaultDisplay.getMetrics(metrics)
+        return metrics.heightPixels
     }
 
 }

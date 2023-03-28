@@ -4,12 +4,15 @@ import android.animation.Animator
 import android.animation.Animator.AnimatorListener
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.CycleInterpolator
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.*
@@ -41,6 +44,7 @@ import com.fido.common.common_utils.picker.PickerViewAc
 import com.fido.common.common_utils.rv.RvAc
 import com.fido.common.common_utils.spannable.SpannableAc
 import com.fido.common.common_utils.time.IntervalTimeAc
+import com.fido.common.common_utils.viewmodel.ViewModelAc
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.lxj.xpopup.enums.PopupPosition
@@ -65,37 +69,59 @@ class MainActivity : AppCompatActivity() {
             sendStickEvent(P("dpz"))
         }
 
+        addView<ViewModelAc>("go ViewModel")
+
         initView()
 
         initEvent()
 
         createCode()
 
-        receiveTag("tag_1"){
+        receiveTag("tag_1") {
             mBinding.btRv.text = "go Rv tag value=$it"
         }
 
     }
 
-    fun ConstraintLayout(v: View){
+    private inline fun <reified T : Activity> addView(title: String) {
+        mBinding.container.addView(
+            Button(this).apply {
+                text = title
+                setTextColor(R.color.white.getColor)
+                setBackgroundColor(R.color.colorAccent.getColor)
+                isAllCaps = false
+                setOnClickListener {
+                    startActivity<T>()
+                }
+            },
+            mBinding.container.childCount - 4,ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+        )
+    }
+
+    fun ConstraintLayout(v: View) {
         startActivity<ConstraintLayoutAc>()
     }
 
-    fun snackBar(v: View){
-        snackbar(v,"i am snackbar","click me"){
+    fun snackBar(v: View) {
+        snackbar(v, "i am snackbar", "click me") {
             toast("snackbar")
         }
     }
-    fun installApk(v: View){
-        AssetUtils.copyFileFromAssets(this,"debugkit.apk",getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + "/temp.apk")
+
+    fun installApk(v: View) {
+        AssetUtils.copyFileFromAssets(
+            this,
+            "debugkit.apk",
+            getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + "/temp.apk"
+        )
         installApp(File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + "/temp.apk"))
     }
 
-    fun onSpannable(v:View){
+    fun onSpannable(v: View) {
         startActivity<SpannableAc>()
     }
 
-    fun onAnimShark(v: View){
+    fun onAnimShark(v: View) {
         val oa1: ObjectAnimator =
             ObjectAnimator.ofFloat(mBinding.iv3, View.TRANSLATION_X.name, 0f, 8f) //抖动幅度0到8
         oa1.duration = 300 //持续时间
@@ -103,20 +129,25 @@ class MainActivity : AppCompatActivity() {
         oa1.start() //开始动画
     }
 
-    fun onAnimShark2(v: View){
+    fun onAnimShark2(v: View) {
         ShakeAnim.start(mBinding.iv3)
     }
 
-    fun codeEditText(v: View){
+    fun codeEditText(v: View) {
         startActivity<CustomStyleActivity>()
     }
-    fun onAnim(view: View){
+
+    fun onAnim(view: View) {
         val locationArray = intArrayOf(0, 0)
         mBinding.iv.getLocationOnScreen(locationArray)
 //            val xLocation = locationArray[0].toFloat()
-        val xLocation = getScreenWidthPx().toFloat()-mBinding.iv3.width.toFloat()
-        val yLocation = (getScreenHeightPx() - mBinding.iv3.bottom - mBinding.iv3.height/2).toFloat()
-        Log.d("FiDo", "initEvent: xLocation = $xLocation  yLocation = $yLocation mBinding.iv3.bottom=${mBinding.iv3.bottom}")
+        val xLocation = getScreenWidthPx().toFloat() - mBinding.iv3.width.toFloat()
+        val yLocation =
+            (getScreenHeightPx() - mBinding.iv3.bottom - mBinding.iv3.height / 2).toFloat()
+        Log.d(
+            "FiDo",
+            "initEvent: xLocation = $xLocation  yLocation = $yLocation mBinding.iv3.bottom=${mBinding.iv3.bottom}"
+        )
 
         /*AnimatorSet().apply {
             val xDuration = 1000L
@@ -135,8 +166,8 @@ class MainActivity : AppCompatActivity() {
 
         val animSet = AnimatorSet()
         animSet
-            .play(ObjectAnimator.ofFloat(mBinding.iv3, View.TRANSLATION_X.name,0f,xLocation))
-            .with(ObjectAnimator.ofFloat(mBinding.iv3,View.TRANSLATION_Y.name,0f,yLocation))
+            .play(ObjectAnimator.ofFloat(mBinding.iv3, View.TRANSLATION_X.name, 0f, xLocation))
+            .with(ObjectAnimator.ofFloat(mBinding.iv3, View.TRANSLATION_Y.name, 0f, yLocation))
         animSet.duration = 2000
 //        animSet.start()
     }
@@ -165,26 +196,42 @@ class MainActivity : AppCompatActivity() {
             startActivity<PickerViewAc>()
         }
         mBinding.tvStatus
-            .addStatusableDrawableBg(R.color.teal_700,20f, isTopCorner = false, status = DrawableStatus.SELECTED)
-            .addStatusableDrawableBg(R.color.teal_200,5f,DrawableStatus.PRESSED)
-            .addStatusableDrawableBg(R.color.purple_700,50f, isDefultDrawable = true)
+            .addStatusableDrawableBg(
+                R.color.teal_700,
+                20f,
+                isTopCorner = false,
+                status = DrawableStatus.SELECTED
+            )
+            .addStatusableDrawableBg(R.color.teal_200, 5f, DrawableStatus.PRESSED)
+            .addStatusableDrawableBg(R.color.purple_700, 50f, isDefultDrawable = true)
 
         mBinding.tvStatus.setOnClickListener {
             it.isSelected = !it.isSelected
-            createVBPop<DialogTestBinding>(R.layout.dialog_test, atView = mBinding.iv, popWidth = getScreenWidthPx()){
+            createVBPop<DialogTestBinding>(
+                R.layout.dialog_test,
+                atView = mBinding.iv,
+                popWidth = getScreenWidthPx()
+            ) {
                 tvCancle.setOnClickListener {
                     toast("click")
                 }
             }.show()
 
-            createPop(R.layout.layout_header_view, atView = mBinding.anim, popPosition = PopupPosition.Top){
+            createPop(
+                R.layout.layout_header_view,
+                atView = mBinding.anim,
+                popPosition = PopupPosition.Top
+            ) {
                 findViewById<TextView>(R.id.tv_header_title).setOnClickListener {
                     toast("click header")
                 }
                 findViewById<RecyclerView>(R.id.mRv)
                     .vertical()
-                    .bindData(listOf("1","2","3","4"),R.layout.item_rv_text){holder, position, item ->
-                        holder.setText(R.id.mTitle,item)
+                    .bindData(
+                        listOf("1", "2", "3", "4"),
+                        R.layout.item_rv_text
+                    ) { holder, position, item ->
+                        holder.setText(R.id.mTitle, item)
                     }
                     .isGone = false
             }.show()
@@ -204,10 +251,16 @@ class MainActivity : AppCompatActivity() {
                 val mFrom = if (index0 % 2 == 0) height else 0f
                 val mTo = if (index0 % 2 == 0) 0f else height
 
-                set.play(ObjectAnimator.ofFloat(mBinding.iv2,"translationY",mFrom,mTo))
-                    .with(ObjectAnimator.ofFloat(mBinding.iv2,"alpha",if(index0%2==0) 1f else 0f))
+                set.play(ObjectAnimator.ofFloat(mBinding.iv2, "translationY", mFrom, mTo))
+                    .with(
+                        ObjectAnimator.ofFloat(
+                            mBinding.iv2,
+                            "alpha",
+                            if (index0 % 2 == 0) 1f else 0f
+                        )
+                    )
                 set.duration = 500
-                set.addListener(object :AnimatorListener{
+                set.addListener(object : AnimatorListener {
                     override fun onAnimationStart(animation: Animator?) {}
 
                     override fun onAnimationEnd(animation: Animator?) {}
@@ -223,7 +276,7 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        mBinding.btInterval.setOnClickListener{
+        mBinding.btInterval.setOnClickListener {
             startActivity<IntervalTimeAc>()
         }
         mBinding.permission.setOnClickListener {
@@ -241,13 +294,18 @@ class MainActivity : AppCompatActivity() {
 //                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 android.Manifest.permission.CAMERA
             ) {
-                openImageSelect(null,3, canCrop = false,call = object :OnResultCallbackListener<LocalMedia>{
-                    override fun onResult(result: ArrayList<LocalMedia>) {
-                        Log.d("FiDo", "onResult: ${result.toJson()}")
-                        longToast(result.selectImagesPath.toString())
-                    }
-                    override fun onCancel() {}
-                })
+                openImageSelect(
+                    null,
+                    3,
+                    canCrop = false,
+                    call = object : OnResultCallbackListener<LocalMedia> {
+                        override fun onResult(result: ArrayList<LocalMedia>) {
+                            Log.d("FiDo", "onResult: ${result.toJson()}")
+                            longToast(result.selectImagesPath.toString())
+                        }
+
+                        override fun onCancel() {}
+                    })
 //                openCamera(call = object :OnResultCallbackListener<LocalMedia> {
 //                    override fun onResult(result: ArrayList<LocalMedia>) {
 //                        Log.d("FiDo", "onResult: ${result.toJson()}")
@@ -305,8 +363,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        mBinding.iv.setImageBitmap(AssetUtils.loadBitmapAsset(this,"dog.jpg"))
-        mBinding.iv3.setImageBitmap(AssetUtils.loadBitmapAsset(this,"dog.jpg"))
+        mBinding.iv.setImageBitmap(AssetUtils.loadBitmapAsset(this, "dog.jpg"))
+        mBinding.iv3.setImageBitmap(AssetUtils.loadBitmapAsset(this, "dog.jpg"))
 
         mBinding.btRv.setOnClickListener {
 //            startActivity<RvAc>()

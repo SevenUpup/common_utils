@@ -1,4 +1,4 @@
-package com.fido.common.common_base_util.util;
+package com.fido.common.common_base_ui.util;
 
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;

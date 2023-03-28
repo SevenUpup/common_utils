@@ -58,6 +58,8 @@
 
         <activity android:name=".constraintlayout.ConstraintLayoutAc"/>
 
+        <activity android:name=".viewmodel.ViewModelAc"/>
+
     </application>
 
 
