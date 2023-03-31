@@ -52,7 +52,7 @@ fun setLeftDrawable(textView: TextView, drawable: Drawable?) {
     }
 }
 
-@BindingAdapter("text", "default", requireAll = false)
+@BindingAdapter("android:text", "default", requireAll = false)
 fun setText(view: TextView, text: CharSequence?, default: String?) {
     if (text == null || text.trim() == "" || text.contains("null")) {
         view.text = default

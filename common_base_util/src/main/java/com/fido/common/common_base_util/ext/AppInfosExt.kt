@@ -47,7 +47,8 @@ fun Context.getVersionCode(pkgName: String = packageName): Int {
 
 /**
  * 安装app
- * @param file
+ * 需要在 manifest申请 android.permission.REQUEST_INSTALL_PACKAGES
+ * @param file apk file
  */
 fun Context.installApp(file: File) {
     val intent = Intent(Intent.ACTION_VIEW)

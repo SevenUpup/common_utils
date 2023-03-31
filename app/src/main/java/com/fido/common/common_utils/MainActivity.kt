@@ -36,6 +36,7 @@ import com.fido.common.common_base_util.util.ImageCodeUtils
 import com.fido.common.common_base_util.util.time.Interval
 import com.fido.common.common_utils.anim.ShakeAnim
 import com.fido.common.common_utils.anim.AnimUtils
+import com.fido.common.common_utils.banner.BannerAc
 import com.fido.common.common_utils.constraintlayout.ConstraintLayoutAc
 import com.fido.common.common_utils.databinding.ActivityMainBinding
 import com.fido.common.common_utils.databinding.DialogTestBinding
@@ -69,7 +70,7 @@ class MainActivity : AppCompatActivity() {
             sendStickEvent(P("dpz"))
         }
 
-        addView<ViewModelAc>("go ViewModel")
+        addButton()
 
         initView()
 
@@ -83,12 +84,17 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun addButton() {
+        addView<ViewModelAc>("go ViewModel")
+        addView<BannerAc>("go Banner")
+    }
+
     private inline fun <reified T : Activity> addView(title: String) {
         mBinding.container.addView(
             Button(this).apply {
                 text = title
                 setTextColor(R.color.white.getColor)
-                setBackgroundColor(R.color.colorAccent.getColor)
+                setBackgroundColor(R.color.teal_700.getColor)
                 isAllCaps = false
                 setOnClickListener {
                     startActivity<T>()

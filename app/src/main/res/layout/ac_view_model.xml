@@ -34,6 +34,7 @@
         -->
         <EditText
             android:id="@+id/mInput"
+            onTextChanged="@{clickProxy.action}"
             app:layout_constraintTop_toBottomOf="@id/tip"
             android:text="@={viewModel.MResult}"
             app:layout_constraintLeft_toLeftOf="parent"

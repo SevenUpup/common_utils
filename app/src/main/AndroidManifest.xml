@@ -60,6 +60,8 @@
 
         <activity android:name=".viewmodel.ViewModelAc"/>
 
+        <activity android:name=".banner.BannerAc"/>
+
     </application>
 
 

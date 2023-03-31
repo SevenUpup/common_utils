@@ -1,3 +1,4 @@
+@file:JvmName("PermissionExt")
 package com.fido.common.common_base_ui.ext.permission
 
 import android.content.Context
@@ -7,16 +8,14 @@ import androidx.fragment.app.FragmentActivity
 import com.permissionx.guolindev.PermissionX
 import java.util.ArrayList
 import com.fido.common.common_base_ui.R
+import com.fido.common.common_base_ui.util.BaseUIConstant
 import com.permissionx.guolindev.dialog.RationaleDialog
-
-internal const val positiveText = "允许"
-internal const val nagetiveText = "拒绝"
 
 fun FragmentActivity.extRequestPermission(
     permissions: List<String>,
     explainTitleBeforeRequest: String = "",
     explainDialog:RationaleDialog?=null,
-    block: () -> Unit
+    block: (Boolean) -> Unit
 ) {
     PermissionX.init(this).permissions(permissions).apply {
         if (explainTitleBeforeRequest.isNotEmpty()) {
@@ -28,8 +27,8 @@ fun FragmentActivity.extRequestPermission(
                     scope.showRequestReasonDialog(
                         deniedList,
                         explainTitleBeforeRequest,
-                        positiveText,
-                        nagetiveText
+                        BaseUIConstant.permissionPositiveText,
+                        BaseUIConstant.permissionNagetiveText
                     )
                 }
             }
@@ -38,21 +37,19 @@ fun FragmentActivity.extRequestPermission(
         .onForwardToSettings { scope, deniedList ->
             val message = getPermissionHint(this, deniedList)
             if (message?.isNotEmpty() == true) {
-                scope.showForwardToSettingsDialog(deniedList, message, positiveText, nagetiveText)
+                scope.showForwardToSettingsDialog(deniedList, message, BaseUIConstant.permissionPositiveText, BaseUIConstant.permissionNagetiveText)
             }
         }
         .request { allGranted, grantedList, deniedList ->
-            if (allGranted) {
-                block()
-            }
+            block(allGranted)
         }
 }
 
-fun FragmentActivity.extRequestPermission(vararg permission:String,block: () -> Unit){
+fun FragmentActivity.extRequestPermission(vararg permission:String,block: (Boolean) -> Unit){
     extRequestPermission(listOf(*permission), block = block)
 }
 
-fun Fragment.extRequestPermission(vararg permissions: String, block: () -> Unit) {
+fun Fragment.extRequestPermission(vararg permissions: String, block: (Boolean) -> Unit) {
     extRequestPermission(listOf(*permissions), block = block)
 }
 
@@ -60,7 +57,7 @@ fun Fragment.extRequestPermission(
     permissions: List<String>,
     explainTitleBeforeRequest: String = "",
     explainDialog:RationaleDialog?=null,
-    block: () -> Unit,
+    block: (Boolean) -> Unit,
 ) = activity?.extRequestPermission(permissions, explainTitleBeforeRequest,explainDialog, block)
 
 /**

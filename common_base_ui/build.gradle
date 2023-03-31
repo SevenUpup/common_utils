@@ -90,11 +90,12 @@ dependencies {
     }
 
     //smartrefreshlayout
-    api  'io.github.scwang90:refresh-layout-kernel:2.0.5'      //核心必须依赖
-    api  'io.github.scwang90:refresh-header-classics:2.0.5'    //经典刷新头
-    api  'io.github.scwang90:refresh-header-material:2.0.5'    //谷歌刷新头
-    api  'io.github.scwang90:refresh-header-two-level:2.0.5'   //二级刷新头
-    api  'io.github.scwang90:refresh-footer-classics:2.0.5'    //经典加载
+    def smartrefresh_version = "2.0.5"
+    api  "io.github.scwang90:refresh-layout-kernel:$smartrefresh_version"      //核心必须依赖
+    api  "io.github.scwang90:refresh-header-classics:$smartrefresh_version"    //经典刷新头
+    api  "io.github.scwang90:refresh-header-material:$smartrefresh_version"    //谷歌刷新头
+    api  "io.github.scwang90:refresh-header-two-level:$smartrefresh_version"   //二级刷新头
+    api  "io.github.scwang90:refresh-footer-classics:$smartrefresh_version"    //经典加载
 
     // glide
     api deps.support.glide
@@ -113,6 +114,9 @@ dependencies {
     // immersionbar
     api deps.support.immersionbar
     api deps.support.immersionbar_ktx
+
+    //banner
+    api deps.support.banner
 }
 
 apply from: rootProject.file('publish-maven-arr.gradle')

@@ -88,6 +88,16 @@ dependencies {
     //crashwoodpecker
     implementation 'me.drakeet.library:crashwoodpecker:2.1.1'
 
+    // 依赖androidx, 已升级AndroidX的项目集成下面的依赖
+    implementation "com.bytedance.tools.codelocator:codelocator-core:2.0.0"
+    // 分别依赖对应的lancet模块, 包含相对应的跳转能力
+    debugImplementation "com.bytedance.tools.codelocator:codelocator-lancet-xml:2.0.0"
+    debugImplementation "com.bytedance.tools.codelocator:codelocator-lancet-activity:2.0.0"
+    debugImplementation "com.bytedance.tools.codelocator:codelocator-lancet-view:2.0.0"
+    debugImplementation "com.bytedance.tools.codelocator:codelocator-lancet-toast:2.0.0"
+    debugImplementation "com.bytedance.tools.codelocator:codelocator-lancet-dialog:2.0.0"
+    debugImplementation "com.bytedance.tools.codelocator:codelocator-lancet-popup:2.0.0"
+
     //kotlin反射
 //    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.31"
 }

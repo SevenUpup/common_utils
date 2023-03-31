@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.fido.common.base.BaseVBActivity
-import com.fido.common.common_base_ui.util.ETMoneyValueFilter
 import com.fido.common.common_base_ui.util.showNormalInputDialog
-import com.fido.common.common_base_ui.util.throttleClick
 import com.fido.common.common_base_util.ext.loge
 import com.fido.common.common_base_util.ext.longToast
 import com.fido.common.common_base_util.ext.toast
@@ -34,7 +32,8 @@ class ViewModelAc : BaseVBActivity<AcViewModelBinding>() {
 
     override fun initView() {
         binding.viewModel = mViewModel
-        binding.clickProxy = ClickProxy()
+        val clickProxy = ClickProxy()
+        binding.clickProxy = clickProxy
 
         toast(applicationInfo.processName)
         loge("APPLICATION_ID=${BuildConfig.APPLICATION_ID} packageName=${applicationContext.packageName} applicationInfo.packageName=${applicationInfo.packageName}")
@@ -43,6 +42,12 @@ class ViewModelAc : BaseVBActivity<AcViewModelBinding>() {
     override fun initData() {
         showNormalInputDialog {
             thread {
+
+//                val externalFilePath: String = Environment.getExternalStorageDirectory().getPath() + "/" + fileName
+//                val command = "ls -l $externalFilePath"
+//                val process: Process = Runtime.getRuntime().exec("shell", "/bin/sh", "-c", command)
+//                val reader = BufferedReader(InputStreamReader(process.inputStream))
+
                 val execCmd = ShellUtils.execCmd("adb devices", false)
                 loge(execCmd.toJson())
                 longToast(execCmd.toJson())
@@ -53,6 +58,11 @@ class ViewModelAc : BaseVBActivity<AcViewModelBinding>() {
 
     private var index = 1
     override fun initEvent() {
+
+        lifecycleScope.launch {
+
+        }
+
         binding.mInput.doAfterTextChanged {
             toast(it.toString())
             index++
@@ -74,6 +84,11 @@ class ClickProxy{
     fun MClick( ){
         toast("click is ready")
     }
+
+    var action: ((String) -> Unit)? = {
+        loge("action==> $it","FiDo")
+    }
+
 }
 
 class MViewModel : ViewModel() {

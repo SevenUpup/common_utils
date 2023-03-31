@@ -4,7 +4,7 @@ ext {
             'targetSdk'        : 32,
             'compileSdk'       : 32,
             'kotlin'           : '1.7.10',
-            'coroutine_version': '1.6.1',
+            'coroutine_version': '1.6.1',  //协程扩展库
     ]
 
     deps = [
@@ -67,7 +67,7 @@ ext {
                     'xpopup'            : 'com.github.li-xiaojun:XPopup:2.9.19',
                     'picker_view'       : 'com.contrarywind:Android-PickerView:4.1.9',              //PicierView (可选)
                     'wheel_picker'      : 'com.github.zyyoona7.WheelPicker:pickerview:2.0.7',       //选择器 https://github.com/zyyoona7/WheelPicker
-                    'banner'            : 'com.youth.banner:banner:2.1.0',                          //轮播 (可选)
+                    'banner'            : 'io.github.youth5201314:banner:2.2.2',                          //轮播 (可选)
                     'spannable'         : 'com.github.liangjingkanji:spannable:1.2.6',
                     'immersionbar'      : 'com.geyifeng.immersionbar:immersionbar:3.2.2',           // 基础依赖包，必须要依赖
                     'immersionbar_ktx'  : 'com.geyifeng.immersionbar:immersionbar-ktx:3.2.2',       //kotlin扩展（可选）
