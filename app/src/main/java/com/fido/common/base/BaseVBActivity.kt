@@ -8,7 +8,6 @@ import androidx.databinding.ViewDataBinding
 abstract class BaseVBActivity<VB : ViewDataBinding> : AppCompatActivity() {
 
     protected lateinit var binding: VB
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, getLayoutId())

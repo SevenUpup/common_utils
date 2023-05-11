@@ -3,6 +3,7 @@ package com.fido.common.common_base_util
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Service
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -19,7 +20,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -298,10 +298,10 @@ val Int.getColor: Int
 val String.getColor: Int
     get() = Color.parseColor(this)
 
-val Int.getDrawable:Drawable
-    get() = ContextCompat.getDrawable(app,this)?:app.resources.getDrawable(this,null)
+val Int.getDrawable: Drawable
+    get() = ContextCompat.getDrawable(app, this) ?: app.resources.getDrawable(this, null)
 
-fun Context.getDrawable(drawableId:Int) = ContextCompat.getDrawable(app,drawableId)
+fun Context.getDrawable(drawableId: Int) = ContextCompat.getDrawable(app, drawableId)
 
 //获取屏幕 宽 / 高（px）
 fun Context.getScreenWidthPx() = resources.displayMetrics.widthPixels
@@ -492,3 +492,16 @@ fun randomColor(): Int = Color.rgb(
     Random.nextInt(122, 222),
     Random.nextInt(122, 222)
 )
+
+fun Context.skipOtherAppActivity(packageName: String, activityClass: String) {
+    try {
+        val intent = Intent()
+        //ComponentName类主要是用来帮助打开另一个应用的Activity或者Service等，通过Intent.setComponent方法实现
+        val comp = ComponentName(packageName, activityClass)
+        intent.component = comp
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+    } catch (e: Exception){
+        e.printStackTrace()
+    }
+}

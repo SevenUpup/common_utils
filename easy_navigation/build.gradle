@@ -1,0 +1,78 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id "com.vanniktech.maven.publish" version "0.23.1"
+    id("org.jetbrains.dokka") version ("1.4.32")
+}
+
+android {
+    namespace 'com.fido.common.easy_navigation'
+    compileSdk versions.compileSdk
+
+    defaultConfig {
+        minSdk versions.minSdk
+        targetSdk versions.targetSdk
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '11'
+        freeCompilerArgs += [
+                "-Xjvm-default=all",
+        ]
+    }
+    // Kotlin项目生成DOC Start
+    tasks.named("dokkaJavadoc") {
+        outputDirectory.set(new File("$rootDir/javadoc"))
+    }
+
+    dokkaJavadoc {
+        dokkaSourceSets {
+            configureEach { // Or source set name, for single-platform the default source sets are `main` and `test`
+                // Disable linking to online kotlin-stdlib documentation
+                noStdlibLink.set(true)
+                // Disable linking to online JDK documentation
+                noJdkLink.set(true)
+                // Disable linking to online Android documentation (only applicable for Android projects)
+                noAndroidSdkLink.set(true)
+            }
+        }
+    }
+
+    task generateJavadoc(type: Jar, dependsOn: dokkaJavadoc) {
+        group = 'jar'
+        archiveClassifier.set('javadoc')
+        from "$rootDir/javadoc"
+    }
+    // Kotlin项目生成DOC End
+
+}
+
+dependencies {
+
+    // Kotlin项目生成DOC
+    dokkaPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.4.32")
+
+    implementation deps.android.appcompat
+
+    // navigation
+    api deps.android.navigation
+    api deps.android.navigation_ui
+
+}
+
+apply from: rootProject.file('publish-maven-arr.gradle')
+
+//apply  from: rootProject.getRootDir().getAbsolutePath() + "/utils.gradle"
+apply from: rootProject.file('utils.gradle')
+
+println(getpackage(true))

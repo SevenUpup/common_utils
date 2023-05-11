@@ -18,3 +18,85 @@ rootProject.name = "common_utils"
 include ':app'
 include ':common_base_util'
 include ':common_base_ui'
+include ':easy_navigation'
+include ':groovy_lib'
+
+
+gradle.addBuildListener(new BuildListener() {
+    @Override
+    void beforeSettings(Settings settings) {
+        super.beforeSettings(settings)
+        println "beforeSettings settings = $settings"
+    }
+
+    @Override
+    void settingsEvaluated(Settings settings) {
+        println 'settings 评估完成（settings.gradle 中代码执行完毕）'
+        println '这里project 还没有初始化完成'
+    }
+
+    @Override
+    void projectsLoaded(Gradle gradle) {
+        println '项目结构加载完成（初始化阶段结束）'
+        println '初始化结束，这里已经完成project的初始化，可访问根项目：' + gradle.rootProject
+    }
+
+    @Override
+    void projectsEvaluated(Gradle gradle) {
+        println '所有项目评估完成（配置阶段结束）'
+    }
+
+    @Override
+    void buildFinished(BuildResult buildResult) {
+        println '构建结束 '
+    }
+})
+
+//开始初始化Setting.gradle前
+this.gradle.beforeSettings {
+    println "beforeSettings"
+}
+
+//Setting.gradle配置完毕后，创建了setting实例
+this.gradle.settingsEvaluated {
+    println "settingsEvaluated"
+}
+
+//执行解析Setting.gradle文件后，创建了project实例列表
+this.gradle.projectsLoaded {
+    println "projectsLoaded"
+}
+
+//监听所有的Project的被配置前
+this.gradle.beforeProject {Project project ->
+    println "${project.name}:beforeProject"
+}
+//监听所有的Project的被配置后
+this.gradle.afterProject {Project project ->
+    println "${project.name}:afterProject"
+}
+
+def text(){
+    Properties properties = new Properties()
+    File propertyFile = new File(rootDir.getAbsolutePath() + "/local.properties")
+    properties.load(propertyFile.newDataInputStream())
+
+    gradle.ext.api = properties.getProperty('sdk.dir')
+
+    println(gradle.api)
+}
+
+text()
+
+getText("utils.gradle")
+
+def getText(String path){
+    try {
+        // 不同与 new file 的需要传入 绝对路径 的方式，
+        // file 从相对于当前的 project 工程开始查找
+        File mFile = file(path)
+        println mFile.text
+    }catch(GradleException e){
+        println e.toString()
+    }
+}

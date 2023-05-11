@@ -1,10 +1,8 @@
 package com.fido.common.common_utils
 
 import android.app.Application
-import android.util.Log
 import com.drake.debugkit.DevTool
 import com.fido.common.common_base_util.log.LogUtils
-import com.fido.common.common_base_util.util.time.countDown
 import com.fido.common.common_base_util.util.toast.ToastConfig
 import com.fido.common.common_base_util.util.toast.interfaces.ToastGravityFactory
 import com.scwang.smart.refresh.footer.ClassicsFooter
@@ -41,13 +39,15 @@ class App: Application() {
         LogUtils.logGlobalTag = "FiDo"
 
         if (BuildConfig.DEBUG) {
-            CrashWoodpecker.instance()
-                .withKeys("widget", "me.drakeet")
-                .setPatchMode(PatchMode.SHOW_LOG_PAGE)
-                .setPatchDialogUrlToOpen("https://drakeet.me")
-                .setPassToOriginalDefaultHandler(true)
-                .flyTo(this)
+
         }
+        CrashWoodpecker.instance()
+            .withKeys("widget", "me.drakeet")
+            .setPatchMode(PatchMode.SHOW_LOG_PAGE)
+            .setPatchDialogUrlToOpen("https://drakeet.me")
+            .setPassToOriginalDefaultHandler(true)
+            .flyTo(this)
+
     }
 
 }

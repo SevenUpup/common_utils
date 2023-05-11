@@ -5,15 +5,19 @@ import com.fido.common.common_utils.R
 import com.fido.common.common_utils.databinding.AcBannerBinding
 import com.fido.common.common_utils.widgets.DotIndicatorView
 import com.fido.common.common_utils.widgets.ImageAdapter
+import com.fido.common.common_utils.widgets.ImageAdapter2
 import com.youth.banner.Banner
+import com.youth.banner.listener.OnBannerListener
 import com.youth.banner.listener.OnPageChangeListener
+import com.youth.banner.transformer.AlphaPageTransformer
+import com.youth.banner.transformer.ZoomOutPageTransformer
 
 /**
 @author FiDo
 @description:
 @date :2023/3/31 19:21
  */
-class BannerAc:BaseVBActivity<AcBannerBinding>() {
+class BannerAc : BaseVBActivity<AcBannerBinding>() {
 
     companion object {
 
@@ -54,14 +58,61 @@ class BannerAc:BaseVBActivity<AcBannerBinding>() {
                 }
             })
         }
+        banner.setOnBannerListener(object :OnBannerListener<String>{
+            override fun OnBannerClick(data: String?, position: Int) {
+
+            }
+
+        })
+
+        val banner2 = findViewById<Banner<String, ImageAdapter2>>(R.id.banner2)
+        val adapter = ImageAdapter2(imageUrls, this)
+
+        banner2.apply {
+            var isFirst = true
+            addBannerLifecycleObserver(this@BannerAc)
+//            setBannerGalleryEffect(50,50,0,0.5f)
+            setBannerGalleryMZ(48, 0.8f)
+            setAdapter(adapter)
+//            addPageTransformer(DepthPageTransformer())
+            addPageTransformer(AlphaPageTransformer())
+//            addPageTransformer(RotateYTransformer())
+//            addPageTransformer(ScaleInTransformer())
+            addPageTransformer(ZoomOutPageTransformer())
+
+            viewPager2.offscreenPageLimit = 5
+            addOnPageChangeListener(object : OnPageChangeListener {
+                override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {}
+
+                override fun onPageSelected(p0: Int) {
+//                    if(!isFirst) return
+//                    isFirst = false
+
+                    /*adapter.viewHolder.imageView.apply {
+                        margin((-5).dp, 0, (-5).dp, 0)
+//                        val bannerClazz = Class.forName("com.youth.banner.Banner")
+//                        val method =
+//                            bannerClazz.getDeclaredMethod("setRecyclerViewPadding", Int::class.java)
+//                        method.isAccessible = true
+//                        method.invoke(banner2, (-5).dp)
+//                        banner2.viewPager2.margin(5.dp,0,5.dp,0)
+                    }*/
+                }
+
+                override fun onPageScrollStateChanged(p0: Int) {}
+            })
+        }
 
     }
 
     override fun initData() {
+
     }
 
     override fun initEvent() {
     }
+
+
 
 
 }

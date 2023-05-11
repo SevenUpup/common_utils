@@ -30,6 +30,7 @@ object AnimUtils {
                     Lifecycle.Event.ON_PAUSE -> cancle()
                     Lifecycle.Event.ON_RESUME -> start()
                     Lifecycle.Event.ON_DESTROY -> cancle()
+                    else -> {}
                 }
             }
             fun start(){

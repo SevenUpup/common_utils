@@ -33,6 +33,7 @@ import com.fido.common.common_base_util.channel.sendStickEvent
 import com.fido.common.common_base_util.ext.*
 import com.fido.common.common_base_util.util.AssetUtils
 import com.fido.common.common_base_util.util.ImageCodeUtils
+import com.fido.common.common_base_util.util.emoji.EmojiChecker
 import com.fido.common.common_base_util.util.time.Interval
 import com.fido.common.common_utils.anim.ShakeAnim
 import com.fido.common.common_utils.anim.AnimUtils
@@ -41,11 +42,14 @@ import com.fido.common.common_utils.constraintlayout.ConstraintLayoutAc
 import com.fido.common.common_utils.databinding.ActivityMainBinding
 import com.fido.common.common_utils.databinding.DialogTestBinding
 import com.fido.common.common_utils.edittext.CustomStyleActivity
+import com.fido.common.common_utils.naviga.CodenavigationAc
 import com.fido.common.common_utils.picker.PickerViewAc
 import com.fido.common.common_utils.rv.RvAc
 import com.fido.common.common_utils.spannable.SpannableAc
+import com.fido.common.common_utils.test.NavigationAc
 import com.fido.common.common_utils.time.IntervalTimeAc
 import com.fido.common.common_utils.viewmodel.ViewModelAc
+import com.fido.common.surface.SurfaceAc
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.lxj.xpopup.enums.PopupPosition
@@ -82,11 +86,31 @@ class MainActivity : AppCompatActivity() {
             mBinding.btRv.text = "go Rv tag value=$it"
         }
 
+        var string = "你好呀，👿"
+        var string2 = "你好呀，😇"
+        var string3 = "你好呀，😠"
+        var string4 = "你好呀，呵呵呵呵"
+        val string5 = "\uD83D\uDCA2这是个啥"
+        val string6 = "这是个啥\uD83D\uDCA5"
+        mutableListOf<String>().apply {
+            add(string)
+            add(string2)
+            add(string3)
+            add(string4)
+            add(string5)
+            add(string6)
+        }.forEach {
+            loge("$it 是否包含emoji = ${EmojiChecker.containsEmoji(it)}")
+        }
+
     }
 
     private fun addButton() {
         addView<ViewModelAc>("go ViewModel")
         addView<BannerAc>("go Banner")
+        addView<SurfaceAc>("Go Surface")
+        addView<NavigationAc>("Go Nav")
+        addView<CodenavigationAc>("Go Code Nav")
     }
 
     private inline fun <reified T : Activity> addView(title: String) {
@@ -384,11 +408,14 @@ class MainActivity : AppCompatActivity() {
                     Log.d("FiDo", "declaredMethods: ${it.name}")
                 }
                 // kotlin 方式调用 test 方法
+//                clazz.kotlin.companionObject?.declaredMemberFunctions?.find { it.name == "test" }
+//                    ?.call(clazz.kotlin.companionObjectInstance, this)
+
                 clazz.kotlin.companionObject?.declaredMemberFunctions?.find { it.name == "test" }
-                    ?.call(clazz.kotlin.companionObjectInstance, this)
+                    ?.call(clazz.kotlin.companionObjectInstance,this)
 
 //                val companionClazz = clazz.declaredClasses.find { it.simpleName == "Companion" }
-//                companionClazz?.getDeclaredMethod("test",Context::class.java)?.invoke(clazz.kotlin.companionObjectInstance,this)
+//                companionClazz?.getDeclaredMethod("test", Context::class.java)?.invoke(clazz.kotlin.companionObjectInstance,this)
 
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()

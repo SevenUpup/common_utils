@@ -1,0 +1,13 @@
+import groovy.xml.XmlParser
+
+//这个方法取出AndroidManifest.xml中的包名
+def getxmlpackage(boolean b){
+    def file = new File(project.getProjectDir().getPath()+"/src/main/AndroidManifest.xml")
+    def paser = new XmlParser().parse(file)
+    println("------------以下是${project.name}解析的AndroidManifest package节点值--------------")
+    return paser.@package
+}
+
+ext{
+    getpackage = this.&getxmlpackage
+}

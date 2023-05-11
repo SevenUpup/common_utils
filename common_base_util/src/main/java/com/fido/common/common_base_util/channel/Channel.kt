@@ -2,17 +2,16 @@
 
 package com.fido.common.common_base_util.channel
 
-import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
+import com.fido.common.common_base_util.ext.loge
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 
 @PublishedApi
 internal var channelFlow = MutableSharedFlow<ChannelEvent<Any>>()
@@ -31,6 +30,22 @@ inline fun <reified T> receiveStickEvent(
 ) {
     if (channelStickEvent.contains(T::class.hashCode()) && channelStickEvent[T::class.hashCode()] != null) {
         block.invoke(channelStickEvent[T::class.hashCode()] as T)
+    }
+}
+
+inline fun <reified T> LifecycleOwner.receiveStickEvent(
+    lifeEvent: Event = Event.ON_DESTROY,
+    noinline block: suspend CoroutineScope.(event:T)->Unit,
+): Job{
+    return ChannelScope(this,lifeEvent).apply {
+        cancelBlock = {
+            loge("receiveStickEvent is cancled -> event is ${T::class.simpleName} was removed")
+            channelStickEvent.remove(T::class.hashCode())
+        }
+    }.launch {
+        if (channelStickEvent.contains(T::class.hashCode()) && channelStickEvent[T::class.hashCode()] != null) {
+            block(channelStickEvent[T::class.hashCode()] as T)
+        }
     }
 }
 
@@ -65,11 +80,6 @@ fun sendTag(tag: String?) = channelScope.launch {
     channelFlow.emit(ChannelEvent(ChannelTag, tag))
 }
 
-// </editor-fold>
-
-
-//<editor-fold desc="接收事件">
-
 /**
  * 接收事件
  *
@@ -78,7 +88,7 @@ fun sendTag(tag: String?) = channelScope.launch {
  */
 inline fun <reified T> LifecycleOwner.receiveEvent(
     vararg tags: String? = emptyArray(),
-    lifeEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY,
+    lifeEvent: Event = Event.ON_DESTROY,
     noinline block: suspend CoroutineScope.(event: T) -> Unit
 ): Job {
     return ChannelScope(this, lifeEvent).launch {
@@ -100,7 +110,7 @@ inline fun <reified T> LifecycleOwner.receiveEvent(vararg tags: String? = emptyA
  */
 inline fun <reified T> LifecycleOwner.receiveEventLive(
     vararg tags: String? = emptyArray(),
-    lifeEvent: Lifecycle.Event = Lifecycle.Event.ON_START,
+    lifeEvent: Event = Event.ON_START,
     noinline block: suspend CoroutineScope.(event: T) -> Unit
 ): Job {
     return lifecycleScope.launch {
@@ -130,11 +140,6 @@ inline fun <reified T> receiveEventHandler(
         }
     }
 }
-//</editor-fold>
-
-
-//<editor-fold desc="接收标签">
-
 
 /**
  * 接收标签, 和[receiveEvent]不同之处在于该函数仅支持标签, 不支持事件+标签
@@ -144,7 +149,7 @@ inline fun <reified T> receiveEventHandler(
  */
 fun LifecycleOwner.receiveTag(
     vararg tags: String?,
-    lifeEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY,
+    lifeEvent: Event = Event.ON_DESTROY,
     block: suspend CoroutineScope.(tag: String) -> Unit
 ): Job {
     return ChannelScope(this, lifeEvent).launch {
@@ -170,7 +175,7 @@ fun LifecycleOwner.receiveTag(vararg tags: String?): Flow<String> {
  */
 fun LifecycleOwner.receiveTagLive(
     vararg tags: String?,
-    lifeEvent: Lifecycle.Event = Lifecycle.Event.ON_START,
+    lifeEvent: Event = Event.ON_START,
     block: suspend CoroutineScope.(tag: String) -> Unit
 ): Job {
     return lifecycleScope.launch {
@@ -200,6 +205,5 @@ fun receiveTagHandler(
         }
     }
 }
-//</editor-fold>
 
 

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nav1Fragment">
+
+    <fixFragment
+        android:id="@+id/nav1Fragment"
+        tools:layout="@layout/fragment_nav1"
+        android:label="nav1"
+        android:name="com.fido.common.common_utils.fragment.Nav1Fragment">
+
+        <action
+            android:id="@+id/action_nav1_to_nav2Fragment"
+            app:destination="@id/nav2Fragment"/>
+
+        <action
+            android:id="@+id/action_nav1_to_nav2"
+            app:destination="@id/nav2Fragment2"/>
+    </fixFragment>
+
+    <fixFragment
+        android:id="@+id/nav2Fragment"
+        tools:layout="@layout/fragment_nav1"
+        android:label="nav2"
+        android:name="com.fido.common.common_utils.fragment.Nav1Fragment">
+
+        <action android:id="@+id/action_nav2_tp_Material"
+            app:destination="@id/goMaterialMainAc"/>
+
+        <action android:id="@+id/action_nav2_to_Fragment2"
+            app:destination="@id/nav2Fragment2"/>
+
+    </fixFragment>
+
+    <activity
+        android:id="@+id/goMaterialMainAc"
+        android:label="go Material"
+        android:name="com.fido.common.common_utils.banner.BannerAc">
+
+    </activity>
+
+    <fixFragment android:id="@+id/nav2Fragment2"
+        tools:layout="@layout/fragment_nav2"
+        android:name="com.fido.common.common_utils.fragment.Nav2Fragment">
+
+        <action android:id="@+id/action_nav2fragment_tp_Material"
+            app:destination="@id/goMaterialMainAc"/>
+
+        <action
+            android:id="@+id/action_nav2_to_nav1Fragment"
+            app:destination="@id/nav1Fragment"/>
+
+        <action
+            android:id="@+id/action_nav2_to_nav3Fragment"
+            app:destination="@id/nav3Fragment"/>
+
+    </fixFragment>
+
+
+    <fixFragment android:id="@+id/nav3Fragment"
+        tools:layout="@layout/fragment_nav3"
+        android:name="com.fido.common.common_utils.fragment.Nav3Fragment">
+
+        <action
+            android:id="@+id/action_nav3_to_nav1Fragment"
+            app:destination="@id/nav1Fragment"/>
+
+    </fixFragment>
+
+</navigation>

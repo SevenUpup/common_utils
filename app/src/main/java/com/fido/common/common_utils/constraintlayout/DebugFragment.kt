@@ -9,14 +9,7 @@ import android.view.WindowManager
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.drake.debugkit.dev
-import com.fido.common.common_base_ui.util.showNormalInputDialog
-import com.fido.common.common_base_util.ext.toast
-import com.fido.common.common_base_util.runMain
-import com.fido.common.common_base_util.util.ShellUtils
 import com.fido.common.common_utils.R
-import com.lxj.xpopup.util.XPopupUtils.getScreenHeight
-import com.lxj.xpopup.util.XPopupUtils.getScreenWidth
 
 
 class DebugFragment : Fragment(R.layout.fragment_debug), View.OnTouchListener {
@@ -62,9 +55,9 @@ class DebugFragment : Fragment(R.layout.fragment_debug), View.OnTouchListener {
                 val offsetX = (x - lastX).toInt()
                 val offsetY = (y - lastY).toInt()
                 var left: Int = temp.getLeft() + offsetX
-                var top: Int = temp?.getTop() + offsetY
-                var right: Int = temp?.getRight() + offsetX
-                var bottom: Int = temp?.getBottom() + offsetY
+                var top: Int = temp?.getTop()?.plus(offsetY) ?: 0
+                var right: Int = temp?.getRight()?.plus(offsetX) ?: 0
+                var bottom: Int = temp?.getBottom()?.plus(offsetY) ?: 0
                 if (left < 0) {
                     left = 0
                     right = left + temp!!.width

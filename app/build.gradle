@@ -59,7 +59,6 @@ android {
         viewBinding = true
         dataBinding = true
     }
-
 }
 
 dependencies {
@@ -67,11 +66,19 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
+    /*// 导入时去除重复库
+    configurations {
+        all {
+            exclude group: 'androidx.lifecycle', module: 'lifecycle-viewmodel-ktx'
+        }
+    }*/
+
     implementation deps.android.kt_ktx
     implementation deps.android.recyclerview
     implementation deps.android.appcompat
     implementation deps.android.material
     implementation deps.android.constraint_layout
+    implementation deps.android.viewmodel_ktx
 
     implementation (deps.android.lifecycle_ktx){
         exclude group: 'androidx.core'
@@ -82,6 +89,7 @@ dependencies {
 
     implementation project(':common_base_util')
     implementation project(':common_base_ui')
+    implementation project(':easy_navigation')
 
     implementation 'com.github.liangjingkanji:debugkit:1.3.0'
 
@@ -100,4 +108,55 @@ dependencies {
 
     //kotlin反射
 //    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.31"
+}
+
+/**
+ * 统一依赖用
+ */
+configurations.all {
+    /**
+     * 如果你想对版本冲突的依赖项做版本管理，但是又不知道当前项目中有哪些依赖是重复的，从External Libraries里面一个一个的看又太费劲。
+     * 那么，我告诉你一个小技巧，开启版本冲突报错模式：
+     */
+//    resolutionStrategy{
+//        failOnVersionConflict()
+//    }
+
+    // ...
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'androidx.databinding' && requested.name == 'viewbinding') {
+            details.useVersion '7.4.0-alpha10'
+        }
+        if (requested.group == 'androidx.databinding' && requested.name == 'databinding-runtime') {
+            details.useVersion '7.4.0-alpha10'
+        }
+        if (requested.group == 'org.jetbrains.kotlin' && requested.name == 'kotlin-stdlib-jdk8') {
+            details.useVersion '1.7.10'
+        }
+        if (requested.group == 'com.google.android.material' && requested.name == 'material') {
+            details.useVersion '1.5.0'
+        }
+        if (requested.group == 'androidx.lifecycle' && requested.name == 'lifecycle-viewmodel-ktx') {
+            details.useVersion '2.4.1'
+        }
+        if (requested.group == 'org.jetbrains.kotlin' && requested.name == 'kotlin-stdlib') {
+            details.useVersion '1.7.10'
+        }
+        if (requested.group == 'org.jetbrains.kotlin' && requested.name == 'kotlin-stdlib-jdk7') {
+            details.useVersion '1.7.10'
+        }
+        if (requested.group == 'androidx.fragment' && requested.name == 'fragment') {
+            details.useVersion '1.3.6'
+        }
+        if (requested.group == 'androidx.drawerlayout' && requested.name == 'drawerlayout') {
+            details.useVersion '1.1.1'
+        }
+        if (requested.group == 'androidx.vectordrawable' && requested.name == 'vectordrawable') {
+            details.useVersion '1.1.0'
+        }
+        if (requested.group == 'androidx.lifecycle' && requested.name == 'lifecycle-livedata') {
+            details.useVersion '2.4.1'
+        }
+    }
 }

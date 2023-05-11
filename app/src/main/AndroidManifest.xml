@@ -62,6 +62,11 @@
 
         <activity android:name=".banner.BannerAc"/>
 
+        <activity android:name="com.fido.common.surface.SurfaceAc"/>
+
+        <activity android:name=".test.NavigationAc"/>
+
+        <activity android:name=".naviga.CodenavigationAc"/>
     </application>
 
 

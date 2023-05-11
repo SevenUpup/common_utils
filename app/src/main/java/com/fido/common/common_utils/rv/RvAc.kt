@@ -9,11 +9,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fido.common.common_base_ui.base.entity.BaseMuiltEntity
 import com.fido.common.common_base_ui.base.widget.bind
 import com.fido.common.common_base_ui.ext.*
 import com.fido.common.common_base_ui.ext.image_select.clearImageSelectCache
+import com.fido.common.common_base_ui.util.ui.RVScrollUtils
+import com.fido.common.common_base_ui.util.ui.SmoothLinearLayoutManager
+import com.fido.common.common_base_util.ext.click
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.startActivity
 import com.fido.common.common_base_util.util.time.Interval
@@ -30,6 +34,8 @@ class RvAc:AppCompatActivity() {
     private lateinit var mRv: RecyclerView
     private lateinit var mRv2: RecyclerView
 
+    private lateinit var layoutManager:SmoothLinearLayoutManager
+    private lateinit var layoutManager2:SmoothLinearLayoutManager
     companion object{
         fun test(context:Context){
             Log.d("FiDo", "test: ---")
@@ -56,6 +62,7 @@ class RvAc:AppCompatActivity() {
             }.start()
 
         initEvent()
+
     }
 
     private fun initEvent() {
@@ -98,6 +105,11 @@ class RvAc:AppCompatActivity() {
             mBinding.mRv.isVisible = !mBinding.mSRv.isVisible
             mBinding.mRv2.isVisible = !mBinding.mSRv.isVisible
 
+        }
+
+        mBinding.btScroll.click {
+            RVScrollUtils.rvSmoothScrollToPosition(mRv, layoutManager, 5)
+            RVScrollUtils.rvSmoothScrollToPosition(mRv2, layoutManager2, 5)
         }
     }
 
@@ -161,6 +173,22 @@ class RvAc:AppCompatActivity() {
                     add(MEntity().apply {
                         itemType = 0
                         itemLayoutRes = R.layout.item_rv_text
+                    })
+                    add(MEntity().apply {
+                        itemType = 1
+                        itemLayoutRes = R.layout.item_rv_img
+                    })
+                    add(MEntity().apply {
+                        itemType = 1
+                        itemLayoutRes = R.layout.item_rv_img
+                    })
+                    add(MEntity().apply {
+                        itemType = 1
+                        itemLayoutRes = R.layout.item_rv_img
+                    })
+                    add(MEntity().apply {
+                        itemType = 1
+                        itemLayoutRes = R.layout.item_rv_img
                     })
                     add(MEntity().apply {
                         itemType = 1
@@ -248,6 +276,12 @@ class RvAc:AppCompatActivity() {
                 itemLayoutRes = R.layout.layout_header_view
             }))
         }, 2000)
+
+
+        layoutManager = SmoothLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        mRv.layoutManager = layoutManager
+        layoutManager2 = SmoothLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        mRv2.layoutManager = layoutManager2
     }
 
     override fun onDestroy() {

@@ -1,7 +1,5 @@
 package com.fido.common.common_utils.rv
 
-import android.util.DisplayMetrics
-import android.view.WindowManager
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -32,7 +30,7 @@ class RvDragSwipeAc : BaseVBActivity<AcRvDragSwipeBinding>() {
     override fun initEvent() {
 
         receiveStickEvent<P> {
-            loge("2${this.toJson()} ${Thread.currentThread().name}",C_TAG)
+            loge("2${it.toJson()} ${Thread.currentThread().name}",C_TAG)
         }
 
         lifecycleScope.launch {
@@ -73,7 +71,7 @@ class RvDragSwipeAc : BaseVBActivity<AcRvDragSwipeBinding>() {
             thread {
                 loge("thread= ${Thread.currentThread().name}",C_TAG)
                 receiveStickEvent<P> {
-                    loge("1${this.toJson()} ${Thread.currentThread().name}",C_TAG)
+                    loge("1${it.toJson()} ${Thread.currentThread().name}",C_TAG)
                     binding.mIv.setImageBitmap(AssetUtils.loadBitmapAsset(this@RvDragSwipeAc,"dog.jpg"))
                 }
             }

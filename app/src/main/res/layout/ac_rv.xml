@@ -27,6 +27,13 @@
             android:textAllCaps="false"
             android:text="show smartRefreshRv"/>
 
+        <Button
+            android:id="@+id/bt_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="scroll pos"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mRv"
             android:layout_width="match_parent"
