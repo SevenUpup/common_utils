@@ -1,105 +1,391 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/A"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:text="A"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@color/colorPrimary"/>
-
-        <TextView
-            android:id="@+id/B"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:text="B"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@color/colorPrimary"/>
-
-        <TextView
-            android:id="@+id/C"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:text="C"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@color/colorPrimary"/>
-
-        <TextView
-            android:id="@+id/D"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:text="D"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@color/colorPrimary"/>
-
-        <TextView
-            android:id="@+id/E"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:text="E"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@color/colorPrimary"/>
-
-        <TextView
-            android:id="@+id/F"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:text="F"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@color/colorPrimary"/>
-
-        <TextView
-            android:id="@+id/G"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:text="G"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@color/colorPrimary"/>
-
-        <TextView
-            android:id="@+id/H"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:text="H"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@color/colorPrimary"/>
-
-        <TextView
-            android:id="@+id/I"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:text="I"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@color/colorPrimary"/>
-
-        <androidx.constraintlayout.helper.widget.Flow
-            app:layout_constraintTop_toTopOf="parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:flow_verticalGap="10dp"
-            app:flow_wrapMode="aligned"
-            app:flow_horizontalGap="10dp"
-            app:constraint_referenced_ids="A,B,C,D,E,F,G,H,I"/>
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/A"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="A"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@color/colorPrimary"/>
+
+            <TextView
+                android:id="@+id/B"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="B"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@color/colorPrimary"/>
+
+            <TextView
+                android:id="@+id/C"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="C"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@color/colorPrimary"/>
+
+            <TextView
+                android:id="@+id/D"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="D"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@color/colorPrimary"/>
+
+            <TextView
+                android:id="@+id/E"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="E"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@color/colorPrimary"/>
+
+            <TextView
+                android:id="@+id/F"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="F"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@color/colorPrimary"/>
+
+            <TextView
+                android:id="@+id/G"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="G"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@color/colorPrimary"/>
+
+            <TextView
+                android:id="@+id/H"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="H"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@color/colorPrimary"/>
+
+            <TextView
+                android:id="@+id/I"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="I"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@color/colorPrimary"/>
+
+            <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flow"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:flow_verticalGap="10dp"
+                app:flow_wrapMode="aligned"
+                app:flow_horizontalGap="10dp"
+                app:constraint_referenced_ids="A,B,C,D,E,F,G,H,I"/>
+
+            <!-- ***** 高度不固定 W、H 作为除数 *****,不写默认就是 H -->
+            <ImageView
+                android:id="@+id/imge1"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
+                android:src="@mipmap/flower"
+                app:layout_constraintDimensionRatio="1:0.5"
+                app:layout_constraintTop_toBottomOf="@id/flow"
+                app:layout_constraintLeft_toLeftOf="@id/flow"
+                />
+
+            <!-- H 当做除数 W/H = 1:0.5 -> W=80dp -> 80/H = (1/0.5)-> H = 40dp -->
+            <ImageView
+                android:id="@+id/image2"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
+                android:src="@mipmap/flower"
+                app:layout_constraintDimensionRatio="H,1:0.5"
+                app:layout_constraintTop_toTopOf="@id/imge1"
+                app:layout_constraintLeft_toRightOf="@id/imge1"/>
+
+            <!-- W 作为除数 H/W = (1/0.5) -> H/80dp = 2 -> H = 160dp -->
+            <ImageView
+                android:id="@+id/image3"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
+                android:src="@mipmap/flower"
+                app:layout_constraintTop_toTopOf="@id/imge1"
+                app:layout_constraintLeft_toRightOf="@id/image2"
+                app:layout_constraintDimensionRatio="W,1:0.5"/>
+
+            <!-- ***** 宽度不固定(可变) W/H 作为被除数 ***** 不写默认就是 W -->
+            <!-- W 作为被除数 W/H = 2:1 -> W/80 = 2 -> W=160 -->
+            <ImageView
+                android:id="@+id/image4"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:src="@mipmap/flower"
+                android:scaleType="centerCrop"
+                app:layout_constraintDimensionRatio="2:1"
+                app:layout_constraintLeft_toLeftOf="@id/imge1"
+                app:layout_constraintTop_toBottomOf="@id/image3"/>
+
+            <!-- H作为被除数 H/W = 2:1 -> 80/W = 2/1 -> W = 40   -->
+            <ImageView
+                android:id="@+id/image5"
+                android:layout_marginLeft="30dp"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:src="@mipmap/flower"
+                android:scaleType="centerCrop"
+                app:layout_constraintDimensionRatio="H,2:1"
+                app:layout_constraintLeft_toRightOf="@id/image4"
+                app:layout_constraintTop_toTopOf="@id/image4"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintPercent"
+                app:layout_constraintTop_toBottomOf="@id/image5"
+                app:layout_constraintLeft_toLeftOf="@id/image5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/bookCover1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintDimensionRatio="0.94:1"
+                    app:layout_constraintEnd_toStartOf="@+id/bookCover2"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.30"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <ImageView
+                    android:id="@+id/bookCover2"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
+                    app:layout_constraintDimensionRatio="0.94:1"
+                    app:layout_constraintEnd_toStartOf="@+id/bookCover3"
+                    app:layout_constraintStart_toEndOf="@+id/bookCover1"
+                    app:layout_constraintTop_toTopOf="@+id/bookCover1"
+                    app:layout_constraintWidth_percent="0.30"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <ImageView
+                    android:id="@+id/bookCover3"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintDimensionRatio="0.94:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/bookCover2"
+                    app:layout_constraintTop_toTopOf="@+id/bookCover2"
+                    app:layout_constraintWidth_percent="0.30"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <!-- 百分比 / dp 对齐 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintAlign"
+                app:layout_constraintTop_toBottomOf="@id/constraintPercent"
+                app:layout_constraintLeft_toLeftOf="@id/constraintPercent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv1"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="30dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:background="#eee"/>
+
+                <Space
+                    android:id="@+id/space"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:layout_editor_absoluteY="10dp"
+                    app:layout_constraintHorizontal_bias="0.2"
+                    app:layout_constraintStart_toStartOf="@id/tv1"
+                    app:layout_constraintEnd_toEndOf="@id/tv1"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    app:layout_editor_absoluteY="60dp"
+                    app:layout_constraintEnd_toStartOf="@id/space"
+                    android:background="#e66"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@id/constraintAlign"
+                app:layout_constraintLeft_toLeftOf="parent">
+
+                <TextView
+                    android:id="@+id/tv"
+                    android:layout_marginHorizontal="30dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:background="#eee"
+                    android:text=" TextView "/>
+
+
+                <!-- layout_constrainedWidth="true"
+                 下面的TextView最大不会超过第一个TextView的宽度 -->
+                <TextView
+                    android:id="@+id/tv_constraintWidth"
+                    app:layout_constraintTop_toBottomOf="@id/tv"
+                    app:layout_constraintLeft_toLeftOf="@id/tv"
+                    app:layout_constraintRight_toRightOf="@id/tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    android:gravity="center"
+                    android:background="#eee"
+                    android:text=" TextView TextViewTextViewTextViewTextViewTextViewTextView"/>
+
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="12dp"
+                    android:text="TextView"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/textView5"
+                    app:layout_constraintTop_toBottomOf="@id/tv_constraintWidth" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    app:layout_constrainedWidth="true"
+                    android:text="TextViewTextViewTextViewTextViewTextViewTextView"
+                    app:layout_constraintLeft_toRightOf="@id/textView4"
+                    app:layout_constraintRight_toLeftOf="@id/textView6"
+                    app:layout_constraintTop_toTopOf="@+id/textView4" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="32dp"
+                    android:text="TextView"
+                    app:layout_constraintLeft_toRightOf="@id/textView5"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView5" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- TextView的宽度可能因为文字的不一样而不同，
+                需要他们整体取最大宽度后，与右边元素进行对齐 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintBarrier"
+                app:layout_constraintTop_toBottomOf="@id/constraintText"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="E-mail Address"
+                    android:textSize="20sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"/>
+
+                <EditText
+                    android:id="@+id/emailInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:ems="20"
+                    android:inputType="textEmailAddress"
+                    android:text="ifavoritesevenup@gmail.com"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/email"
+                    app:layout_constraintStart_toEndOf="@+id/barrier" />
+
+                <TextView
+                    android:id="@+id/password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    tools:text="Password"
+                    android:textSize="20sp"
+                    app:layout_constraintTop_toBottomOf="@id/email"
+                    app:layout_constraintLeft_toLeftOf="parent"/>
+
+                <EditText
+                    android:id="@+id/passwordInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:ems="20"
+                    android:inputType="textPassword"
+                    android:text="666666"
+                    app:layout_constraintStart_toEndOf="@id/barrier"
+                    app:layout_constraintBaseline_toBaselineOf="@id/password"
+                   />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/barrier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="right"
+                    app:constraint_referenced_ids="email,password" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
 </layout>

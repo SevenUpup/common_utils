@@ -1,13 +1,10 @@
 @file:JvmName("DrawableExt")
 package com.fido.common.common_base_util.ext
 
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.StateListDrawable
-import android.util.Log
 import android.util.StateSet
 import android.view.View
-import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import com.fido.common.common_base_util.dp
 import com.fido.common.common_base_util.getColor
@@ -92,7 +89,7 @@ fun View.gradiendShapeDrawableBg(
 
 /**
  * 添加指定状态的Drawable
- * isDefultDrawable 很关键，设置默认状态drawable 为true时,addStatusableDrawableBg 必须放在最后调用哦~~~
+ * isDefultDrawable 很关键，设置默认状态drawable 为true时,[addStatusableDrawableBg] 必须放在最后调用哦! 否则默认状态不生效
  * @param status 选择状态 默认Normal
  * @param isDefultDrawable 是否是默认状态的drawable,
  * PRESSED,SELECTED,ENABLED

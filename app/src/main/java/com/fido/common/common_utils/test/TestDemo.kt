@@ -2,11 +2,9 @@ package com.fido.common.common_utils.test
 
 import android.content.Context
 import android.widget.Toast
-import com.fido.common.common_base_util.util.time.Interval
 import com.fido.common.common_utils.test.arithmetic.Test
 import com.fido.common.common_utils.test.reflect.AbsReflectTest
 import java.util.*
-import java.util.concurrent.TimeUnit
 import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.*
@@ -20,12 +18,31 @@ class TestDemo {
 
         private val typePool = mutableMapOf<String, Any.(Int) -> Int>()
 
+        fun stringMapper(input:String,mapper:(String)->Int):Int{
+            return mapper(input)
+        }
+
+        fun p(any: Any) = println(any)
+
         @JvmStatic
         fun main(args: Array<String>) {
             val a = -10
             var b = a.shl(2) // 按位左移
             var c = a.shr(2) // 右移运算符
             println("$a 的二进制 ${a.toString(2)} $a 左移两位 =$b  $a ->右移两位 = $c 二进制=${c.toString(2)}")
+
+            val stringLengthFunc: (String) -> Int = {
+                    input -> input.length
+            }
+
+            val aLen = stringMapper("Android") { it.length }
+            val fLen = stringMapper("Flutter",stringLengthFunc)
+            //具名函数
+            fun stringLen(input:String) = input.length
+            val sLen = stringMapper("Compose",::stringLen)
+            p("alen = $aLen")
+            p("flen = $fLen")
+            p("sLen = $sLen")
 
             val result = block?.invoke("123",1)
 
@@ -208,6 +225,7 @@ class TestDemo {
             }
         }
     }
+
 
     interface T{
         companion object DEFULT:T{

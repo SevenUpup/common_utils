@@ -2,6 +2,7 @@ package com.fido.common.common_utils
 
 import android.app.Application
 import com.drake.debugkit.DevTool
+import com.fido.common.CrashProtectUtil
 import com.fido.common.common_base_util.log.LogUtils
 import com.fido.common.common_base_util.util.toast.ToastConfig
 import com.fido.common.common_base_util.util.toast.interfaces.ToastGravityFactory
@@ -39,7 +40,8 @@ class App: Application() {
         LogUtils.logGlobalTag = "FiDo"
 
         if (BuildConfig.DEBUG) {
-
+            //兜底策略
+            CrashProtectUtil().init()
         }
         CrashWoodpecker.instance()
             .withKeys("widget", "me.drakeet")

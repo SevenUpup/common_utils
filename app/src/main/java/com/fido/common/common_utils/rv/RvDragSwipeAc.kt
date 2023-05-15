@@ -28,6 +28,9 @@ class RvDragSwipeAc : BaseVBActivity<AcRvDragSwipeBinding>() {
 
     private val C_TAG = "Channel"
     override fun initEvent() {
+        receiveStickTag("tag_FiDo"){
+            loge("receiveStickTag-->${this}")
+        }
 
         receiveStickEvent<P> {
             loge("2${it.toJson()} ${Thread.currentThread().name}",C_TAG)

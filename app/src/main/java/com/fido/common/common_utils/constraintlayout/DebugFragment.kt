@@ -25,8 +25,6 @@ class DebugFragment : Fragment(R.layout.fragment_debug), View.OnTouchListener {
 //                holder.setText(R.id.mTitle, "$item ->$position")
 //            }
 
-
-
         view.setOnTouchListener(this)
     }
 

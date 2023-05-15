@@ -30,6 +30,7 @@ import com.fido.common.common_base_ui.util.ImagePreviewUtil
 import com.fido.common.common_base_util.*
 import com.fido.common.common_base_util.channel.receiveTag
 import com.fido.common.common_base_util.channel.sendStickEvent
+import com.fido.common.common_base_util.channel.sendStickTag
 import com.fido.common.common_base_util.ext.*
 import com.fido.common.common_base_util.util.AssetUtils
 import com.fido.common.common_base_util.util.ImageCodeUtils
@@ -85,6 +86,8 @@ class MainActivity : AppCompatActivity() {
         receiveTag("tag_1") {
             mBinding.btRv.text = "go Rv tag value=$it"
         }
+
+        sendStickTag("tag_FiDo")
 
         var string = "你好呀，👿"
         var string2 = "你好呀，😇"

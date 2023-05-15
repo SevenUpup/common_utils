@@ -53,15 +53,30 @@ fun sendStickTag(tag: String) {
     channelStickEvent[tag] = tag
 }
 
+fun LifecycleOwner.receiveStickTag(
+    tag:String,
+    lifeEvent: Event = Event.ON_DESTROY,
+    block: String.() -> Unit
+):Job{
+    return ChannelScope(this,lifeEvent).apply {
+        cancelBlock = {
+            loge("receiveStickTag is cancled -> tag is $tag was removed")
+            channelStickEvent.remove(tag)
+        }
+    }.launch {
+        if (channelStickEvent.contains(tag) && channelStickEvent[tag] != null) {
+            block.invoke(channelStickEvent[tag] as? String ?: "")
+        }
+    }
+}
+
 fun receiveStickTag(tag: String, block: String.() -> Unit) {
     if (channelStickEvent.contains(tag) && channelStickEvent[tag] != null) {
         block.invoke(channelStickEvent[tag] as? String ?: "")
     }
 }
+
 // ======================= 粘性事件测试 End =========================
-
-// <editor-fold desc="发送">
-
 /**
  * 发送事件
  * @param event 事件

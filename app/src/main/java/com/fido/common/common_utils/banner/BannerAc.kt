@@ -33,6 +33,7 @@ class BannerAc : BaseVBActivity<AcBannerBinding>() {
         )
     }
 
+
     override fun getLayoutId(): Int {
         return R.layout.ac_banner
     }

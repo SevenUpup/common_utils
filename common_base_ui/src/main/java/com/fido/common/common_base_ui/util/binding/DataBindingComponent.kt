@@ -248,9 +248,9 @@ object DataBindingComponent {
 
             v.throttleClick {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    finalActivity!!.finishAfterTransition()
+                    finalActivity?.finishAfterTransition()
                 } else {
-                    finalActivity!!.finish()
+                    finalActivity?.finish()
                 }
             }
         }
