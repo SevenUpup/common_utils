@@ -6,6 +6,7 @@ import androidx.core.os.bundleOf
 import com.fido.common.base.BaseVBFragment
 import com.fido.common.common_base_util.ext.click
 import com.fido.common.common_base_util.ext.loge
+import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_utils.R
 import com.fido.common.common_utils.databinding.FragmentNav1Binding
 import com.fido.common.easy_navigation.*
@@ -65,6 +66,10 @@ class Nav1Fragment:BaseVBFragment<FragmentNav1Binding>(R.layout.fragment_nav1) {
                 applyFadeInOut()
             }
         }
+    }
+
+    fun test(){
+        toast("nav1 test fun")
     }
 
     val name = "Nav1Fragment"

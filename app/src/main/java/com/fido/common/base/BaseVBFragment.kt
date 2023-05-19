@@ -12,6 +12,10 @@ abstract class BaseVBFragment<VB:ViewDataBinding>(@LayoutRes layoutRes: Int = 0)
 
     protected lateinit var binding:VB
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = DataBindingUtil.bind(view)!!
         try{

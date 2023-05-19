@@ -280,7 +280,7 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     android:gravity="center"
                     android:background="#eee"
-                    android:text=" TextView TextViewTextViewTextViewTextViewTextViewTextView"/>
+                    android:text="TextViewTextViewTextViewTextViewTextViewTextViewTextViewTextView"/>
 
 
                 <TextView

@@ -8,10 +8,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fido.common.common_base_ui.base.entity.BaseMuiltEntity
+import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_ui.base.widget.bind
 import com.fido.common.common_base_ui.ext.*
 import com.fido.common.common_base_ui.ext.image_select.clearImageSelectCache
@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit
 
 class RvAc:AppCompatActivity() {
 
-    lateinit var mBinding:AcRvBinding
+    private val mBinding:AcRvBinding by binding()
     private lateinit var mRv: RecyclerView
     private lateinit var mRv2: RecyclerView
 
@@ -49,7 +49,8 @@ class RvAc:AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil.setContentView(this, R.layout.ac_rv)
+
+//        mBinding = DataBindingUtil.setContentView(this, R.layout.ac_rv)
 
         initView()
 
@@ -114,8 +115,8 @@ class RvAc:AppCompatActivity() {
     }
 
     private fun initView() {
-        mRv = findViewById(R.id.mRv)
-        mRv2 = findViewById(R.id.mRv2)
+        mRv = mBinding.mRv
+        mRv2 = mBinding.mRv2
 
         val mTestData = mutableListOf<MEntity>()
         for (i in 0 until 10) {

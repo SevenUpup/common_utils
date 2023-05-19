@@ -2,6 +2,7 @@ package com.fido.common.common_base_util
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Application
 import android.app.Service
 import android.content.ComponentName
 import android.content.Context
@@ -41,7 +42,7 @@ import kotlin.reflect.full.primaryConstructor
  *  desc :
  */
 @SuppressLint("StaticFieldLeak")
-lateinit var app: Context
+lateinit var app: Application
 
 /*converts dp value into px*/
 val Number.dp

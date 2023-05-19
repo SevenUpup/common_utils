@@ -17,10 +17,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.*
 import androidx.core.view.isGone
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.fido.common.common_base_ui.base.dialog.createPop
 import com.fido.common.common_base_ui.base.dialog.createVBPop
+import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_ui.ext.bindData
 import com.fido.common.common_base_ui.ext.image_select.openImageSelect
 import com.fido.common.common_base_ui.ext.image_select.selectImagesPath
@@ -50,6 +50,7 @@ import com.fido.common.common_utils.spannable.SpannableAc
 import com.fido.common.common_utils.test.NavigationAc
 import com.fido.common.common_utils.time.IntervalTimeAc
 import com.fido.common.common_utils.viewmodel.ViewModelAc
+import com.fido.common.common_utils.viewpager.ViewpageAc
 import com.fido.common.surface.SurfaceAc
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
@@ -64,15 +65,23 @@ import kotlin.reflect.full.declaredMemberFunctions
 data class P(val name: String)
 class MainActivity : AppCompatActivity() {
 
-    lateinit var mBinding: ActivityMainBinding
+    private val mBinding: ActivityMainBinding by binding()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+//        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        Log.e("FiDo", "appLanguage = ${appLanguage}", )
         thread {
             sendStickEvent(P("xpz"))
             sendStickEvent(P("dpz"))
+        }
+
+        doOnAppStatusChanged (onForeGround = {
+            toast("onForeground")
+        }){
+            toast("onBackground")
         }
 
         addButton()
@@ -114,11 +123,21 @@ class MainActivity : AppCompatActivity() {
         addView<SurfaceAc>("Go Surface")
         addView<NavigationAc>("Go Nav")
         addView<CodenavigationAc>("Go Code Nav")
+        addView<ViewpageAc>("Go ViewPage")
+        addView<LiveDataAc>("Go LiveData")
+        for (i in 0 until mBinding.container.childCount) {
+            if (mBinding.container.getChildAt(i).id == R.id.tv) {
+                mBinding.container.getChildAt(i).run {
+                    margin(verticalMargin = 3.dp)
+                }
+            }
+        }
     }
 
     private inline fun <reified T : Activity> addView(title: String) {
         mBinding.container.addView(
             Button(this).apply {
+                id = R.id.tv
                 text = title
                 setTextColor(R.color.white.getColor)
                 setBackgroundColor(R.color.teal_700.getColor)
@@ -126,6 +145,7 @@ class MainActivity : AppCompatActivity() {
                 setOnClickListener {
                     startActivity<T>()
                 }
+                roundCorners = 10f.dp.toFloat()
             },
             mBinding.container.childCount - 4,ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
         )

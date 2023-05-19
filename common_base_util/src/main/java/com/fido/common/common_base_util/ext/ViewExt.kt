@@ -3,20 +3,12 @@ package com.fido.common.common_base_util.ext
 import android.animation.Animator
 import android.animation.IntEvaluator
 import android.animation.ValueAnimator
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
+import android.graphics.*
 import android.os.Build
-import android.view.View
-import android.view.ViewGroup
-import android.view.ViewTreeObserver
+import android.view.*
 import androidx.annotation.FloatRange
-import androidx.core.content.ContextCompat
 import androidx.core.math.MathUtils
-import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
-import com.fido.common.common_base_util.app
-import java.util.concurrent.TimeUnit
 
 /**
  * View相关
@@ -136,6 +128,19 @@ fun View.margin(leftMargin: Int = Int.MAX_VALUE, topMargin: Int = Int.MAX_VALUE,
         params.bottomMargin = bottomMargin
     layoutParams = params
     return this
+}
+
+fun View.margin(horizontalMargin:Int = Int.MAX_VALUE,verticalMargin:Int=Int.MAX_VALUE) = apply {
+    val params = layoutParams as ViewGroup.MarginLayoutParams
+    if (horizontalMargin != Int.MAX_VALUE) {
+        params.leftMargin = horizontalMargin
+        params.rightMargin = horizontalMargin
+    }
+    if (verticalMargin != Int.MAX_VALUE) {
+        params.topMargin = verticalMargin
+        params.bottomMargin = verticalMargin
+    }
+    layoutParams = params
 }
 
 /**
@@ -356,4 +361,91 @@ fun evaluateColor(@FloatRange(from = 0.0, to = 1.0) fraction: Float /*0-1*/, sta
             (startR + (fr * (endR - startR)).toInt() shl 16) or
             (startG + (fr * (endG - startG)).toInt() shl 8) or
             startB + (fr * (endB - startB)).toInt()
+}
+
+
+fun View.expandClickArea(expandSize: Float) = expandClickArea(expandSize.toInt())
+
+fun View.expandClickArea(expandSize: Int) =
+    expandClickArea(expandSize, expandSize, expandSize, expandSize)
+
+fun View.expandClickArea(top: Float, left: Float, right: Float, bottom: Float) =
+    expandClickArea(top.toInt(), left.toInt(), right.toInt(), bottom.toInt())
+
+fun View.expandClickArea(top: Int, left: Int, right: Int, bottom: Int) {
+    val parent = parent as? ViewGroup ?: return
+    parent.post {
+        val rect = Rect()
+        getHitRect(rect)
+        rect.top -= top
+        rect.left -= left
+        rect.right += right
+        rect.bottom += bottom
+        val touchDelegate = parent.touchDelegate
+        if (touchDelegate == null || touchDelegate !is MultiTouchDelegate) {
+            parent.touchDelegate = MultiTouchDelegate(rect, this)
+        } else {
+            touchDelegate.put(rect, this)
+        }
+    }
+}
+
+var View.roundCorners: Float
+    @Deprecated(NO_GETTER, level = DeprecationLevel.ERROR)
+    get() = noGetter()
+    set(value) {
+        clipToOutline = true
+        outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View, outline: Outline) {
+                outline.setRoundRect(0, 0, view.width, view.height, value)
+            }
+        }
+    }
+
+fun View?.isTouchedAt(x: Float, y: Float): Boolean =
+    isTouchedAt(x.toInt(), y.toInt())
+
+fun View?.isTouchedAt(x: Int, y: Int): Boolean =
+    this?.locationOnScreen?.contains(x, y) == true
+
+fun View.findTouchedChild(x: Float, y: Float): View? =
+    findTouchedChild(x.toInt(), y.toInt())
+
+fun View.findTouchedChild(x: Int, y: Int): View? =
+    touchables.find { it.isTouchedAt(x, y) }
+
+/**
+ * Computes the coordinates of this view on the screen.
+ */
+inline val View.locationOnScreen: Rect
+    get() = IntArray(2).let {
+        getLocationOnScreen(it)
+        Rect(it[0], it[1], it[0] + width, it[1] + height)
+    }
+
+internal class MultiTouchDelegate(bound: Rect, delegateView: View) : TouchDelegate(bound, delegateView) {
+    private val map = mutableMapOf<View, Pair<Rect, TouchDelegate>>()
+    private var targetDelegate: TouchDelegate? = null
+
+    init {
+        put(bound, delegateView)
+    }
+
+    fun put(bound: Rect, delegateView: View) {
+        map[delegateView] = bound to TouchDelegate(bound, delegateView)
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        val x = event.x.toInt()
+        val y = event.y.toInt()
+        when (event.actionMasked) {
+            MotionEvent.ACTION_DOWN -> {
+                targetDelegate = map.entries.find { it.value.first.contains(x, y) }?.value?.second
+            }
+            MotionEvent.ACTION_CANCEL -> {
+                targetDelegate = null
+            }
+        }
+        return targetDelegate?.onTouchEvent(event) ?: false
+    }
 }

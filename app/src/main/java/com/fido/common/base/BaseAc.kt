@@ -11,7 +11,7 @@ import androidx.databinding.ViewDataBinding
 @description:
 @date :2023/4/13 10:57
  */
-abstract class BaseAc:AppCompatActivity() {
+abstract class BaseAc<VB:ViewDataBinding>:AppCompatActivity() {
 
     protected inline fun<reified T:ViewDataBinding> binding(@LayoutRes layoutId:Int) = lazy {
         DataBindingUtil.setContentView<T>(this,layoutId).apply {

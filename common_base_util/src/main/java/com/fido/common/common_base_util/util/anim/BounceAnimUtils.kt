@@ -1,4 +1,4 @@
-package com.fido.common.common_utils.anim
+package com.fido.common.common_base_util.util.anim
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
@@ -11,7 +11,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.findViewTreeLifecycleOwner
 
 
-object AnimUtils {
+object BounceAnimUtils {
 
     /**
      * 缓慢下坠后弹起动画

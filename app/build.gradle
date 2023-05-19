@@ -91,6 +91,9 @@ dependencies {
     implementation project(':common_base_ui')
     implementation project(':easy_navigation')
 
+    //lottie
+    implementation "com.airbnb.android:lottie:3.0.3-support"
+
     implementation 'com.github.liangjingkanji:debugkit:1.3.0'
 
     //crashwoodpecker

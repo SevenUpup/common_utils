@@ -2,16 +2,13 @@ package com.fido.common.common_base_ui.base.dialog
 
 import android.content.Context
 import android.view.View
-import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.fido.common.common_base_ui.base.dialog.base.BaseCommonAttachPop
 import com.fido.common.common_base_ui.base.dialog.base.BaseCommonPop
 import com.fido.common.common_base_ui.base.dialog.base.BaseVBCommonAttachPop
 import com.fido.common.common_base_ui.base.dialog.base.BaseVBCommonPop
 import com.fido.common.common_base_ui.util.creatXPopCustomView
-import com.lxj.xpopup.core.AttachPopupView
 import com.lxj.xpopup.core.BasePopupView
-import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.enums.PopupAnimation
 import com.lxj.xpopup.enums.PopupPosition
 import com.lxj.xpopup.interfaces.XPopupCallback
@@ -19,7 +16,7 @@ import com.lxj.xpopup.interfaces.XPopupCallback
 
 /**
  * @param layoutResId : your pop xml
- * @param init        : 做一些初始化操作 findViewById等都在这
+ * @param init        : do some init findViewById等都在这
  */
 inline fun <reified VB : ViewDataBinding> Context.createVBPop(
     layoutResId: Int,

@@ -1,4 +1,4 @@
-package com.fido.common.common_utils.anim;
+package com.fido.common.common_base_util.util.anim;
 
 import android.animation.Keyframe;
 import android.animation.ObjectAnimator;

@@ -1,5 +1,6 @@
 package com.fido.common.common_utils.test
 
+import com.fido.common.common_utils.test.FunTest.Companion.also
 import com.fido.common.common_utils.test.decorator.Mi2ProtableBattery
 import com.fido.common.common_utils.test.decorator.MiProtableBattery
 import com.fido.common.common_utils.test.decorator.ProtableBattery
@@ -16,6 +17,25 @@ class JModelTest {
             val mi2ProtableBattery = Mi2ProtableBattery(protableBattery)
             mi2ProtableBattery.charge()
 
+            val result = Book().run {
+                name = "test"
+                price = "23"
+                10
+            }
+
+            val result2 = Book().apply {
+                name = "test1"
+                price = "45"
+                10
+            }
+            val result3 = Book().also {
+                it.name = "test2"
+                it.price = "56"
+                "456"
+            }
+            println(result)
+            println(result2)
+            println(result3)
             main()
         }
 
@@ -37,5 +57,7 @@ class JModelTest {
         }
 
     }
+
+    class Book(var name:String="",var price:String="")
 
 }
