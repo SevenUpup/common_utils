@@ -2,6 +2,7 @@ package com.fido.common.common_utils
 
 import android.app.Application
 import com.drake.debugkit.DevTool
+import com.facebook.stetho.Stetho
 import com.fido.common.CrashProtectUtil
 import com.fido.common.common_base_util.log.LogUtils
 import com.fido.common.common_base_util.util.toast.ToastConfig
@@ -50,6 +51,7 @@ class App: Application() {
             .setPassToOriginalDefaultHandler(true)
             .flyTo(this)
 
+        Stetho.initializeWithDefaults(this)
     }
 
 }

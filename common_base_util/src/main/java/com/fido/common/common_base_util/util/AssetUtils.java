@@ -12,6 +12,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public final class AssetUtils {
     private static final String TAG = "AssetUtils";
@@ -65,6 +74,19 @@ public final class AssetUtils {
         }
         return bitmap;
     }
+
+    /*static {
+        //辅助跳过证书
+        try {
+            trustAllHttpsCertificates();
+            HttpsURLConnection.setDefaultHostnameVerifier
+                    (
+                            (urlHostName, session) -> true
+                    );
+        } catch (Exception e)  {
+        }
+    }*/
+
 
 //    public static File loadFileAsset(Context context,String asset){
 //        InputStream is = null;
@@ -126,7 +148,6 @@ public final class AssetUtils {
         }
         return false;
     }
-
     /**
      * 从assets目录下拷贝文件
      *
@@ -161,6 +182,33 @@ public final class AssetUtils {
         } catch (Exception e) {
             e.printStackTrace();
 
+        }
+    }
+
+
+    private static void trustAllHttpsCertificates()   throws NoSuchAlgorithmException, KeyManagementException
+    {
+        TrustManager[] trustAllCerts = new TrustManager[1];
+        trustAllCerts[0] = new TrustAllManager();
+        SSLContext sc = SSLContext.getInstance("SSL");
+        sc.init(null, trustAllCerts, null);
+        HttpsURLConnection.setDefaultSSLSocketFactory(
+                sc.getSocketFactory());
+    }
+
+    private static class TrustAllManager implements X509TrustManager
+    {
+        public X509Certificate[] getAcceptedIssuers()
+        {
+            return null;
+        }
+        public void checkServerTrusted(X509Certificate[] certs,
+                                       String authType)
+                throws CertificateException {
+        }
+        public void checkClientTrusted(X509Certificate[] certs,
+                                       String authType)
+                throws CertificateException {
         }
     }
 

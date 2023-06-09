@@ -3,7 +3,6 @@ package com.fido.common.easy_navigation
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -88,7 +87,6 @@ internal fun NavController.putFragment(
     clazz: KClass<out Fragment>
 ): FragmentNavigator.Destination {
     val destId = clazz.hashCode()
-    Log.e("FiDo", "putFragment: destId = ${destId}")
     lateinit var destination: FragmentNavigator.Destination
     if (graph.findNode(destId) == null) {
         destination = (FragmentNavigatorDestinationBuilder(

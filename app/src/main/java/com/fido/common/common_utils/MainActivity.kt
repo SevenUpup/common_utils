@@ -24,6 +24,9 @@ import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_ui.ext.bindData
 import com.fido.common.common_base_ui.ext.image_select.openImageSelect
 import com.fido.common.common_base_ui.ext.image_select.selectImagesPath
+import com.fido.common.common_base_ui.ext.imageview.downloadImage
+import com.fido.common.common_base_ui.ext.imageview.load
+import com.fido.common.common_base_ui.ext.imageview.savePic2Gallery
 import com.fido.common.common_base_ui.ext.permission.extRequestPermission
 import com.fido.common.common_base_ui.ext.vertical
 import com.fido.common.common_base_ui.util.ImagePreviewUtil
@@ -43,6 +46,7 @@ import com.fido.common.common_utils.constraintlayout.ConstraintLayoutAc
 import com.fido.common.common_utils.databinding.ActivityMainBinding
 import com.fido.common.common_utils.databinding.DialogTestBinding
 import com.fido.common.common_utils.edittext.CustomStyleActivity
+import com.fido.common.common_utils.motionlayout.*
 import com.fido.common.common_utils.naviga.CodenavigationAc
 import com.fido.common.common_utils.picker.PickerViewAc
 import com.fido.common.common_utils.rv.RvAc
@@ -125,6 +129,12 @@ class MainActivity : AppCompatActivity() {
         addView<CodenavigationAc>("Go Code Nav")
         addView<ViewpageAc>("Go ViewPage")
         addView<LiveDataAc>("Go LiveData")
+        addView<MotionLayoutAc>("Go MotionLayout")
+        addView<MotionLayoutAc2>("Go MotionLayout2")
+        addView<MotionBall2Ac>("Go MotionBalls2")
+        addView<MotionCollapsibleAc>("Go Collapsible")
+        addView<MotionCarouselAc>("Go Carousel")
+        addView<MotionCustomCarouselAc>("Go CustomCarousel")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {
@@ -159,6 +169,11 @@ class MainActivity : AppCompatActivity() {
         snackbar(v, "i am snackbar", "click me") {
             toast("snackbar")
         }
+//        AssetUtils.saveFileToAssets(this,"https://gd-hbimg.huaban.com/2f6abf65707a397b034a05771783761d4787c59384008-O6OJKL_fw658webp")
+        downloadImage(this,"https://gd-hbimg.huaban.com/2f6abf65707a397b034a05771783761d4787c59384008-O6OJKL_fw658webp"){
+            loge("absolutePath=${it.absolutePath} path=${it.path}")
+            mBinding.iv.load(it)
+        }
     }
 
     fun installApk(v: View) {
@@ -180,10 +195,12 @@ class MainActivity : AppCompatActivity() {
         oa1.duration = 300 //持续时间
         oa1.interpolator = CycleInterpolator(4f) //抖动次数
         oa1.start() //开始动画
+        vibrateShot(500)
     }
 
     fun onAnimShark2(v: View) {
         ShakeAnim.start(mBinding.iv3)
+        vibrateShot(500)
     }
 
     fun codeEditText(v: View) {
@@ -408,6 +425,7 @@ class MainActivity : AppCompatActivity() {
                     },
                     longPressBlock = { popupView, position ->
                         toast("long click muilt ${position}")
+                        savePic2Gallery(imgs[position],this,"image$position")
                     }
                 )
             }

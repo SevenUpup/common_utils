@@ -74,6 +74,14 @@
 
         <activity android:name=".LiveDataAc"/>
 
+        <activity android:name=".motionlayout.MotionLayoutAc"/>
+        <activity android:name=".motionlayout.MotionLayoutAc2"/>
+        <activity android:name=".motionlayout.MotionBallsAc"/>
+        <activity android:name=".motionlayout.MotionBall2Ac"/>
+        <activity android:name=".motionlayout.MotionCollapsibleAc"/>
+        <activity android:name=".motionlayout.MotionCarouselAc"/>
+        <activity android:name=".motionlayout.MotionCustomCarouselAc"/>
+
     </application>
 
 

@@ -2,6 +2,7 @@ package com.fido.common.common_base_ui.ext.imageview
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import com.bumptech.glide.Glide
@@ -46,6 +47,7 @@ fun ImageView.load(
     bottomRightRadius: Float = 0f,
     placeholder: Drawable? = null,
     isCrossFade: Boolean = false,
+    dontAnimate:Boolean = false,
     isForceOriginalSize: Boolean = false
 ) {
 
@@ -72,9 +74,24 @@ fun ImageView.load(
         } else if (topLeftRadius > 0 || topRightRadius > 0 || bottomLeftRadius > 0 || bottomRightRadius > 0) {
 
             if (scaleType == ImageView.ScaleType.CENTER_CROP) {
-                transforms(CenterCrop(), GranularRoundedCorners(topLeftRadius, topRightRadius, bottomRightRadius, bottomLeftRadius))
+                transforms(
+                    CenterCrop(),
+                    GranularRoundedCorners(
+                        topLeftRadius,
+                        topRightRadius,
+                        bottomRightRadius,
+                        bottomLeftRadius
+                    )
+                )
             } else {
-                transform(GranularRoundedCorners(topLeftRadius, topRightRadius, bottomRightRadius, bottomLeftRadius))
+                transform(
+                    GranularRoundedCorners(
+                        topLeftRadius,
+                        topRightRadius,
+                        bottomRightRadius,
+                        bottomLeftRadius
+                    )
+                )
             }
 
         } else if (roundRadius != 0) {
@@ -91,7 +108,10 @@ fun ImageView.load(
     }
 
     //以配置的方式加载图片
-    Glide.with(context).load(url)
+    Glide.with(context)
+        .load(url).apply {
+            if (dontAnimate) dontAnimate()
+        }
         .apply(options)
         .apply {
             if (isCrossFade) transition(DrawableTransitionOptions.withCrossFade())
@@ -123,10 +143,28 @@ fun Any.downloadImage(context: Context?, path: Any?, block: (file: File) -> Unit
 }
 
 /**
+ * SimpleTarget 类实现异步下载
+ */
+fun loadBitmapFormPath(context: Context, path: Any?, block:(Bitmap?)->Unit) =
+    Glide.with(context)
+        .asBitmap()
+        .load(path)
+        .into(object : SimpleTarget<Bitmap>() {
+            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                block(resource)
+            }
+        })
+
+/**
  * 加载出Drawable对象
  */
 @SuppressLint("CheckResult")
-fun Any.loadDrawable(context: Context?, path: Any?, placeholderRes: Int?, block: (drawable: Drawable?) -> Unit) {
+fun Any.loadDrawable(
+    context: Context?,
+    path: Any?,
+    placeholderRes: Int? = 0,
+    block: (drawable: Drawable?) -> Unit
+) {
 
     val options = RequestOptions()
     placeholderRes?.also {

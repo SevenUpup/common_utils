@@ -109,6 +109,11 @@ dependencies {
     debugImplementation "com.bytedance.tools.codelocator:codelocator-lancet-dialog:2.0.0"
     debugImplementation "com.bytedance.tools.codelocator:codelocator-lancet-popup:2.0.0"
 
+    //Stetho Chrome调试  chrome://inspect/#devices
+    //        注册 Stetho inspector
+    //        Stetho.initializeWithDefaults(this)
+    implementation 'com.facebook.stetho:stetho:1.6.0'
+    implementation 'com.facebook.stetho:stetho-okhttp3:1.6.0'
     //kotlin反射
 //    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.31"
 }
