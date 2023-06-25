@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -59,6 +60,12 @@ android {
         viewBinding = true
         dataBinding = true
     }
+
+    kapt {
+        arguments {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
+    }
 }
 
 dependencies {
@@ -116,6 +123,11 @@ dependencies {
     implementation 'com.facebook.stetho:stetho-okhttp3:1.6.0'
     //kotlin反射
 //    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.31"
+
+    implementation deps.android.room_ktx
+    //需添加 apply plugin: 'kotlin-kapt'
+    kapt deps.android.room_compiler
+
 }
 
 /**

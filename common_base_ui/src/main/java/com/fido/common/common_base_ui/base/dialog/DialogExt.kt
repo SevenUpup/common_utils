@@ -73,7 +73,7 @@ inline fun <reified VB : ViewDataBinding> Context.createVBPop(
  * @param layoutResId : your pop xml
  * @param init        : 做一些初始化操作 findViewById等都在这
  */
-fun  Context.createPop(
+fun Context.createPop(
     layoutResId: Int,
     hasShadowBg:Boolean = false,
     isClickThrough:Boolean = false,

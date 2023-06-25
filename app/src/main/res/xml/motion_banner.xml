@@ -12,9 +12,6 @@
             app:dragDirection="dragLeft"
             app:touchAnchorSide="left"/>
 
-        <!--<OnClick
-            app:targetId="@+id/iv01"
-            app:clickAction="transitionToEnd"/>-->
     </Transition>
 
     <Transition android:id="@+id/backward"
@@ -26,9 +23,7 @@
         <OnSwipe
             app:dragDirection="dragRight"
             app:touchAnchorSide="right"/>
-        <!--<OnClick
-            app:targetId="@+id/iv01"
-            app:clickAction="transitionToStart"/>-->
+
     </Transition>
 
     <ConstraintSet android:id="@+id/start">

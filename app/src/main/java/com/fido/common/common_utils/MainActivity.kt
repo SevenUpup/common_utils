@@ -49,6 +49,7 @@ import com.fido.common.common_utils.edittext.CustomStyleActivity
 import com.fido.common.common_utils.motionlayout.*
 import com.fido.common.common_utils.naviga.CodenavigationAc
 import com.fido.common.common_utils.picker.PickerViewAc
+import com.fido.common.common_utils.room.RoomAc
 import com.fido.common.common_utils.rv.RvAc
 import com.fido.common.common_utils.spannable.SpannableAc
 import com.fido.common.common_utils.test.NavigationAc
@@ -96,6 +97,13 @@ class MainActivity : AppCompatActivity() {
 
         createCode()
 
+        mBinding.tvRotationY.rotationY = 30f
+        mBinding.tvRotationY2.rotationY = -30f
+        mBinding.tvRotationX.rotationX = 30f
+        mBinding.tvRotationX2.rotationX = -30f
+        mBinding.tvTranslationZ.translationZ = 10f
+        mBinding.tvTranslationZ2.translationZ = -10f
+
         receiveTag("tag_1") {
             mBinding.btRv.text = "go Rv tag value=$it"
         }
@@ -135,6 +143,8 @@ class MainActivity : AppCompatActivity() {
         addView<MotionCollapsibleAc>("Go Collapsible")
         addView<MotionCarouselAc>("Go Carousel")
         addView<MotionCustomCarouselAc>("Go CustomCarousel")
+        addView<MotionYouTubeAc>("Go FakeYouTube")
+        addView<RoomAc>("Go Room")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {

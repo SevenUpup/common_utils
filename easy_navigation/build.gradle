@@ -55,6 +55,26 @@ android {
     }
     // Kotlin项目生成DOC End
 
+    /**
+     * 生成jar包源码 目录在build/libs下
+     */
+    task makeJar(type: Copy) {
+        //删除存在的
+        delete 'build/libs/easy_navigation.jar'
+        //设置拷贝的文件
+        from('build/intermediates/aar_main_jar/release/')
+        //打进jar包后的文件目录
+        into('build/libs/')
+        //将classes.jar放入build/libs/目录下
+        //include ,exclude参数来设置过滤
+        //（我们只关心classes.jar这个文件）
+        include('classes.jar')
+        //重命名
+        rename ('classes.jar', 'easy_navigation.jar')
+    }
+
+    makeJar.dependsOn(build)
+
 }
 
 dependencies {

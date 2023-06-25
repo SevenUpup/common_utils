@@ -23,7 +23,7 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="13sp"
-            android:maxLines="1"
+            android:maxLines="3"
             android:ellipsize="end"
             android:layout_width="0dp"
             android:layout_weight="1"

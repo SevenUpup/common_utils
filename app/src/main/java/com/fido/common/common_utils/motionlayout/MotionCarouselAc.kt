@@ -77,7 +77,7 @@ class MotionCarouselAc:AppCompatActivity() {
         addFragment(android.R.id.content, fragment)
         Handler().postDelayed({
             fragment.apply {
-            findViewById<View>(R.id.v1).click {
+            findViewById<View>(R.id.v1)?.click {
                 isNext = !isNext
                 startInterval()
             }

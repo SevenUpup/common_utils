@@ -81,6 +81,10 @@
         <activity android:name=".motionlayout.MotionCollapsibleAc"/>
         <activity android:name=".motionlayout.MotionCarouselAc"/>
         <activity android:name=".motionlayout.MotionCustomCarouselAc"/>
+        <activity android:name=".motionlayout.MotionYouTubeAc"/>
+        <activity android:name=".motionlayout.MotionFakeBossListAc"/>
+
+        <activity android:name=".room.RoomAc"/>
 
     </application>
 
