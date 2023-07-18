@@ -56,6 +56,7 @@ import com.fido.common.common_utils.test.NavigationAc
 import com.fido.common.common_utils.time.IntervalTimeAc
 import com.fido.common.common_utils.viewmodel.ViewModelAc
 import com.fido.common.common_utils.viewpager.ViewpageAc
+import com.fido.common.flutter.FlutterInteractiveAc
 import com.fido.common.surface.SurfaceAc
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
@@ -145,6 +146,7 @@ class MainActivity : AppCompatActivity() {
         addView<MotionCustomCarouselAc>("Go CustomCarousel")
         addView<MotionYouTubeAc>("Go FakeYouTube")
         addView<RoomAc>("Go Room")
+        addView<FlutterInteractiveAc>("Go FlutterInteractive")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {

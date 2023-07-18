@@ -1,3 +1,7 @@
+import org.gradle.work.ChangeType
+import org.gradle.work.Incremental
+import org.gradle.work.InputChanges
+
 plugins {
     id 'java-library'
     id 'org.jetbrains.kotlin.jvm'
@@ -11,4 +15,95 @@ java {
 dependencies {
     implementation gradleApi() //必须
     implementation localGroovy() //必须
+}
+
+
+def ht1 = tasks.register("ht1") {
+    it.doLast {
+        println("${it.name}")
+    }
+}
+
+def ht2 = tasks.register("ht2") {
+    it.doLast {
+        println("${it.name}")
+    }
+}
+
+ht1.configure {
+    dependsOn ht2
+}
+
+/**
+ * 增量构建
+ */
+class CopyTask extends DefaultTask {
+
+    // 指定增量输入属性
+    @Incremental
+    // 指定输入
+    @InputFiles
+    FileCollection from
+
+    // 指定输出
+    @OutputDirectory
+    Directory to
+
+//    // task action 执行
+//    @TaskAction
+//    void execute() {
+//        File file = from.getSingleFile()
+//        if (file.isDirectory()) {
+//            from.getAsFileTree().each {
+//                copyFileToDir(it, to)
+//            }
+//        } else {
+//            copyFileToDir(from, to)
+//        }
+//    }
+
+    // task action 执行
+    @TaskAction
+    void execute(InputChanges inputChanges) {
+
+        boolean incremental = inputChanges.incremental
+        println("isIncremental = $incremental")
+
+        inputChanges.getFileChanges(from).each {
+            if (it.fileType != FileType.DIRECTORY) {
+                ChangeType changeType = it.changeType
+                String fileName = it.file.name
+                println("ChangeType = $changeType , ChangeFile = $fileName")
+
+                if (changeType != ChangeType.REMOVED) {
+                    copyFileToDir(it.file, to)
+                }
+            }
+        }
+
+    }
+
+    /**
+     * 复制文件到文件夹
+     * @param src 要复制的文件
+     * @param dir 接收的文件夹
+     * @return
+     */
+    static def copyFileToDir(File file, Directory dir) {
+        File dest = new File("${dir.getAsFile().path}/${file.name}")
+
+        if (!dest.exists()) {
+            dest.createNewFile()
+        }
+
+        dest.withOutputStream {
+            it.write(new FileInputStream(file).getBytes())
+        }
+    }
+
+}
+
+tasks.register("CopyTask", CopyTask) {
+    from = files('from')
+    to = layout.projectDirectory.dir('to')
 }

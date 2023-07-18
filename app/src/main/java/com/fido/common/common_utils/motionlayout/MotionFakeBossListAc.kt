@@ -17,6 +17,10 @@ import com.fido.common.common_utils.databinding.AcMotionFakeBossListBinding
  */
 class MotionFakeBossListAc:BaseVBActivity<AcMotionFakeBossListBinding>() {
 
+    override fun onPostResume() {
+        super.onPostResume()
+    }
+
     override fun getLayoutId(): Int {
         return R.layout.ac_motion_fake_boss_list
     }

@@ -9,6 +9,9 @@ import kotlinx.coroutines.*
 class JModelTest {
 
     companion object{
+
+
+
         @JvmStatic
         fun main(args: Array<String>) {
             val protableBattery:ProtableBattery = MiProtableBattery()
@@ -16,6 +19,9 @@ class JModelTest {
 
             val mi2ProtableBattery = Mi2ProtableBattery(protableBattery)
             mi2ProtableBattery.charge()
+
+            val mBlock = {i:Int -> i + 1 }
+            println(mBlock.invoke(5))
 
             val result = Book().run {
                 name = "test"

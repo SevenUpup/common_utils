@@ -1,8 +1,41 @@
 
 class Example {
+
+    static def myClosure(Closure closure1){
+        println closure1()
+    }
+
+    static Closure<Boolean> isTxtFile = { File it ->
+        it.isFile() && it.name.endsWith(".txt")
+    }
+
     static void main(String[] args) {
         println "Hello Groovy"
-        println 'Hellow World'
+        println 'Hello World'
+
+        def directoryPath = "groovy_lib/from" // 目录的路径
+        def directory = new File(directoryPath)
+
+        // 通过listFiles()方法获取目录下的所有文件
+        def files = directory.listFiles()
+
+        // 遍历文件列表
+        files.each { File file ->
+            println("文件名: ${file.name}")
+            println("文件路径: ${file.path}")
+        }
+
+        new File("groovy_lib/from/copytask.txt").eachLine {
+            println(it)
+        }
+
+        println("isTxtFile = ${isTxtFile(new File('groovy_lib/from/copytask.txt'))}")
+        println("isTxtFile = ${isTxtFile(new File('groovy_lib/to/copytask.txt'))}")
+
+        //类似 .gradle 的 plugins{}
+        myClosure {
+            "FiDo"
+        }
 
         def result = noReturnTypeFun()
         println("result=$result")

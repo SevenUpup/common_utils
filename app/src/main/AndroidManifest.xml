@@ -86,6 +86,16 @@
 
         <activity android:name=".room.RoomAc"/>
 
+
+        <!--注册 FlutterActivity-->
+        <!--<activity
+            android:name="io.flutter.embedding.android.FlutterActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize" />-->
+
+        <activity android:name="com.fido.common.flutter.FlutterInteractiveAc"/>
+
     </application>
 
 

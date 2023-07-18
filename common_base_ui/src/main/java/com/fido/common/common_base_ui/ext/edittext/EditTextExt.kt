@@ -5,6 +5,7 @@ import android.text.TextWatcher
 import android.widget.EditText
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.coroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.onFailure
 import kotlinx.coroutines.flow.*
@@ -48,7 +49,7 @@ private fun EditText.textChanges(): Flow<CharSequence?> {
 
 /**
  * EditText 防抖搜索
- * @param debounceTime 指定时间内发送的只保留最后一个，其他将被丢弃，防抖用的
+ * @param debounceTime  指定时间内发送的只保留最后一个，其他将被丢弃，防抖用的
  * @param doSearchBlock 用于转成自己需要的结果block,一般可能从service 获取后convert成自己需要的Bean
  * @param collectBlock  处理结果，更新UI等
  */
@@ -61,6 +62,7 @@ fun <T> EditText.throttleSearch(
     textChanges()
         .filterNot { it.isNullOrBlank() }
         .debounce(debounceTime)
+        .flowOn(Dispatchers.IO)
         .flatMapLatest {
             flow<T> {
                 emit(doSearchBlock(it))
