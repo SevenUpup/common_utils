@@ -1,5 +1,7 @@
 package com.fido.common.common_utils.test
 
+import java.util.*
+
 /**
 @author FiDo
 @description:
@@ -24,10 +26,17 @@ class FunTest {
             println("person minus = ${20-p} person minus person=${Person("dpz",18) - p}")
             val result = highLevelFunction("Android"){
                 it.length
-                return
+//                return
             }
             println("highLevelFunction $result")
             println("我没有执行？")
+
+            println("generateUniqueId=${generateUniqueId()}")
+        }
+
+        private fun generateUniqueId(): Int {
+            // 生成唯一的 ID
+            return UUID.randomUUID().hashCode()
         }
 
         /**

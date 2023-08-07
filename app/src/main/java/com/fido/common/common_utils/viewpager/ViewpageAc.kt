@@ -9,6 +9,7 @@ import com.fido.common.common_base_ui.ext.*
 import com.fido.common.common_base_ui.util.dp
 import com.fido.common.common_base_ui.util.sp
 import com.fido.common.common_base_util.ext.*
+import com.fido.common.common_base_util.startActivity
 import com.fido.common.common_utils.R
 import com.fido.common.common_utils.databinding.AcViewpageBinding
 import com.fido.common.common_utils.fragment.Nav1Fragment
@@ -34,6 +35,11 @@ class ViewpageAc : BaseVBActivity<AcViewpageBinding>() {
 
     override fun initView() {
         appLanguage = Locale.ENGLISH
+
+        binding.tvVpNotify.click {
+            startActivity<NotifyViewPagerAc>()
+        }
+
         binding.tvClick.apply {
             setDrawable(leftDrawable = R.drawable.ic_zelda, rightDrawable = R.drawable.bg_date_label)
             expandClickArea(25.dp)

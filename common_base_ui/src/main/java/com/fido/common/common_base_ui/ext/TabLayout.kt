@@ -24,7 +24,18 @@ import androidx.annotation.StringRes
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.Tab
 import com.google.android.material.tabs.TabLayoutMediator
+
+val TabLayout.tabs
+    get() = try{
+        this::class.java.getDeclaredField("tabs").let {
+            it.isAccessible = true
+            it.get(this) as? java.util.ArrayList<Tab?> ?: emptyList()
+        }
+    }catch (e:Exception){
+        emptyList()
+    }
 
 inline fun TabLayout.setupWithViewPager(
     viewPager: ViewPager,

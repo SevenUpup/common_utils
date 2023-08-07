@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment
  */
 
 
-// ======================= Android 10 好像没效果 ==========================
+// ======================= 针对 Android 11 及以上 ，否则调用无效 ==========================
 fun Activity.showKeyboard() = changeKeyboard(true)
 fun Activity.hideKeyboard() = changeKeyboard(false)
 

@@ -71,6 +71,7 @@
         <activity android:name=".naviga.CodenavigationAc"/>
 
         <activity android:name=".viewpager.ViewpageAc"/>
+        <activity android:name=".viewpager.NotifyViewPagerAc"/>
 
         <activity android:name=".LiveDataAc"/>
 

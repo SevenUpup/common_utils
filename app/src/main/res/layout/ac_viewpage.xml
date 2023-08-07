@@ -27,6 +27,16 @@
                 android:text="click me"
                 android:gravity="center"
                 android:background="#e6e"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tv_vp_notify"
+                android:layout_marginHorizontal="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ViewPager动态 增删改"
+                android:gravity="center"
+                android:background="#e6e"/>
+
         </LinearLayout>
 
         <com.google.android.material.tabs.TabLayout
