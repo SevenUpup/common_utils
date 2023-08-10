@@ -120,10 +120,10 @@ class CardPagerTransformer(context: Context) : ViewPager.PageTransformer {
 }
 
 /**
- * https://mp.weixin.qq.com/s/iO5FD4Cqqr0rnY-byrDdAQ
  * 动态更新 数据源 后
  * 调用viewPager.adapter?.notifyDataSetChanged() 刷新页面
  */
+//https://mp.weixin.qq.com/s/iO5FD4Cqqr0rnY-byrDdAQ
 class ViewPagerFragmentAdapter(
     private val fm: FragmentManager,
     private val fragments:List<Fragment>,

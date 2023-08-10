@@ -1,6 +1,8 @@
 package com.fido.common.common_utils.viewpager
 
+import android.app.Activity
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -15,15 +17,23 @@ import com.fido.common.common_utils.R
 import com.fido.common.common_utils.databinding.AcNotityViewpagerBinding
 import com.fido.common.common_utils.fragment.Nav1Fragment
 import com.fido.common.common_utils.test.FunTest.Companion.also
+import kotlin.properties.Delegates
 
 /**
 @author FiDo
 @description:
 @date :2023/8/7 15:55
  */
+
+fun <T:View>Activity.id(id:Int) = lazy {
+    findViewById<T>(id)
+}
+
 class NotifyViewPagerAc :AppCompatActivity(){
 
     val binding:AcNotityViewpagerBinding by binding()
+
+    val plusBt by id<TextView>(R.id.plus)
 
     private val fragmentList = mutableListOf(
         Nav1Fragment.getInstance("Fragmeng1"),
@@ -45,13 +55,21 @@ class NotifyViewPagerAc :AppCompatActivity(){
         initEvent()
     }
 
-    private fun initEvent() {
-        binding.plus.click {
-            fragmentList.add(Nav1Fragment.getInstance("Fragment${fragmentList.size+1}"))
-            pageTitles.add("tab${pageTitles.size}")
-            toast("添加了一个新的fragment")
-            adapterNotify()
+    private var lastClickTime by Delegates.observable(0L){ _, oldValue, newValue ->
+        // 在lastClickTime属性值发生变化时执行点击事件
+        if (newValue - oldValue > 1000) {
+            plusFragment()
         }
+    }
+
+    private fun initEvent() {
+        binding.plus.setOnClickListener {
+            //每次点击都会触发Delegates.observable()
+            lastClickTime = System.currentTimeMillis()
+        }
+//        binding.plus.click {
+//            plusFragment()
+//        }
 
         binding.remove.click {
             fragmentList.removeLast()
@@ -79,6 +97,13 @@ class NotifyViewPagerAc :AppCompatActivity(){
 //            binding.mVp.offscreenPageLimit = fragmentList.size-1
             toast("调换了 第一和第三fragment的位置")
         }
+    }
+
+    private fun plusFragment() {
+        fragmentList.add(Nav1Fragment.getInstance("Fragment${fragmentList.size+1}"))
+        pageTitles.add("tab${pageTitles.size}")
+        toast("添加了一个新的fragment")
+        adapterNotify()
     }
 
     private fun adapterNotify() {

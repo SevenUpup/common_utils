@@ -51,6 +51,7 @@ import com.fido.common.common_utils.naviga.CodenavigationAc
 import com.fido.common.common_utils.picker.PickerViewAc
 import com.fido.common.common_utils.room.RoomAc
 import com.fido.common.common_utils.rv.RvAc
+import com.fido.common.common_utils.sp.SPAc
 import com.fido.common.common_utils.spannable.SpannableAc
 import com.fido.common.common_utils.test.NavigationAc
 import com.fido.common.common_utils.time.IntervalTimeAc
@@ -147,6 +148,8 @@ class MainActivity : AppCompatActivity() {
         addView<MotionYouTubeAc>("Go FakeYouTube")
         addView<RoomAc>("Go Room")
         addView<FlutterInteractiveAc>("Go FlutterInteractive")
+        addView<SPAc>("Go SP")
+
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {

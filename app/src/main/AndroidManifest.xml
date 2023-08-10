@@ -75,6 +75,8 @@
 
         <activity android:name=".LiveDataAc"/>
 
+        <activity android:name=".sp.SPAc"/>
+
         <activity android:name=".motionlayout.MotionLayoutAc"/>
         <activity android:name=".motionlayout.MotionLayoutAc2"/>
         <activity android:name=".motionlayout.MotionBallsAc"/>
