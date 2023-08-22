@@ -9,13 +9,13 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-
 object RVScrollUtils {
 
     /**
      * 缓慢滚动
      */
-    fun rvSmoothScrollToPosition(recyclerView: RecyclerView, layoutManager: LinearLayoutManager, position: Int) {
+    @JvmStatic
+    fun rvSmoothScrollToPosition(recyclerView: RecyclerView, layoutManager: LinearLayoutManager, position: Int,orientation: Int = RecyclerView.VERTICAL) {
 
         var smoothScrolling = true
 
@@ -24,8 +24,13 @@ object RVScrollUtils {
 
         if (position in (firstPos + 1) until lastPos) {
             val childAt: View? = layoutManager.findViewByPosition(position)
-            val top = childAt?.top ?: 0
-            recyclerView.smoothScrollBy(0, top)
+            if (orientation == RecyclerView.VERTICAL) {
+                val top = childAt?.top ?: 0
+                recyclerView.smoothScrollBy(0, top)
+            } else {
+                val left = childAt?.left ?: 0
+                recyclerView.smoothScrollBy(left,0)
+            }
 
         } else {
 
@@ -38,8 +43,13 @@ object RVScrollUtils {
                         if (position in layoutManager.findFirstVisibleItemPosition() + 1..layoutManager.findLastVisibleItemPosition()) {
 
                             val childAt: View? = layoutManager.findViewByPosition(position)
-                            val top = childAt?.top ?: 0
-                            recyclerView.scrollBy(0, top)
+                            if (orientation == RecyclerView.VERTICAL) {
+                                val top = childAt?.top ?: 0
+                                recyclerView.scrollBy(0, top)
+                            } else {
+                                val left = childAt?.left ?: 0
+                                recyclerView.scrollBy(left,0)
+                            }
 
                             recyclerView.removeOnScrollListener(this)
                         }
@@ -47,20 +57,17 @@ object RVScrollUtils {
                     }
                 }
 
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                }
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {}
             })
-
             recyclerView.smoothScrollToPosition(position)
         }
-
     }
-
 
     /**
      * 直接跳转刷新Layout
      */
-    fun rvScrollToPosition(rv: RecyclerView, layoutManager: LinearLayoutManager, position: Int) {
+    @JvmStatic
+    fun rvScrollToPosition(rv: RecyclerView, layoutManager: LinearLayoutManager, position: Int,orientation: Int = RecyclerView.VERTICAL) {
 
         val firstPos = layoutManager.findFirstVisibleItemPosition()
         val lastPos: Int = layoutManager.findLastVisibleItemPosition()
@@ -72,9 +79,13 @@ object RVScrollUtils {
         } else if (position <= lastPos) {
             //当要置顶的项已经在屏幕上显示时,通过LayoutManager
             val childAt: View? = layoutManager.findViewByPosition(position)
-            val top = childAt?.top ?: 0
-            rv.scrollBy(0, top)
-
+            if (orientation == RecyclerView.VERTICAL) {
+                val top = childAt?.top ?: 0
+                rv.scrollBy(0, top)
+            } else {
+                val left = childAt?.left ?: 0
+                rv.scrollBy(left, 0)
+            }
         } else {
             //当要置顶的项在当前显示的最后一项之后
             layoutManager.scrollToPositionWithOffset(position, 0)
