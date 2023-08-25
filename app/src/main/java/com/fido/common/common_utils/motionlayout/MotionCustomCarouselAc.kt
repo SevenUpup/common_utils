@@ -11,7 +11,7 @@ import com.fido.common.common_base_ui.ext.imageview.load
 import com.fido.common.common_base_ui.ext.imageview.loadDrawable
 import com.fido.common.common_base_util.ext.loge
 import com.fido.common.common_base_util.ext.toast
-import com.fido.common.common_base_util.util.time.interval
+import com.fido.common.common_base_util.util.timer.interval
 import com.fido.common.common_utils.databinding.AcMotionCustonCarouselBinding
 import com.fido.common.common_utils.widgets.dp
 

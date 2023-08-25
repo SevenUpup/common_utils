@@ -4,9 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.fido.common.common_base_util.util.time.Interval
-import com.fido.common.common_base_util.util.time.countDown
-import com.fido.common.common_utils.App
+import com.fido.common.common_base_util.util.timer.Interval
+import com.fido.common.common_base_util.util.timer.countDown
 import com.fido.common.common_utils.databinding.AcIntervalTimeBinding
 import com.fido.common.common_utils.R
 import java.util.concurrent.TimeUnit

@@ -1,14 +1,103 @@
 package com.fido.common.common_base_util.ext
 
-import java.text.SimpleDateFormat
-import java.util.*
-import java.util.concurrent.TimeUnit
 import android.annotation.SuppressLint
 import java.text.DateFormat
 import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
+
 /**
  * 时间日期相关
  */
+
+/**
+ * 两个日期比较结果
+ * END_TIME_LESS 结束时间小于开始时间 END_TIME_EQUAL 开始时间与结束时间相同 END_TIME_GREATER 结束时间大于开始时间
+ * @return com.fido.common.common_base_util.ext.DateCompare
+ */
+fun dateCompare(startDate:String,endDate:String,format: String="yyyy-MM-dd"):DateCompare{
+    var result:DateCompare = DateCompare.ERROR
+    try {
+        val dateFormat = SimpleDateFormat(format)
+        val startDate: Date = dateFormat.parse(startDate) // 开始时间
+        val endDate: Date = dateFormat.parse(endDate)   // 结束时间
+        if (endDate.time < startDate.time) {
+            //结束时间小于开始时间
+            result = DateCompare.END_TIME_LESS
+        } else if (endDate.time == startDate.time) {
+            //开始时间与结束时间相同
+            result = DateCompare.END_TIME_EQUAL
+        } else if (endDate.time > startDate.time) {
+            //结束时间大于开始时间
+            result = DateCompare.END_TIME_GREATER
+        }
+        return result
+    }catch (e:Exception){
+        return result
+    }
+}
+
+/**
+ * needFormat == false 根据已格式化的时间“2023-08-23” 截取指定位置 year 2023
+ * needFormat == true  xxxxxxxxx  格式化为 指定时间后 截取 year
+ */
+fun String.getYearFromTime(
+    needFormat: Boolean = false,
+    format: String = "yyyy-MM-dd"
+) = if (needFormat) {
+    formatDateString(format).run {
+        substring(indexOfFirst { it.toString().lowercase() == "y" },( indexOfLast { it.toString().lowercase() == "y" } + 1 ))
+    }
+} else {
+    substring(0,4)
+}
+
+/**
+ * needFormat
+ * @param needFormat == false 根据已格式化的时间“2023-08-23” 截取指定位置 month
+ *                   == true  xxxxxxxxx  格式化为 指定时间后 截取 month
+ * @param format  优先根据 format 进行解析获取 month 值
+ */
+fun String.getMonthFromTime(
+    needFormat: Boolean = false,
+    format: String = "yyyy-MM-dd"
+) = if (needFormat) {
+    formatDateString(format).run {
+        substring(indexOfFirst { it.toString().lowercase() == "m" },( indexOfLast { it.toString().lowercase() == "m" } + 1 ))
+    }
+} else {
+    if (format.isNotBlank()) {
+        val startPos = format.indexOfFirst { it.toString().lowercase() == "m" }
+        val endPos = format.indexOfLast { it.toString().lowercase() == "m" } + 1
+        substring(startPos,endPos)
+    } else {
+        substring(5,7)
+    }
+}
+
+/**
+ * needFormat
+ * @param needFormat == false 根据已格式化的时间“2023-08-23” 截取指定位置 day
+ *                   == true  xxxxxxxxx  格式化为 指定时间后 截取 day
+ * @param format  优先根据 format 进行解析获取 day 值
+ */
+fun String.getDayFromTime(
+    needFormat: Boolean = false,
+    format: String = "yyyy-MM-dd"
+) = if (needFormat) {
+    formatDateString(format).run {
+        substring(indexOfFirst { it.toString().lowercase() == "d" },( indexOfLast { it.toString().lowercase() == "d" } + 1 ))
+    }
+} else {
+    if (format.isNotBlank()) {
+        val startPos = format.indexOfFirst { it.toString().lowercase() == "d" }
+        val endPos = format.indexOfLast { it.toString().lowercase() == "d" } + 1
+        substring(startPos,endPos)
+    } else {
+        substring(8,10)
+    }
+}
 
 
 /**
@@ -478,4 +567,27 @@ val Long.dayOfWeek: Int
  */
 fun dayOfWeek(time: String, format: DateFormat = DefaultDateFormat.DEFAULT_FORMAT.get()!!): Int {
     return parseString2Date(time, format).dayOfWeek
+}
+
+/**
+ * 时间比较枚举
+ */
+enum class DateCompare{
+    /**
+     * 开始时间 大于 结束时间
+     */
+    END_TIME_GREATER,
+    /**
+     * 开始时间 等于 结束时间
+     */
+    END_TIME_EQUAL,
+    /**
+     * 开始时间 小于 结束时间
+     */
+    END_TIME_LESS,
+
+    /**
+     * default error
+     */
+    ERROR
 }

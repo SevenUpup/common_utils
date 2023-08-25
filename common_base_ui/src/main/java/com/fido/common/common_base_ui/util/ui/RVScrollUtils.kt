@@ -12,16 +12,16 @@ import androidx.recyclerview.widget.RecyclerView
 object RVScrollUtils {
 
     /**
-     * 缓慢滚动
+     * 缓慢滚动且会根据Rv方向自动滚动到相应位置
      */
     @JvmStatic
-    fun rvSmoothScrollToPosition(recyclerView: RecyclerView, layoutManager: LinearLayoutManager, position: Int,orientation: Int = RecyclerView.VERTICAL) {
+    fun rvSmoothScrollToPosition(recyclerView: RecyclerView, layoutManager: LinearLayoutManager, position: Int) {
 
         var smoothScrolling = true
 
         val firstPos: Int = layoutManager.findFirstVisibleItemPosition()
         val lastPos: Int = layoutManager.findLastVisibleItemPosition()
-
+        val orientation = layoutManager.orientation
         if (position in (firstPos + 1) until lastPos) {
             val childAt: View? = layoutManager.findViewByPosition(position)
             if (orientation == RecyclerView.VERTICAL) {
@@ -31,9 +31,7 @@ object RVScrollUtils {
                 val left = childAt?.left ?: 0
                 recyclerView.smoothScrollBy(left,0)
             }
-
         } else {
-
             recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -50,7 +48,6 @@ object RVScrollUtils {
                                 val left = childAt?.left ?: 0
                                 recyclerView.scrollBy(left,0)
                             }
-
                             recyclerView.removeOnScrollListener(this)
                         }
                         smoothScrolling = false
@@ -67,7 +64,7 @@ object RVScrollUtils {
      * 直接跳转刷新Layout
      */
     @JvmStatic
-    fun rvScrollToPosition(rv: RecyclerView, layoutManager: LinearLayoutManager, position: Int,orientation: Int = RecyclerView.VERTICAL) {
+    fun rvScrollToPosition(rv: RecyclerView, layoutManager: LinearLayoutManager, position: Int) {
 
         val firstPos = layoutManager.findFirstVisibleItemPosition()
         val lastPos: Int = layoutManager.findLastVisibleItemPosition()
@@ -79,7 +76,7 @@ object RVScrollUtils {
         } else if (position <= lastPos) {
             //当要置顶的项已经在屏幕上显示时,通过LayoutManager
             val childAt: View? = layoutManager.findViewByPosition(position)
-            if (orientation == RecyclerView.VERTICAL) {
+            if (layoutManager.orientation == RecyclerView.VERTICAL) {
                 val top = childAt?.top ?: 0
                 rv.scrollBy(0, top)
             } else {

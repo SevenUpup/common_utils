@@ -1,4 +1,4 @@
-package com.fido.common.common_base_util.util.time
+package com.fido.common.common_base_util.util.timer
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle.Event

@@ -6,11 +6,15 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.view.animation.CycleInterpolator
 import android.widget.Button
 import android.widget.TextView
@@ -30,6 +34,8 @@ import com.fido.common.common_base_ui.ext.imageview.savePic2Gallery
 import com.fido.common.common_base_ui.ext.permission.extRequestPermission
 import com.fido.common.common_base_ui.ext.vertical
 import com.fido.common.common_base_ui.util.ImagePreviewUtil
+import com.fido.common.common_base_ui.util.showNormalListDialog
+import com.fido.common.common_base_ui.util.throttleClick
 import com.fido.common.common_base_util.*
 import com.fido.common.common_base_util.channel.receiveTag
 import com.fido.common.common_base_util.channel.sendStickEvent
@@ -37,11 +43,13 @@ import com.fido.common.common_base_util.channel.sendStickTag
 import com.fido.common.common_base_util.ext.*
 import com.fido.common.common_base_util.util.AssetUtils
 import com.fido.common.common_base_util.util.ImageCodeUtils
+import com.fido.common.common_base_util.util.ShellUtils
 import com.fido.common.common_base_util.util.emoji.EmojiChecker
-import com.fido.common.common_base_util.util.time.Interval
+import com.fido.common.common_base_util.util.timer.Interval
 import com.fido.common.common_utils.anim.ShakeAnim
 import com.fido.common.common_utils.anim.AnimUtils
 import com.fido.common.common_utils.banner.BannerAc
+import com.fido.common.common_utils.calendar.WriteCalendarAc
 import com.fido.common.common_utils.constraintlayout.ConstraintLayoutAc
 import com.fido.common.common_utils.databinding.ActivityMainBinding
 import com.fido.common.common_utils.databinding.DialogTestBinding
@@ -61,7 +69,11 @@ import com.fido.common.flutter.FlutterInteractiveAc
 import com.fido.common.surface.SurfaceAc
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
+import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.enums.PopupPosition
+import com.lxj.xpopup.impl.BottomListPopupView
+import com.lxj.xpopup.widget.SmartDragLayout
 import java.io.File
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
@@ -73,13 +85,23 @@ data class P(val name: String)
 class MainActivity : AppCompatActivity() {
 
     private val mBinding: ActivityMainBinding by binding()
+    var pop:BottomListPopupView?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        Log.e("FiDo", "appLanguage = ${appLanguage} packageName=${packageInfo.packageName} currentTime = ${currentTimeString().getYearFromTime()} ${currentTimeString().getMonthFromTime()} ${currentTimeString().getDayFromTime()}")
+        val date = "2322-06-21"
+        Log.e("FiDo", "$date 解析结果 year=${date.getYearFromTime()} month=${date.getMonthFromTime()} day=${date.getDayFromTime()}")
+        Log.e("FiDo", "currentTimeString = ${currentTimeString()} compareresult = ${dateCompare(currentTimeString(),date)}")
 
-        Log.e("FiDo", "appLanguage = ${appLanguage}", )
+        Handler().postDelayed({
+
+            toast("exe cmd")
+//            ShellUtils.execCmd("adb shell input keyevent 26",false)
+            ShellUtils.execCmd("adb shell monkey -p <${packageInfo.packageName}> -v 500",false) },2000)
+//        ShellUtils.execCmd("adb shell top",false)
+
         thread {
             sendStickEvent(P("xpz"))
             sendStickEvent(P("dpz"))
@@ -99,6 +121,66 @@ class MainActivity : AppCompatActivity() {
 
         createCode()
 
+        mBinding.tvRotationY2.throttleClick {
+            showNormalListDialog(listOf("1", "2", "3", "4", "5"),"test",Gravity.BOTTOM){position, text ->
+                toast(text)
+            }
+        }
+
+        mBinding.tvRotationY.throttleClick {
+            if (pop == null){
+                pop = XPopup.Builder(this@MainActivity).run {
+                    isDestroyOnDismiss(false)
+                    autoOpenSoftInput(false)
+                    isDarkTheme(false)
+                    asBottomList(
+                        title,
+                        listOf("1", "2", "3", "4", "5").toTypedArray()
+                    ) { position, text ->
+                        toast(text)
+                    }
+                }
+            }
+            pop?.show()
+
+            var dragLayout:SmartDragLayout?=null
+            try {
+                BottomPopupView::class.java.getDeclaredField("bottomPopupContainer").run {
+                    isAccessible = true
+                    dragLayout = get(pop) as SmartDragLayout
+//                    dragLayout?.setDuration(400)
+                }
+            }catch (e:Exception){
+                loge(e.message.toString())
+                toast(e.message)
+            }
+            val childView =  SmartDragLayout::class.java.getDeclaredField("child").run {
+                isAccessible = true
+                get(dragLayout) as?  View
+            }
+
+            dragLayout?.viewTreeObserver?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    if (measuredWidth > 0 && measuredHeight > 0) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                        } else {
+                            viewTreeObserver.removeGlobalOnLayoutListener(this)
+                        }
+                        childView?.post {
+                            val minH = SmartDragLayout::class.java.getDeclaredField("minY").run {
+                                isAccessible = true
+                                set(dragLayout, (((childView?.height?:0) * 0.9).toInt()))
+                                get(dragLayout) as? Int
+                            }
+                            loge("minH=${minH}")
+                        }
+                    }
+                }
+            })
+
+        }
         mBinding.tvRotationY.rotationY = 30f
         mBinding.tvRotationY2.rotationY = -30f
         mBinding.tvRotationX.rotationX = 30f
@@ -149,7 +231,7 @@ class MainActivity : AppCompatActivity() {
         addView<RoomAc>("Go Room")
         addView<FlutterInteractiveAc>("Go FlutterInteractive")
         addView<SPAc>("Go SP")
-
+        addView<WriteCalendarAc>("WriteCalendar")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {

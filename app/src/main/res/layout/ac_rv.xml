@@ -35,6 +35,11 @@
             android:text="scroll pos"/>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mHorizRv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mRv"
             android:layout_width="match_parent"
             android:layout_height="0dp"

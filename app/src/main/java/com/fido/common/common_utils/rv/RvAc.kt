@@ -20,7 +20,7 @@ import com.fido.common.common_base_ui.util.ui.SmoothLinearLayoutManager
 import com.fido.common.common_base_util.ext.click
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.startActivity
-import com.fido.common.common_base_util.util.time.Interval
+import com.fido.common.common_base_util.util.timer.Interval
 import com.fido.common.common_utils.R
 import com.fido.common.common_utils.databinding.AcRvBinding
 import com.fido.common.common_utils.databinding.ItemRvImgBinding
@@ -111,10 +111,20 @@ class RvAc:AppCompatActivity() {
         mBinding.btScroll.click {
             RVScrollUtils.rvSmoothScrollToPosition(mRv, layoutManager, 5)
             RVScrollUtils.rvSmoothScrollToPosition(mRv2, layoutManager2, 5)
+
+            RVScrollUtils.rvSmoothScrollToPosition(mBinding.mHorizRv,mBinding.mHorizRv.layoutManager as LinearLayoutManager,5)
         }
     }
 
     private fun initView() {
+        mBinding.mHorizRv.horizontal()
+            .bindData(
+                mutableListOf("horizontal 1", "horizontal 2", "horizontal 3", "呵呵我嘿嘿","1", "2", "3", "呵呵我嘿嘿","1", "2", "3", "呵呵我嘿嘿","1", "2", "3", "呵呵我嘿嘿"),
+                R.layout.item_rv_text_img
+            ) { holder, position, item ->
+                holder.setText(R.id.mTv, "$position-->${item}")
+            }
+
         mRv = mBinding.mRv
         mRv2 = mBinding.mRv2
 

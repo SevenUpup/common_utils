@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tip"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textColor="@color/colorTextBlack"
+        android:textSize="16sp"
+        android:text="需要申请 ：\nandroid.permission.READ_CALENDAR\nandroid.permission.WRITE_CALENDAR"/>
+
+    <Button
+        android:id="@+id/bt_write"
+        app:layout_constraintTop_toBottomOf="@id/tip"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="写入calendar"/>
+
+    <Button
+        android:id="@+id/bt_delete"
+        app:layout_constraintTop_toBottomOf="@id/bt_write"
+        app:layout_constraintLeft_toLeftOf="@id/bt_write"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="删除calendar"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,6 +26,22 @@ class TestDemo {
 
         @JvmStatic
         fun main(args: Array<String>) {
+            val strDate = "yyyy-MM-dd"
+
+            println("date index start")
+            println(strDate.indexOfFirst { it.toString().lowercase() == "y" })
+            println(strDate.indexOfLast { it.toString().lowercase() == "y" })
+            println(strDate.indexOfFirst { it.toString().lowercase() == "m" })
+            println(strDate.indexOfLast { it.toString().lowercase() == "m" })
+            println(strDate.indexOfFirst { it.toString().lowercase() == "d" })
+            println(strDate.indexOfLast { it.toString().lowercase() == "d" })
+            println(strDate.indexOfFirst { it.toString().lowercase() == "h" })
+            println(strDate.indexOfLast { it.toString().lowercase() == "h" })
+
+            println("date index end")
+
+            println("${0%4} ${1%4} ${2%4} ${3%4} ${4%4} ${5%4} ${6%4}")
+
             val a = -10
             var b = a.shl(2) // 按位左移
             var c = a.shr(2) // 右移运算符

@@ -180,3 +180,18 @@ configurations.all {
         }
     }
 }
+
+
+// ======================= Test Gradle ========================
+// 自定义Gradle任务，用于计算APK中的图片数量
+task countImagesInApk(type: GradleBuild) {
+    dependsOn('assembleDebug')
+
+    doLast {
+        def drawableResDir = file('src/main/res/drawable')
+        def imageFiles = drawableResDir.listFiles() as File[]
+        def imageCount = imageFiles.size()
+
+        println "Image count in APK: $imageCount"
+    }
+}

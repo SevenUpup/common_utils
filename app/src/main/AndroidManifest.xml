@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.fido.common">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -22,6 +23,9 @@
 
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
+
+    <uses-permission android:name="android.permission.READ_CALENDAR"/>
+    <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
 
     <application
         android:name=".App"
@@ -98,6 +102,9 @@
             android:windowSoftInputMode="adjustResize" />-->
 
         <activity android:name="com.fido.common.flutter.FlutterInteractiveAc"/>
+
+        <activity android:name=".calendar.WriteCalendarAc"/>
+
 
     </application>
 
