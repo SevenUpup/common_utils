@@ -40,6 +40,7 @@ class SurfaceAc : BaseVBActivity<AcSurfaceBinding>(), SurfaceHolder.Callback {
     }
 
     override fun initData() {
+//        binding.included.mIv.setImageResource(R.drawable.ic_zelda)
     }
 
     override fun initEvent() {

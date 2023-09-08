@@ -8,7 +8,9 @@ class ADBTest {
         @JvmStatic
         fun main(args: Array<String>) {
             println("start adb")
-            ShellUtils.execCmd("adb shell input keyevent 26",false)
+//            ShellUtils.execCmd("adb shell input keyevent 26",false)
+            ShellUtils.execCmd("adb shell screencap /sdcard/screenshot.png",false)
+            println("end adb")
         }
     }
 }

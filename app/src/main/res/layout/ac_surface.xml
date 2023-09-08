@@ -20,5 +20,9 @@
 
         </FrameLayout>
 
+       <!-- <include
+            android:id="@+id/included"
+            layout="@layout/item_rv_img"/>-->
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

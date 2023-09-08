@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">common_utils</string>
+    <string name="accessibility_description">跳过开屏广告</string>
 </resources>

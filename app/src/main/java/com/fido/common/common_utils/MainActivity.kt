@@ -46,6 +46,7 @@ import com.fido.common.common_base_util.util.ImageCodeUtils
 import com.fido.common.common_base_util.util.ShellUtils
 import com.fido.common.common_base_util.util.emoji.EmojiChecker
 import com.fido.common.common_base_util.util.timer.Interval
+import com.fido.common.common_utils.accessibility.AdSkipAc
 import com.fido.common.common_utils.anim.ShakeAnim
 import com.fido.common.common_utils.anim.AnimUtils
 import com.fido.common.common_utils.banner.BannerAc
@@ -232,6 +233,7 @@ class MainActivity : AppCompatActivity() {
         addView<FlutterInteractiveAc>("Go FlutterInteractive")
         addView<SPAc>("Go SP")
         addView<WriteCalendarAc>("WriteCalendar")
+        addView<AdSkipAc>("无障碍服务-跳过开屏广告")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {
