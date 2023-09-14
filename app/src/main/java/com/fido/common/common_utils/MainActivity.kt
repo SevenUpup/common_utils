@@ -47,13 +47,14 @@ import com.fido.common.common_base_util.util.ShellUtils
 import com.fido.common.common_base_util.util.emoji.EmojiChecker
 import com.fido.common.common_base_util.util.timer.Interval
 import com.fido.common.common_utils.accessibility.AdSkipAc
-import com.fido.common.common_utils.anim.ShakeAnim
 import com.fido.common.common_utils.anim.AnimUtils
+import com.fido.common.common_utils.anim.ShakeAnim
 import com.fido.common.common_utils.banner.BannerAc
 import com.fido.common.common_utils.calendar.WriteCalendarAc
 import com.fido.common.common_utils.constraintlayout.ConstraintLayoutAc
 import com.fido.common.common_utils.databinding.ActivityMainBinding
 import com.fido.common.common_utils.databinding.DialogTestBinding
+import com.fido.common.common_utils.databinding.LayoutHeaderViewBinding
 import com.fido.common.common_utils.edittext.CustomStyleActivity
 import com.fido.common.common_utils.motionlayout.*
 import com.fido.common.common_utils.naviga.CodenavigationAc
@@ -233,7 +234,7 @@ class MainActivity : AppCompatActivity() {
         addView<FlutterInteractiveAc>("Go FlutterInteractive")
         addView<SPAc>("Go SP")
         addView<WriteCalendarAc>("WriteCalendar")
-        addView<AdSkipAc>("无障碍服务-跳过开屏广告")
+        addView<AdSkipAc>("无障碍服务-skip开屏广告")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {
@@ -449,14 +450,43 @@ class MainActivity : AppCompatActivity() {
             startActivity<IntervalTimeAc>()
         }
         mBinding.permission.setOnClickListener {
-            extRequestPermission(
+
+            val pop = createPop(
+                R.layout.layout_header_view,
+                offsetY = 200,
+                isCenterHorizontal = true,
+//                hasShadowBg = true,
+//                hasStatusBarShadow = true,
+                isDestroyOnDismiss = true
+            ){
+                findViewById<TextView>(R.id.tv_header_title).apply {
+                    height(100.dp)
+                    width(getScreenWidthPx()-200)
+                    text = "hello kotlin"
+                    rectangleCornerBg(R.color.purple_500,10f)
+                    throttleClick {
+                        toast("level 1")
+                    }
+                }
+            }
+            pop.show()
+
+            createVBPop<LayoutHeaderViewBinding>(R.layout.layout_header_view, offsetY = 500, popPosition = PopupPosition.Bottom){
+                this.tvHeaderTitle.apply {
+                    widthAndHeight(getScreenWidthPx()-300,50.dp)
+                    rectangleCornerBg(R.color.colorAccent,20f)
+                    text = "i am databinding"
+                }
+            }.show()
+
+            /*extRequestPermission(
                 listOf(
                     android.Manifest.permission.ACCESS_FINE_LOCATION,
                     android.Manifest.permission.ACCESS_COARSE_LOCATION
-                ), "不给权限怎么玩！"
+                ), ""
             ) {
-
-            }
+                pop.dismiss()
+            }*/
         }
         mBinding.btOpenImage.setOnClickListener {
             extRequestPermission(

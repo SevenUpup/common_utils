@@ -24,9 +24,41 @@ class TestDemo {
 
         fun p(any: Any) = println(any)
 
+        abstract class BasePop{
+            open fun getImpLayoutId() = -1
+        }
+
+        open class HPop :BasePop{
+            constructor()  {
+                println("HPopconstructor ======== ${getImpLayoutId()}")
+            }
+
+            init {
+                println("HPop init ======== ${getImpLayoutId()}")
+            }
+
+            override fun getImpLayoutId(): Int {
+                return super.getImpLayoutId()
+            }
+        }
+
+        class TPop(val num: Int):HPop(){
+            override fun getImpLayoutId(): Int  = num
+
+            constructor() : this(777) {
+                println("TPop constructor ======== ${getImpLayoutId()}")
+            }
+
+            init{
+                println("TPop init ======== ${getImpLayoutId()}")
+            }
+        }
+
         @JvmStatic
         fun main(args: Array<String>) {
             val strDate = "yyyy-MM-dd"
+
+            TPop(999999)
 
             println("date index start")
             println(strDate.indexOfFirst { it.toString().lowercase() == "y" })

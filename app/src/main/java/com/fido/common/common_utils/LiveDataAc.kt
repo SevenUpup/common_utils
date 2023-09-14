@@ -1,9 +1,14 @@
 package com.fido.common.common_utils
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.fido.common.common_base_ui.base.viewbinding.binding
+import com.fido.common.common_base_ui.util.dp
+import com.fido.common.common_base_ui.util.throttleClick
 import com.fido.common.common_base_util.ext.*
+import com.fido.common.common_base_util.getColor
+import com.fido.common.common_base_util.getScreenWidthPx
 import com.fido.common.common_base_util.toJson
 import com.fido.common.common_utils.databinding.AcLivedataBinding
 
@@ -33,8 +38,21 @@ class LiveDataAc: AppCompatActivity() {
         binding.root.click {
             toast("click root")
             wifi.startScan()
+            addView()
         }
 
+        binding.container.throttleClick {
+            addView()
+        }
+
+    }
+
+    fun addView(){
+        binding.container.addView(View(this@LiveDataAc).apply {
+            widthAndHeight(getScreenWidthPx(),100.dp)
+            setBackgroundColor(R.color.black.getColor)
+        })
+        binding.container.translationY = 200f
     }
 
 }
