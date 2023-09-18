@@ -69,10 +69,12 @@ import com.fido.common.common_utils.viewmodel.ViewModelAc
 import com.fido.common.common_utils.viewpager.ViewpageAc
 import com.fido.common.flutter.FlutterInteractiveAc
 import com.fido.common.surface.SurfaceAc
+import com.fido.common.textview.TextViewAc
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BottomPopupView
+import com.lxj.xpopup.enums.PopupAnimation
 import com.lxj.xpopup.enums.PopupPosition
 import com.lxj.xpopup.impl.BottomListPopupView
 import com.lxj.xpopup.widget.SmartDragLayout
@@ -235,6 +237,7 @@ class MainActivity : AppCompatActivity() {
         addView<SPAc>("Go SP")
         addView<WriteCalendarAc>("WriteCalendar")
         addView<AdSkipAc>("无障碍服务-skip开屏广告")
+        addView<TextViewAc>("textview 根据控件大小自动缩放")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {
@@ -471,22 +474,24 @@ class MainActivity : AppCompatActivity() {
             }
             pop.show()
 
-            createVBPop<LayoutHeaderViewBinding>(R.layout.layout_header_view, offsetY = 500, popPosition = PopupPosition.Bottom){
+            val pop2 = createVBPop<LayoutHeaderViewBinding>(R.layout.layout_header_view, offsetY = 500, popAnima = PopupAnimation.TranslateFromTop, isCenterHorizontal = true){
                 this.tvHeaderTitle.apply {
                     widthAndHeight(getScreenWidthPx()-300,50.dp)
                     rectangleCornerBg(R.color.colorAccent,20f)
                     text = "i am databinding"
                 }
-            }.show()
+            }
+            pop2.show()
 
-            /*extRequestPermission(
+            extRequestPermission(
                 listOf(
                     android.Manifest.permission.ACCESS_FINE_LOCATION,
                     android.Manifest.permission.ACCESS_COARSE_LOCATION
                 ), ""
             ) {
                 pop.dismiss()
-            }*/
+                pop2.dismiss()
+            }
         }
         mBinding.btOpenImage.setOnClickListener {
             extRequestPermission(

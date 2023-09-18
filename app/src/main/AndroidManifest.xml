@@ -92,7 +92,7 @@
         <activity android:name=".motionlayout.MotionFakeBossListAc"/>
 
         <activity android:name=".room.RoomAc"/>
-
+        <activity android:name="com.fido.common.textview.TextViewAc"/>
 
         <!--注册 FlutterActivity-->
         <!--<activity

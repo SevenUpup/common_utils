@@ -17,6 +17,11 @@
            android:orientation="vertical">
 
            <TextView
+               android:id="@+id/tv_dynamic"
+               android:layout_width="match_parent"
+               android:layout_height="60dp"/>
+
+           <TextView
                android:id="@+id/tv"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"/>
@@ -225,7 +230,6 @@
                    app:maxCodeLength="6"
                    app:showCursor="true"
                    tools:text="111" />
-
 
                <com.fido.common.common_base_ui.widget.edittext.CodeEditText
                    android:layout_width="match_parent"

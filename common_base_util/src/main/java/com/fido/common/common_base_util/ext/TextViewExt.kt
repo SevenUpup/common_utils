@@ -5,8 +5,10 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.CountDownTimer
+import android.text.TextPaint
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.TypedValue
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.FontRes
@@ -21,6 +23,24 @@ import kotlin.math.roundToInt
 @date :2023/5/16 10:35
  */
 // ============================ TextView ===============================
+/**
+ * TextView根据指定宽度，自动缩放文字大小，用已放下全部内容
+ */
+fun TextView.adjustTextSize(maxWidth: Int,text: String) = adjustTvTextSize(this,maxWidth,text)
+
+internal fun adjustTvTextSize(tv: TextView, maxWidth: Int, text: String) {
+    val avaiWidth = maxWidth - tv.paddingLeft - tv.paddingRight
+    if (avaiWidth <= 0) {
+        return
+    }
+    val textPaintClone = TextPaint(tv.paint)
+    var trySize = textPaintClone.textSize
+    while (textPaintClone.measureText(text) > avaiWidth) {
+        trySize--
+        textPaintClone.textSize = trySize
+    }
+    tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, trySize)
+}
 
 fun TextView.setDrawable(
     @DrawableRes leftDrawable: Int = 0,

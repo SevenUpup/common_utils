@@ -55,6 +55,8 @@ class SpannableAc:AppCompatActivity() {
     }
 
     private fun init(){
+//        _binding.tvDynamic.text =
+
         _binding.tv.text = "123456".setSpan(CenterImageSpan(R.drawable.ic_zelda.getDrawable))
             .addSpan("colorAndSizeSpan", listOf(
                 ColorSpan("#479fd1"),
