@@ -43,6 +43,10 @@ class RvAc:AppCompatActivity() {
         }
     }
 
+    fun goScroll(v: View){
+        startActivity<RvScrollWithWindownAc>()
+    }
+
     fun goDrag(v: View){
         startActivity<RvDragSwipeAc>()
     }

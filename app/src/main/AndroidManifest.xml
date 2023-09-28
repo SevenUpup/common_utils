@@ -54,6 +54,8 @@
 
         <activity android:name=".rv.RvAc"/>
         <activity android:name=".rv.RvDragSwipeAc"/>
+        <activity android:name=".rv.RvHorStickyAc"/>
+        <activity android:name=".rv.RvScrollWithWindownAc"/>
 
         <activity android:name=".time.IntervalTimeAc"/>
 

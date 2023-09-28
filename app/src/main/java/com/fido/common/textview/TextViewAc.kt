@@ -1,13 +1,21 @@
 package com.fido.common.textview
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.text.TextPaint
+import android.text.SpannableString
+import android.text.Spanned
 import android.util.TypedValue
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.TextViewCompat
 import com.fido.common.common_base_ui.base.viewbinding.binding
+import com.fido.common.common_base_ui.util.sp
+import com.fido.common.common_base_ui.util.throttleClick
+import com.fido.common.common_base_util.ext.adjustTextSize
+import com.fido.common.common_base_util.ext.isFakeBoldText
+import com.fido.common.common_base_util.getDrawable
 import com.fido.common.common_base_util.getScreenWidthPx
+import com.fido.common.common_utils.R
 import com.fido.common.common_utils.databinding.AcTextViewBinding
 
 
@@ -32,23 +40,38 @@ class TextViewAc:AppCompatActivity() {
         TextViewCompat.setAutoSizeTextTypeWithDefaults(binding.tvSizeDynamic2,TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM)
         TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(binding.tvSizeDynamic2,10,18,1, TypedValue.COMPLEX_UNIT_SP)
 
-        adjustTvTextSize(binding.tvSizeDynamic2,getScreenWidthPx(),binding.tvSizeDynamic2.text.toString())
+        binding.tvSizeDynamic2.apply {
+            adjustTextSize(getScreenWidthPx(), text = text.toString())
+        }
+
+        binding.maskTextView.text = getSpanStr()
+        binding.maskTextView.textSize = 36.sp.toFloat()
+        binding.maskTextView.isFakeBoldText = true
+
+        binding.maskTextView.throttleClick {
+            binding.maskTextView.setMaskDrawable(R.drawable.layered_waves_haikei.getDrawable)
+            val maskXAnimator: ObjectAnimator =
+                ObjectAnimator.ofFloat(binding.maskTextView, "maskX", 0f, binding.maskTextView.width.toFloat())
+            val maskYAnimator: ObjectAnimator =
+                ObjectAnimator.ofFloat(binding.maskTextView, "maskY", 0f, (-binding.maskTextView.getHeight()).toFloat())
+            val animatorSet = AnimatorSet()
+            animatorSet.playTogether(maskXAnimator, maskYAnimator)
+            animatorSet.start()
+        }
 
     }
 
-
-    private fun adjustTvTextSize(tv: TextView, maxWidth: Int, text: String) {
-        val avaiWidth = maxWidth - tv.paddingLeft - tv.paddingRight
-        if (avaiWidth <= 0) {
-            return
+    private fun getSpanStr(): SpannableString? {
+        val string = SpannableString("宁静致远")
+        val offset = 20
+        val firstSpan = TextUpOrDownSpan(true,offset)
+        string.apply {
+            setSpan(firstSpan,0,1,Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            setSpan(TextUpOrDownSpan(false,offset),1,2,Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            setSpan(TextUpOrDownSpan(true,offset),2,3,Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            setSpan(TextUpOrDownSpan(false,offset),3,4,Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
         }
-        val textPaintClone = TextPaint(tv.paint)
-        var trySize = textPaintClone.textSize
-        while (textPaintClone.measureText(text) > avaiWidth) {
-            trySize--
-            textPaintClone.textSize = trySize
-        }
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, trySize)
+        return string
     }
 
 }
