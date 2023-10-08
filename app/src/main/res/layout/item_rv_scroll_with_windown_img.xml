@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<com.fido.common.common_base_ui.ext.imageview.ScrollWindowImageView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="500dp"
+    android:layout_height="200dp"
+    android:id="@+id/mIv"
+    android:scaleType="matrix"
+    app:layout_constraintTop_toTopOf="parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.fido.common.common_base_ui.ext.imageview.ScrollWindowImageView
-        android:id="@+id/mIv"
-        android:scaleType="fitXY"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/bg"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.fido.common.common_base_ui.ext.imageview.ScrollWindowImageView>

@@ -57,7 +57,7 @@ class MotionCarouselAc:AppCompatActivity() {
 //                    view.load(images[index])
                     val targetDrawable= drawables.getOrNull(index)
                     if (targetDrawable == null) {
-                        view.loadDrawable(this@MotionCarouselAc,images[index]){
+                        loadDrawable(this@MotionCarouselAc, images[index]){
                             drawables[index] = it
                             view.setImageDrawable(it)
                         }

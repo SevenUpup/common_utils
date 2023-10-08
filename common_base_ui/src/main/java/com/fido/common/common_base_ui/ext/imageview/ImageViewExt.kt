@@ -12,7 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import java.io.File
@@ -130,14 +130,15 @@ fun ImageView.loadGif() {
  * 下载并返回File对象
  */
 @SuppressLint("CheckResult")
-fun Any.downloadImage(context: Context?, path: Any?, block: (file: File) -> Unit) {
+fun Any.downloadImage(context: Context, path: Any?, block: (file: File) -> Unit) {
 
-    Glide.with(context!!).load(path).downloadOnly(object : SimpleTarget<File?>() {
+    Glide.with(context).load(path).downloadOnly(object : CustomTarget<File?>() {
 
         override fun onResourceReady(resource: File, transition: Transition<in File?>?) {
-
             block(resource)
         }
+
+        override fun onLoadCleared(placeholder: Drawable?) {}
     })
 
 }
@@ -145,23 +146,26 @@ fun Any.downloadImage(context: Context?, path: Any?, block: (file: File) -> Unit
 /**
  * SimpleTarget 类实现异步下载
  */
-fun loadBitmapFormPath(context: Context, path: Any?, block:(Bitmap?)->Unit) =
+fun loadBitmapFormPath(context: Context, path: Any, block:(Bitmap?)->Unit) =
     Glide.with(context)
         .asBitmap()
         .load(path)
-        .into(object : SimpleTarget<Bitmap>() {
+        .into(object : CustomTarget<Bitmap>() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                 block(resource)
             }
+
+            override fun onLoadCleared(placeholder: Drawable?) {}
         })
 
+fun String.loadDrawable(context: Context,block:(Drawable?)->Unit)= loadDrawable(context,this,0,block)
 /**
  * 加载出Drawable对象
  */
 @SuppressLint("CheckResult")
 fun Any.loadDrawable(
-    context: Context?,
-    path: Any?,
+    context: Context,
+    path: Any,
     placeholderRes: Int? = 0,
     block: (drawable: Drawable?) -> Unit
 ) {
@@ -172,11 +176,17 @@ fun Any.loadDrawable(
             options.placeholder(placeholderRes)
         }
     }
-
-    Glide.with(context!!).load(path).apply(options).into(object : SimpleTarget<Drawable>() {
+    Glide.with(context)
+        .load(path)
+        .apply(options)
+        .into(object : CustomTarget<Drawable>() {
         override fun onLoadStarted(placeholder: Drawable?) {
             super.onLoadStarted(placeholder)
             block(placeholder)
+        }
+
+        override fun onLoadCleared(placeholder: Drawable?) {
+
         }
 
         override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {

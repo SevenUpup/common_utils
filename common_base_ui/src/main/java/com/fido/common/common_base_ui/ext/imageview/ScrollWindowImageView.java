@@ -4,8 +4,15 @@ import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 /**
@@ -36,6 +43,12 @@ public class ScrollWindowImageView extends AppCompatImageView {
         initImage();
     }
 
+    @Override
+    public void setImageDrawable(@Nullable Drawable drawable) {
+        super.setImageDrawable(drawable);
+        initImage();
+    }
+
     private void initImage() {
         final Drawable drawable = getDrawable();
         if (!initialized || drawable == null) {
@@ -52,6 +65,7 @@ public class ScrollWindowImageView extends AppCompatImageView {
         setImageMatrix(matrix);
     }
 
+
     public void scrollWindow(float scrollY) {
         final Drawable drawable = getDrawable();
         if (!initialized || drawable == null) {
@@ -65,7 +79,59 @@ public class ScrollWindowImageView extends AppCompatImageView {
         if (translate > 0) {
             translate = 0;
         }
+        Log.e("FiDo", ScrollWindowImageView.this.hashCode() + " translate = " + translate );
         matrix.postTranslate(0, translate);
         setImageMatrix(matrix);
     }
+
+    private int firstScrollY = 0;
+    /**
+     * ScrollWindowImageView 最好不要嵌套父布局，否则会循环查找
+     * @param recyclerView     需要绑定的 Rv
+     */
+    public void scrollWindow(RecyclerView recyclerView){
+        if (recyclerView == null || !(recyclerView.getLayoutManager() instanceof LinearLayoutManager) || firstScrollY>0) return;
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int childCount = layoutManager.getChildCount();
+                for (int i = 0; i < childCount; i++) {
+                    View view = layoutManager.getChildAt(i);
+                    if (view instanceof ViewGroup) {
+                        ViewGroup vg = (ViewGroup) view;
+                        for (int j = 0; j < vg.getChildCount(); j++) {
+                            if (vg.getChildAt(j) instanceof ScrollWindowImageView && view.hashCode() == ScrollWindowImageView.this.hashCode()) {
+                                scrollY(recyclerView, vg);
+                            }
+                        }
+                    }else {
+                        // hashcode 判断 Rv如果存在多个 ScrollWindowImageView，识别唯一值用
+                        if (view instanceof ScrollWindowImageView && view.hashCode() == ScrollWindowImageView.this.hashCode()) {
+                            scrollY(recyclerView, view);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private int _currentScroolY = 0;
+    private void scrollY(RecyclerView recyclerView, View view) {
+        int parentBottom = recyclerView.getBottom();
+        int itemBottom = view.getBottom();
+        if (itemBottom < parentBottom) {
+            int scroolY = parentBottom - itemBottom;
+            if (firstScrollY == 0) {
+                firstScrollY = scroolY;
+                Log.e("FiDo", ScrollWindowImageView.this.hashCode()+"scrollY: " + firstScrollY);
+            } else {
+                _currentScroolY = scroolY - firstScrollY;
+                Log.e("FiDo", ScrollWindowImageView.this.hashCode()+ " _currentScroolY=" + _currentScroolY);
+                scrollWindow(_currentScroolY);
+            }
+        }
+    }
+
 }
