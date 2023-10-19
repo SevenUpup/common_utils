@@ -32,11 +32,25 @@ fun View.rectangleCornerBg(
 }
 
 fun View.rectangleCornerBg(
-     solidColor:Int,
+    solidColor:String,
+    topLeftRadius: Float,
+    topRightRadius: Float,
+    bottomLeftRadius: Float,
+    bottomRightRadius: Float,
+    storkColor:Int = android.R.color.white,
+    storkWidth:Int = 0,
+    dashWidth: Float = 0f,
+    dashGap: Float = 0f,
+){
+    this.background = getCustomDrawable(solidColor.getColor, topLeftRadius, topRightRadius, bottomLeftRadius, bottomRightRadius, storkColor, storkWidth,dashWidth, dashGap)
+}
+
+fun View.rectangleCornerBg(
+    solidColor:Int,
     radius:Float,
     isTopCorner:Boolean = true,
     isBottomCorner:Boolean = true,
-     storkColor:Int = android.R.color.white,
+    storkColor:Int = android.R.color.white,
     storkWidth:Int = 0,
 ){
     val topRadius = if (isTopCorner) radius else 0f
