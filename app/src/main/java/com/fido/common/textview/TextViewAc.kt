@@ -43,7 +43,6 @@ class TextViewAc:AppCompatActivity() {
         binding.tvSizeDynamic2.apply {
             adjustTextSize(getScreenWidthPx(), text = text.toString())
         }
-
         binding.maskTextView.text = getSpanStr()
         binding.maskTextView.textSize = 36.sp.toFloat()
         binding.maskTextView.isFakeBoldText = true

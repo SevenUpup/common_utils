@@ -42,9 +42,11 @@ class MotionFakeBossListAc:BaseVBActivity<AcMotionFakeBossListBinding>() {
                 holder.setText(R.id.mTitle, item)
             }
 
+
         binding.mRv.addOnScrollListener(object :RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if(dy>0){
+//                Log.e("FiDo", "onScrolled dy: $dy  binding.mRv.canScrollDown=${binding.mRv.canScrollDown}")
+                if( dy > 0 ){
                     if( binding.motion.currentState == binding.motion.startState){
                         binding.motion.transitionToEnd()
                     }
@@ -58,7 +60,7 @@ class MotionFakeBossListAc:BaseVBActivity<AcMotionFakeBossListBinding>() {
         })
 
     }
-
+    
     override fun initData() {
     }
 

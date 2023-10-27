@@ -56,6 +56,12 @@ import com.fido.common.common_utils.databinding.ActivityMainBinding
 import com.fido.common.common_utils.databinding.DialogTestBinding
 import com.fido.common.common_utils.databinding.LayoutHeaderViewBinding
 import com.fido.common.common_utils.edittext.CustomStyleActivity
+import com.fido.common.common_utils.eventbus.HEventBus
+import com.fido.common.common_utils.eventbus.Subscribe
+import com.fido.common.common_utils.eventbus.ThreadMode
+import com.fido.common.common_utils.eventbus.ac.EventBus2Bean
+import com.fido.common.common_utils.eventbus.ac.EventBusAc
+import com.fido.common.common_utils.eventbus.ac.HEventBusTestBean
 import com.fido.common.common_utils.motionlayout.*
 import com.fido.common.common_utils.naviga.CodenavigationAc
 import com.fido.common.common_utils.picker.PickerViewAc
@@ -91,9 +97,22 @@ class MainActivity : AppCompatActivity() {
     private val mBinding: ActivityMainBinding by binding()
     var pop:BottomListPopupView?=null
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun eventbusTest(bean: HEventBusTestBean){
+        bean?.let {
+            toast(bean.text)
+            HEventBus.getDefault().post(EventBus2Bean("clear,i am from main"))
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        HEventBus.getDefault().register(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        HEventBus.getDefault().register(this)
         Log.e("FiDo", "appLanguage = ${appLanguage} packageName=${packageInfo.packageName} currentTime = ${currentTimeString().getYearFromTime()} ${currentTimeString().getMonthFromTime()} ${currentTimeString().getDayFromTime()}")
         val date = "2322-06-21"
         Log.e("FiDo", "$date 解析结果 year=${date.getYearFromTime()} month=${date.getMonthFromTime()} day=${date.getDayFromTime()}")
@@ -238,6 +257,7 @@ class MainActivity : AppCompatActivity() {
         addView<WriteCalendarAc>("WriteCalendar")
         addView<AdSkipAc>("无障碍服务-skip开屏广告")
         addView<TextViewAc>("textview 根据控件大小自动缩放")
+        addView<EventBusAc>("go HEventBusAc")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {

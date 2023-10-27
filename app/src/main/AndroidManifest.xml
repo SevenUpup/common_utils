@@ -121,7 +121,10 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/ad_gun_service_config" />
         </service>
-        
+
+
+        <activity android:name=".eventbus.ac.EventBusAc"/>
+
     </application>
 
 

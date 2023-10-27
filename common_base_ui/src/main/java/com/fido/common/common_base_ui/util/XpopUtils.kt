@@ -20,6 +20,7 @@ fun Context.showNormalInputDialog(
     hint: CharSequence? = null,
     autoOpenSoftInput: Boolean = true,
     isDarkTheme: Boolean = false,
+    isAutoShow:Boolean = true,
     confirmBlock: (String) -> Unit,
 ) = XPopup.Builder(this).run {
     isDestroyOnDismiss(true)
@@ -27,7 +28,9 @@ fun Context.showNormalInputDialog(
     isDarkTheme(isDarkTheme)
     asInputConfirm(title, content, inputContent, hint) {
         confirmBlock.invoke(it)
-    }.show()
+    }.apply {
+        if (isAutoShow) show()
+    }
 }
 
 fun Context.showNormalListDialog(
@@ -36,6 +39,7 @@ fun Context.showNormalListDialog(
     @GravityInt orientation: Int = Gravity.CENTER,
     autoOpenSoftInput: Boolean = false,
     isDarkTheme: Boolean = false,
+    isAutoShow:Boolean = true,
     onSelectBlock: (position:Int, text:String) -> Unit,
 ) = XPopup.Builder(this).run {
     isDestroyOnDismiss(true)
@@ -45,5 +49,7 @@ fun Context.showNormalListDialog(
         asCenterList(title, data.toTypedArray(), onSelectBlock)
     } else {
         asBottomList(title, data.toTypedArray(), onSelectBlock)
-    }.show()
+    }.apply {
+        if (isAutoShow) show()
+    }
 }
