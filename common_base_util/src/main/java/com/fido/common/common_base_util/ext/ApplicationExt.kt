@@ -29,6 +29,13 @@ inline val appName: String
 
 inline val appIcon: Drawable get() = packageInfo.applicationInfo.loadIcon(app.packageManager)
 
+inline val appIconRes:Int get() = try {
+    packageInfo.applicationInfo.icon
+}catch (e:Exception){
+    e.printStackTrace()
+    -1
+}
+
 inline val appVersionName: String get() = packageInfo.versionName
 
 inline val appVersionCode: Long get() = PackageInfoCompat.getLongVersionCode(packageInfo)

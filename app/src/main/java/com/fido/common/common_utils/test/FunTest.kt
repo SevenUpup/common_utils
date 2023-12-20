@@ -9,6 +9,15 @@ import java.util.*
  */
 class FunTest {
 
+    fun add(target:Int){
+        var sum = 0
+        var obj = target
+        while (obj <= 0) {
+            sum+=obj
+            obj -=1
+        }
+    }
+
     companion object{
         @JvmStatic
         fun main(args: Array<String>) {

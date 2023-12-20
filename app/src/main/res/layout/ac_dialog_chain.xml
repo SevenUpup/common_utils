@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/mRv"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tvExplan"
+        app:layout_constraintTop_toBottomOf="@id/mRv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="上面的弹窗顺序可长按修改"
+        />
+
+    <Button
+        android:id="@+id/bt"
+        android:text="芝麻开门"
+        android:layout_marginBottom="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"/>
+
+    <Button
+        android:id="@+id/bt2"
+        android:textAllCaps="false"
+        android:text="A,B,C三个弹窗，A confirm 后 C\nA cancle 时 依次B,C"
+        app:layout_constraintTop_toBottomOf="@id/bt"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/bt3"
+        android:textAllCaps="false"
+        android:text="DialogFragment"
+        app:layout_constraintBottom_toTopOf="@id/bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

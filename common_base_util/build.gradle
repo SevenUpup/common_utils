@@ -86,10 +86,12 @@ dependencies {
         exclude group: 'androidx.core'
     }
 
-
     //ktx_coroutines
     api deps.android.ktx_coroutines_core
     api deps.android.ktx_coroutines_android
+
+    //workmanager(国内商城可能判定为自启动？)
+//    api deps.android.work_manager
 
 }
 

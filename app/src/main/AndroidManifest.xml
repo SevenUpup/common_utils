@@ -38,6 +38,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Common_utils"
         tools:targetApi="31">
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -51,6 +52,26 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+        <!-- 根据时间点动态跟换图标
+
+         Activity别名，需要事先内置于 APP 中
+         MainAliasActivity 此 Activity 类可以不必真实存在
+         targetActivity 指向要 Launcher的Activity
+         -->
+        <activity-alias
+            android:name=".MainAliasActivity"
+            android:enabled="false"
+            android:icon="@mipmap/h_launch"
+            android:targetActivity=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+    </activity-alias>
+
+
 
         <activity android:name=".rv.RvAc"/>
         <activity android:name=".rv.RvDragSwipeAc"/>
@@ -124,6 +145,8 @@
 
 
         <activity android:name=".eventbus.ac.EventBusAc"/>
+
+        <activity android:name=".pop.DialogChainAc"/>
 
     </application>
 

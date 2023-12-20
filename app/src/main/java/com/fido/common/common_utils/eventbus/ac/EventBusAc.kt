@@ -1,6 +1,7 @@
 package com.fido.common.common_utils.eventbus.ac
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.fido.common.common_base_ui.base.viewbinding.binding
@@ -64,11 +65,13 @@ class EventBusAc:AppCompatActivity() {
         return DialogManager.Config.Builder<BasePopupView>()
             .`as`(object : DialogManager.BaseType<BasePopupView>(dialog1) {
                 override fun init(config: DialogManager.Config<BasePopupView>?) {
-                    val pop = (config?.baseType?.type as  CenterListPopupView)
-
-//                    pop.dialog.setOnDismissListener {
-//                        config.dispatch()
-//                    }
+                    val pop = (config?.baseType?.type as?  CenterListPopupView)
+                    pop?.post {
+                        Log.e("FiDo", "init: pop=$pop pop dialog=${pop.dialog}" )
+                        pop.dialog?.setOnDismissListener {
+                            config.dispatch()
+                        }
+                    }
                 }
 
                 override fun show(config: DialogManager.Config<BasePopupView>?) {

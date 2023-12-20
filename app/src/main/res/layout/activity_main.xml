@@ -48,6 +48,7 @@
                         android:text="-rotationY"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -76,11 +77,23 @@
                         android:text="-rotationX"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <TextView
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="3dp"
+                    android:gravity="center"
+                    android:layout_marginVertical="10dp"
+                    android:background="@drawable/bg_label"
+                    android:text="当App处于后台时自定更换图标"/>
+
                 <TextView
                     android:id="@+id/tv_translationZ"
                     android:layout_marginHorizontal="30dp"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="3dp"
                     android:gravity="center"
                     android:layout_marginVertical="10dp"
                     android:background="@drawable/bg_label"
@@ -178,70 +191,80 @@
 
             <TextView
                 android:id="@+id/tv_status"
-                android:text="click me"
+                android:text="click me dynamic add View Bg\n利用 android:animateLayoutChanges\n收起"
                 android:textColor="@color/white"
                 android:gravity="center"
+                android:paddingVertical="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 tools:background="@color/black"/>
 
-            <Button
-                android:id="@+id/spannable"
-                android:text="spannable"
-                android:onClick="onSpannable"
-                android:textAllCaps="false"
+            <LinearLayout
+                android:id="@+id/ll_container"
+                android:animateLayoutChanges="true"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/anim2"
-                android:text="anim2"
-                android:onClick="onAnim"
-                android:textAllCaps="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <Button
+                    android:id="@+id/spannable"
+                    android:text="spannable"
+                    android:onClick="onSpannable"
+                    android:textAllCaps="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-            <Button
-                android:text="animShark"
-                android:onClick="onAnimShark"
-                android:textAllCaps="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <Button
+                    android:id="@+id/anim2"
+                    android:text="anim2"
+                    android:onClick="onAnim"
+                    android:textAllCaps="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-            <Button
-                android:text="animShark2"
-                android:onClick="onAnimShark2"
-                android:textAllCaps="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <Button
+                    android:text="animShark"
+                    android:onClick="onAnimShark"
+                    android:textAllCaps="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-            <Button
-                android:text="codeEditText"
-                android:onClick="codeEditText"
-                android:textAllCaps="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <Button
+                    android:text="animShark2"
+                    android:onClick="onAnimShark2"
+                    android:textAllCaps="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-            <Button
-                android:text="installApk"
-                android:onClick="installApk"
-                android:textAllCaps="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <Button
+                    android:text="codeEditText"
+                    android:onClick="codeEditText"
+                    android:textAllCaps="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-            <Button
-                android:text="snackBar"
-                android:onClick="snackBar"
-                android:textAllCaps="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <Button
+                    android:text="installApk"
+                    android:onClick="installApk"
+                    android:textAllCaps="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-            <Button
-                android:text="ConstraintLayout"
-                android:onClick="ConstraintLayout"
-                android:textAllCaps="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <Button
+                    android:text="snackBar"
+                    android:onClick="snackBar"
+                    android:textAllCaps="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <Button
+                    android:text="ConstraintLayout"
+                    android:onClick="ConstraintLayout"
+                    android:textAllCaps="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
 
             <TimePicker
                 android:layout_width="match_parent"

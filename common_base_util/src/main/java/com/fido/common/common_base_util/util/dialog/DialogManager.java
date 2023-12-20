@@ -90,7 +90,7 @@ public class DialogManager {
     /**
      * 移除对应的Type
      */
-    private <Type> void remove(Config<Type> config) {
+    public <Type> void remove(Config<Type> config) {
         if (mConfigs != null && !mConfigs.isEmpty() && config != null) {
             int size = mConfigs.size();
             boolean result = mConfigs.remove(config);
@@ -105,6 +105,12 @@ public class DialogManager {
      */
     private void showNext() {
         show();
+    }
+
+    public void clear(){
+        if (mConfigs != null) {
+            mConfigs.clear();
+        }
     }
 
     /**
@@ -163,7 +169,6 @@ public class DialogManager {
             mConfigs.add(config);
         }
     }
-
 
     /**
      * 显示Type

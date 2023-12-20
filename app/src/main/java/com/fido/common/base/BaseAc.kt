@@ -1,6 +1,8 @@
 package com.fido.common.base
 
+import android.app.Activity
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -24,6 +26,6 @@ abstract class BaseAc<VB:ViewDataBinding>:AppCompatActivity() {
 
     }
 
-
-
 }
+
+fun <T:View>Activity.id(id:Int) = findViewById<T>(id)

@@ -5,7 +5,9 @@ import android.animation.Animator.AnimatorListener
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.Activity
+import android.content.ComponentName
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -21,6 +23,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.*
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.fido.common.common_base_ui.base.dialog.createPop
 import com.fido.common.common_base_ui.base.dialog.createVBPop
@@ -65,6 +68,7 @@ import com.fido.common.common_utils.eventbus.ac.HEventBusTestBean
 import com.fido.common.common_utils.motionlayout.*
 import com.fido.common.common_utils.naviga.CodenavigationAc
 import com.fido.common.common_utils.picker.PickerViewAc
+import com.fido.common.common_utils.pop.DialogChainAc
 import com.fido.common.common_utils.room.RoomAc
 import com.fido.common.common_utils.rv.RvAc
 import com.fido.common.common_utils.sp.SPAc
@@ -118,6 +122,23 @@ class MainActivity : AppCompatActivity() {
         Log.e("FiDo", "$date 解析结果 year=${date.getYearFromTime()} month=${date.getMonthFromTime()} day=${date.getDayFromTime()}")
         Log.e("FiDo", "currentTimeString = ${currentTimeString()} compareresult = ${dateCompare(currentTimeString(),date)}")
 
+
+        runCatching { 100 / 0 }
+            .onSuccess { value -> loge("onSuccess:$value") } //runCatching{}中执行成功，并传入执行结果
+            .onFailure { exception -> loge("onFailure:$exception") } //runCatching{}中执行失败，并传入exception
+            //.getOrDefault(0) //获取runCatching{}中执行的结果,如果是Failure直接返回默认值
+            .getOrElse { ex -> //获取runCatching{}中执行的结果,如果是Failure返回else内部的值。相比getOrDefault多了对exception的处理
+                loge("exception:$ex")
+                100
+            }
+            //.getOrThrow()//获取runCatching{}中执行的结果,如果是Failure直接抛异常
+            //.getOrNull() //获取runCatching{}中执行的结果,如果是Failure返回null
+            //.exceptionOrNull() //如果有问题则返回exception；否则返回null
+            .run {
+                loge("result:$this")
+            }
+
+
         Handler().postDelayed({
 
             toast("exe cmd")
@@ -134,6 +155,13 @@ class MainActivity : AppCompatActivity() {
             toast("onForeground")
         }){
             toast("onBackground")
+            // 省略定时任务的代码（参考workmanager），设定定时切换图标
+            // 禁用原图标
+            val oldActivity = ComponentName(applicationContext, MainActivity::class.java)
+            applicationContext.packageManager.setComponentEnabledSetting(oldActivity, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
+            // 启用新图标
+            val newActivity = ComponentName(applicationContext, "${app.packageName}.MainAliasActivity")
+            applicationContext.packageManager.setComponentEnabledSetting(newActivity, PackageManager.COMPONENT_ENABLED_STATE_ENABLED,PackageManager.DONT_KILL_APP)
         }
 
         addButton()
@@ -258,10 +286,11 @@ class MainActivity : AppCompatActivity() {
         addView<AdSkipAc>("无障碍服务-skip开屏广告")
         addView<TextViewAc>("textview 根据控件大小自动缩放")
         addView<EventBusAc>("go HEventBusAc")
+        addView<DialogChainAc>("go DialogChain")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {
-                    margin(verticalMargin = 3.dp)
+                    margin(verticalMargin = 2.dp)
                 }
             }
         }
@@ -399,6 +428,8 @@ class MainActivity : AppCompatActivity() {
             .addStatusableDrawableBg(R.color.purple_700, 50f, isDefultDrawable = true)
 
         mBinding.tvStatus.setOnClickListener {
+            expandedOrPickUpLinear(mBinding.tvStatus.text.contains("展开"))
+
             it.isSelected = !it.isSelected
             createVBPop<DialogTestBinding>(
                 R.layout.dialog_test,
@@ -584,6 +615,18 @@ class MainActivity : AppCompatActivity() {
                 )
             }
             index++
+        }
+    }
+
+    private fun expandedOrPickUpLinear(isExpanded: Boolean) {
+        mBinding.tvStatus.text = if(isExpanded) "收起" else "展开"
+        val childs = mBinding.llContainer.children
+        childs.forEachIndexed { index, view ->
+            if (isExpanded) {
+                view.isVisible = true
+            } else {
+                view.isGone = index!=0
+            }
         }
     }
 

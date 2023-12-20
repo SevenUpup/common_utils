@@ -53,3 +53,22 @@ fun Context.showNormalListDialog(
         if (isAutoShow) show()
     }
 }
+
+fun Context.showNormalConfirmDialog(
+    title: CharSequence?=null,
+    content:CharSequence?=null,
+    confirmText:CharSequence = "确定",
+    cancaleText:CharSequence = "取消",
+    autoOpenSoftInput: Boolean = false,
+    isDarkTheme: Boolean = false,
+    isAutoShow:Boolean = true,
+    onCancleBlock:(()->Unit)?=null,
+    onConfirmBlock:(()->Unit)?=null,
+) = XPopup.Builder(this).run {
+    isDestroyOnDismiss(true)
+    autoOpenSoftInput(autoOpenSoftInput)
+    isDarkTheme(isDarkTheme)
+    asConfirm(title,content,cancaleText,confirmText,onConfirmBlock,onCancleBlock,cancaleText.isBlank() || onCancleBlock == null).apply {
+        if (isAutoShow) show()
+    }
+}

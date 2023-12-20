@@ -11,7 +11,7 @@ import com.lxj.xpopup.core.PositionPopupView
 internal open class HPositionPopupView(context: Context) : PositionPopupView(context) {
 
     companion object{
-        internal var BASE_POSITION_POP_LAYOUTRES:Int = -1
+        var BASE_POSITION_POP_LAYOUTRES:Int = -1
     }
 
     override fun getImplLayoutId(): Int = BASE_POSITION_POP_LAYOUTRES

@@ -5,6 +5,7 @@ ext {
             'compileSdk'       : 32,
             'kotlin'           : '1.7.10',
             'coroutine_version': '1.6.1',  //协程扩展库
+            'work_manager_version' : '2.8.0',
     ]
 
     deps = [
@@ -38,6 +39,8 @@ ext {
 
                     'room_ktx'              : 'androidx.room:room-ktx:2.4.2',
                     'room_compiler'         : 'androidx.room:room-compiler:2.4.2',
+
+                    'work_manager'          : "androidx.work:work-runtime-ktx:${versions.work_manager_version}",
             ],
 
             //第三方

@@ -6,7 +6,6 @@ import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.fido.common.common_base_util.ext.loge
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -39,7 +38,7 @@ inline fun <reified T> LifecycleOwner.receiveStickEvent(
 ): Job{
     return ChannelScope(this,lifeEvent).apply {
         cancelBlock = {
-            loge("receiveStickEvent is cancled -> event is ${T::class.simpleName} was removed")
+//            loge("receiveStickEvent is cancled -> event is ${T::class.simpleName} was removed")
             channelStickEvent.remove(T::class.hashCode())
         }
     }.launch {
@@ -60,7 +59,7 @@ fun LifecycleOwner.receiveStickTag(
 ):Job{
     return ChannelScope(this,lifeEvent).apply {
         cancelBlock = {
-            loge("receiveStickTag is cancled -> tag is $tag was removed")
+//            loge("receiveStickTag is cancled -> tag is $tag was removed")
             channelStickEvent.remove(tag)
         }
     }.launch {
