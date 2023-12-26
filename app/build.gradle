@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
 }
 
 android {
@@ -128,6 +129,8 @@ dependencies {
     //需添加 apply plugin: 'kotlin-kapt'
     kapt deps.android.room_compiler
 
+//    implementation "com.github.SevenUpup.annotation:annotation:0.0.13"
+//    ksp('com.github.SevenUpup.annotation:compiler:0.0.13')
 }
 
 /**

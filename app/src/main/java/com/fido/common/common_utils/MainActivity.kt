@@ -52,6 +52,7 @@ import com.fido.common.common_base_util.util.timer.Interval
 import com.fido.common.common_utils.accessibility.AdSkipAc
 import com.fido.common.common_utils.anim.AnimUtils
 import com.fido.common.common_utils.anim.ShakeAnim
+import com.fido.common.common_utils.annotation.AnnotationAc
 import com.fido.common.common_utils.banner.BannerAc
 import com.fido.common.common_utils.calendar.WriteCalendarAc
 import com.fido.common.common_utils.constraintlayout.ConstraintLayoutAc
@@ -287,6 +288,7 @@ class MainActivity : AppCompatActivity() {
         addView<TextViewAc>("textview 根据控件大小自动缩放")
         addView<EventBusAc>("go HEventBusAc")
         addView<DialogChainAc>("go DialogChain")
+        addView<AnnotationAc>("go 注解测试Ac")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {

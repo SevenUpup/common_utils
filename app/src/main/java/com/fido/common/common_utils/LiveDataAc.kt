@@ -19,7 +19,7 @@ import com.fido.common.common_utils.databinding.AcLivedataBinding
  */
 class LiveDataAc: AppCompatActivity() {
 
-    val binding:AcLivedataBinding by binding()
+    val binding: AcLivedataBinding by binding()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

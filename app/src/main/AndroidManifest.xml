@@ -148,6 +148,8 @@
 
         <activity android:name=".pop.DialogChainAc"/>
 
+        <activity android:name=".annotation.AnnotationAc"/>
+
     </application>
 
 
