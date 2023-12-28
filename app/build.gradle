@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'com.google.devtools.ksp'
+    id 'com.google.devtools.ksp'  // 根布局build.gradle 引入的 版本号要跟当前项目的 kotlin version 对应
 }
 
 android {
@@ -67,6 +67,13 @@ android {
             arg("room.schemaLocation", "$projectDir/schemas")
         }
     }
+
+    //让 项目识别 ksp生成的代码
+    kotlin {
+        sourceSets {
+            main.kotlin.srcDirs += 'build/generated/ksp'
+        }
+    }
 }
 
 dependencies {
@@ -129,8 +136,8 @@ dependencies {
     //需添加 apply plugin: 'kotlin-kapt'
     kapt deps.android.room_compiler
 
-//    implementation "com.github.SevenUpup.annotation:annotation:0.0.13"
-//    ksp('com.github.SevenUpup.annotation:compiler:0.0.13')
+    implementation "com.github.SevenUpup.annotation:annotation:0.0.13"
+    ksp('com.github.SevenUpup.annotation:compiler:0.0.13')
 }
 
 /**
