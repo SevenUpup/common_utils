@@ -76,27 +76,27 @@ this.gradle.afterProject {Project project ->
     println "${project.name}:afterProject"
 }
 
-def text(){
-    Properties properties = new Properties()
-    File propertyFile = new File(rootDir.getAbsolutePath() + "/local.properties")
-    properties.load(propertyFile.newDataInputStream())
-
-    gradle.ext.api = properties.getProperty('sdk.dir')
-
-    println(gradle.api)
-}
-
-text()
-
-getText("utils.gradle")
-
-def getText(String path){
-    try {
-        // 不同与 new file 的需要传入 绝对路径 的方式，
-        // file 从相对于当前的 project 工程开始查找
-        File mFile = file(path)
-        println mFile.text
-    }catch(GradleException e){
-        println e.toString()
-    }
-}
+//def text(){
+//    Properties properties = new Properties()
+//    File propertyFile = new File(rootDir.getAbsolutePath() + "/local.properties")
+//    properties.load(propertyFile.newDataInputStream())
+//
+//    gradle.ext.api = properties.getProperty('sdk.dir')
+//
+//    println(gradle.api)
+//}
+//
+//text()
+//
+//getText("utils.gradle")
+//
+//def getText(String path){
+//    try {
+//        // 不同与 new file 的需要传入 绝对路径 的方式，
+//        // file 从相对于当前的 project 工程开始查找
+//        File mFile = file(path)
+//        println mFile.text
+//    }catch(GradleException e){
+//        println e.toString()
+//    }
+//}
