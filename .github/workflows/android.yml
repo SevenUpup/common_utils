@@ -77,7 +77,7 @@ jobs:
         # 只当shell的类型
         # shell: bash
 
-      # 发布
+      # 发布 Release
       - uses: ncipollo/release-action@v1
         with:
           # 要包含到Release Assets中的文件
@@ -86,6 +86,24 @@ jobs:
           token: ${{ github.token }}
           # 自动生成一些变化列表之类的内容。
           generateReleaseNotes: true
+
+      # ruby环境准备 -- 发布fir
+      - uses: actions/cache@preview
+        id: cache
+        with:
+          path: ~/local/rubies
+          key: ruby-2.6.5
+      - uses: clupprich/ruby-build-action@master
+        id: ruby
+        with:
+          ruby-version: 2.6.5
+          files: app/build/outputs/apk/release/common_utils_$GITHUB_REF_NAME.apk
+      # upload to Fir
+      - name: install fir.im
+        run: sudo gem install fir-cli
+      - name: Upload to Fir.im
+        run: fir login ${{ secrets.FIRTOKEN }}
+      - run: fir publish  app/build/outputs/apk/release/common_utils_$GITHUB_REF_NAME.apk
 
   # 增加个notice的job，在打包完成后发邮件通知
   notice:
