@@ -89,11 +89,19 @@ jobs:
 
       # ruby环境准备 -- 发布fir
       - uses: actions/checkout@v1
-        id: cache
+      - uses: clupprich/ruby-build-action@master
+        id: ruby
         with:
-          path: ~/local/rubies
-          key: ruby-2.6.5
+          ruby-version: 2.6.5
           clean: false
+      - name: Print version
+        run: ${{ steps.ruby.outputs.ruby-path }} --version
+#      - uses: actions/checkout@v1
+#        id: cache
+#        with:
+#          path: ~/local/rubies
+#          key: ruby-2.6.5
+#          clean: false
 #      - uses: clupprich/ruby-build-action@master
 #        id: ruby
 #        with:
