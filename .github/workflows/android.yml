@@ -112,7 +112,7 @@ jobs:
         run: sudo gem install fir-cli
       - name: Upload to Fir.im
         run: fir login ${{ secrets.FIRTOKEN }}
-      - run: fir publish  app/build/outputs/apk/release/common_utils_$GITHUB_REF_NAME.apk
+      - run: fir publish  app/build/outputs/apk/release/app-release-signed.apk
 
   # 增加个notice的job，在打包完成后发邮件通知
   notice:
