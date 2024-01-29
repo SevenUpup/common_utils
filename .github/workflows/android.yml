@@ -4,8 +4,8 @@ name: Release
 on:
   push:
     # 根据branch或者tags来触发
-    branches:
-      - main
+#    branches:
+#      - main
 
     tags:
       - "v*"
@@ -88,16 +88,17 @@ jobs:
           generateReleaseNotes: true
 
       # ruby环境准备 -- 发布fir
-      - uses: actions/cache@preview
+      - uses: actions/checkout@v1
         id: cache
         with:
           path: ~/local/rubies
           key: ruby-2.6.5
-      - uses: clupprich/ruby-build-action@master
-        id: ruby
-        with:
-          ruby-version: 2.6.5
-          files: app/build/outputs/apk/release/common_utils_$GITHUB_REF_NAME.apk
+          clean: false
+#      - uses: clupprich/ruby-build-action@master
+#        id: ruby
+#        with:
+#          ruby-version: 2.6.5
+#          files: app/build/outputs/apk/release/common_utils_$GITHUB_REF_NAME.apk
       # upload to Fir
       - name: install fir.im
         run: sudo gem install fir-cli
