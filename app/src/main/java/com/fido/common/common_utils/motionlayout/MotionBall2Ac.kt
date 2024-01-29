@@ -16,7 +16,7 @@ class MotionBall2Ac:BaseVBActivity<AcMotionBallsBinding>() {
     }
 
     override fun initView() {
-        toast("initView")
+        
     }
 
     override fun initData() {
