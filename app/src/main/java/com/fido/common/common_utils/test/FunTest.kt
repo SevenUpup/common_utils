@@ -8,7 +8,6 @@ import java.util.*
 @date :2023/5/12 9:33
  */
 class FunTest {
-
     fun add(target:Int){
         var sum = 0
         var obj = target
