@@ -38,7 +38,6 @@ class FunTest {
             }
             println("highLevelFunction $result")
             println("我没有执行？")
-
             println("generateUniqueId=${generateUniqueId()}")
         }
 
