@@ -18,7 +18,6 @@ import com.fido.common.common_utils.edittext.style.CustomeBlockDrawer;
  */
 public class CustomStyleActivity extends Activity {
 
-
     public static void launch(Context context) {
         Intent intent = new Intent();
         intent.setClass(context, CustomStyleActivity.class);
