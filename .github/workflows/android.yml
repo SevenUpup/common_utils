@@ -87,15 +87,26 @@ jobs:
           # 自动生成一些变化列表之类的内容。
           generateReleaseNotes: true
 
-      # ruby环境准备 -- 发布fir
-      - uses: actions/checkout@v1
-      - uses: clupprich/ruby-build-action@master
-        id: ruby
+      # 上传蒲公英测试
+      - name: Upload apk to pgyer.com
+        run: find ${{ github.workspace }}/app/build/outputs/apk/release/ -name "*.apk*" -type f -exec curl -F "file=@{}" -F "uKey=${{ secrets.PGYER_UKEY }}" -F "_api_key=${{ secrets.PGYER_API_KEY }}" https://upload.pgyer.com/apiv1/app/upload  \;
+
+      - name: Upload apk to artifact
+        uses: actions/upload-artifact@master
+        if: always()
         with:
-          ruby-version: 2.6.5
-          clean: false
-      - name: Print version
-        run: ${{ steps.ruby.outputs.ruby-path }} --version
+          name: lottery_app
+          path: ${{ github.workspace }}/app/build/outputs/apk/release/*.apk
+
+      # ruby环境准备 -- 发布fir
+#      - uses: actions/checkout@v1
+#      - uses: clupprich/ruby-build-action@master
+#        id: ruby
+#        with:
+#          ruby-version: 2.6.5
+#          clean: false
+#      - name: Print version
+#        run: ${{ steps.ruby.outputs.ruby-path }} --version
 #      - uses: actions/checkout@v1
 #        id: cache
 #        with:
@@ -108,11 +119,11 @@ jobs:
 #          ruby-version: 2.6.5
 #          files: app/build/outputs/apk/release/common_utils_$GITHUB_REF_NAME.apk
       # upload to Fir
-      - name: install fir.im
-        run: sudo gem install fir-cli
-      - name: Upload to Fir.im
-        run: fir login ${{ secrets.FIRTOKEN }}
-      - run: fir publish  app/build/outputs/apk/release/app-release-signed.apk
+#      - name: install fir.im
+#        run: sudo gem install fir-cli
+#      - name: Upload to Fir.im
+#        run: fir login ${{ secrets.FIRTOKEN }}
+#      - run: fir publish  app/build/outputs/apk/release/app-release-signed.apk
 
   # 增加个notice的job，在打包完成后发邮件通知
   notice:
