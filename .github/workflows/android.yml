@@ -123,4 +123,4 @@ jobs:
           from: ${{secrets.MAIL_USERNAME}}
           to: ${{secrets.MAIL_TOUSERNAME}}
           body: Build job of ${{github.repository}} completed successfully!
-#          html_body: file://README.html
+          html_body: file://output.html
