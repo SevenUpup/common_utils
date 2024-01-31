@@ -89,8 +89,8 @@ jobs:
 
       # 上传蒲公英测试
       - name: Upload apk to pgyer.com
-#        run: find ${{ github.workspace }}/app/build/outputs/apk/release/ -name "*.apk*" -type f -exec curl -F "file=@{}" -F "uKey=${{ secrets.PGYER_UKEY }}" -F "_api_key=${{ secrets.PGYER_API_KEY }}" https://upload.pgyer.com/apiv1/app/upload  \;
-        run: find ${{ github.workspace }}/app/build/outputs/apk/release/ -name "*.apk*" -type f -exec curl -F "file=@{}" -F "uKey=${{ secrets.PGYER_UKEY }}" -F "_api_key=${{ secrets.PGYER_API_KEY }}" -o app/build/outputs/pgy.html https://upload.pgyer.com/apiv1/app/upload  \;
+        run: find ${{ github.workspace }}/app/build/outputs/apk/release/ -name "*.apk*" -type f -exec curl -F "file=@{}" -F "uKey=${{ secrets.PGYER_UKEY }}" -F "_api_key=${{ secrets.PGYER_API_KEY }}" https://upload.pgyer.com/apiv1/app/upload  \;
+#        run: find ${{ github.workspace }}/app/build/outputs/apk/release/ -name "*.apk*" -type f -exec curl -F "file=@{}" -F "uKey=${{ secrets.PGYER_UKEY }}" -F "_api_key=${{ secrets.PGYER_API_KEY }}" -o app/build/outputs/pgy.html https://upload.pgyer.com/apiv1/app/upload  \;
 
       - name: Upload apk to artifact
         uses: actions/upload-artifact@master
@@ -123,4 +123,4 @@ jobs:
           from: ${{secrets.MAIL_USERNAME}}
           to: ${{secrets.MAIL_TOUSERNAME}}
           body: Build job of ${{github.repository}} completed successfully!
-          html_body: file://app/build/outputs/pgy.html
+#          html_body: file://app/build/outputs/pgy.html
