@@ -36,7 +36,6 @@ class SurfaceAc : BaseVBActivity<AcSurfaceBinding>(), SurfaceHolder.Callback {
         }
 
         binding.surfaceView.holder.addCallback(this)
-
     }
 
     override fun initData() {
