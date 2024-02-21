@@ -29,6 +29,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
 import androidx.core.app.ActivityCompat
+import androidx.core.content.PermissionChecker.PermissionResult
 import androidx.core.os.bundleOf
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
@@ -43,20 +44,20 @@ internal val activityCache = LinkedList<Activity>()
 fun startActivity(intent: Intent) = topActivity.startActivity(intent)
 
 inline fun <reified T : Activity> startActivity(
-  vararg pairs: Pair<String, Any?>,
-  crossinline block: Intent.() -> Unit = {}
+    vararg pairs: Pair<String, Any?>,
+    crossinline block: Intent.() -> Unit = {}
 ) =
-  topActivity.startActivity<T>(pairs = pairs, block = block)
+    topActivity.startActivity<T>(pairs = pairs, block = block)
 
 inline fun <reified T : Activity> Context.startActivity(
-  vararg pairs: Pair<String, Any?>,
-  crossinline block: Intent.() -> Unit = {}
+    vararg pairs: Pair<String, Any?>,
+    crossinline block: Intent.() -> Unit = {}
 ) =
-  startActivity(intentOf<T>(*pairs).apply(block))
+    startActivity(intentOf<T>(*pairs).apply(block))
 
 fun Activity.finishWithResult(vararg pairs: Pair<String, *>) {
-  setResult(Activity.RESULT_OK, Intent().putExtras(bundleOf(*pairs)))
-  finish()
+    setResult(Activity.RESULT_OK, Intent().putExtras(bundleOf(*pairs)))
+    finish()
 }
 
 val activityList: List<Activity> get() = activityCache.toList()
@@ -68,98 +69,106 @@ val topActivityOrNull: Activity? get() = activityCache.lastOrNull()
 val topActivityOrApplication: Context get() = topActivityOrNull ?: app
 
 inline fun <reified T : Activity> isActivityExistsInStack(): Boolean =
-  isActivityExistsInStack(T::class.java)
+    isActivityExistsInStack(T::class.java)
 
 fun <T : Activity> isActivityExistsInStack(clazz: Class<T>): Boolean =
-  activityCache.any { it.javaClass.name == clazz.name }
+    activityCache.any { it.javaClass.name == clazz.name }
 
 inline fun <reified T : Activity> finishActivity(): Boolean = finishActivity(T::class.java)
 
 fun <T : Activity> finishActivity(clazz: Class<T>): Boolean =
-  activityCache.removeAll {
-    if (it.javaClass.name == clazz.name) it.finish()
-    it.javaClass.name == clazz.name
-  }
+    activityCache.removeAll {
+        if (it.javaClass.name == clazz.name) it.finish()
+        it.javaClass.name == clazz.name
+    }
 
 inline fun <reified T : Activity> finishToActivity(): Boolean = finishToActivity(T::class.java)
 
 fun <T : Activity> finishToActivity(clazz: Class<T>): Boolean {
-  for (i in activityCache.count() - 1 downTo 0) {
-    if (clazz.name == activityCache[i].javaClass.name) {
-      return true
+    for (i in activityCache.count() - 1 downTo 0) {
+        if (clazz.name == activityCache[i].javaClass.name) {
+            return true
+        }
+        activityCache.removeAt(i).finish()
     }
-    activityCache.removeAt(i).finish()
-  }
-  return false
+    return false
 }
 
 fun finishAllActivities(): Boolean =
-  activityCache.removeAll {
-    it.finish()
-    true
-  }
+    activityCache.removeAll {
+        it.finish()
+        true
+    }
 
 inline fun <reified T : Activity> finishAllActivitiesExcept(): Boolean =
-  finishAllActivitiesExcept(T::class.java)
+    finishAllActivitiesExcept(T::class.java)
 
 fun <T : Activity> finishAllActivitiesExcept(clazz: Class<T>): Boolean =
-  activityCache.removeAll {
-    if (it.javaClass.name != clazz.name) it.finish()
-    it.javaClass.name != clazz.name
-  }
+    activityCache.removeAll {
+        if (it.javaClass.name != clazz.name) it.finish()
+        it.javaClass.name != clazz.name
+    }
 
 fun finishAllActivitiesExceptNewest(): Boolean =
-  finishAllActivitiesExcept(topActivity.javaClass)
-
-fun ComponentActivity.pressBackTwiceToExitApp(toastText: String, delayMillis: Long = 2000, owner: LifecycleOwner = this) =
-  pressBackTwiceToExitApp(delayMillis, owner) { toast(toastText) }
-
-fun ComponentActivity.pressBackTwiceToExitApp(@StringRes toastText: Int, delayMillis: Long = 2000, owner: LifecycleOwner = this) =
-  pressBackTwiceToExitApp(delayMillis, owner) { toast(toastText) }
+    finishAllActivitiesExcept(topActivity.javaClass)
 
 fun ComponentActivity.pressBackTwiceToExitApp(
-  delayMillis: Long = 2000,
-  owner: LifecycleOwner = this,
-  onFirstBackPressed: () -> Unit
+    toastText: String,
+    delayMillis: Long = 2000,
+    owner: LifecycleOwner = this
 ) =
-  onBackPressedDispatcher.addCallback(owner, object : OnBackPressedCallback(true) {
-    private var lastBackTime: Long = 0
+    pressBackTwiceToExitApp(delayMillis, owner) { toast(toastText) }
 
-    override fun handleOnBackPressed() {
-      val currentTime = System.currentTimeMillis()
-      if (currentTime - lastBackTime > delayMillis) {
-        onFirstBackPressed()
-        lastBackTime = currentTime
-      } else {
-        finishAllActivities()
-      }
-    }
-  })
+fun ComponentActivity.pressBackTwiceToExitApp(
+    @StringRes toastText: Int,
+    delayMillis: Long = 2000,
+    owner: LifecycleOwner = this
+) =
+    pressBackTwiceToExitApp(delayMillis, owner) { toast(toastText) }
+
+fun ComponentActivity.pressBackTwiceToExitApp(
+    delayMillis: Long = 2000,
+    owner: LifecycleOwner = this,
+    onFirstBackPressed: () -> Unit
+) =
+    onBackPressedDispatcher.addCallback(owner, object : OnBackPressedCallback(true) {
+        private var lastBackTime: Long = 0
+
+        override fun handleOnBackPressed() {
+            val currentTime = System.currentTimeMillis()
+            if (currentTime - lastBackTime > delayMillis) {
+                onFirstBackPressed()
+                lastBackTime = currentTime
+            } else {
+                finishAllActivities()
+            }
+        }
+    })
 
 fun ComponentActivity.pressBackToNotExitApp(owner: LifecycleOwner = this) =
-  doOnBackPressed(owner) { moveTaskToBack(false) }
+    doOnBackPressed(owner) { moveTaskToBack(false) }
 
 fun ComponentActivity.doOnBackPressed(owner: LifecycleOwner = this, onBackPressed: () -> Unit) =
-  onBackPressedDispatcher.addCallback(owner, object : OnBackPressedCallback(true) {
-    override fun handleOnBackPressed() = onBackPressed()
-  })
+    onBackPressedDispatcher.addCallback(owner, object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() = onBackPressed()
+    })
 
 fun Context.isPermissionGranted(permission: String): Boolean =
-  ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+    ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 
 fun Context.arePermissionsGranted(vararg permissions: String): Boolean =
-  permissions.all { isPermissionGranted(it) }
+    permissions.all { isPermissionGranted(it) }
 
 fun Context.asActivity(): Activity? =
-  this as? Activity ?: (this as? ContextWrapper)?.baseContext?.asActivity()
+    this as? Activity ?: (this as? ContextWrapper)?.baseContext?.asActivity()
 
 var Activity.decorFitsSystemWindows: Boolean
-  @Deprecated(NO_GETTER, level = DeprecationLevel.ERROR)
-  get() = noGetter()
-  set(value) = WindowCompat.setDecorFitsSystemWindows(window, value)
+    @Deprecated(NO_GETTER, level = DeprecationLevel.ERROR)
+    get() = noGetter()
+    set(value) = WindowCompat.setDecorFitsSystemWindows(window, value)
 
 inline val Activity.contentView: View
-  get() = (findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0)
+    get() = (findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0)
 
 @Deprecated("Use `Context.asActivity()` instead.", ReplaceWith("asActivity()"))
 val Context.activity: Activity? get() = asActivity()
@@ -174,33 +183,56 @@ inline val ComponentActivity.lifecycleOwner: LifecycleOwner get() = this
 
 //内联函数+标注泛型 = 泛型实例化
 inline fun <reified T> Fragment.gotoActivity(
-  flag: Int = -1,
-  bundle: Array<out Pair<String, Any?>>? = null
+    flag: Int = -1,
+    bundle: Array<out Pair<String, Any?>>? = null
 ) {
-  activity?.gotoActivity<T>(flag, bundle)
+    activity?.gotoActivity<T>(flag, bundle)
 }
 
 inline fun <reified T> View.gotoActivity(
-  flag: Int = -1,
-  bundle: Array<out Pair<String, Any?>>? = null
+    flag: Int = -1,
+    bundle: Array<out Pair<String, Any?>>? = null
 ) {
-  context.gotoActivity<T>(flag, bundle)
+    context.gotoActivity<T>(flag, bundle)
 }
 
 inline fun <reified T> Context.gotoActivity(
-  flag: Int = -1,
-  bundle: Array<out Pair<String, Any?>>? = null
+    flag: Int = -1,
+    bundle: Array<out Pair<String, Any?>>? = null
 ) {
-  val intent = Intent(this, T::class.java).apply {
-    if (flag != -1) {
-      this.addFlags(flag)
+    val intent = Intent(this, T::class.java).apply {
+        if (flag != -1) {
+            this.addFlags(flag)
+        }
+        if (this@gotoActivity !is Activity) {
+            this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        if (bundle != null) {
+            putExtras(bundle.toBundle()!!)
+        }
     }
-    if (this@gotoActivity !is Activity) {
-      this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    startActivity(intent)
+}
+
+/**
+ * @param packageName 根据包名跳转指定App
+ * Android11 及以上
+ * 方式一：
+ * <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+ * 方式二：
+ * AndroidManifest.xml文件里面配置上跳转APP的包名
+ * <queries >
+ *     <package android:name="com.tencent.mm"/>
+ * </queries>
+ */
+fun Context.startTargetAppForName(packageName: String) {
+    kotlin.runCatching {
+        val intent = packageManager?.getLaunchIntentForPackage(packageName)
+        if (intent != null) {
+            startActivity(intent)
+        }
+    }.onFailure {
+      loge(it.message.toString())
     }
-    if (bundle != null) {
-      putExtras(bundle.toBundle()!!)
-    }
-  }
-  startActivity(intent)
+
 }

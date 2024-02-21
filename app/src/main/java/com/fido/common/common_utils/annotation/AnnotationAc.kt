@@ -20,7 +20,7 @@ class AnnotationAc:AppCompatActivity(R.layout.ac_annotation) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        bindView()
+//        bindView()
         mBt.setOnClickListener{
             toast("hahahhahah")
         }

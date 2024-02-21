@@ -21,7 +21,11 @@ import android.view.animation.CycleInterpolator
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.*
+import androidx.core.text.bold
+import androidx.core.text.buildSpannedString
+import androidx.core.text.color
+import androidx.core.text.italic
+import androidx.core.text.underline
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -39,16 +43,47 @@ import com.fido.common.common_base_ui.ext.vertical
 import com.fido.common.common_base_ui.util.ImagePreviewUtil
 import com.fido.common.common_base_ui.util.showNormalListDialog
 import com.fido.common.common_base_ui.util.throttleClick
-import com.fido.common.common_base_util.*
+import com.fido.common.common_base_util.app
 import com.fido.common.common_base_util.channel.receiveTag
 import com.fido.common.common_base_util.channel.sendStickEvent
 import com.fido.common.common_base_util.channel.sendStickTag
-import com.fido.common.common_base_util.ext.*
+import com.fido.common.common_base_util.dp
+import com.fido.common.common_base_util.ext.DrawableStatus
+import com.fido.common.common_base_util.ext.addStatusableDrawableBg
+import com.fido.common.common_base_util.ext.appLanguage
+import com.fido.common.common_base_util.ext.children
+import com.fido.common.common_base_util.ext.click
+import com.fido.common.common_base_util.ext.currentTimeString
+import com.fido.common.common_base_util.ext.dateCompare
+import com.fido.common.common_base_util.ext.doOnAppStatusChanged
+import com.fido.common.common_base_util.ext.getDayFromTime
+import com.fido.common.common_base_util.ext.getMonthFromTime
+import com.fido.common.common_base_util.ext.getYearFromTime
+import com.fido.common.common_base_util.ext.height
+import com.fido.common.common_base_util.ext.installApp
+import com.fido.common.common_base_util.ext.loge
+import com.fido.common.common_base_util.ext.longToast
+import com.fido.common.common_base_util.ext.margin
+import com.fido.common.common_base_util.ext.packageInfo
+import com.fido.common.common_base_util.ext.rectangleCornerBg
+import com.fido.common.common_base_util.ext.roundCorners
+import com.fido.common.common_base_util.ext.snackbar
+import com.fido.common.common_base_util.ext.startActivity
+import com.fido.common.common_base_util.ext.startTargetAppForName
+import com.fido.common.common_base_util.ext.toast
+import com.fido.common.common_base_util.ext.width
+import com.fido.common.common_base_util.ext.widthAndHeight
+import com.fido.common.common_base_util.getColor
+import com.fido.common.common_base_util.getColorCompat
+import com.fido.common.common_base_util.getScreenHeightPx
+import com.fido.common.common_base_util.getScreenWidthPx
+import com.fido.common.common_base_util.toJson
 import com.fido.common.common_base_util.util.AssetUtils
 import com.fido.common.common_base_util.util.ImageCodeUtils
 import com.fido.common.common_base_util.util.ShellUtils
 import com.fido.common.common_base_util.util.emoji.EmojiChecker
 import com.fido.common.common_base_util.util.timer.Interval
+import com.fido.common.common_base_util.vibrateShot
 import com.fido.common.common_utils.accessibility.AdSkipAc
 import com.fido.common.common_utils.anim.AnimUtils
 import com.fido.common.common_utils.anim.ShakeAnim
@@ -66,7 +101,13 @@ import com.fido.common.common_utils.eventbus.ThreadMode
 import com.fido.common.common_utils.eventbus.ac.EventBus2Bean
 import com.fido.common.common_utils.eventbus.ac.EventBusAc
 import com.fido.common.common_utils.eventbus.ac.HEventBusTestBean
-import com.fido.common.common_utils.motionlayout.*
+import com.fido.common.common_utils.motionlayout.MotionBall2Ac
+import com.fido.common.common_utils.motionlayout.MotionCarouselAc
+import com.fido.common.common_utils.motionlayout.MotionCollapsibleAc
+import com.fido.common.common_utils.motionlayout.MotionCustomCarouselAc
+import com.fido.common.common_utils.motionlayout.MotionLayoutAc
+import com.fido.common.common_utils.motionlayout.MotionLayoutAc2
+import com.fido.common.common_utils.motionlayout.MotionYouTubeAc
 import com.fido.common.common_utils.naviga.CodenavigationAc
 import com.fido.common.common_utils.picker.PickerViewAc
 import com.fido.common.common_utils.pop.DialogChainAc
@@ -81,6 +122,7 @@ import com.fido.common.common_utils.viewpager.ViewpageAc
 import com.fido.common.flutter.FlutterInteractiveAc
 import com.fido.common.surface.SurfaceAc
 import com.fido.common.textview.TextViewAc
+import com.google.gson.Gson
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.lxj.xpopup.XPopup
@@ -90,6 +132,7 @@ import com.lxj.xpopup.enums.PopupPosition
 import com.lxj.xpopup.impl.BottomListPopupView
 import com.lxj.xpopup.widget.SmartDragLayout
 import java.io.File
+import java.io.Serializable
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 import kotlin.reflect.full.companionObject
@@ -289,6 +332,9 @@ class MainActivity : AppCompatActivity() {
         addView<EventBusAc>("go HEventBusAc")
         addView<DialogChainAc>("go DialogChain")
         addView<AnnotationAc>("go 注解测试Ac")
+        addView("跳转第三方测试"){
+            startTargetAppForName("com.tencent.mobileqq")
+        }
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {
@@ -296,6 +342,23 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun addView(content:String, click:()->Unit){
+        mBinding.container.addView(
+            Button(this).apply {
+                id = R.id.tv
+                text = content
+                setTextColor(R.color.white.getColor)
+                setBackgroundColor(R.color.teal_700.getColor)
+                isAllCaps = false
+                setOnClickListener {
+                    click.invoke()
+                }
+                roundCorners = 10f.dp.toFloat()
+            },
+            mBinding.container.childCount - 4,ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+        )
     }
 
     private inline fun <reified T : Activity> addView(title: String) {
@@ -670,3 +733,54 @@ class MainActivity : AppCompatActivity() {
 
 }
 
+interface a{
+    val c: Int
+        get() = 10
+
+    var d: Int
+
+    fun e()
+
+    fun realFun(){}
+}
+interface b{
+    fun e()
+
+    fun realFun(){}
+}
+
+class C :a,b{
+
+    override var d: Int = 0
+        get() = 10
+        set(value) {
+            field=value
+        }
+
+    override fun e() {
+
+    }
+
+    override fun realFun() {
+        super<a>.realFun()
+        super<b>.realFun()
+    }
+
+//    override fun e() {
+//        TODO("Not yet implemented")
+//    }
+
+}
+
+
+class CCC : Serializable {
+    private val name: String? = null
+    private val pwd: String? = null
+
+    @Transient
+    private val gson = Gson()
+
+    companion object {
+        private const val serialVersionUID = 1L
+    }
+}
