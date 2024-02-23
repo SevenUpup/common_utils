@@ -35,7 +35,9 @@ object ToastConfig {
     /** 取消吐司显示 */
     @JvmStatic
     fun cancle(){
-        toast?.cancel()
+        kotlin.runCatching {
+            toast?.cancel()
+        }
     }
 
 }

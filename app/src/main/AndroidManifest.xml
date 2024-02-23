@@ -148,7 +148,12 @@
 
         <activity android:name=".annotation.AnnotationAc"/>
 
-    </application>
+        <activity android:name=".muilt_process.GloableProcessAc" android:launchMode="singleTask" android:process="com.fido.test"/>
+        <activity android:name=".muilt_process.PrivateProcessAc" android:process=":fido1"/>
+        <!-- 指定launchMode 为singleTask 并设置 taskAffinity 实现小程序效果 -->
+        <activity android:name=".muilt_process.Private2ProcessAc" android:process=":fido2" android:launchMode="singleTask" android:taskAffinity=":fido2"/>
+        <activity android:name=".muilt_process.Private3ProcessAc" android:process=":fido2" android:launchMode="singleTask" android:taskAffinity=":fido2"/>
 
+    </application>
 
 </manifest>

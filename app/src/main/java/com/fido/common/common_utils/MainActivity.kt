@@ -108,6 +108,9 @@ import com.fido.common.common_utils.motionlayout.MotionCustomCarouselAc
 import com.fido.common.common_utils.motionlayout.MotionLayoutAc
 import com.fido.common.common_utils.motionlayout.MotionLayoutAc2
 import com.fido.common.common_utils.motionlayout.MotionYouTubeAc
+import com.fido.common.common_utils.muilt_process.Constant
+import com.fido.common.common_utils.muilt_process.GloableProcessAc
+import com.fido.common.common_utils.muilt_process.PrivateProcessAc
 import com.fido.common.common_utils.naviga.CodenavigationAc
 import com.fido.common.common_utils.picker.PickerViewAc
 import com.fido.common.common_utils.pop.DialogChainAc
@@ -141,6 +144,10 @@ import kotlin.reflect.full.declaredMemberFunctions
 
 data class P(val name: String)
 class MainActivity : AppCompatActivity() {
+
+    companion object{
+        var MAIN_MUILT_PROCESS_TAG = 0
+    }
 
     private val mBinding: ActivityMainBinding by binding()
     var pop:BottomListPopupView?=null
@@ -198,14 +205,14 @@ class MainActivity : AppCompatActivity() {
         doOnAppStatusChanged (onForeGround = {
             toast("onForeground")
         }){
-            toast("onBackground")
+            /*toast("onBackground")
             // 省略定时任务的代码（参考workmanager），设定定时切换图标
             // 禁用原图标
             val oldActivity = ComponentName(applicationContext, MainActivity::class.java)
             applicationContext.packageManager.setComponentEnabledSetting(oldActivity, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
             // 启用新图标
             val newActivity = ComponentName(applicationContext, "${app.packageName}.MainAliasActivity")
-            applicationContext.packageManager.setComponentEnabledSetting(newActivity, PackageManager.COMPONENT_ENABLED_STATE_ENABLED,PackageManager.DONT_KILL_APP)
+            applicationContext.packageManager.setComponentEnabledSetting(newActivity, PackageManager.COMPONENT_ENABLED_STATE_ENABLED,PackageManager.DONT_KILL_APP)*/
         }
 
         addButton()
@@ -334,6 +341,17 @@ class MainActivity : AppCompatActivity() {
         addView<AnnotationAc>("go 注解测试Ac")
         addView("跳转第三方测试"){
             startTargetAppForName("com.tencent.mobileqq")
+        }
+        addView("测试多进程通信传值：全局 processname"){
+            startActivity(Intent(this,GloableProcessAc::class.java).putExtra(Constant.INTENT_CONTENT,"gloable").setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+//            startActivity<GloableProcessAc>(Pair(Constant.INTENT_CONTENT,"gloable"))
+        }
+        addView("测试多进程通信传值：私有 processname"){
+            MAIN_MUILT_PROCESS_TAG ++
+            startActivity<PrivateProcessAc>(Pair(Constant.INTENT_CONTENT,"private")){
+                setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            Log.d("FiDo", "Main MAIN_MUILT_PROCESS_TAG= ${MAIN_MUILT_PROCESS_TAG} ")
         }
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {

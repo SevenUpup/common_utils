@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <Button
+        android:id="@+id/bt"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="launch GloableProcessAc"/>
+
+    <Button
+        android:id="@+id/bt2"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@id/bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="launch Private2ProcessAc"/>
+
+    <TextView
+        android:id="@+id/tvIntent"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bt2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/app_name"/>
+
+    <TextView
+        android:id="@+id/tvTag"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvIntent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/app_name"/>
+
+    <TextView
+        android:id="@+id/tvTag2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTag"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/app_name"/>
+
+    <Button
+        android:id="@+id/bt3"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@id/tvTag2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="修改Private2Process的静态变量值为tag3"/>
+
+    <Button
+        android:id="@+id/bt4"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@id/bt3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Private调用Gloable的静态代码测试"
+        android:visibility="visible"
+        tools:visibility="visible"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
