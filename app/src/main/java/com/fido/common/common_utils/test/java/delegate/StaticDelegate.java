@@ -10,6 +10,17 @@ import java.util.List;
  */
 public class StaticDelegate {
 
+    private static int mFlag;
+
+    public static int addFlag(int flags){
+        return mFlag |= flags;
+    }
+
+    public static int setFlags(int flags){
+        mFlag = flags;
+        return mFlag;
+    }
+
     public static void main(String[] args) {
         RentHouse baozupo = new Baozupo();
         RentHouse zhongjie = new Intermediary(baozupo);
@@ -23,10 +34,23 @@ public class StaticDelegate {
         list.add(zhongjie);
 
         Fruit f = new Fruit("");
-        f.getT();
+        Object t = f.getT();
+        System.out.println("t=" + t);
 
         Fruit<Integer> f2 = new Fruit<Integer>(123);
-        f2.getT();
+        Integer t1 = f2.getT();
+        System.out.println("t1=" + t1);
+
+
+//        System.out.println("addFlag one= " + addFlag(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK));
+//        System.out.println("addFlag two= " + addFlag(Intent.FLAG_ACTIVITY_NEW_TASK));
+//        System.out.println("setFlags = " + setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK));
+//        System.out.println("setFlags = " + setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+        System.out.println(addFlag(1|2));
+        System.out.println(addFlag(12));
+        System.out.println(setFlags(66));
+        System.out.println(setFlags(55));
     }
 
     static class Fruit<T>{
