@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.drake.debugkit.DevTool
 import com.drake.debugkit.dev
 import com.fido.common.base.BaseVBActivity
 import com.fido.common.common_base_ui.ext.addItemChildClick
@@ -79,7 +80,9 @@ class RvDragSwipeAc : BaseVBActivity<AcRvDragSwipeBinding>() {
                 }
             }
 
-            dev {
+            val devTool = DevTool(this)
+            lifecycle.addObserver(devTool)
+            dev(devTool) {
                 function("round_image") {
                     Glide.with(this@RvDragSwipeAc)
                         .applyDefaultRequestOptions(RequestOptions.centerCropTransform())

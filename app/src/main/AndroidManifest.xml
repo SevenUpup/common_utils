@@ -154,6 +154,9 @@
         <activity android:name=".muilt_process.Private2ProcessAc" android:process=":fido2" android:launchMode="singleTask" android:taskAffinity=":fido2"/>
         <activity android:name=".muilt_process.Private3ProcessAc" android:process=":fido2" android:launchMode="singleTask" android:taskAffinity=":fido2"/>
 
+        <activity android:name=".view.FloatingImageAc"/>
+
+
     </application>
 
 </manifest>

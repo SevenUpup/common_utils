@@ -120,6 +120,7 @@ import com.fido.common.common_utils.sp.SPAc
 import com.fido.common.common_utils.spannable.SpannableAc
 import com.fido.common.common_utils.test.NavigationAc
 import com.fido.common.common_utils.time.IntervalTimeAc
+import com.fido.common.common_utils.view.FloatingImageAc
 import com.fido.common.common_utils.viewmodel.ViewModelAc
 import com.fido.common.common_utils.viewpager.ViewpageAc
 import com.fido.common.flutter.FlutterInteractiveAc
@@ -353,6 +354,7 @@ class MainActivity : AppCompatActivity() {
             }
             Log.d("FiDo", "Main MAIN_MUILT_PROCESS_TAG= ${MAIN_MUILT_PROCESS_TAG} ")
         }
+        addView<FloatingImageAc>("拖动悬浮ImageView")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {

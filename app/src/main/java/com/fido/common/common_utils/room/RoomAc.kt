@@ -47,7 +47,7 @@ class RoomAc:AppCompatActivity() {
         binding.input2.throttleSearch(lifecycle,300,{searchKey ->
             runBlocking {//模拟网络请求延迟
                 delay(500)
-                User(0,searchKey.toString(),18)
+                User(0,searchKey.toString(),18,"1")
             }
         },{
             toast(it.name)
@@ -86,8 +86,8 @@ class RoomAc:AppCompatActivity() {
         binding.update.click {
             val allUsers = userDao.getAllUser()
             if (allUsers.isEmpty()) return@click
-            val shuffledId = allUsers.shuffled().take(1)[0].id  //去list 一个随机元素
-            userDao.updateUser(User(shuffledId,"shuffledIdUser${shuffledId}",Random.nextInt(66)))
+            val shuffledId = allUsers.shuffled().take(1)[0].id  //取list 一个随机元素
+            userDao.updateUser(User(shuffledId,"shuffledIdUser${shuffledId}",Random.nextInt(66),"1"))
 
             updateRv()
         }
@@ -101,12 +101,12 @@ class RoomAc:AppCompatActivity() {
 
     private fun getRandomUser(): User {
         val id = Random.nextInt(100000)
-        return User(id,"randomUser${id}",Random.nextInt(60))
+        return User(id,"randomUser${id}",Random.nextInt(60),"0")
     }
 
     private fun updateRv(users:List<User>?=null) {
         binding.mRv.bindData(users?:userDao.getAllUser(), R.layout.item_rv_text){holder, position, item ->
-            holder.setText(R.id.mTitle,"name=${item?.name} age=${item?.age}")
+            holder.setText(R.id.mTitle,"name=${item?.name} age=${item?.age} sex=${item?.sex}")
             holder.setGone(R.id.bt_up,true)
             holder.setGone(R.id.bt_down,true)
         }

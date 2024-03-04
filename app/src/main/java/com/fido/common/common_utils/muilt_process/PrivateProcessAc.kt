@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.fido.common.base.BaseViewModel
 import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_ui.util.throttleClick
 import com.fido.common.common_base_util.ext.isGone
@@ -18,7 +19,9 @@ import com.fido.common.common_base_util.ext.logd
 import com.fido.common.common_base_util.ext.startActivity
 import com.fido.common.common_utils.MainActivity
 import com.fido.common.common_utils.databinding.AcPrivateProcessBinding
+import com.fido.common.common_utils.test.FunTest.Companion.also
 import kotlinx.coroutines.flow.flow
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: FiDo
@@ -36,13 +39,26 @@ class PrivateProcessAc:AppCompatActivity() {
         block()  //等价于 this.block() ,而this的类型是 PrivateProcessAc
     }
 
+//    override fun reportFullyDrawn() {
+//        super.reportFullyDrawn()
+//    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         this.times.multipy()
 
+
         runAsOuter {
             3.multipy()
+        }
+
+        binding.bt.also {
+            
+        }
+
+        val bt = binding.bt.run {
+            123
         }
 
         Log.d("FiDo", "由于跨进程所以 Private MAIN_MUILT_PROCESS_TAG = ${MainActivity.MAIN_MUILT_PROCESS_TAG} 还是初始值")

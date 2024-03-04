@@ -1,6 +1,13 @@
 package com.fido.common.common_utils.test
 
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
+import com.fido.common.common_utils.a
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.flow
 import java.util.*
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
 @author FiDo
@@ -20,6 +27,13 @@ class FunTest {
     companion object{
         @JvmStatic
         fun main(args: Array<String>) {
+
+            val auto = AtomicBoolean(false)
+            //m.compareAndSet(a,b),如果m==a ,返回true，同时将m置为b； 如果m==b，返回false。
+            val boolenResult = auto.compareAndSet(true,false)
+            println("compareAndSet(true,false) Result = $boolenResult  auto=${auto}")
+            auto.set(true)
+            println("AtomicBoolean Result = ${auto.get()} auto.compareAndSet(true,false)=${auto.compareAndSet(true,false)}")
 
             val str1 = "S_Android"
             println(stringMapperFun(str1).invoke(str1))

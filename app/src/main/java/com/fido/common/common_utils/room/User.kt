@@ -14,6 +14,10 @@ import androidx.room.PrimaryKey
 data class User(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "user_name") val name: String,
-    @ColumnInfo(name = "user_age") val age: Int
+    @ColumnInfo(name = "user_age") val age: Int,
+    //room version = 2 新增 user_sex
+    @ColumnInfo(name="user_sex") val sex:String,
+    //room version = 3 新增 height
+//    @ColumnInfo(name="height") val height:Int,
 )
 
