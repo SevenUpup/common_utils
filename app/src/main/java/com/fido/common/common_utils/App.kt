@@ -7,7 +7,6 @@ import android.os.Process
 import android.text.TextUtils
 import com.drake.debugkit.DevTool
 import com.facebook.stetho.Stetho
-import com.fido.common.CrashProtectUtil
 import com.fido.common.common_base_util.ext.logd
 import com.fido.common.common_base_util.log.LogUtils
 import com.fido.common.common_base_util.util.toast.ToastConfig
@@ -53,7 +52,9 @@ class App: Application() {
 
             if (BuildConfig.DEBUG) {
                 //兜底策略
-                CrashProtectUtil().init()
+//                CrashProtectUtil().init()
+                //新 兜底
+//                CrashPortrayHelper.init(this,getCrashPortrayConfig(),getAppImp())
             }
             CrashWoodpecker.instance()
                 .withKeys("widget", "me.drakeet")

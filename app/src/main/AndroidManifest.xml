@@ -62,6 +62,7 @@
         <activity-alias
             android:name=".MainAliasActivity"
             android:enabled="false"
+            android:label="@string/app_name_new"
             android:icon="@mipmap/h_launch"
             android:targetActivity=".MainActivity"
             android:exported="true">
@@ -155,7 +156,9 @@
         <activity android:name=".muilt_process.Private3ProcessAc" android:process=":fido2" android:launchMode="singleTask" android:taskAffinity=":fido2"/>
 
         <activity android:name=".view.FloatingImageAc"/>
+        <activity android:name=".rv.RvEmptyViewAc"/>
 
+        <activity android:name=".viewpager.Vp2Ac"/>
 
     </application>
 

@@ -11,6 +11,11 @@ import com.fido.common.common_base_util.util.sp.putSp
 import com.fido.common.common_base_util.util.sp.spValue
 import com.fido.common.common_utils.R
 import com.fido.common.common_utils.databinding.AcSpTestBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.properties.Delegates
 
 /**
@@ -79,6 +84,11 @@ class SPAc : AppCompatActivity() {
 
     private fun initView() {
 
+        GlobalScope.launch {
+            val block = Block()
+            block.invoke()
+        }
+        
         binding.mRv.vertical()
         bindRvData()
     }
@@ -94,6 +104,16 @@ class SPAc : AppCompatActivity() {
         }
         binding.mRv.bindData(data, R.layout.item_rv_text) { holder, position, item ->
             holder.setText(R.id.mTitle, item)
+        }
+    }
+
+    class Block : suspend ()->String{
+        override suspend fun invoke():String {
+            return withContext(Dispatchers.IO){
+                //模拟耗时
+                delay(2000)
+                "result"
+            }
         }
     }
 

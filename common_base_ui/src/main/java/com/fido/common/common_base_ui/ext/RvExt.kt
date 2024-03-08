@@ -1,5 +1,9 @@
 package com.fido.common.common_base_ui.ext
 
+import android.view.View
+import androidx.core.view.isVisible
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 
 /**
@@ -25,3 +29,51 @@ val RecyclerView.canScrollUp
  */
 val RecyclerView.canScrollDown
     get() = this.canScrollVertically(-1)
+
+val RecyclerView.canScrollLeft get() = canScrollHorizontally(1)
+
+val RecyclerView.canScrollRight get() = canScrollHorizontally(-1)
+
+fun RecyclerView.setEmptyView(owner: LifecycleOwner,emptyView:View) =
+    observeDataEmpty(owner) { emptyView.isVisible = it }
+
+fun RecyclerView.observeDataEmpty(owner:LifecycleOwner,checkEmpty: (Boolean) -> Unit) =
+    owner.lifecycle.addObserver(object :DefaultLifecycleObserver{
+
+        private var rvObserver:RecyclerView.AdapterDataObserver?=null
+
+        override fun onCreate(owner: LifecycleOwner) {
+            if (rvObserver == null) {
+                val adapter = checkNotNull(adapter){
+                    "RecyclerView needs to set up the adapter before setting up an empty view."
+                }
+                rvObserver = AdapterDataEmptyObserver(adapter,checkEmpty)
+                adapter.registerAdapterDataObserver(rvObserver as AdapterDataEmptyObserver)
+            }
+        }
+
+        override fun onDestroy(owner: LifecycleOwner) {
+            super.onDestroy(owner)
+            rvObserver?.let {
+                adapter?.unregisterAdapterDataObserver(it)
+                rvObserver = null
+            }
+        }
+
+    })
+
+
+class AdapterDataEmptyObserver(
+    private val adapter:RecyclerView.Adapter<*>,
+    private val checkEmpty:(Boolean)->Unit
+):RecyclerView.AdapterDataObserver(){
+
+    override fun onChanged() = checkEmpty(isDataEmpty)
+
+    override fun onItemRangeInserted(positionStart: Int, itemCount: Int) = checkEmpty(isDataEmpty)
+
+    override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) = checkEmpty(isDataEmpty)
+
+    private val isDataEmpty get() = adapter.itemCount == 0
+
+}

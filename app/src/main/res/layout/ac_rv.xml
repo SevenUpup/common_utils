@@ -41,6 +41,14 @@
             android:textAllCaps="false"
             android:text="scroll pos"/>
 
+        <Button
+            android:id="@+id/bt_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:onClick="goEmpty"
+            android:text="Rv with EmptyView"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mHorizRv"
             android:layout_width="match_parent"

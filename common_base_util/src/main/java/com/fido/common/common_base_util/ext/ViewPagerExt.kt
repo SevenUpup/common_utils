@@ -2,17 +2,21 @@ package com.fido.common.common_base_util.ext
 
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.Lifecycle
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.fido.common.common_base_util.dp2px
+import java.lang.IllegalArgumentException
 import java.util.*
 
 /**
@@ -66,23 +70,6 @@ fun ViewPager.bindFragment(
 }
 
 /**
- * 给ViewPager2绑定Fragment
- */
-fun ViewPager2.bindFragment(
-    fm: FragmentManager,
-    lifecycle: Lifecycle,
-    fragments: List<Fragment>
-): ViewPager2 {
-    offscreenPageLimit = fragments.size - 1
-
-    adapter = object : FragmentStateAdapter(fm, lifecycle) {
-        override fun getItemCount(): Int = fragments.size
-        override fun createFragment(position: Int): Fragment = fragments[position]
-    }
-    return this
-}
-
-/**
  * 让ViewPager展示卡片效果
  * @param pageMargin 用来调节卡片之间的距离
  * @param padding 用来调节ViewPager的padding
@@ -126,10 +113,10 @@ class CardPagerTransformer(context: Context) : ViewPager.PageTransformer {
 //https://mp.weixin.qq.com/s/iO5FD4Cqqr0rnY-byrDdAQ
 class ViewPagerFragmentAdapter(
     private val fm: FragmentManager,
-    private val fragments:List<Fragment>,
-    private val pageTitles: List<String>?=null,
+    private val fragments: List<Fragment>,
+    private val pageTitles: List<String>? = null,
     behavior: Int = 0,
-) :FragmentStatePagerAdapter(fm, behavior) {
+) : FragmentStatePagerAdapter(fm, behavior) {
 
     private val fragmentMap = mutableMapOf<Int, Fragment>()
     private val fragmentPositions = hashMapOf<Int, Int>()
@@ -205,3 +192,118 @@ class ViewPagerFragmentAdapter(
 
 }
 
+// =========================================== Vp2 ============================================
+/**
+ * 给ViewPager2绑定 Fragment
+ */
+fun ViewPager2.bindFragment(
+    fm: FragmentManager,
+    lifecycle: Lifecycle,
+    fragments: List<Fragment>,
+    offsetLimit: Int = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
+): ViewPager2 {
+//    offscreenPageLimit = if (offsetLimit > 0) offsetLimit else ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
+//    adapter = object : FragmentStateAdapter(fm, lifecycle) {
+//        override fun getItemCount(): Int = fragments.size
+//        override fun createFragment(position: Int): Fragment = fragments[position]
+//        //通过重写getItemId 实现动态添加数据时 执行 createFragment
+//        override fun getItemId(position: Int): Long = fragments[position].hashCode().toLong()
+//    }
+    offscreenPageLimit = if (offsetLimit > 0) offsetLimit else ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
+    adapter = CommonVp2FragmentStateAdapter(fm, lifecycle, fragments.toMutableList())
+    return this
+}
+
+ class CommonVp2FragmentStateAdapter(
+    private val fragmentManager: FragmentManager,
+    lifecycle: Lifecycle,
+    val fragments: MutableList<Fragment>
+) : FragmentStateAdapter(fragmentManager, lifecycle) {
+    override fun getItemCount(): Int = fragments.size
+    override fun createFragment(position: Int): Fragment = fragments[position]
+    override fun getItemId(position: Int): Long = fragments[position].hashCode().toLong()
+}
+
+val ViewPager2.recyclerView get() = this.getChildAt(0) as RecyclerView
+
+fun ViewPager2.addFragment(vararg fragments: Fragment, position: Int,isScrollCurrent:Boolean = true) =
+    apply {
+        if (adapter !is CommonVp2FragmentStateAdapter) {
+            throw IllegalArgumentException("please use ViewPage2.bindFragment() first ! and check adapter is CommonVp2FragmentStateAdapter")
+        } else {
+            try {
+                val mCommonAdapter = adapter as CommonVp2FragmentStateAdapter
+                if (mCommonAdapter.fragments.isNullOrEmpty()) {
+                    mCommonAdapter.fragments.addAll(fragments.toList())
+                    mCommonAdapter.notifyDataSetChanged()
+                } else {
+                    if (position < 0) {
+                        mCommonAdapter.fragments.addAll(fragments.toList())
+                    } else {
+                        mCommonAdapter.fragments.addAll(position, fragments.toList())
+                    }
+                    //自动定位到当前添加的位置
+                    if (isScrollCurrent) {
+                        // position < 0 说明是尾部添加，滚动到最后 pos == 0 说明前置位添加 直接滚动第一个  pos>0 说明中间插入，滚到到插入的下边
+                        val targetPos = when{
+                            position > 0 -> position
+                            position < 0 -> mCommonAdapter.fragments.size - 1
+                            else -> currentItem + fragments.size
+                        }
+                        setCurrentItem(targetPos ,false)
+                    }
+                }
+            } catch (_: Exception) { }
+        }
+    }
+
+/**
+ * 给 ViewPager2 添加前置Fragment
+ */
+fun ViewPager2.addFragment2Front(vararg fragments: Fragment,isScrollCurrent: Boolean=true) = apply { addFragment(*fragments, position = 0, isScrollCurrent = isScrollCurrent) }
+/**
+ * 给 ViewPager2 添加Fragment
+ */
+fun ViewPager2.addFragment(vararg fragments: Fragment,isScrollCurrent: Boolean = true) = apply { addFragment(*fragments,position = -1,isScrollCurrent = isScrollCurrent) }
+
+fun ViewPager2.removeFragment(position: Int) = apply {
+    if (adapter is CommonVp2FragmentStateAdapter) {
+        (adapter as CommonVp2FragmentStateAdapter).let {
+            it.fragments.removeAt(position)
+            it.notifyItemRemoved(position)
+        }
+    }
+}
+
+fun ViewPager2.clearFragments() = apply {
+    if (adapter is CommonVp2FragmentStateAdapter) {
+        (adapter as CommonVp2FragmentStateAdapter).let {
+            it.fragments.clear()
+            it.notifyDataSetChanged()
+        }
+    }
+}
+
+/**
+ * @param viewLayoutRes ViewPage2 需要填充的 layout id
+ * @param bindView      回调 onBindViewHolder() you can init some view
+ */
+fun ViewPager2.bindView(
+    itemCount:Int,
+    @LayoutRes viewLayoutRes:Int,
+    offsetLimit:Int = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT,
+    bindView:(View.(position:Int)->Unit)?=null,
+) = apply {
+    if (offsetLimit > 0) {
+        offscreenPageLimit = offsetLimit
+    }
+    adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = VH(LayoutInflater.from(parent.context).inflate(viewLayoutRes,parent,false))
+        override fun getItemCount(): Int = itemCount
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            bindView?.invoke(holder.itemView,position)
+        }
+        inner class VH(itemView: View) :RecyclerView.ViewHolder(itemView)
+    }
+
+}

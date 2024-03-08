@@ -21,7 +21,7 @@
 
     <Button
         android:id="@+id/bt"
-        android:text="芝麻开门"
+        android:text="展示RvItem个弹窗，顺序为倒叙展示"
         android:layout_marginBottom="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

@@ -119,7 +119,8 @@ class DialogChainAc :AppCompatActivity(){
             }?.forEachIndexed { index, basePopupView ->
                 try {
                     basePopupView?.let {
-                        configList.add(creatDialogManagerConfig(basePopupView, prioroty = m.size - index))
+//                        configList.add(creatDialogManagerConfig(basePopupView, prioroty = m.size - index))
+                        configList.add(creatDialogManagerConfig(basePopupView, prioroty = index ))
                     }
                 }catch (e:Exception){
                     loge("error = ${e.message}")
@@ -153,7 +154,7 @@ class DialogChainAc :AppCompatActivity(){
 
 }
 
-class MyDialogFragment(val initBlock:(()->Unit)?=null):DialogFragment(){
+class MyDialogFragment(private val initBlock:(()->Unit)?=null):DialogFragment(){
 
     override fun onCreateView(
         inflater: LayoutInflater,

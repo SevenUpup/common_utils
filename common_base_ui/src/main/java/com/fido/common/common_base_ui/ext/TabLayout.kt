@@ -18,7 +18,9 @@
 
 package com.fido.common.common_base_ui.ext
 
+import android.os.Build
 import android.view.View
+import android.view.ViewTreeObserver
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.viewpager.widget.ViewPager
@@ -26,6 +28,28 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.Tab
 import com.google.android.material.tabs.TabLayoutMediator
+
+/**
+ * 解决Android O 长按提示 Android 13 背景黑边 问题
+ */
+fun TabLayout.hideLongPressText() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val onGlobalLayoutListener = object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                this@hideLongPressText.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                for (i in 0 until this@hideLongPressText.tabCount) {
+                    this@hideLongPressText.getTabAt(i)?.view?.isLongClickable = false
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        this@hideLongPressText.getTabAt(i)?.view?.tooltipText = null
+                        // 解决 android 13 上 可能点击黑边
+                        this@hideLongPressText.getTabAt(i)?.view?.background = null
+                    }
+                }
+            }
+        }
+        this.viewTreeObserver.addOnGlobalLayoutListener(onGlobalLayoutListener)
+    }
+}
 
 val TabLayout.tabs
     get() = try{
@@ -42,6 +66,7 @@ inline fun TabLayout.setupWithViewPager(
     autoRefresh: Boolean = true,
     tabConfigurationStrategy: (TabLayout.Tab, Int) -> Unit
 ) {
+    hideLongPressText()
     setupWithViewPager(viewPager, autoRefresh)
     for (i in 0 until tabCount) {
         getTabAt(i)?.let { tab ->

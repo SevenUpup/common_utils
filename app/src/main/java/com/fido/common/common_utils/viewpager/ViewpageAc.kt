@@ -4,6 +4,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import com.fido.common.base.BaseVBActivity
 import com.fido.common.common_base_ui.ext.*
 import com.fido.common.common_base_ui.util.dp
@@ -36,6 +37,10 @@ class ViewpageAc : BaseVBActivity<AcViewpageBinding>() {
     override fun initView() {
         appLanguage = Locale.ENGLISH
 
+        binding.btVp2.click {
+            startActivity<Vp2Ac>()
+        }
+
         binding.tvVpNotify.click {
             startActivity<NotifyViewPagerAc>()
         }
@@ -45,15 +50,24 @@ class ViewpageAc : BaseVBActivity<AcViewpageBinding>() {
             expandClickArea(25.dp)
             click {
                 toast("click area")
+                try {
+//                    fList.add(0,TestFragment.newInstance())
+//                    binding.mVp2.setCurrentItem(1,false)
+                }catch (e:Exception){
+                    logd(e.toString())
+                }
             }
         }
         binding.tabLayout.addOnTabSelectedListener(onTabSelected = {
             when (it.position) {
+                0->{
+
+                }
                 1-> showKeyboard()
                 2-> hideKeyboard()
             }
         })
-        binding.mVp.bind(3, bindView = {container,position->
+        binding.mVp.bind(fList.size, bindView = {container,position->
             ImageView(this).apply {
                 setImageResource(R.mipmap.flower)
                 scaleType = ImageView.ScaleType.CENTER_CROP
@@ -98,7 +112,7 @@ class ViewpageAc : BaseVBActivity<AcViewpageBinding>() {
         }
     }
 
-    private val fList = listOf(Nav1Fragment.getInstance(""),Nav2Fragment.getInstance(""),Nav3Fragment.getInstance(""))
+    private val fList = mutableListOf<Fragment>(TestFragment.newInstance(),Nav1Fragment.getInstance(""),Nav2Fragment.getInstance(""),Nav3Fragment.getInstance(""))
     private fun bindVp2Adapter() {
         if (index % 2 == 0) {
             binding.mVp2.adapter =

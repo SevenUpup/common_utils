@@ -18,7 +18,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:gravity="center">
+            android:gravity="left">
 
             <TextView
                 android:id="@+id/tv_click"
@@ -36,6 +36,12 @@
                 android:text="ViewPager动态 增删改"
                 android:gravity="center"
                 android:background="#e6e"/>
+
+            <Button
+                android:id="@+id/bt_vp2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="go vp2"/>
 
         </LinearLayout>
 

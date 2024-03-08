@@ -1,4 +1,4 @@
-package com.fido.common;
+package com.fido.common.common_utils.crash;
 
 import android.os.Looper;
 import android.text.TextUtils;

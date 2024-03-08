@@ -43,6 +43,10 @@ class RvAc:AppCompatActivity() {
         }
     }
 
+    fun goEmpty(v:View){
+        startActivity<RvEmptyViewAc>()
+    }
+
     fun goScroll(v: View){
         startActivity<RvScrollWithWindownAc>()
     }
