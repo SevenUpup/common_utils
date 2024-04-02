@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_ui.ext.addItemChildLongClick
@@ -47,10 +49,28 @@ class DialogChainAc :AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val liveData = MutableLiveData<String>()
+        val liveDta2 = MutableLiveData<Int>()
+        val mediatorLiveData = MediatorLiveData<Any>().apply {
+            addSource(liveData){
+                this.value = it
+            }
+            addSource(liveDta2){
+                this.value = it
+            }
+        }
+        mediatorLiveData.observe(this){
+            loge(it.toString())
+            toast(it.toString())
+        }
 
         binding.bt3.apply {
             rectangleCornerBg(R.color.colorBgBtnGray,12f)
             throttleClick {
+
+                liveData.value = "123"
+                liveDta2.value = 333
+
                 /*val list = mutableListOf<DialogFragment>()
                 for (i in 0..2) {
                     val dialogFragment = MyDialogFragment()

@@ -1,11 +1,6 @@
 package com.fido.common.common_utils.test
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
-import com.fido.common.common_utils.a
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.flow
+import com.fido.common.common_base_util.deepCopy
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -25,8 +20,45 @@ class FunTest {
     }
 
     companion object{
+
+        var list = List(23) { it } // 创建一个包含50个元素的列表
+
+        var newList = listOf<Int>()
+        fun doTake(step:Int){
+            val subList = list.take(step)
+            list -= subList
+            if (list.isEmpty()) {
+                list = newList
+            }
+            println("subList=${subList} list=${list}")
+        }
+
         @JvmStatic
         fun main(args: Array<String>) {
+
+//            val list1 = List(11){it}
+//            val step = 10
+//            println(list1)
+//            for (i in list1.indices step step) {
+//                val subList = list1.subList(i, i + step)
+////                val subList = list1.take(i+step)
+//                println("subList => $subList")
+//            }
+
+            newList = list.deepCopy()
+            doTake(10)
+            doTake(10)
+            doTake(10)
+            doTake(10)
+            doTake(10)
+            doTake(10)
+            /*val step = 10 // 每次最多可以取的元素个数
+            var list = List(3) { it } // 创建一个包含50个元素的列表
+            while (list.isNotEmpty()) {
+                val subList = list.take(step)
+                println(subList)
+                list -= subList
+            }*/
 
             val auto = AtomicBoolean(false)
             //m.compareAndSet(a,b),如果m==a ,返回true，同时将m置为b； 如果m==b，返回false。
