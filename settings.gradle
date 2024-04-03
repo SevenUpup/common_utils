@@ -3,6 +3,10 @@ pluginManagement {
         mavenCentral()
         google()
         gradlePluginPortal()
+        //1 添加本地仓库，用于fido_asm字节码插装测试，2.在 Project 级别的 build.gradle 中添加我们的插件依赖 3.在 app 的 module 中的 build.gradle 中引用插件：
+        maven {
+            url = uri(".${File.separator}local_maven")
+        }
     }
 }
 dependencyResolutionManagement {
@@ -20,6 +24,7 @@ include ':common_base_util'
 include ':common_base_ui'
 include ':easy_navigation'
 include ':groovy_lib'
+include ':fido_asm'
 
 
 gradle.addBuildListener(new BuildListener() {

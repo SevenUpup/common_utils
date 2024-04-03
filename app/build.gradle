@@ -3,6 +3,10 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.devtools.ksp'  // 根布局build.gradle 引入的 版本号要跟当前项目的 kotlin version 对应
+
+    //app 的 module 中的 build.gradle 中引用插件：
+//    alias(libs.plugins.fidoASM) apply false
+    id 'com.fido' version "1.0.0"
 }
 
 android {
@@ -139,6 +143,7 @@ dependencies {
 
     implementation "com.github.SevenUpup.annotation:annotation:0.0.13"
     ksp('com.github.SevenUpup.annotation:compiler:0.0.13')
+
 }
 
 /**
