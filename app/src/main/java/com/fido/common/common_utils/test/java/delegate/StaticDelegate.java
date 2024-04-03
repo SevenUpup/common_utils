@@ -26,6 +26,9 @@ public class StaticDelegate {
         RentHouse zhongjie = new Intermediary(baozupo);
         zhongjie.rentHouse();
 
+        String params = TestStaticClass.number;
+        System.out.println("main count="+params);
+
         List<? super RentHouse> list = new ArrayList<>();
         //测试用，只是为了验证可以add
 //        RentHouse obj = (RentHouse) new Object();
@@ -115,6 +118,5 @@ public class StaticDelegate {
             System.out.println("小胖子想要租房");
         }
     }
-
 
 }
