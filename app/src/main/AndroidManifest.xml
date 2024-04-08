@@ -160,6 +160,8 @@
 
         <activity android:name=".viewpager.Vp2Ac"/>
 
+        <activity android:name=".customview.CustomViewAc"/>
+
     </application>
 
 </manifest>

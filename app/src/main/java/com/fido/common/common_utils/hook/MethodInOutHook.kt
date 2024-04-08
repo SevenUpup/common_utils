@@ -1,8 +1,6 @@
 package com.fido.common.common_utils.hook
 
-import android.util.Log
 import androidx.annotation.Keep
-import com.fido.common.common_base_util.ext.currentTimeString
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -30,7 +28,7 @@ object MethodInOutHook {
         //计算方法执行开始时间
         val currentThread = Thread.currentThread()
         val method = currentThread.stackTrace[3]
-        Log.d(TAG, "methodIn: ${currentTimeString(format = formatMs.get())} Class=${method.className}, Method=${method.methodName}")
+//        Log.d(TAG, "methodIn: ${currentTimeString(format = formatMs.get())} Class=${method.className}, Method=${method.methodName}")
     }
 
     @JvmStatic
@@ -42,9 +40,9 @@ object MethodInOutHook {
         currentThread.stackTrace.forEach {
             sb.append(it.toString() + "\n")
         }
-        Log.e(TAG, "stackTrace.size = ${currentThread.stackTrace.size} \n${sb.toString()}")
+//        Log.e(TAG, "stackTrace.size = ${currentThread.stackTrace.size} \n${sb.toString()}")
 
-        Log.d(TAG, "methodOut: ${currentTimeString(format = formatMs.get())} Class=${method.className}, Method=${method.methodName}")
+//        Log.d(TAG, "methodOut: ${currentTimeString(format = formatMs.get())} Class=${method.className}, Method=${method.methodName}")
     }
 
     private const val TAG = "FiDo"

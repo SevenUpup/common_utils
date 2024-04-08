@@ -5,9 +5,7 @@ import android.animation.Animator.AnimatorListener
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.Activity
-import android.content.ComponentName
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -43,7 +41,6 @@ import com.fido.common.common_base_ui.ext.vertical
 import com.fido.common.common_base_ui.util.ImagePreviewUtil
 import com.fido.common.common_base_ui.util.showNormalListDialog
 import com.fido.common.common_base_ui.util.throttleClick
-import com.fido.common.common_base_util.app
 import com.fido.common.common_base_util.channel.receiveTag
 import com.fido.common.common_base_util.channel.sendStickEvent
 import com.fido.common.common_base_util.channel.sendStickTag
@@ -91,6 +88,7 @@ import com.fido.common.common_utils.annotation.AnnotationAc
 import com.fido.common.common_utils.banner.BannerAc
 import com.fido.common.common_utils.calendar.WriteCalendarAc
 import com.fido.common.common_utils.constraintlayout.ConstraintLayoutAc
+import com.fido.common.common_utils.customview.CustomViewAc
 import com.fido.common.common_utils.databinding.ActivityMainBinding
 import com.fido.common.common_utils.databinding.DialogTestBinding
 import com.fido.common.common_utils.databinding.LayoutHeaderViewBinding
@@ -340,6 +338,7 @@ class MainActivity : AppCompatActivity() {
         addView<EventBusAc>("go HEventBusAc")
         addView<DialogChainAc>("go DialogChain")
         addView<AnnotationAc>("go 注解测试Ac")
+        addView<CustomViewAc>("go CustomView")
         addView("跳转第三方测试"){
             startTargetAppForName("com.tencent.mobileqq")
         }
