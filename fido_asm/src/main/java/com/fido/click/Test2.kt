@@ -6,6 +6,7 @@ package com.fido.click
  * @des:
  */
 class Test2{
+
     fun sumN(a:Int,b:Int):Int{
         val list = ArrayList<Int>()
         list.add(a)
