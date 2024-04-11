@@ -70,6 +70,11 @@ public class ASMJavaTest {
     }
 
 
+    /**
+     * 获取 class 在 运行时的绝对路劲
+     * @param clazz
+     * @return
+     */
     public static String getClassFilePath(Class clazz) {
         // file:/Users/zhy/hongyang/repo/BlogDemo/app/build/intermediates/javac/debug/classes/
         String buildDir = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
@@ -103,6 +108,8 @@ public class ASMJavaTest {
                     @Override
                     public void visitCode() {
                         mv.visitCode();
+
+                        System.out.println("=================== mOwner = " + mOwner);
 
                         mv.visitFieldInsn(GETSTATIC, mOwner, "timer", "J");
                         mv.visitMethodInsn(INVOKESTATIC, "java/lang/System",

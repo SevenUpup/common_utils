@@ -11,6 +11,7 @@ import com.fido.common.common_base_util.ext.logd
 import com.fido.common.common_base_util.log.LogUtils
 import com.fido.common.common_base_util.util.toast.ToastConfig
 import com.fido.common.common_base_util.util.toast.interfaces.ToastGravityFactory
+import com.fido.common.common_utils.privacy.WhaleHook
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -26,12 +27,19 @@ class App: Application() {
         }
     }
 
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+    }
+
     override fun onCreate() {
         super.onCreate()
 
         logd("App onCreate $this processName=${getProcessName(this)}")
         val processName = getProcessName(this, Process.myPid()) //根据进程id获取进程名
         if (!TextUtils.isEmpty(processName) && processName.equals(this.packageName)) {
+            //隐私合规调试工具
+            WhaleHook.init()
+
             //初始化逻辑
             SmartRefreshLayout.setDefaultRefreshHeaderCreator { context, layout ->
                 layout.setPrimaryColorsId(R.color.purple_500, android.R.color.white)

@@ -15,4 +15,10 @@ public class TimeAsmView {
         timer += System.currentTimeMillis();
 //        System.out.println(timer);
     }
+
+    public void test() {
+        System.out.println("Hello world!");
+        System.out.println("Hello engineer!"); // 新增一行代码
+    }
+
 }

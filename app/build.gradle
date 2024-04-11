@@ -144,6 +144,8 @@ dependencies {
     implementation "com.github.SevenUpup.annotation:annotation:0.0.13"
     ksp('com.github.SevenUpup.annotation:compiler:0.0.13')
 
+    //安卓隐私合规调试工具 支持android 5.0- 9.0  object WhaleHook  hookAndroidId
+    implementation 'com.github.DonaldDu:whale:1.0.0'
 
     implementation group: 'org.ow2.asm', name: 'asm-commons', version: '9.6'
 }
