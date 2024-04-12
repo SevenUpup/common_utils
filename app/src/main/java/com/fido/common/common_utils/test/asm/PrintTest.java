@@ -15,4 +15,12 @@ public class PrintTest {
         System.out.println("Hello world!");
     }
 
+    public void testA(){
+        long var1 = System.currentTimeMillis();
+        System.out.println("i am A");
+        long var3 = System.currentTimeMillis();
+        System.out.println(new StringBuilder().append("cost:").append(var3-var1).toString());
+//        TestTool.useTool(var1);
+    }
+
 }
