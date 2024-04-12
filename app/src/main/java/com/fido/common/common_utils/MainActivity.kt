@@ -332,7 +332,7 @@ class MainActivity : AppCompatActivity() {
         addView<RoomAc>("Go Room")
         addView<FlutterInteractiveAc>("Go FlutterInteractive")
         addView<SPAc>("Go SP")
-        addView<WriteCalendarAc>("WriteCalendar")
+        addView<WriteCalendarAc>("RequestPermission(include WriteCalendar)")
         addView<AdSkipAc>("无障碍服务-skip开屏广告")
         addView<TextViewAc>("textview 根据控件大小自动缩放")
         addView<EventBusAc>("go HEventBusAc")
@@ -588,7 +588,6 @@ class MainActivity : AppCompatActivity() {
             startActivity<IntervalTimeAc>()
         }
         mBinding.permission.setOnClickListener {
-
             val pop = createPop(
                 R.layout.layout_header_view,
                 offsetY = 200,

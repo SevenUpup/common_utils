@@ -25,6 +25,10 @@ gradlePlugin{
         val mPlugin = this.create("MethodUseTimePlugin")
         mPlugin.id = properties["GROUP_ID"].toString()
         mPlugin.implementationClass = "com.fido.MethodUseTimePlugin"
+
+        val permissionPlugin = this.create("PermissionCheckPlugin")
+        permissionPlugin.id = properties["PLUGIN_PERMISSION_ID"].toString()
+        permissionPlugin.implementationClass = "com.fido.PermissionCheckPlugin"
     }
 }
 
@@ -57,6 +61,7 @@ publishing{
 
         publications {
             val defaultPublication: MavenPublication = this.create("Default", MavenPublication::class.java)
+/*
             with(defaultPublication) {
                 groupId = properties["GROUP_ID"].toString()
                 artifactId = properties["PLUGIN_ARTIFACT_ID"].toString()
@@ -105,8 +110,51 @@ publishing{
                     }
                 }
             }
-        }
+*/
 
+            with(defaultPublication) {
+                groupId = properties["PLUGIN_PERMISSION_ID"].toString()
+                artifactId = properties["PLUGIN_PERMISSION_ARTIFACT_ID"].toString()
+                version = properties["PERMISSION_PLUGIN_VERSION"].toString()
+                afterEvaluate {
+                    artifact(tasks.getByName("jar"))
+                }
+                // source Code.
+                artifact(sourceJar)
+//                pom {
+//                    name = "FiDo-plugin"
+//                    description = "Plugin demo for AGP."
+//                    licenses {
+//                        license {
+//                            name = "The Apache License, Version 2.0"
+//                            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+//                        }
+//                    }
+//                    developers {
+//                        developer {
+//                            id = "FiDo"
+//                            name = "Ht"
+//                            email = "ilikesevenup@163.com"
+//                        }
+//                    }
+//                }
+
+                pom.withXml {
+                    val dependencies = asNode().appendNode("dependencies")
+                    configurations.implementation.get().allDependencies.all {
+                        val dependency = this
+                        if (dependency.group == null || dependency.version == null || dependency.name == "unspecified") {
+                            return@all
+                        }
+                        val dependencyNode = dependencies.appendNode("dependency")
+                        dependencyNode.appendNode("groupId", dependency.group)
+                        dependencyNode.appendNode("artifactId", dependency.name)
+                        dependencyNode.appendNode("version", dependency.version)
+                        dependencyNode.appendNode("scope", "implementation")
+                    }
+                }
+            }
+        }
 
     }
 }

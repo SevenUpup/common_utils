@@ -30,4 +30,12 @@
         android:layout_height="wrap_content"
         android:text="删除calendar"/>
 
+    <Button
+        android:id="@+id/btRequest"
+        app:layout_constraintTop_toBottomOf="@id/bt_delete"
+        app:layout_constraintLeft_toLeftOf="@id/bt_write"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="申请Camera权限测试"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

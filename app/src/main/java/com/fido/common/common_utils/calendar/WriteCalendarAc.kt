@@ -22,6 +22,11 @@ class WriteCalendarAc:AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+        binding.btRequest.setOnClickListener {
+            permissionCheckTest("66",-1)
+        }
+
         val remindStart = "2023-08-24 15:25:00".toDateMills()
         val remindEnd = "2023-08-25 14:20:00".toDateMills()
         val beforeRemindMuint = 5 // 提前5分钟提醒
@@ -55,6 +60,12 @@ class WriteCalendarAc:AppCompatActivity() {
 
                 })
             }
+        }
+    }
+
+    private fun permissionCheckTest(str:String,number:Int) {
+        extRequestPermission(listOf(android.Manifest.permission.CAMERA),"给我权限，不然搞不了"){
+            toast(if (it) "ok啦" else "damn...没搞到")
         }
     }
 
