@@ -22,13 +22,13 @@ dependencies {
 // 让 Gralde 知道我们定义了这么一个插件 可以通过 java-gradle-plugin 插件来简化这个过程，只需要在 kts 脚本中声明就好了。
 gradlePlugin{
     plugins{
-        val mPlugin = this.create("MethodUseTimePlugin")
+        val mPlugin = this.create("FiDoAsmPlugin")
         mPlugin.id = properties["GROUP_ID"].toString()
-        mPlugin.implementationClass = "com.fido.MethodUseTimePlugin"
+        mPlugin.implementationClass = "com.fido.plugin.FiDoAsmPlugin"
 
-        val permissionPlugin = this.create("PermissionCheckPlugin")
-        permissionPlugin.id = properties["PLUGIN_PERMISSION_ID"].toString()
-        permissionPlugin.implementationClass = "com.fido.PermissionCheckPlugin"
+//        val permissionPlugin = this.create("PermissionCheckPlugin")
+//        permissionPlugin.id = properties["PLUGIN_PERMISSION_ID"].toString()
+//        permissionPlugin.implementationClass = "com.fido.PermissionCheckPlugin"
     }
 }
 
@@ -61,7 +61,6 @@ publishing{
 
         publications {
             val defaultPublication: MavenPublication = this.create("Default", MavenPublication::class.java)
-/*
             with(defaultPublication) {
                 groupId = properties["GROUP_ID"].toString()
                 artifactId = properties["PLUGIN_ARTIFACT_ID"].toString()
@@ -110,50 +109,32 @@ publishing{
                     }
                 }
             }
-*/
 
-            with(defaultPublication) {
-                groupId = properties["PLUGIN_PERMISSION_ID"].toString()
-                artifactId = properties["PLUGIN_PERMISSION_ARTIFACT_ID"].toString()
-                version = properties["PERMISSION_PLUGIN_VERSION"].toString()
-                afterEvaluate {
-                    artifact(tasks.getByName("jar"))
-                }
-                // source Code.
-                artifact(sourceJar)
-//                pom {
-//                    name = "FiDo-plugin"
-//                    description = "Plugin demo for AGP."
-//                    licenses {
-//                        license {
-//                            name = "The Apache License, Version 2.0"
-//                            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+//            with(defaultPublication) {
+//                groupId = properties["PLUGIN_PERMISSION_ID"].toString()
+//                artifactId = properties["PLUGIN_PERMISSION_ARTIFACT_ID"].toString()
+//                version = properties["PERMISSION_PLUGIN_VERSION"].toString()
+//                afterEvaluate {
+//                    artifact(tasks.getByName("jar"))
+//                }
+//                // source Code.
+//                artifact(sourceJar)
+//
+//                pom.withXml {
+//                    val dependencies = asNode().appendNode("dependencies")
+//                    configurations.implementation.get().allDependencies.all {
+//                        val dependency = this
+//                        if (dependency.group == null || dependency.version == null || dependency.name == "unspecified") {
+//                            return@all
 //                        }
-//                    }
-//                    developers {
-//                        developer {
-//                            id = "FiDo"
-//                            name = "Ht"
-//                            email = "ilikesevenup@163.com"
-//                        }
+//                        val dependencyNode = dependencies.appendNode("dependency")
+//                        dependencyNode.appendNode("groupId", dependency.group)
+//                        dependencyNode.appendNode("artifactId", dependency.name)
+//                        dependencyNode.appendNode("version", dependency.version)
+//                        dependencyNode.appendNode("scope", "implementation")
 //                    }
 //                }
-
-                pom.withXml {
-                    val dependencies = asNode().appendNode("dependencies")
-                    configurations.implementation.get().allDependencies.all {
-                        val dependency = this
-                        if (dependency.group == null || dependency.version == null || dependency.name == "unspecified") {
-                            return@all
-                        }
-                        val dependencyNode = dependencies.appendNode("dependency")
-                        dependencyNode.appendNode("groupId", dependency.group)
-                        dependencyNode.appendNode("artifactId", dependency.name)
-                        dependencyNode.appendNode("version", dependency.version)
-                        dependencyNode.appendNode("scope", "implementation")
-                    }
-                }
-            }
+//            }
         }
 
     }

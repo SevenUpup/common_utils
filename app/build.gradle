@@ -6,8 +6,8 @@ plugins {
 
     //app 的 module 中的 build.gradle 中引用插件：
 //    alias(libs.plugins.fidoASM) apply false
-    id 'com.fido' version "1.0.0"
-    id 'com.fido.plugin.permission' version "1.0.0"
+//    id 'com.fido' version "1.0.0"
+    id 'com.fido.plugin.asm' version "1.0.0"
 }
 
 android {
@@ -149,6 +149,15 @@ dependencies {
     implementation 'com.github.DonaldDu:whale:1.0.0'
 
     implementation group: 'org.ow2.asm', name: 'asm-commons', version: '9.6'
+}
+
+
+hookCustomMethod{
+    originalClassName = "com.fido.common.common_utils.asm.ASMTestAc"
+    originalMethodName = "showMyToast"
+    targetClassName = "com.fido.common.common_utils.asm.KtAsmToast"
+    targetMethodName = "showKtToast"
+    handleMode = "REPLACE"
 }
 
 /**

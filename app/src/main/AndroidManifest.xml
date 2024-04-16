@@ -162,6 +162,7 @@
 
         <activity android:name=".customview.CustomViewAc"/>
 
+        <activity android:name=".asm.ASMTestAc"/>
     </application>
 
 </manifest>

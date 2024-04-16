@@ -85,6 +85,7 @@ import com.fido.common.common_utils.accessibility.AdSkipAc
 import com.fido.common.common_utils.anim.AnimUtils
 import com.fido.common.common_utils.anim.ShakeAnim
 import com.fido.common.common_utils.annotation.AnnotationAc
+import com.fido.common.common_utils.asm.ASMTestAc
 import com.fido.common.common_utils.banner.BannerAc
 import com.fido.common.common_utils.calendar.WriteCalendarAc
 import com.fido.common.common_utils.constraintlayout.ConstraintLayoutAc
@@ -354,6 +355,7 @@ class MainActivity : AppCompatActivity() {
             Log.d("FiDo", "Main MAIN_MUILT_PROCESS_TAG= ${MAIN_MUILT_PROCESS_TAG} ")
         }
         addView<FloatingImageAc>("拖动悬浮ImageView")
+        addView<ASMTestAc>("ASM插装测试")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {
