@@ -9,6 +9,7 @@ import com.fido.plugin.constant.PluginConstant
 import com.fido.plugin.constant.PluginConstant.CUSTOM_METHOD_TAG
 import com.fido.plugin.constant.hookMethodMode
 import com.fido.plugin.utils.LogPrint
+import com.fido.plugin.utils.replaceDotBySlash
 import com.fido.plugin.utils.simpleClassName
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
@@ -87,7 +88,7 @@ private class HookCustomMethodClassVisitor(
 
         override fun onMethodEnter() {
             super.onMethodEnter()
-            if (config.handleMode.hookMethodMode() == PluginConstant.ADD && classContext.currentClassData.className == config.originalClassName &&
+            if (config.handleMode.hookMethodMode() == PluginConstant.ADD && replaceDotBySlash(classContext.currentClassData.className) == config.originalClassName &&
                 name == config.originalMethodName
             ) {
                 getLogInfo(config.handleMode.hookMethodMode(),classContext.currentClassData.className,name,methodDesc)
@@ -113,7 +114,7 @@ private class HookCustomMethodClassVisitor(
             isInterface: Boolean
         ) {
             //是否需要替换方法
-            if (config.handleMode.hookMethodMode() == PluginConstant.REPLACE && owner == config.originalClassName) {
+            if (config.handleMode.hookMethodMode() == PluginConstant.REPLACE && owner?.contains("ASMTestAc") == true) {
                 LogPrint.normal("FiDo"){
                     """
                         opcodeAndSource =${opcodeAndSource}
@@ -121,6 +122,7 @@ private class HookCustomMethodClassVisitor(
                         name =${name}
                         descriptor =${descriptor}
                         config.originalClassName=${config.originalClassName}
+                        config.originalMethodName=${config.originalMethodName}
                     """.trimIndent()
                 }
             }

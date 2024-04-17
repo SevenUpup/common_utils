@@ -157,7 +157,13 @@ hookCustomMethod{
     originalMethodName = "showMyToast"
     targetClassName = "com.fido.common.common_utils.asm.KtAsmToast"
     targetMethodName = "showKtToast"
-    handleMode = "REPLACE"
+    handleMode = "ADD"
+}
+
+ViewClickPluginParameter {
+    onClickClass = "com.fido.common.common_utils.asm.clickcheck.ClickViewMonitor"
+    onClickMethodName = "enableClick"
+    uncheckViewOnClickAnnotation = "com.fido.common.common_utils.asm.annotation.UnCheckViewOnClick"
 }
 
 /**

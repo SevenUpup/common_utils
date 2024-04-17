@@ -5,8 +5,11 @@ import com.android.build.api.instrumentation.InstrumentationScope
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.api.variant.Variant
 import com.fido.Log
+import com.fido.plugin.click.ClickViewClassVisitorFactory
+import com.fido.plugin.config.ViewClickPluginParameter
 import com.fido.plugin.config.CustomMethodPluginParameter
 import com.fido.plugin.config.HookCustomMethodConfig
+import com.fido.plugin.config.ViewClickConfig
 import com.fido.plugin.custommethod.HookCustomMethodCVF
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -30,11 +33,27 @@ class FiDoAsmPlugin : Plugin<Project> {
                 "hookCustomMethod",
                 CustomMethodPluginParameter::class.java
             )
-
+            target.extensions.create(
+                ViewClickPluginParameter::class.java.simpleName,
+                ViewClickPluginParameter::class.java
+            )
             val androidComponents = target.extensions.getByType(AndroidComponentsExtension::class.java)
             androidComponents.onVariants { variant: Variant ->
                 handleCustomMethod(project = target, variant = variant)
+                handleViewClickPlugin(target,variant)
                 variant.instrumentation.setAsmFramesComputationMode(FramesComputationMode.COMPUTE_FRAMES_FOR_INSTRUMENTED_METHODS)
+            }
+        }
+    }
+
+    private fun handleViewClickPlugin(target: Project, variant: Variant) {
+        val viewClickParameter = target.extensions.findByType(ViewClickPluginParameter::class.java)
+        val viewClickConfig = if (viewClickParameter == null) null else ViewClickConfig(parameter = viewClickParameter)
+        if (viewClickConfig != null) {
+            variant.instrumentation.apply {
+                transformClassesWith(ClickViewClassVisitorFactory::class.java,InstrumentationScope.ALL){clickViewConfigParameter ->
+                    clickViewConfigParameter.config.set(viewClickConfig)
+                }
             }
         }
     }

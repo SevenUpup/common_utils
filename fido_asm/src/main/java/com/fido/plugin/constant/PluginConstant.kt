@@ -13,6 +13,9 @@ object PluginConstant {
     const val DELETE = "DELETE"
     const val REPLACE = "REPLACE"
 
+    // ======================== ViewClick Plugin ===========================
+    const val VIEW_CLICK_TAG = "ViewClick"
+
 }
 
 fun String.hookMethodMode():String{

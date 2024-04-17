@@ -1,6 +1,5 @@
 package com.fido.common.common_utils.asm
 
-import android.view.View
 import com.fido.common.common_base_util.ext.toast
 
 /**
@@ -8,9 +7,10 @@ import com.fido.common.common_base_util.ext.toast
  * @date: 2024/4/16
  * @des:
  */
-class KtAsmToast {
+object KtAsmToast {
 
-    fun showKtToast(view: View) {
+    @JvmStatic
+    fun showKtToast() {
         toast("KtAsmToast")
     }
 
