@@ -2,6 +2,7 @@ package com.fido.common.common_utils.asm.clickcheck
 
 import android.os.SystemClock
 import android.view.View
+import com.fido.common.common_base_util.ext.loge
 
 /**
  * @author: FiDo
@@ -24,6 +25,7 @@ object ClickViewMonitor {
         if (enable) {
             lastClickTime = currentTime
         }
+        loge("onClick $clickIndex , isEnabled : $enable")
         return enable
     }
 

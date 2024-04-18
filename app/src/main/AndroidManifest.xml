@@ -163,6 +163,8 @@
         <activity android:name=".customview.CustomViewAc"/>
 
         <activity android:name=".asm.ASMTestAc"/>
+        <activity android:name=".asm.replace.ReplaceClassTestAc"/>
+
     </application>
 
 </manifest>

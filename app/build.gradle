@@ -151,19 +151,33 @@ dependencies {
     implementation group: 'org.ow2.asm', name: 'asm-commons', version: '9.6'
 }
 
-
 hookCustomMethod{
     originalClassName = "com.fido.common.common_utils.asm.ASMTestAc"
     originalMethodName = "showMyToast"
     targetClassName = "com.fido.common.common_utils.asm.KtAsmToast"
     targetMethodName = "showKtToast"
-    handleMode = "ADD"
+    handleMode = "A"
 }
 
 ViewClickPluginParameter {
     onClickClass = "com.fido.common.common_utils.asm.clickcheck.ClickViewMonitor"
     onClickMethodName = "enableClick"
     uncheckViewOnClickAnnotation = "com.fido.common.common_utils.asm.annotation.UnCheckViewOnClick"
+}
+//这么写会执行最后一个 ReplaceClassPluginParameter
+ReplaceClassPluginParameter {
+    originClass = "androidx.appcompat.app.AppCompatActivity"
+    targetClass = "com.fido.common.common_utils.base_asm.BaseAsmActivity"
+}
+ReplaceClassPluginParameter {
+    originClass = "android.widget.ImageView"
+    targetClass = "com.fido.common.common_utils.asm.replace.MonitorImageView"
+    include = []
+    exclude = [".*\\.IgnoreImageView\$"]
+}
+ToastPluginParameter {
+    toasterClass = "com.fido.common.common_utils.asm.toast.HToaster"
+    showToastMethodName = "hToast"
 }
 
 /**

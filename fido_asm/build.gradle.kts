@@ -44,7 +44,7 @@ publishing{
             url = uri(localMavenDir.canonicalPath)
         }
 
-//        // Remote
+        // Remote
 //        maven {
 //            name = "RemoteMaven"
 //            credentials {

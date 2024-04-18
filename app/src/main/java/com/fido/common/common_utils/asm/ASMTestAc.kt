@@ -3,10 +3,14 @@ package com.fido.common.common_utils.asm
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.fido.common.common_base_ui.base.viewbinding.binding
+import com.fido.common.common_base_ui.util.throttleClick
+import com.fido.common.common_base_util.ext.startActivity
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_utils.asm.annotation.UnCheckViewOnClick
+import com.fido.common.common_utils.asm.replace.ReplaceClassTestAc
 import com.fido.common.common_utils.databinding.AcAsmTestBinding
 
 /**
@@ -28,19 +32,30 @@ class ASMTestAc:AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding.apply {
+            btReplaceClass.throttleClick {
+                startActivity<ReplaceClassTestAc>()
+            }
+
             bt1.setOnClickListener {
                 showMyToast()
             }
 
-            btUncheck.setOnClickListener {
-                autoIncrementNumberWithUnCheck()
-            }
+            btUncheck.setOnClickListener(object :View.OnClickListener{
+                @UnCheckViewOnClick
+                override fun onClick(v: View?) {
+                    autoIncrementNumberWithUnCheck()
+                }
+            })
 
             bt2.setOnClickListener(object :OnClickListener{
                 override fun onClick(v: View?) {
                     autoIncrementNumber()
                 }
             })
+
+            btToast.setOnClickListener {
+                Toast.makeText(this@ASMTestAc,"hahaha",Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -49,7 +64,6 @@ class ASMTestAc:AppCompatActivity() {
         binding.tv.text = numner.toString()
     }
 
-    @UnCheckViewOnClick
     private fun autoIncrementNumberWithUnCheck() {
         numner++
         binding.tv.text = numner.toString()

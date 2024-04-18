@@ -1,4 +1,4 @@
-package com.fido.plugin.utils
+package com.fido.utils
 
 import com.android.build.api.instrumentation.ClassData
 import org.objectweb.asm.Opcodes

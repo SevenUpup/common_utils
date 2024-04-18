@@ -4,16 +4,16 @@ import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.ClassContext
 import com.android.build.api.instrumentation.ClassData
 import com.android.build.api.instrumentation.InstrumentationParameters
-import com.fido.plugin.config.ViewClickConfig
-import com.fido.plugin.constant.PluginConstant
-import com.fido.plugin.utils.LogPrint
-import com.fido.plugin.utils.filterLambda
-import com.fido.plugin.utils.getClassDesc
-import com.fido.plugin.utils.hasAnnotation
-import com.fido.plugin.utils.isStatic
-import com.fido.plugin.utils.matches
-import com.fido.plugin.utils.nameWithDesc
-import com.fido.plugin.utils.replaceDotBySlash
+import com.fido.config.ViewClickConfig
+import com.fido.constant.PluginConstant
+import com.fido.utils.LogPrint
+import com.fido.utils.filterLambda
+import com.fido.utils.getClassDesc
+import com.fido.utils.hasAnnotation
+import com.fido.utils.isStatic
+import com.fido.utils.matches
+import com.fido.utils.nameWithDesc
+import com.fido.utils.replaceDotBySlash
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.objectweb.asm.ClassVisitor
@@ -82,10 +82,17 @@ internal class ViewClickClassVisitor(
 
     private fun collectHookInfo() {
         val shouldHookMethodList = mutableSetOf<MethodNode>()
-        methods.forEach {methodNode ->
+
+        for (i in 0 until methods.size) {
+            val methodNode = methods[i]
+            //不处理包含 UncheckViewOnClick 注解的方法
+            if (methodNode.hasUncheckViewOnClickAnnotation()) continue
             when{
                 methodNode.hasUncheckViewOnClickAnnotation()->{
                     //不处理包含 UncheckViewOnClick 注解的方法
+                    LogPrint.normal(PluginConstant.VIEW_CLICK_TAG){
+                        "find hasUncheckViewOnClickAnnotation name = ${methodNode.name} desc = ${methodNode.desc} "
+                    }
                 }
                 methodNode.hasCheckViewOnClickAnnotation()->{
                     //使用了 CheckViewOnClick 注解的情况
@@ -96,6 +103,7 @@ internal class ViewClickClassVisitor(
                     shouldHookMethodList.add(methodNode)
                 }
                 methodNode.isHookPoint() ->{
+                    //使用了匿名内部类的情况
                     shouldHookMethodList.add(methodNode)
                 }
             }
@@ -106,7 +114,8 @@ internal class ViewClickClassVisitor(
                         name=${it.name}
                         desc=${it.desc}
                         bsmArgs = ${it.bsmArgs}
-                        bsm=${it.bsm} bsm.name=${it.bsm.name} bsm.desc=${it.bsm.desc} 
+                        bsm=${it.bsm} 
+                        bsm.name=${it.bsm.name} bsm.desc=${it.bsm.desc} 
                         bsm.owner=${it.bsm.owner} 
                         bsm.tag=${it.bsm.tag} 
                         bsm.isInterface=${it.bsm.isInterface}
@@ -137,9 +146,73 @@ internal class ViewClickClassVisitor(
                 hookMethod(it)
             }
             LogPrint.normal(tag = PluginConstant.VIEW_CLICK_TAG) {
-                "$name 发现 ${shouldHookMethodList.size} 个 View.OnClickListener 指令，完成处理..."
+                "$name find ${shouldHookMethodList.size} count View.OnClickListener order, Completion processing..."
             }
         }
+
+        /*methods.forEach { methodNode ->
+            when{
+                methodNode.hasUncheckViewOnClickAnnotation()->{
+                    //不处理包含 UncheckViewOnClick 注解的方法
+                    LogPrint.normal(PluginConstant.VIEW_CLICK_TAG){
+                        "find hasUncheckViewOnClickAnnotation name = ${methodNode.name} desc = ${methodNode.desc} "
+                    }
+                }
+                methodNode.hasCheckViewOnClickAnnotation()->{
+                    //使用了 CheckViewOnClick 注解的情况
+                    shouldHookMethodList.add(methodNode)
+                }
+                methodNode.hasButterKnifeOnClickAnnotation()->{
+                    //使用了 ButterKnife OnClick 注解的情况
+                    shouldHookMethodList.add(methodNode)
+                }
+                methodNode.isHookPoint() ->{
+                    //使用了匿名内部类的情况
+                    shouldHookMethodList.add(methodNode)
+                }
+            }
+            val dynamicNodes = methodNode.filterLambda {
+                LogPrint.normal(PluginConstant.VIEW_CLICK_TAG){
+                    """
+                        =======InvokeDynamicInsnNode=====
+                        name=${it.name}
+                        desc=${it.desc}
+                        bsmArgs = ${it.bsmArgs}
+                        bsm=${it.bsm} 
+                        bsm.name=${it.bsm.name} bsm.desc=${it.bsm.desc} 
+                        bsm.owner=${it.bsm.owner} 
+                        bsm.tag=${it.bsm.tag} 
+                        bsm.isInterface=${it.bsm.isInterface}
+                    """.trimIndent()
+                }
+
+                val nodeName = it.name
+                val nodeDesc = it.desc
+                config.hookPointList.any { point ->
+                    nodeName == point.methodName && nodeDesc.endsWith(point.interfaceSignSuffix)
+                }
+            }
+            dynamicNodes.forEach { node->
+                val handle = node.bsmArgs[1] as? Handle
+                if (handle != null) {
+                    val nameWithDesc = handle.name + handle.desc
+                    val method = methods.find {methodNode ->
+                        methodNode.nameWithDesc == nameWithDesc
+                    }
+                    if (method != null) {
+                        shouldHookMethodList.add(method)
+                    }
+                }
+            }
+        }
+        if (shouldHookMethodList.isNotEmpty()) {
+            shouldHookMethodList.forEach {
+                hookMethod(it)
+            }
+            LogPrint.normal(tag = PluginConstant.VIEW_CLICK_TAG) {
+                "$name find ${shouldHookMethodList.size} count View.OnClickListener order, Completion processing..."
+            }
+        }*/
 
     }
 

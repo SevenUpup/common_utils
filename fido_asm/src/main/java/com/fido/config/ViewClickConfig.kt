@@ -1,4 +1,4 @@
-package com.fido.plugin.config
+package com.fido.config
 
 import java.io.Serializable
 

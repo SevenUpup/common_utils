@@ -31,6 +31,15 @@ public class ASMJavaTest {
 
     public static void main(String[] args) throws Exception {
 
+        for (int i = 0; i < 10; i++) {
+            if (i == 5)
+                continue;
+            if (i == 8){
+                return;
+            }
+            System.out.println("i="+i);
+        }
+
         TimeAsmView.m();
 
         Class clazz = Sington.class;

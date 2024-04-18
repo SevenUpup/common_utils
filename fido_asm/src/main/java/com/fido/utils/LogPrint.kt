@@ -1,4 +1,4 @@
-package com.fido.plugin.utils
+package com.fido.utils
 
 /**
  * @Author: leavesCZY

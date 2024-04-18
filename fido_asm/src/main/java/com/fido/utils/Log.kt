@@ -1,4 +1,4 @@
-package com.fido
+package com.fido.utils
 
 /**
  * @author: FiDo

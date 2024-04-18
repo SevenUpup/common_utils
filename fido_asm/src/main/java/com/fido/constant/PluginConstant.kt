@@ -1,4 +1,4 @@
-package com.fido.plugin.constant
+package com.fido.constant
 
 /**
  * @author: FiDo
@@ -16,6 +16,11 @@ object PluginConstant {
     // ======================== ViewClick Plugin ===========================
     const val VIEW_CLICK_TAG = "ViewClick"
 
+    // ======================== ReplaceClass Plugin ========================
+    const val REPLACE_TAG = "ReplaceClass"
+
+    // =========================== Toast Plugin ===========================
+    const val TOAST_TAG = "Toast"
 }
 
 fun String.hookMethodMode():String{

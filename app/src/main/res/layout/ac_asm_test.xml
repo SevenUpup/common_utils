@@ -9,6 +9,12 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
+        <Button
+            android:id="@+id/bt_replaceClass"
+            android:text="asm ReplaceClass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <TextView
             android:id="@+id/tv"
             android:text="0"
@@ -34,6 +40,18 @@
             android:text="asm修改后防抖点击"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btToast"
+            android:text="asm修改全局Toast测试"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.fido.common.common_utils.widgets.CircleImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/bg"
+            android:scaleType="centerCrop"/>
 
     </LinearLayout>
 
