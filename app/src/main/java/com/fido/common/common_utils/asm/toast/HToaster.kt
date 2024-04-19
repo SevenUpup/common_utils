@@ -13,6 +13,7 @@ import android.widget.Toast
  */
 object HToaster {
 
+
     /**
      * 参数一定是Toast，因为要与插件中的方法对应
      */

@@ -2,7 +2,6 @@ package com.fido.common.common_utils.asm
 
 import android.widget.Toast
 import com.fido.common.common_base_util.app
-import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_utils.asm.toast.HToaster
 
 /**
@@ -12,16 +11,28 @@ import com.fido.common.common_utils.asm.toast.HToaster
  */
 object ASMTestUtils {
 
+    var isT = true
+
     @JvmStatic
     fun asmToast(){
         toast("666666")
     }
 
-    fun toast(){
-        val cc = "cc"
-//        val t = Toast.makeText(app,cc,Toast.LENGTH_SHORT)
-        HToaster.hToast(Toast.makeText(app,cc,Toast.LENGTH_SHORT))
-//        HToaster.hToast(t)
+    fun toast(str:String){
+//        val cc = "cc"
+        Toast.makeText(app,str,Toast.LENGTH_SHORT).show()
+        HToaster.hToast(Toast.makeText(app,str,Toast.LENGTH_SHORT))
     }
 
+}
+
+
+class T{
+    var isB = true
+}
+
+interface HToastInterface{
+    fun hToaster(toast: Toast){
+        toast.show()
+    }
 }

@@ -21,6 +21,9 @@ object PluginConstant {
 
     // =========================== Toast Plugin ===========================
     const val TOAST_TAG = "Toast"
+
+    // =========================== Hook Class ============================
+    const val HOOK_CLASS_TAG = "HookClass"
 }
 
 fun String.hookMethodMode():String{

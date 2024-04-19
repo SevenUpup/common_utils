@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_ui.util.throttleClick
+import com.fido.common.common_base_util.ext.logd
 import com.fido.common.common_base_util.ext.startActivity
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_utils.asm.annotation.UnCheckViewOnClick
@@ -20,7 +21,15 @@ import com.fido.common.common_utils.databinding.AcAsmTestBinding
  */
 class ASMTestAc:AppCompatActivity() {
 
+    private var A = true
+    var B = "1"
+
     companion object{
+        private var C = false
+        private val D = true
+        private val str = "str"
+        private var mChar = "mChar"
+
         fun showMyStaticToast() {
             toast("static")
         }
@@ -30,6 +39,15 @@ class ASMTestAc:AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        logd("""
+            A=${A}
+            B=${B}
+            C=${C}
+            D=${D}
+            str=${str}
+            mChar=${mChar}
+        """.trimIndent())
 
         binding.apply {
             btReplaceClass.throttleClick {

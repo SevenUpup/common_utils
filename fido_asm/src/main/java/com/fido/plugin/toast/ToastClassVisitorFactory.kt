@@ -18,7 +18,7 @@ import org.objectweb.asm.tree.MethodInsnNode
 /**
  * @author: FiDo
  * @date: 2024/4/18
- * @des:
+ * @des:  通过指定类名方法，全局替换Toast.show()方法
  */
 internal interface ToastConfigParameter:InstrumentationParameters{
     @get:Input

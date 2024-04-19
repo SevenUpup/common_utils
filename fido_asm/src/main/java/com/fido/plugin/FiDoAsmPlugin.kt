@@ -4,16 +4,18 @@ import com.android.build.api.instrumentation.FramesComputationMode
 import com.android.build.api.instrumentation.InstrumentationScope
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.api.variant.Variant
-import com.fido.utils.Log
 import com.fido.plugin.click.ClickViewClassVisitorFactory
 import com.fido.config.ViewClickPluginParameter
 import com.fido.config.CustomMethodPluginParameter
+import com.fido.config.HookClassConfig
+import com.fido.config.HookClassParameter
 import com.fido.config.HookCustomMethodConfig
 import com.fido.config.ReplaceClassConfig
 import com.fido.config.ReplaceClassPluginParameter
 import com.fido.config.ToastConfig
 import com.fido.config.ToastPluginParameter
 import com.fido.config.ViewClickConfig
+import com.fido.plugin.custommethod.HookClassVisitorFactory
 import com.fido.plugin.custommethod.HookCustomMethodCVF
 import com.fido.plugin.replace.ReplaceClassClassVisitorFactory
 import com.fido.plugin.toast.ToastClassVisitorFactory
@@ -34,7 +36,7 @@ class FiDoAsmPlugin : Plugin<Project> {
             null
         }
         if (appPlugin != null) {
-            Log.d(msg = "find android app plugin")
+//            Log.d(msg = "find android app plugin")
             target.extensions.create(
                 "hookCustomMethod",
                 CustomMethodPluginParameter::class.java
@@ -51,7 +53,10 @@ class FiDoAsmPlugin : Plugin<Project> {
                 ToastPluginParameter::class.java.simpleName,
                 ToastPluginParameter::class.java
             )
-
+            target.extensions.create(
+                HookClassParameter::class.java.simpleName,
+                HookClassParameter::class.java
+            )
             val androidComponents = target.extensions.getByType(AndroidComponentsExtension::class.java)
             androidComponents.onVariants { variant: Variant ->
                 //hook指定类名&方法 为 目标方法
@@ -62,7 +67,25 @@ class FiDoAsmPlugin : Plugin<Project> {
                 handleReplaceClassPlugin(target,variant)
                 //替换系统toast,可以解决7.0系统toast
                 handleToastPlugin(target,variant)
+                //替换类中方法或属性
+                handleHookClassPlugin(target,variant)
                 variant.instrumentation.setAsmFramesComputationMode(FramesComputationMode.COMPUTE_FRAMES_FOR_INSTRUMENTED_METHODS)
+            }
+        }
+    }
+
+    private fun handleHookClassPlugin(target: Project, variant: Variant) {
+        val hookClassParameter = target.extensions.findByType(HookClassParameter::class.java)
+        val hookClassConfig = if (hookClassParameter == null){
+            null
+        }else{
+            HookClassConfig(hookClassParameter)
+        }
+        if (hookClassParameter != null) {
+            variant.instrumentation.apply {
+                transformClassesWith(HookClassVisitorFactory::class.java,InstrumentationScope.ALL){ hookClassInstrumentationParameters ->
+                    hookClassInstrumentationParameters.config.set(hookClassConfig)
+                }
             }
         }
     }
