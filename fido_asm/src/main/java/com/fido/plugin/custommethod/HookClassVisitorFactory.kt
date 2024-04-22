@@ -47,6 +47,16 @@ private class HookClassClassVisitor(
     val classContext: ClassContext,
 ):ClassNode(Opcodes.ASM9){
 
+    internal data class FieldInfoData(
+        val access: Int,
+        val name: String?,
+        val descriptor: String?,
+        val signature: String?,
+        val value: Any?
+    )
+
+    private val showHookFieldsList = mutableListOf<FieldInfoData>()
+
     override fun visitField(
         access: Int,
         name: String?,
@@ -54,8 +64,9 @@ private class HookClassClassVisitor(
         signature: String?,
         value: Any?
     ): FieldVisitor {
-        LogPrint.normal(PluginConstant.HOOK_CLASS_TAG){
-            """
+        if (classContext.currentClassData.className == config.className && name == config.parameterName) {
+            LogPrint.normal(PluginConstant.HOOK_CLASS_TAG){
+                """
                 ======visitField======
                 className=${classContext.currentClassData.className}
                 access=${access}
@@ -63,9 +74,9 @@ private class HookClassClassVisitor(
                 descriptor=${descriptor}
                 signature=${signature}
                 value=${value}
+                config.parameterNewValue=${config.parameterNewValue}
             """.trimIndent()
-        }
-        if (classContext.currentClassData.className == config.className && name == config.parameterName) {
+            }
             return super.visitField(access, name, descriptor, signature, config.parameterNewValue)
         } else {
             return super.visitField(access, name, descriptor, signature, value)
@@ -80,9 +91,23 @@ private class HookClassClassVisitor(
         exceptions: Array<out String>?
     ): MethodVisitor {
         val vm = super.visitMethod(access, name, descriptor, signature, exceptions)
-        LogPrint.normal(PluginConstant.HOOK_CLASS_TAG){
-            """
+
+        val clzList = config.className.split(",")
+        val parameters = config.parameterName.split(",")
+        val parameterNewValues = config.parameterNewValue.split(",")
+
+
+//        return when (name) {
+//            InitMethodName -> {
+//                InitMethodVisitor()
+//            }
+//        }
+        if (showHookFieldsList.isNotEmpty()) {
+            showHookFieldsList.forEach {
+                LogPrint.normal(PluginConstant.HOOK_CLASS_TAG){
+                    """
                 ======visitMethod======
+                showHookFieldsList = ${it.name}
                 className=${classContext.currentClassData.className}
                 access=${access}
                 name =${name}
@@ -90,16 +115,33 @@ private class HookClassClassVisitor(
                 signature=${signature}
                 exceptions=${exceptions}
             """.trimIndent()
+                }
+                val fieldVisitor = nextClassVisitor.visitField(
+                    it.access,
+                    it.name,
+                    it.descriptor,
+                    it.signature,
+                    "66"
+                )
+                fieldVisitor.visitEnd()
+            }
         }
+
         return vm
     }
 
     override fun visitEnd() {
         super.visitEnd()
+
         accept(nextClassVisitor)
         LogPrint.normal(tag = PluginConstant.HOOK_CLASS_TAG) {
             "$name 参数:${config.parameterName} 已替换为新值:${config.parameterNewValue}"
         }
+    }
+
+    private class InitMethodVisitor(api: Int, methodVisitor: MethodVisitor?) :
+        MethodVisitor(api, methodVisitor) {
+
     }
 
 }

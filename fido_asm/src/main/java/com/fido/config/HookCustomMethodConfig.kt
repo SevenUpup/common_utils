@@ -14,42 +14,49 @@ import java.io.Serializable
  *       handleMode:需要插装的方式（增 ADD 删除 DELETE  替换 REPLACE）
  */
 internal data class HookCustomMethodConfig(
-    val targetClassName:String = "",
-    val targetMethodName:String = "",
-    val originalClassName:String ="",
-    val originalMethodName:String = "",
-    val handleMode:String = PluginConstant.ADD,
-//    val configs:Set<MethodsConfig>
-):Serializable{
-
-    companion object{
-        operator fun invoke(parameter: CustomMethodPluginParameter): HookCustomMethodConfig?{
-            if (parameter.originalClassName.isEmpty()) return null
-            return HookCustomMethodConfig(
-                originalClassName = parameter.originalClassName.replace(".","/"),
-                originalMethodName = parameter.originalMethodName,
-                targetClassName = parameter.targetClassName.replace(".","/"),
-                targetMethodName = parameter.targetMethodName,
-                handleMode = parameter.handleMode
-            )
-        }
-    }
-}
-
-//data class MethodsConfig(
 //    val targetClassName:String = "",
 //    val targetMethodName:String = "",
 //    val originalClassName:String ="",
 //    val originalMethodName:String = "",
 //    val handleMode:String = PluginConstant.ADD,
-//):Serializable
+    val configs:List<MethodsConfig>
+):Serializable{
+
+    companion object{
+        operator fun invoke(parameter: CustomMethodPluginParameter): HookCustomMethodConfig?{
+//            if (parameter.originalClassName.isEmpty()) return null
+//            return HookCustomMethodConfig(
+//                originalClassName = parameter.originalClassName.replace(".","/"),
+//                originalMethodName = parameter.originalMethodName,
+//                targetClassName = parameter.targetClassName.replace(".","/"),
+//                targetMethodName = parameter.targetMethodName,
+//                handleMode = parameter.handleMode
+//            )
+            if (parameter.configs.isEmpty() || parameter.configs.any { it.originalClassName.isEmpty() }) {
+                return null
+            } else {
+                return HookCustomMethodConfig(
+                    configs = parameter.configs
+                )
+            }
+        }
+    }
+}
+
+data class MethodsConfig(
+    val targetClassName:String = "",
+    val targetMethodName:String = "",
+    val originalClassName:String ="",
+    val originalMethodName:String = "",
+    val handleMode:String = PluginConstant.ADD,
+):Serializable
 
 open class CustomMethodPluginParameter:Serializable{
-    var targetClassName:String = ""
-    var targetMethodName:String = ""
-    var originalClassName:String= ""
-    var originalMethodName:String= ""
-    var handleMode = PluginConstant.ADD
-//    var configs:Set<MethodsConfig> = setOf()
+//    var targetClassName:String = ""
+//    var targetMethodName:String = ""
+//    var originalClassName:String= ""
+//    var originalMethodName:String= ""
+//    var handleMode = PluginConstant.ADD
+    var configs:List<MethodsConfig> = mutableListOf()
 }
 

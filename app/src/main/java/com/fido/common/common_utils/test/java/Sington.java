@@ -7,6 +7,22 @@ package com.fido.common.common_utils.test.java;
  */
 public class Sington {
 
+    private String AA = "AA";
+    private static final String BB = "BB";
+
+    public static final int DD = 44;
+
+    public static final boolean EE = false;
+    public static int CC = 66;
+
+    public String getAA() {
+        return AA;
+    }
+
+    public static void main(String[] args) {
+        System.out.println("AA = " + Sington.getInstance().getAA());
+    }
+
     public static Sington getInstance(){
         try {
             Class.forName("",false,null);

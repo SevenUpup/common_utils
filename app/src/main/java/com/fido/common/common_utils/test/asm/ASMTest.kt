@@ -15,12 +15,32 @@ import java.io.FileInputStream
  */
 class ASMTest {
 
+
+    private val AA = "AA"
+    private val BB = "BB"
+
+    val DD = 44
+
+    val EE = true
+    var CC = 66
+
     companion object{
+        private var C = false
+        private val D = true
+        private val str = "str"
+        private var mChar = "mChar"
+        val Str = "str"
+        var Char = "mChar"
+        var GG = 66
+        val DD = "11"
+
         @JvmStatic
         fun main(args: Array<String>) {
 //            val path = getClassFilePath(User::class.java)
             val path = ASMJavaTest.getClassFilePath(TimeAsmView::class.java)
             println("path = $path")
+
+            GG = 55
 
             println(Mi2ProtableBattery::class.java.canonicalName)
             val classReader = ClassReader(FileInputStream(path))

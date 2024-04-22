@@ -1,6 +1,6 @@
 package com.fido.common.common_utils.asm
 
-import com.fido.common.common_base_util.ext.toast
+import com.fido.common.common_base_util.ext.logd
 
 /**
  * @author: FiDo
@@ -11,7 +11,13 @@ object KtAsmToast {
 
     @JvmStatic
     fun showKtToast() {
-        toast("KtAsmToast")
+//        toast("KtAsmToast")
+        logd("KtAsmToast showKtToast")
+    }
+
+    @JvmStatic
+    fun log99(){
+        logd("9999999")
     }
 
 }

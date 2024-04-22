@@ -55,7 +55,7 @@ class ASMTestAc:AppCompatActivity() {
             }
 
             bt1.setOnClickListener {
-                showMyToast()
+                showMyToast66()
             }
 
             btUncheck.setOnClickListener(object :View.OnClickListener{
@@ -72,9 +72,17 @@ class ASMTestAc:AppCompatActivity() {
             })
 
             btToast.setOnClickListener {
-                Toast.makeText(this@ASMTestAc,"hahaha",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ASMTestAc, str,Toast.LENGTH_SHORT).show()
+            }
+
+            bt66.setOnClickListener {
+                log66()
             }
         }
+    }
+
+    private fun log66(){
+        logd("66")
     }
 
     private fun autoIncrementNumber() {
@@ -87,7 +95,7 @@ class ASMTestAc:AppCompatActivity() {
         binding.tv.text = numner.toString()
     }
 
-    private fun showMyToast() {
+    private fun showMyToast66() {
         numner++
         binding.tv.text = numner.toString()
         binding.bt1.text = "asm插装"

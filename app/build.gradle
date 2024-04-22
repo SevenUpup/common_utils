@@ -151,12 +151,17 @@ dependencies {
     implementation group: 'org.ow2.asm', name: 'asm-commons', version: '9.6'
 }
 
+//originalClassName = "com.fido.common.common_utils.asm.ASMTestAc",
+//originalMethodName = "showMyToast",
+//targetClassName = "com.fido.common.common_utils.asm.KtAsmToast",
+//targetMethodName = "showKtToast",
+//handleMode = "A"
 hookCustomMethod{
-    originalClassName = "com.fido.common.common_utils.asm.ASMTestAc"
-    originalMethodName = "showMyToast"
-    targetClassName = "com.fido.common.common_utils.asm.KtAsmToast"
-    targetMethodName = "showKtToast"
-    handleMode = "A"
+//    configs = [
+//            new MethodsConfig("com.fido.common.common_utils.asm.KtAsmToast","showKtToast","com.fido.common.common_utils.asm.ASMTestAc", "showMyToast","A"),
+//            new MethodsConfig("com.fido.common.common_utils.asm.KtAsmToast","log99","com.fido.common.common_utils.asm.ASMTestAc", "log66","A"),
+//    ]
+
 }
 
 ViewClickPluginParameter {
@@ -181,9 +186,9 @@ ToastPluginParameter {
 }
 HookClassParameter {
     className = "com.fido.common.common_utils.asm.ASMTestAc"
-    parameterName = "A"
+    parameterName = "str"
     parameterType = "ch"
-    parameterNewValue = "false"
+    parameterNewValue = "666666"
 }
 /**
  * 统一依赖用

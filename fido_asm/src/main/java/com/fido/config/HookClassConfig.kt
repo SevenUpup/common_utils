@@ -16,7 +16,7 @@ data class HookClassConfig(
 
     companion object{
         operator fun invoke(parameter: HookClassParameter):HookClassConfig?{
-            return if (parameter.className.isEmpty() || parameter.parameterName.isEmpty() || parameter.parameterType.isEmpty() || parameter.parameterNewValue.isEmpty()) {
+            return if (parameter.className.isEmpty() || parameter.parameterName.isEmpty()  || parameter.parameterNewValue.isEmpty()) {
                 null
             } else {
                 HookClassConfig(
