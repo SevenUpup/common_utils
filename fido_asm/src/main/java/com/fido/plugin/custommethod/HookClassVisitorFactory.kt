@@ -6,7 +6,13 @@ import com.android.build.api.instrumentation.ClassData
 import com.android.build.api.instrumentation.InstrumentationParameters
 import com.fido.config.HookClassConfig
 import com.fido.constant.PluginConstant
+import com.fido.utils.ClInitMethodName
+import com.fido.utils.InitMethodName
 import com.fido.utils.LogPrint
+import com.fido.utils.accessIsStaticField
+import com.fido.utils.matches
+import com.fido.utils.replaceDotBySlash
+import com.fido.utils.replaceListWithSymbol
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.objectweb.asm.ClassVisitor
@@ -20,23 +26,31 @@ import org.objectweb.asm.tree.ClassNode
  * @date: 2024/4/19
  * @des:  修改指定类名的参数或方法
  */
-internal interface HookClassInstrumentationParameters:InstrumentationParameters{
+internal interface HookClassInstrumentationParameters : InstrumentationParameters {
     @get:Input
-    val config:Property<HookClassConfig>
+    val config: Property<HookClassConfig>
 }
-abstract class HookClassVisitorFactory :AsmClassVisitorFactory<HookClassInstrumentationParameters>{
+
+/**
+ * 插件配置的 className数组
+ */
+internal val List<String>.configClzNames
+    get() = replaceListWithSymbol(this)
+abstract class HookClassVisitorFactory :
+    AsmClassVisitorFactory<HookClassInstrumentationParameters> {
 
     override fun createClassVisitor(
         classContext: ClassContext,
         nextClassVisitor: ClassVisitor
     ): ClassVisitor {
         val config = parameters.get().config.get()
-        return HookClassClassVisitor(config, nextClassVisitor,classContext)
+        return HookClassClassVisitor(config, nextClassVisitor, classContext)
     }
 
     override fun isInstrumentable(classData: ClassData): Boolean {
         val config = parameters.get().config.get()
-        return classData.className == config.className
+        val clzList = config.className.configClzNames
+        return classData.matches(rules = clzList)
     }
 
 }
@@ -45,17 +59,34 @@ private class HookClassClassVisitor(
     val config: HookClassConfig,
     val nextClassVisitor: ClassVisitor,
     val classContext: ClassContext,
-):ClassNode(Opcodes.ASM9){
+) : ClassNode(Opcodes.ASM9) {
+
+    private val mSplit
+        get() = config.split.ifEmpty { "," }
 
     internal data class FieldInfoData(
         val access: Int,
         val name: String?,
         val descriptor: String?,
         val signature: String?,
-        val value: Any?
+        val value: Any?,
+        val owner:String
     )
+    private val shouldHookFields = mutableListOf<FieldInfoData>()
 
-    private val showHookFieldsList = mutableListOf<FieldInfoData>()
+    private var mOwner:String? = ""
+
+    override fun visit(
+        version: Int,
+        access: Int,
+        name: String?,
+        signature: String?,
+        superName: String?,
+        interfaces: Array<out String>?
+    ) {
+        mOwner = name
+        super.visit(version, access, name, signature, superName, interfaces)
+    }
 
     override fun visitField(
         access: Int,
@@ -64,23 +95,31 @@ private class HookClassClassVisitor(
         signature: String?,
         value: Any?
     ): FieldVisitor {
-        if (classContext.currentClassData.className == config.className && name == config.parameterName) {
-            LogPrint.normal(PluginConstant.HOOK_CLASS_TAG){
-                """
-                ======visitField======
-                className=${classContext.currentClassData.className}
-                access=${access}
-                name =${name}
-                descriptor=${descriptor}
-                signature=${signature}
-                value=${value}
-                config.parameterNewValue=${config.parameterNewValue}
-            """.trimIndent()
-            }
-            return super.visitField(access, name, descriptor, signature, config.parameterNewValue)
-        } else {
-            return super.visitField(access, name, descriptor, signature, value)
+        /*val currentClz = config.className.split(mSplit).find { replaceDotBySlash(it) == mOwner }
+        if (!currentClz.isNullOrEmpty()) {
+            val parameterNames = config.parameterName.split(mSplit)
+            val targetFieldName = parameterNames.find { it == name }
+            shouldHookFields.add(
+                FieldInfoData(
+                    access,targetFieldName,descriptor,signature,value, replaceDotBySlash(currentClz)
+                )
+            )
         }
+
+        return super.visitField(access, name, descriptor, signature, value)*/
+
+        val currentClz = config.className.configClzNames.find { replaceDotBySlash(it) == mOwner }
+        if (!currentClz.isNullOrEmpty()) {
+            val parameterNames = config.parameterName
+            val targetFieldName = parameterNames.find { it == name }
+            shouldHookFields.add(
+                FieldInfoData(
+                    access,targetFieldName,descriptor,signature,value, replaceDotBySlash(currentClz)
+                )
+            )
+        }
+
+        return super.visitField(access, name, descriptor, signature, value)
     }
 
     override fun visitMethod(
@@ -92,42 +131,57 @@ private class HookClassClassVisitor(
     ): MethodVisitor {
         val vm = super.visitMethod(access, name, descriptor, signature, exceptions)
 
-        val clzList = config.className.split(",")
-        val parameters = config.parameterName.split(",")
-        val parameterNewValues = config.parameterNewValue.split(",")
-
-
-//        return when (name) {
-//            InitMethodName -> {
-//                InitMethodVisitor()
-//            }
-//        }
-        if (showHookFieldsList.isNotEmpty()) {
-            showHookFieldsList.forEach {
-                LogPrint.normal(PluginConstant.HOOK_CLASS_TAG){
-                    """
-                ======visitMethod======
-                showHookFieldsList = ${it.name}
-                className=${classContext.currentClassData.className}
-                access=${access}
-                name =${name}
-                descriptor=${descriptor}
-                signature=${signature}
-                exceptions=${exceptions}
+        val clzList = config.className.configClzNames
+        val currentClz = clzList.find { replaceDotBySlash(it) == mOwner }
+        LogPrint.normal(PluginConstant.HOOK_CLASS_TAG){
+            """
+                clzList = ${clzList}
+                currentClz =${currentClz}
+                mOwner =${mOwner}
             """.trimIndent()
+        }
+        if (clzList.isNotEmpty() && !currentClz.isNullOrEmpty()) {
+            val parameterNames = config.parameterName
+            val parameterNewValues = config.parameterNewValue
+
+            return when (name) {
+                InitMethodName -> {
+                    InitMethodVisitor(vm, parameterNames, parameterNewValues,currentClz,shouldHookFields.filterNot { it.name.isNullOrEmpty() })
                 }
-                val fieldVisitor = nextClassVisitor.visitField(
-                    it.access,
-                    it.name,
-                    it.descriptor,
-                    it.signature,
-                    "66"
-                )
-                fieldVisitor.visitEnd()
+
+                ClInitMethodName -> {
+                    ClInitMethodVisitor(vm,parameterNames,parameterNewValues,mOwner,shouldHookFields.filterNot { it.name.isNullOrEmpty() }.toMutableList())
+                }
+                else -> vm
             }
         }
-
         return vm
+
+        /*val clzList = config.className.split(mSplit)
+        val currentClz = clzList.find { replaceDotBySlash(it) == mOwner }
+        LogPrint.normal(PluginConstant.HOOK_CLASS_TAG){
+            """
+                clzList = ${clzList}
+                currentClz =${currentClz}
+                mOwner =${mOwner}
+            """.trimIndent()
+        }
+        if (clzList.isNotEmpty() && !currentClz.isNullOrEmpty()) {
+            val parameterNames = config.parameterName.split(mSplit)
+            val parameterNewValues = config.parameterNewValue.split(mSplit)
+
+            return when (name) {
+                InitMethodName -> {
+                    InitMethodVisitor(vm, parameterNames, parameterNewValues,currentClz,shouldHookFields.filterNot { it.name.isNullOrEmpty() })
+                }
+
+                ClInitMethodName -> {
+                    ClInitMethodVisitor(vm,parameterNames,parameterNewValues,mOwner,shouldHookFields.filterNot { it.name.isNullOrEmpty() })
+                }
+                else -> vm
+            }
+        }
+        return vm*/
     }
 
     override fun visitEnd() {
@@ -139,9 +193,150 @@ private class HookClassClassVisitor(
         }
     }
 
-    private class InitMethodVisitor(api: Int, methodVisitor: MethodVisitor?) :
-        MethodVisitor(api, methodVisitor) {
+    private class InitMethodVisitor(
+        methodVisitor: MethodVisitor?,
+        val parameterNames: List<String>,
+        val parameterNewValues: List<Any>,
+        val mOwner: String,
+        val shouldHookFields: List<FieldInfoData>?
+    ) :
+        MethodVisitor(Opcodes.ASM9, methodVisitor) {
 
+        override fun visitFieldInsn(
+            opcode: Int,
+            owner: String?,
+            name: String?,
+            descriptor: String?
+        ) {
+            super.visitFieldInsn(opcode, owner, name, descriptor)
+
+            if (!shouldHookFields.isNullOrEmpty()) {
+                shouldHookFields.forEach { fieldInfoData ->
+//                    LogPrint.normal(PluginConstant.HOOK_CLASS_TAG){
+//                        """
+//                               ============shouldHookFields==============
+//                               name = ${name}
+//                               fieldInfoData.name =${fieldInfoData.name}
+//                               owner=${owner}
+//                               fieldInfoData.owner = ${fieldInfoData.owner}
+//                            """.trimIndent()
+//                    }
+                    if (fieldInfoData.owner == owner && name == fieldInfoData.name && parameterNames.contains(fieldInfoData.name)){
+                        //这里获取 需要修改字段数组中对应字段的下标，所以parameterName 与 parameterNewValue 的长度需要对应(默认用,分割)
+                        val newValueIndex = parameterNames.indexOf(fieldInfoData.name)
+                        //赋值成员字段
+                        mv.visitVarInsn(Opcodes.ALOAD, 0)
+                        mv.visitLdcInsn(parameterNewValues[newValueIndex]) //通过LDC指令将常量hello world压入栈顶
+                        mv.visitFieldInsn(
+                            Opcodes.PUTFIELD,
+                            owner,
+                            fieldInfoData.name,
+                            fieldInfoData.descriptor
+                        )
+                        LogPrint.normal(PluginConstant.HOOK_CLASS_TAG){
+                            """
+                               ============visitFieldInsn==============
+                               ${owner} 已修改常量${fieldInfoData.name}
+                               newValue = ${parameterNewValues[newValueIndex]}
+                               mOwner = ${mOwner}
+                            """.trimIndent()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private class ClInitMethodVisitor(
+        methodVisitor: MethodVisitor?,
+        val parameterNames: List<String>,
+        val parameterNewValues: List<Any>,
+        val mOwner: String?,
+        val shouldHookFields: MutableList<FieldInfoData>?
+    ) :
+        MethodVisitor(Opcodes.ASM9, methodVisitor) {
+
+        override fun visitInsn(opcode: Int) {
+
+            if (opcode >= Opcodes.IRETURN && opcode <= Opcodes.RETURN || opcode == Opcodes.ATHROW) {
+
+                val staticFields = shouldHookFields?.filter { it.access.accessIsStaticField && parameterNames.contains(it.name) }?: emptyList()
+
+                LogPrint.normal(PluginConstant.HOOK_CLASS_TAG) {
+                    """ ============== ClInitMethodVisitor Return之前 ==================
+                                    opcode=${opcode}
+                                    staticFields=${staticFields}
+                                """.trimIndent()
+                }
+
+                if (staticFields.isNotEmpty()) {
+                    staticFields.forEach { fieldInfoData ->
+                        if (!parameterNames.find { it == fieldInfoData.name }.isNullOrEmpty()) {
+                            val newValueIndex = parameterNames.indexOf(fieldInfoData.name)
+                            //赋值静态字段
+                            mv.visitLdcInsn(parameterNewValues[newValueIndex]) //通过LDC指令将常量值 压入栈顶
+                            mv.visitFieldInsn(
+                                Opcodes.PUTSTATIC,
+                                mOwner,
+                                fieldInfoData.name,
+                                fieldInfoData.descriptor
+                            )
+
+                            shouldHookFields?.removeAt(shouldHookFields.indexOf(fieldInfoData))
+
+                            LogPrint.normal(PluginConstant.HOOK_CLASS_TAG) {
+                                """ ============== ClInitMethodVisitor ==================
+                                    shouldHookFields=${shouldHookFields}
+                                    staticFields=${staticFields}
+                                    已修改静态变量 name=${fieldInfoData.name} descriptor=${fieldInfoData.descriptor} 
+                                    newValue = ${parameterNewValues[newValueIndex]}
+                                    mOwner =${mOwner}
+                                """.trimIndent()
+                            }
+                        }
+                    }
+                }
+            }
+
+//            if (!shouldHookFields.isNullOrEmpty()) {
+//                val staticFields = shouldHookFields.filter { it.access.accessIsStaticField && parameterNames.contains(it.name) }
+//                LogPrint.normal(PluginConstant.HOOK_CLASS_TAG) {
+//                    """ ============== ClInitMethodVisitor ==================
+//                                    shouldHookFields=${shouldHookFields}
+//                                    staticFields=${staticFields}
+//                                """.trimIndent()
+//                }
+//                if (staticFields.isNotEmpty()) {
+//                    staticFields.forEach { fieldInfoData ->
+//                        if (!parameterNames.find { it == fieldInfoData.name }.isNullOrEmpty()) {
+//                            val newValueIndex = parameterNames.indexOf(fieldInfoData.name)
+//                            //赋值静态字段
+//                            mv.visitLdcInsn(parameterNewValues[newValueIndex]) //通过LDC指令将常量值 压入栈顶
+//                            mv.visitFieldInsn(
+//                                Opcodes.PUTSTATIC,
+//                                mOwner,
+//                                fieldInfoData.name,
+//                                fieldInfoData.descriptor
+//                            )
+//
+//                            shouldHookFields.removeAt(shouldHookFields.indexOf(fieldInfoData))
+//
+//                            LogPrint.normal(PluginConstant.HOOK_CLASS_TAG) {
+//                                """ ============== ClInitMethodVisitor ==================
+//                                    shouldHookFields=${shouldHookFields}
+//                                    staticFields=${staticFields}
+//                                    已修改静态变量 name=${fieldInfoData.name} descriptor=${fieldInfoData.descriptor}
+//                                    newValue = ${parameterNewValues[newValueIndex]}
+//                                    mOwner =${mOwner}
+//                                """.trimIndent()
+//                            }
+//                            return@forEach
+//                        }
+//                    }
+//                }
+//            }
+            mv.visitInsn(opcode)
+        }
     }
 
 }

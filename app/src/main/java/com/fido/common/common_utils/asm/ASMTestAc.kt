@@ -23,13 +23,15 @@ class ASMTestAc:AppCompatActivity() {
 
     private var A = true
     var B = "1"
-
+    var G =  1
     companion object{
         private var C = false
         private val D = true
+        var H = "0"
+        var hBoolean = false
         private val str = "str"
         private var mChar = "mChar"
-
+        private val K = 0
         fun showMyStaticToast() {
             toast("static")
         }
@@ -47,6 +49,9 @@ class ASMTestAc:AppCompatActivity() {
             D=${D}
             str=${str}
             mChar=${mChar}
+            H=${H}
+            G=${G}
+            K=${K}
         """.trimIndent())
 
         binding.apply {

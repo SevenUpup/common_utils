@@ -8,10 +8,14 @@ import java.io.Serializable
  * @des:
  */
 data class HookClassConfig(
-    val className:String,
-    val parameterName:String,
-    val parameterType: String,
-    val parameterNewValue: String
+//    val className:String,
+//    val parameterName:String,
+//    val parameterNewValue: String,
+//    val split:String,
+    val className:List<String>,
+    val parameterName:List<String>,
+    val parameterNewValue: List<Any>,
+    val split:String,
 ) :Serializable{
 
     companion object{
@@ -22,8 +26,8 @@ data class HookClassConfig(
                 HookClassConfig(
                     className = parameter.className,
                     parameterName = parameter.parameterName,
-                    parameterType = parameter.parameterType,
-                    parameterNewValue = parameter.parameterNewValue
+                    parameterNewValue = parameter.parameterNewValue,
+                    split = parameter.split.ifBlank { "," }
                 )
             }
         }
@@ -32,8 +36,8 @@ data class HookClassConfig(
 }
 
 open class HookClassParameter{
-    var className:String = ""
-    var parameterName:String = ""
-    var parameterType:String = ""
-    var parameterNewValue:String = ""
+    var className:List<String> = emptyList()
+    var parameterName:List<String> = emptyList()
+    var parameterNewValue:List<Any> = emptyList()
+    var split = ","
 }

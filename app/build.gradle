@@ -164,31 +164,30 @@ hookCustomMethod{
 
 }
 
-ViewClickPluginParameter {
-    onClickClass = "com.fido.common.common_utils.asm.clickcheck.ClickViewMonitor"
-    onClickMethodName = "enableClick"
-    uncheckViewOnClickAnnotation = "com.fido.common.common_utils.asm.annotation.UnCheckViewOnClick"
-}
+//ViewClickPluginParameter {
+//    onClickClass = "com.fido.common.common_utils.asm.clickcheck.ClickViewMonitor"
+//    onClickMethodName = "enableClick"
+//    uncheckViewOnClickAnnotation = "com.fido.common.common_utils.asm.annotation.UnCheckViewOnClick"
+//}
 //这么写会执行最后一个 ReplaceClassPluginParameter
 //ReplaceClassPluginParameter {
 //    originClass = "androidx.appcompat.app.AppCompatActivity"
 //    targetClass = "com.fido.common.common_utils.base_asm.BaseAsmActivity"
 //}
-ReplaceClassPluginParameter {
-    originClass = "android.widget.ImageView"
-    targetClass = "com.fido.common.common_utils.asm.replace.MonitorImageView"
-    include = []
-    exclude = [".*\\.IgnoreImageView\$"]
-}
-ToastPluginParameter {
-    toasterClass = "com.fido.common.common_utils.asm.toast.HToaster"
-    showToastMethodName = "hToast"
-}
+//ReplaceClassPluginParameter {
+//    originClass = "android.widget.ImageView"
+//    targetClass = "com.fido.common.common_utils.asm.replace.MonitorImageView"
+//    include = []
+//    exclude = [".*\\.IgnoreImageView\$"]
+//}
+//ToastPluginParameter {
+//    toasterClass = "com.fido.common.common_utils.asm.toast.HToaster"
+//    showToastMethodName = "hToast"
+//}
 HookClassParameter {
-    className = "com.fido.common.common_utils.asm.ASMTestAc"
-    parameterName = "str"
-    parameterType = "ch"
-    parameterNewValue = "666666"
+    className = ["com.fido.common.common_utils.asm.ASMTestAc","*","*","*","*","*","*"]
+    parameterName = ["B","H","A","G","K","str","mChar"]
+    parameterNewValue = ["6666","HT",false,10086,-10086,"newStr","newmChar"]
 }
 /**
  * 统一依赖用

@@ -8,18 +8,35 @@ package com.fido.common.common_utils.test.java;
 public class Sington {
 
     private String AA = "AA";
-    private static final String BB = "BB";
+    private final String BB = "BB";
 
     public static final int DD = 44;
 
     public static final boolean EE = false;
     public static int CC = 66;
 
+    public static String STR = "";
+
+    public static Boolean BOl = true;
+
+    public static int hInt;
+
+    public static long mLong;
+    public static Long hLong = 0L;
+    public static char mChar;
+    public static byte mByte = new Byte("");
+    private static int pInt =9;
+    private static String pSTR = "strrr";
+    private static Long pLong = 0L;
+    protected static Long pro= 9L;
+
+    private static final int KK = 0;
     public String getAA() {
         return AA;
     }
 
     public static void main(String[] args) {
+//        KK = 666;
         System.out.println("AA = " + Sington.getInstance().getAA());
     }
 

@@ -13,6 +13,26 @@ import java.io.FileInputStream
  * @date: 2024/4/9
  * @des:
  */
+
+/**
+ * 替换数组中的指定 符号元素 为 离他最近的上一个不为符号的元素
+ * ["A","*","*","B","*","C","C","C","*","D","*","E","E","E","*","*"] => [A, A, A, B, B, C, C, C, C, D, D, E, E, E, E, E]
+ */
+internal fun replaceListWithSymbol(className:List<String>,replaceSymbol:String = "*") = run {
+    //记录所有 != * 的元素下标
+    val notStarList = mutableSetOf<Int>()
+    className.forEachIndexed { index, s ->
+        if (s != replaceSymbol) {
+            notStarList.add(className.indexOfFirst { it == s })
+        }
+    }
+
+    val  mList = notStarList.reversed()
+    className.mapIndexed { index, s ->
+        if (s == replaceSymbol && index > 0) className[mList.firstOrNull { index>it }?:(index-1)] else s
+    }
+}
+
 class ASMTest {
 
 
@@ -24,6 +44,10 @@ class ASMTest {
     val EE = true
     var CC = 66
 
+    private val pSTR = "strrr"
+    private val pLong = 0L
+    protected var pro = 9L
+
     companion object{
         private var C = false
         private val D = true
@@ -34,12 +58,21 @@ class ASMTest {
         var GG = 66
         val DD = "11"
 
+
+        private const val pSTR = "strrr"
+        private const val pLong = 0L
+        protected var pro = 9L
+
         @JvmStatic
         fun main(args: Array<String>) {
 //            val path = getClassFilePath(User::class.java)
             val path = ASMJavaTest.getClassFilePath(TimeAsmView::class.java)
             println("path = $path")
 
+            val result = replaceListWithSymbol(listOf("A","*","*","B","*","C","C","C","*","D","*","E","E","E","*","*"))
+            println("""
+                replaceListWithSymbol = $result
+            """.trimIndent())
             GG = 55
 
             println(Mi2ProtableBattery::class.java.canonicalName)

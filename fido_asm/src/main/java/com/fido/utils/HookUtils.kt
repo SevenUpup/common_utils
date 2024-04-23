@@ -15,6 +15,7 @@ import org.objectweb.asm.tree.MethodNode
  */
 internal const val InitMethodName = "<init>"
 
+internal const val ClInitMethodName = "<clinit>"
 internal val ClassNode.simpleClassName: String
     get() = name.substringAfterLast('/')
 
@@ -79,4 +80,34 @@ internal fun ClassData.matches(rules: Collection<String>): Boolean {
         }
     }
     return false
+}
+
+
+internal val Int.accessIsStaticField
+    get() = this in (Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC)..(Opcodes.ACC_PROTECTED+Opcodes.ACC_STATIC + Opcodes.ACC_FINAL)
+
+//internal fun isStaticField2(acc: Int): Boolean {
+//    return acc >= Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC && acc <= Opcodes.ACC_PROTECTED + Opcodes.ACC_STATIC
+//}
+
+/**
+ * 替换数组中的指定 符号元素 为 离他最近的上一个不为符号的元素
+ * ["A","*","*","B","*","C","C","C","*","D","*","E","E","E","*","*"] => [A, A, A, B, B, C, C, C, C, D, D, E, E, E, E, E]
+ */
+internal fun replaceListWithSymbol(className:List<String>,replaceSymbol:String = "*") = run {
+    if (!className.contains(replaceSymbol)) {
+        return@run className
+    }
+    //记录所有 != * 的元素下标
+    val notStarList = mutableSetOf<Int>()
+    className.forEachIndexed { index, s ->
+        if (s != replaceSymbol) {
+            notStarList.add(className.indexOfFirst { it == s })
+        }
+    }
+
+    val  mList = notStarList.reversed()
+    className.mapIndexed { index, s ->
+        if (s == replaceSymbol && index > 0) className[mList.firstOrNull { index>it }?:(index-1)] else s
+    }
 }
