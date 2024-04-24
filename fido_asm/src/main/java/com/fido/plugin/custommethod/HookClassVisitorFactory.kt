@@ -36,6 +36,7 @@ internal interface HookClassInstrumentationParameters : InstrumentationParameter
  */
 internal val List<String>.configClzNames
     get() = replaceListWithSymbol(this)
+
 abstract class HookClassVisitorFactory :
     AsmClassVisitorFactory<HookClassInstrumentationParameters> {
 
@@ -61,20 +62,18 @@ private class HookClassClassVisitor(
     val classContext: ClassContext,
 ) : ClassNode(Opcodes.ASM9) {
 
-    private val mSplit
-        get() = config.split.ifEmpty { "," }
-
     internal data class FieldInfoData(
         val access: Int,
         val name: String?,
         val descriptor: String?,
         val signature: String?,
         val value: Any?,
-        val owner:String
+        val owner: String
     )
+
     private val shouldHookFields = mutableListOf<FieldInfoData>()
 
-    private var mOwner:String? = ""
+    private var mOwner: String? = ""
 
     override fun visit(
         version: Int,
@@ -95,26 +94,18 @@ private class HookClassClassVisitor(
         signature: String?,
         value: Any?
     ): FieldVisitor {
-        /*val currentClz = config.className.split(mSplit).find { replaceDotBySlash(it) == mOwner }
-        if (!currentClz.isNullOrEmpty()) {
-            val parameterNames = config.parameterName.split(mSplit)
-            val targetFieldName = parameterNames.find { it == name }
-            shouldHookFields.add(
-                FieldInfoData(
-                    access,targetFieldName,descriptor,signature,value, replaceDotBySlash(currentClz)
-                )
-            )
-        }
-
-        return super.visitField(access, name, descriptor, signature, value)*/
-
         val currentClz = config.className.configClzNames.find { replaceDotBySlash(it) == mOwner }
         if (!currentClz.isNullOrEmpty()) {
             val parameterNames = config.parameterName
             val targetFieldName = parameterNames.find { it == name }
             shouldHookFields.add(
                 FieldInfoData(
-                    access,targetFieldName,descriptor,signature,value, replaceDotBySlash(currentClz)
+                    access,
+                    targetFieldName,
+                    descriptor,
+                    signature,
+                    value,
+                    replaceDotBySlash(currentClz)
                 )
             )
         }
@@ -133,7 +124,7 @@ private class HookClassClassVisitor(
 
         val clzList = config.className.configClzNames
         val currentClz = clzList.find { replaceDotBySlash(it) == mOwner }
-        LogPrint.normal(PluginConstant.HOOK_CLASS_TAG){
+        LogPrint.normal(PluginConstant.HOOK_CLASS_TAG) {
             """
                 clzList = ${clzList}
                 currentClz =${currentClz}
@@ -146,42 +137,28 @@ private class HookClassClassVisitor(
 
             return when (name) {
                 InitMethodName -> {
-                    InitMethodVisitor(vm, parameterNames, parameterNewValues,currentClz,shouldHookFields.filterNot { it.name.isNullOrEmpty() })
+                    InitMethodVisitor(
+                        vm,
+                        parameterNames,
+                        parameterNewValues,
+                        currentClz,
+                        shouldHookFields.filterNot { it.name.isNullOrEmpty() })
                 }
 
                 ClInitMethodName -> {
-                    ClInitMethodVisitor(vm,parameterNames,parameterNewValues,mOwner,shouldHookFields.filterNot { it.name.isNullOrEmpty() }.toMutableList())
+                    ClInitMethodVisitor(
+                        vm,
+                        parameterNames,
+                        parameterNewValues,
+                        mOwner,
+                        shouldHookFields.filterNot { it.name.isNullOrEmpty() }.toMutableList()
+                    )
                 }
+
                 else -> vm
             }
         }
         return vm
-
-        /*val clzList = config.className.split(mSplit)
-        val currentClz = clzList.find { replaceDotBySlash(it) == mOwner }
-        LogPrint.normal(PluginConstant.HOOK_CLASS_TAG){
-            """
-                clzList = ${clzList}
-                currentClz =${currentClz}
-                mOwner =${mOwner}
-            """.trimIndent()
-        }
-        if (clzList.isNotEmpty() && !currentClz.isNullOrEmpty()) {
-            val parameterNames = config.parameterName.split(mSplit)
-            val parameterNewValues = config.parameterNewValue.split(mSplit)
-
-            return when (name) {
-                InitMethodName -> {
-                    InitMethodVisitor(vm, parameterNames, parameterNewValues,currentClz,shouldHookFields.filterNot { it.name.isNullOrEmpty() })
-                }
-
-                ClInitMethodName -> {
-                    ClInitMethodVisitor(vm,parameterNames,parameterNewValues,mOwner,shouldHookFields.filterNot { it.name.isNullOrEmpty() })
-                }
-                else -> vm
-            }
-        }
-        return vm*/
     }
 
     override fun visitEnd() {
@@ -212,16 +189,10 @@ private class HookClassClassVisitor(
 
             if (!shouldHookFields.isNullOrEmpty()) {
                 shouldHookFields.forEach { fieldInfoData ->
-//                    LogPrint.normal(PluginConstant.HOOK_CLASS_TAG){
-//                        """
-//                               ============shouldHookFields==============
-//                               name = ${name}
-//                               fieldInfoData.name =${fieldInfoData.name}
-//                               owner=${owner}
-//                               fieldInfoData.owner = ${fieldInfoData.owner}
-//                            """.trimIndent()
-//                    }
-                    if (fieldInfoData.owner == owner && name == fieldInfoData.name && parameterNames.contains(fieldInfoData.name)){
+                    if (fieldInfoData.owner == owner &&
+                        name == fieldInfoData.name &&
+                        parameterNames.contains(fieldInfoData.name))
+                    {
                         //这里获取 需要修改字段数组中对应字段的下标，所以parameterName 与 parameterNewValue 的长度需要对应(默认用,分割)
                         val newValueIndex = parameterNames.indexOf(fieldInfoData.name)
                         //赋值成员字段
@@ -233,7 +204,7 @@ private class HookClassClassVisitor(
                             fieldInfoData.name,
                             fieldInfoData.descriptor
                         )
-                        LogPrint.normal(PluginConstant.HOOK_CLASS_TAG){
+                        LogPrint.normal(PluginConstant.HOOK_CLASS_TAG) {
                             """
                                ============visitFieldInsn==============
                                ${owner} 已修改常量${fieldInfoData.name}
@@ -260,7 +231,9 @@ private class HookClassClassVisitor(
 
             if (opcode >= Opcodes.IRETURN && opcode <= Opcodes.RETURN || opcode == Opcodes.ATHROW) {
 
-                val staticFields = shouldHookFields?.filter { it.access.accessIsStaticField && parameterNames.contains(it.name) }?: emptyList()
+                val staticFields = shouldHookFields?.filter {
+                    it.access.accessIsStaticField && parameterNames.contains(it.name)
+                } ?: emptyList()
 
                 LogPrint.normal(PluginConstant.HOOK_CLASS_TAG) {
                     """ ============== ClInitMethodVisitor Return之前 ==================

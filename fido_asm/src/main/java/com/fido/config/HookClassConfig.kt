@@ -7,15 +7,16 @@ import java.io.Serializable
  * @date: 2024/4/19
  * @des:
  */
+
+/**
+ * @param replaceSymbol 重复类 替换符号默认*
+ * 使用：如果className中元素重复，可以将相同元素用*代替 如：className = [A,*,*,B,*]
+ */
 data class HookClassConfig(
-//    val className:String,
-//    val parameterName:String,
-//    val parameterNewValue: String,
-//    val split:String,
     val className:List<String>,
     val parameterName:List<String>,
     val parameterNewValue: List<Any>,
-    val split:String,
+//    val replaceSymbol:String,
 ) :Serializable{
 
     companion object{
@@ -27,7 +28,7 @@ data class HookClassConfig(
                     className = parameter.className,
                     parameterName = parameter.parameterName,
                     parameterNewValue = parameter.parameterNewValue,
-                    split = parameter.split.ifBlank { "," }
+//                    replaceSymbol = parameter.replaceSymbol.ifBlank { "*" }
                 )
             }
         }
@@ -39,5 +40,5 @@ open class HookClassParameter{
     var className:List<String> = emptyList()
     var parameterName:List<String> = emptyList()
     var parameterNewValue:List<Any> = emptyList()
-    var split = ","
+//    var replaceSymbol = "*"
 }

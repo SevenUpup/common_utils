@@ -197,8 +197,7 @@ public class ASMJavaTest {
                             mv.visitVarInsn(ALOAD, 0);
                             mv.visitLdcInsn("hello world"); //通过LDC指令将常量hello world压入栈顶
                             mv.visitFieldInsn(PUTFIELD, mOwner, "AA", "Ljava/lang/String;"); //将hello world赋值给HelloWorld的字段word
-                        }
-                        if (name.equals("BB")) {
+                        }else if (name.equals("BB")) {
                             mv.visitVarInsn(ALOAD, 0);
                             mv.visitLdcInsn("hello world BB"); //通过LDC指令将常量hello world压入栈顶
                             mv.visitFieldInsn(PUTFIELD, mOwner, "BB", "Ljava/lang/String;"); //将hello world赋值给HelloWorld的字段word

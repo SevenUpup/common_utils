@@ -185,9 +185,9 @@ hookCustomMethod{
 //    showToastMethodName = "hToast"
 //}
 HookClassParameter {
-    className = ["com.fido.common.common_utils.asm.ASMTestAc","*","*","*","*","*","*"]
-    parameterName = ["B","H","A","G","K","str","mChar"]
-    parameterNewValue = ["6666","HT",false,10086,-10086,"newStr","newmChar"]
+    className = ["com.fido.common.common_utils.asm.ASMTestAc","*","*","*","*","*","*","*"]
+    parameterName = ["B","H","A","G","K","str","mChar","LL"]
+    parameterNewValue = ["6666","HT",false,10086,-10086,"newStr","newmChar","LiaoLiao"]
 }
 /**
  * 统一依赖用

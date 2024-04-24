@@ -32,7 +32,7 @@ gradlePlugin{
     }
 }
 
-val localMavenDir = File(rootProject.rootDir,"local_maven")
+/*val localMavenDir = File(rootProject.rootDir,"local_maven")
 if (!localMavenDir.exists()) {
     localMavenDir.mkdirs()
 }
@@ -110,32 +110,9 @@ publishing{
                 }
             }
 
-//            with(defaultPublication) {
-//                groupId = properties["PLUGIN_PERMISSION_ID"].toString()
-//                artifactId = properties["PLUGIN_PERMISSION_ARTIFACT_ID"].toString()
-//                version = properties["PERMISSION_PLUGIN_VERSION"].toString()
-//                afterEvaluate {
-//                    artifact(tasks.getByName("jar"))
-//                }
-//                // source Code.
-//                artifact(sourceJar)
-//
-//                pom.withXml {
-//                    val dependencies = asNode().appendNode("dependencies")
-//                    configurations.implementation.get().allDependencies.all {
-//                        val dependency = this
-//                        if (dependency.group == null || dependency.version == null || dependency.name == "unspecified") {
-//                            return@all
-//                        }
-//                        val dependencyNode = dependencies.appendNode("dependency")
-//                        dependencyNode.appendNode("groupId", dependency.group)
-//                        dependencyNode.appendNode("artifactId", dependency.name)
-//                        dependencyNode.appendNode("version", dependency.version)
-//                        dependencyNode.appendNode("scope", "implementation")
-//                    }
-//                }
-//            }
         }
 
     }
-}
+}*/
+
+apply(rootProject.file("publish-maven-jar.gradle"))

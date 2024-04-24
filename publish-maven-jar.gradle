@@ -1,0 +1,20 @@
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+// 这个是把源码打入aar包中的任务
+task sourceJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from sourceSets.getByName("main").allSource
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                groupId GROUP_ID
+                artifactId POM_ARTIFACT_ID
+                version VERSION_NAME
+            }
+        }
+    }
+}

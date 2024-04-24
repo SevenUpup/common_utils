@@ -32,6 +32,10 @@ class ASMTestAc:AppCompatActivity() {
         private val str = "str"
         private var mChar = "mChar"
         private val K = 0
+        //const 来定义常量，但是这个常量跟 Java 的 static final 是有所区别的，如果它的值无法在编译时确定，
+        //则编译不过，因此 const 所定义的常量叫编译时常量
+        //所以插件修改失败
+        private const val LL = "Liao"
         fun showMyStaticToast() {
             toast("static")
         }
@@ -52,6 +56,7 @@ class ASMTestAc:AppCompatActivity() {
             H=${H}
             G=${G}
             K=${K}
+            LL=${LL}
         """.trimIndent())
 
         binding.apply {
@@ -104,6 +109,7 @@ class ASMTestAc:AppCompatActivity() {
         numner++
         binding.tv.text = numner.toString()
         binding.bt1.text = "asm插装"
+        toast(LL)
     }
 
 
