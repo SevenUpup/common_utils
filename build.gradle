@@ -18,9 +18,7 @@ plugins {
     id 'com.google.devtools.ksp' version "1.7.10-1.0.6" apply false
 
     // 在 Project 级别的 build.gradle 中添加我们的插件依赖
-//    alias(libs.plugins.fidoASM) apply false
-//    id 'com.fido' version "1.0.0"
-    id 'com.fido.plugin.asm' version "1.0.0"
+//    id 'com.fido.plugin.asm' version "1.0.0"
 }
 
 apply from: "dependent.gradle"
