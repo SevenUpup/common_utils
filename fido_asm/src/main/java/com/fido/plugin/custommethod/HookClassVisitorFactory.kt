@@ -98,17 +98,28 @@ private class HookClassClassVisitor(
         if (!currentClz.isNullOrEmpty()) {
             val parameterNames = config.parameterName
             val targetFieldName = parameterNames.find { it == name }
-            shouldHookFields.add(
-                FieldInfoData(
-                    access,
-                    targetFieldName,
-                    descriptor,
-                    signature,
-                    value,
-                    replaceDotBySlash(currentClz)
+            if (!targetFieldName.isNullOrEmpty()) {
+                shouldHookFields.add(
+                    FieldInfoData(
+                        access,
+                        targetFieldName,
+                        descriptor,
+                        signature,
+                        value,
+                        replaceDotBySlash(currentClz)
+                    )
                 )
-            )
+            }
         }
+
+//        LogPrint.normal(PluginConstant.HOOK_CLASS_TAG){
+//            """
+//                ============ visitField ===============
+//                mOwner=${mOwner}
+//                name = $name
+//                shouldHookFields = $shouldHookFields
+//            """.trimIndent()
+//        }
 
         return super.visitField(access, name, descriptor, signature, value)
     }
@@ -124,13 +135,7 @@ private class HookClassClassVisitor(
 
         val clzList = config.className.configClzNames
         val currentClz = clzList.find { replaceDotBySlash(it) == mOwner }
-        LogPrint.normal(PluginConstant.HOOK_CLASS_TAG) {
-            """
-                clzList = ${clzList}
-                currentClz =${currentClz}
-                mOwner =${mOwner}
-            """.trimIndent()
-        }
+
         if (clzList.isNotEmpty() && !currentClz.isNullOrEmpty()) {
             val parameterNames = config.parameterName
             val parameterNewValues = config.parameterNewValue
@@ -187,6 +192,15 @@ private class HookClassClassVisitor(
         ) {
             super.visitFieldInsn(opcode, owner, name, descriptor)
 
+//            LogPrint.normal(PluginConstant.HOOK_CLASS_TAG) {
+//                """ ============== InitMethodVisitor visitFieldInsn ==================
+//                                    opcode=${opcode}
+//                                    owner=${owner}
+//                                    name=${name}
+//                                    shouldHookFields=${shouldHookFields}
+//                                """.trimIndent()
+//            }
+
             if (!shouldHookFields.isNullOrEmpty()) {
                 shouldHookFields.forEach { fieldInfoData ->
                     if (fieldInfoData.owner == owner &&
@@ -197,7 +211,7 @@ private class HookClassClassVisitor(
                         val newValueIndex = parameterNames.indexOf(fieldInfoData.name)
                         //赋值成员字段
                         mv.visitVarInsn(Opcodes.ALOAD, 0)
-                        mv.visitLdcInsn(parameterNewValues[newValueIndex]) //通过LDC指令将常量hello world压入栈顶
+                        mv.visitLdcInsn(parameterNewValues[newValueIndex]) //通过LDC指令将常量 压入栈顶
                         mv.visitFieldInsn(
                             Opcodes.PUTFIELD,
                             owner,
@@ -235,19 +249,21 @@ private class HookClassClassVisitor(
                     it.access.accessIsStaticField && parameterNames.contains(it.name)
                 } ?: emptyList()
 
-                LogPrint.normal(PluginConstant.HOOK_CLASS_TAG) {
-                    """ ============== ClInitMethodVisitor Return之前 ==================
-                                    opcode=${opcode}
-                                    staticFields=${staticFields}
-                                """.trimIndent()
-                }
+//                LogPrint.normal(PluginConstant.HOOK_CLASS_TAG) {
+//                    """ ============== ClInitMethodVisitor Return之前 ==================
+//                                    opcode=${opcode}
+//                                    shouldHookFields=${shouldHookFields}
+//                                    staticFields=${staticFields}
+//                                """.trimIndent()
+//                }
 
                 if (staticFields.isNotEmpty()) {
                     staticFields.forEach { fieldInfoData ->
                         if (!parameterNames.find { it == fieldInfoData.name }.isNullOrEmpty()) {
                             val newValueIndex = parameterNames.indexOf(fieldInfoData.name)
                             //赋值静态字段
-                            mv.visitLdcInsn(parameterNewValues[newValueIndex]) //通过LDC指令将常量值 压入栈顶
+                            val realValue = parameterNewValues[newValueIndex].toRealTypeValue(fieldInfoData.descriptor?:"")
+                            mv.visitLdcInsn(realValue) //通过LDC指令将常量值 压入栈顶
                             mv.visitFieldInsn(
                                 Opcodes.PUTSTATIC,
                                 mOwner,
@@ -270,46 +286,18 @@ private class HookClassClassVisitor(
                     }
                 }
             }
-
-//            if (!shouldHookFields.isNullOrEmpty()) {
-//                val staticFields = shouldHookFields.filter { it.access.accessIsStaticField && parameterNames.contains(it.name) }
-//                LogPrint.normal(PluginConstant.HOOK_CLASS_TAG) {
-//                    """ ============== ClInitMethodVisitor ==================
-//                                    shouldHookFields=${shouldHookFields}
-//                                    staticFields=${staticFields}
-//                                """.trimIndent()
-//                }
-//                if (staticFields.isNotEmpty()) {
-//                    staticFields.forEach { fieldInfoData ->
-//                        if (!parameterNames.find { it == fieldInfoData.name }.isNullOrEmpty()) {
-//                            val newValueIndex = parameterNames.indexOf(fieldInfoData.name)
-//                            //赋值静态字段
-//                            mv.visitLdcInsn(parameterNewValues[newValueIndex]) //通过LDC指令将常量值 压入栈顶
-//                            mv.visitFieldInsn(
-//                                Opcodes.PUTSTATIC,
-//                                mOwner,
-//                                fieldInfoData.name,
-//                                fieldInfoData.descriptor
-//                            )
-//
-//                            shouldHookFields.removeAt(shouldHookFields.indexOf(fieldInfoData))
-//
-//                            LogPrint.normal(PluginConstant.HOOK_CLASS_TAG) {
-//                                """ ============== ClInitMethodVisitor ==================
-//                                    shouldHookFields=${shouldHookFields}
-//                                    staticFields=${staticFields}
-//                                    已修改静态变量 name=${fieldInfoData.name} descriptor=${fieldInfoData.descriptor}
-//                                    newValue = ${parameterNewValues[newValueIndex]}
-//                                    mOwner =${mOwner}
-//                                """.trimIndent()
-//                            }
-//                            return@forEach
-//                        }
-//                    }
-//                }
-//            }
             mv.visitInsn(opcode)
         }
     }
 
 }
+
+internal fun Any.toRealTypeValue(descriptor:String):Any?{
+    return when (descriptor) {
+        "D" -> this.toString().toDouble()
+        "F" -> this.toString().toFloat()
+        "J" -> this.toString().toLong()
+        else -> this
+    }
+}
+

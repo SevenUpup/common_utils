@@ -25,14 +25,10 @@ gradlePlugin{
         val mPlugin = this.create("FiDoAsmPlugin")
         mPlugin.id = properties["GROUP_ID"].toString()
         mPlugin.implementationClass = "com.fido.plugin.FiDoAsmPlugin"
-
-//        val permissionPlugin = this.create("PermissionCheckPlugin")
-//        permissionPlugin.id = properties["PLUGIN_PERMISSION_ID"].toString()
-//        permissionPlugin.implementationClass = "com.fido.PermissionCheckPlugin"
     }
 }
 
-/*val localMavenDir = File(rootProject.rootDir,"local_maven")
+val localMavenDir = File(rootProject.rootDir,"local_maven")
 if (!localMavenDir.exists()) {
     localMavenDir.mkdirs()
 }
@@ -113,6 +109,6 @@ publishing{
         }
 
     }
-}*/
+}
 
-apply(rootProject.file("publish-maven-jar.gradle"))
+//apply(rootProject.file("publish-maven-jar.gradle"))

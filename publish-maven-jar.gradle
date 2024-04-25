@@ -5,6 +5,7 @@ apply plugin: 'signing'
 task sourceJar(type: Jar) {
     archiveClassifier.set('sources')
     from sourceSets.getByName("main").allSource
+//    from sourceSets.main.allSource
 }
 
 afterEvaluate {

@@ -11,6 +11,7 @@ import static org.objectweb.asm.Opcodes.PUTFIELD;
 import static org.objectweb.asm.Opcodes.PUTSTATIC;
 import static org.objectweb.asm.Opcodes.RETURN;
 
+import com.fido.common.common_utils.asm.ASMTestAc;
 import com.fido.common.common_utils.test.java.Sington;
 
 import org.objectweb.asm.ClassReader;
@@ -90,7 +91,7 @@ public class ASMJavaTest {
         };
         classReader.accept(classVisitor, 0);
 
-        Class originalClz = Sington.class;
+        Class originalClz = ASMTestAc.class;
         String originalPath = getClassFilePath(originalClz);
         String prefixPath = "G:\\PraticeDemo\\common_utils\\app\\src\\main\\java\\com\\fido\\common\\common_utils\\test\\asm\\";
         ClassReader reader = new ClassReader(new FileInputStream(originalPath));
@@ -146,7 +147,7 @@ public class ASMJavaTest {
 
         @Override
         public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
-            System.out.println("find hook name="+name + " value=" + value + " access=" + access + " descriptor=" + descriptor + " signature=" + signature + " access=" + isStaticField(access));
+//            System.out.println("find hook name="+name + " value=" + value + " access=" + access + " descriptor=" + descriptor + " signature=" + signature + " access=" + access + " isStaticField=" + isStaticField(access));
 //            if (Objects.equals(name, "AA")){
 //                System.out.println("find hook name="+name + " value=" + value + " access=" + access);
 //                return super.visitField(access, name, descriptor, signature, "apple");
@@ -163,10 +164,10 @@ public class ASMJavaTest {
 //                System.out.println("find hook name="+name + " value=" + value+ " access=" + access);
 //                return super.visitField(access, name, descriptor, signature, true);
 //            }
-//            if (name.equals("DD")){
-//                System.out.println("find hook name="+name + " value=" + value+ " access=" + access);
+            if (name.equals("INT_VAL")){
+                System.out.println("find hook name="+name + " value=" + value+ " access=" + access);
 //                return super.visitField(access, name, descriptor, signature, 999);
-//            }
+            }
             return super.visitField(access, name, descriptor, signature, value);
         }
 
@@ -183,6 +184,7 @@ public class ASMJavaTest {
 //                return visitor;
 //            }
 
+            String methodName = name;
             if (methodVisitor != null && name.equals("<init>")) {
                 MethodVisitor initMethodVisitor = new MethodVisitor(api,methodVisitor) {
 
@@ -201,7 +203,20 @@ public class ASMJavaTest {
                             mv.visitVarInsn(ALOAD, 0);
                             mv.visitLdcInsn("hello world BB"); //通过LDC指令将常量hello world压入栈顶
                             mv.visitFieldInsn(PUTFIELD, mOwner, "BB", "Ljava/lang/String;"); //将hello world赋值给HelloWorld的字段word
+                        } else if (name.equals("F_Double")) {
+                            mv.visitVarInsn(ALOAD, 0);
+                            mv.visitLdcInsn(999.0); //通过LDC指令将常量hello world压入栈顶
+                            mv.visitFieldInsn(PUTFIELD, mOwner, "F_Double", "D"); //将hello world赋值给HelloWorld的字段word
+                        }else if (name.equals("P_INT")) {
+                            mv.visitVarInsn(ALOAD, 0);
+                            mv.visitLdcInsn(999); //通过LDC指令将常量hello world压入栈顶
+                            mv.visitFieldInsn(PUTFIELD, mOwner, "P_INT", "I"); //将hello world赋值给HelloWorld的字段word
                         }
+//                        else if (name.equals("INT_VAL")) {
+//                            mv.visitVarInsn(ALOAD, 0);
+//                            mv.visitLdcInsn(999); //通过LDC指令将常量hello world压入栈顶
+//                            mv.visitFieldInsn(PUTFIELD, mOwner, name, "I"); //将hello world赋值给HelloWorld的字段word
+//                        }
 
                     }
 
@@ -209,7 +224,7 @@ public class ASMJavaTest {
                 return initMethodVisitor;
             }
 
-            if (methodVisitor != null && !name.equals("<init>")) {
+            if (methodVisitor != null && name.equals("<clinit>")) {
                 MethodVisitor newMethodVisitor = new MethodVisitor(api, methodVisitor) {
 
                     @Override
@@ -239,9 +254,17 @@ public class ASMJavaTest {
                             mv.visitLdcInsn(666); //通过LDC指令将常量hello world压入栈顶
                             mv.visitFieldInsn(PUTSTATIC, mOwner, "CC", "I"); //将hello world赋值给HelloWorld的静态字段word
 
-//                            //赋值静态字段
+                            //赋值静态字段
                             mv.visitLdcInsn(-10086); //通过LDC指令将常量hello world压入栈顶
                             mv.visitFieldInsn(PUTSTATIC, mOwner, "K", "I"); //将hello world赋值给HelloWorld的静态字段word
+
+
+                            //赋值静态字段
+                            mv.visitLdcInsn(66.6); //通过LDC指令将常量hello world压入栈顶
+                            mv.visitFieldInsn(PUTSTATIC, mOwner, "pLong", "D"); //将hello world赋值给HelloWorld的静态字段word
+
+//                            mv.visitLdcInsn(999);
+//                            mv.visitFieldInsn(PUTSTATIC,mOwner,"INT_VAL","I");
                         }
 
                         if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
@@ -257,8 +280,9 @@ public class ASMJavaTest {
                     @Override
                     public void visitFieldInsn(int opcode, String owner, String name, String descriptor) {
                         super.visitFieldInsn(opcode, owner, name, descriptor);
-                        System.out.println("=======visitFieldInsn opcode = " + opcode + " owner=" + owner + " name=" + name + " descriptor=" + descriptor);
+                        System.out.println("=======visitFieldInsn methodName =" + methodName + "opcode = " + opcode + " owner=" + owner + " name=" + name + " descriptor=" + descriptor);
                     }
+
                 };
                 return newMethodVisitor;
             }
@@ -279,6 +303,8 @@ public class ASMJavaTest {
             if (fieldVisitor != null) {
                 fieldVisitor.visitEnd();
             }
+
+
 
             cv.visitEnd();
         }

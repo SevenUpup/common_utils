@@ -9,7 +9,9 @@ public class Sington {
 
     private String AA = "AA";
     private final String BB = "BB";
-
+    private final double F_Double = 10.0;
+    private final int INT_VAL = 0;
+    public int P_INT = 0;
     public static final int DD = 44;
 
     public static final boolean EE = false;
@@ -27,7 +29,7 @@ public class Sington {
     public static byte mByte = new Byte("");
     private static int pInt =9;
     private static String pSTR = "strrr";
-    private static Long pLong = 0L;
+    private static final double pLong = 0.0;
     protected static Long pro= 9L;
 
     private static final int KK = 0;

@@ -1,5 +1,8 @@
 package com.fido.common.common_utils.asm
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
@@ -12,7 +15,9 @@ import com.fido.common.common_base_util.ext.startActivity
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_utils.asm.annotation.UnCheckViewOnClick
 import com.fido.common.common_utils.asm.replace.ReplaceClassTestAc
+import com.fido.common.common_utils.asm.toast.OpenAppMarketUtils
 import com.fido.common.common_utils.databinding.AcAsmTestBinding
+
 
 /**
  * @author: FiDo
@@ -24,7 +29,12 @@ class ASMTestAc:AppCompatActivity() {
     private var A = true
     var B = "1"
     var G =  1
+    private val INT_VAL:Int = 1
+    protected val INT_PROT = -1
+    val INT_PUB = 99
     companion object{
+        private var STATCI_VAL_DOUBLE = 20.0
+        private var STATCI_VAL_LONG = 66L
         private var C = false
         private val D = true
         var H = "0"
@@ -43,13 +53,28 @@ class ASMTestAc:AppCompatActivity() {
     private var numner = 0
     private val binding:AcAsmTestBinding by binding()
 
+    private var hhIndex = 0
+    fun toHWMarketByAppId(context: Context, appId: String) {
+        val text1 = "market://com.huawei.appmarket.applink?appId=$appId"
+        val uri = Uri.parse(text1)
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        context.startActivity(intent)
+    }
+
+    fun launchAppDetilOnMarket2() {
+        val text1 = "appmarket://details?id=com.huawei.browser"
+        val uri = Uri.parse(text1)
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        startActivity(intent)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         logd("""
             A=${A}
             B=${B}
-            C=${C}
+            C=$C
             D=${D}
             str=${str}
             mChar=${mChar}
@@ -57,6 +82,11 @@ class ASMTestAc:AppCompatActivity() {
             G=${G}
             K=${K}
             LL=${LL}
+            INT_VAL=${INT_VAL}
+            INT_PROT=${INT_PROT}
+            INT_PUB=${INT_PUB}
+            STATCI_VAL_DOUBLE=${STATCI_VAL_DOUBLE}
+            STATCI_VAL_LONG=${STATCI_VAL_LONG}
         """.trimIndent())
 
         binding.apply {
@@ -65,7 +95,13 @@ class ASMTestAc:AppCompatActivity() {
             }
 
             bt1.setOnClickListener {
-                showMyToast66()
+//                showMyToast66()
+                if (hhIndex%2 == 0) {
+                    OpenAppMarketUtils.openAppMarket(this@ASMTestAc, "cn.goodjobs.client")
+                    hhIndex++
+                } else {
+                    toHWMarketByAppId(this@ASMTestAc,"cn.goodjobs.client")
+                }
             }
 
             btUncheck.setOnClickListener(object :View.OnClickListener{

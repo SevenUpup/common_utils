@@ -133,8 +133,8 @@ private class HookCustomMethodClassVisitor(
                     name == it.originalMethodName
             }
             if (config != null) {
-                getLogInfo(config.handleMode.hookMethodMode()?:"",classContext.currentClassData.className,name,methodDesc)
-                LogPrint.normal(PluginConstant.CUSTOM_METHOD_TAG){
+                getLogInfo(config.handleMode.hookMethodMode(),classContext.currentClassData.className,name,methodDesc)
+                LogPrint.normal(CUSTOM_METHOD_TAG){
                     """
                             name=${name}
                             classContext.currentClassData.className=${classContext.currentClassData.className}

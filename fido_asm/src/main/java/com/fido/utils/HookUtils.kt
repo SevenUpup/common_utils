@@ -84,11 +84,8 @@ internal fun ClassData.matches(rules: Collection<String>): Boolean {
 
 
 internal val Int.accessIsStaticField
-    get() = this in (Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC)..(Opcodes.ACC_PROTECTED+Opcodes.ACC_STATIC + Opcodes.ACC_FINAL)
-
-//internal fun isStaticField2(acc: Int): Boolean {
-//    return acc >= Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC && acc <= Opcodes.ACC_PROTECTED + Opcodes.ACC_STATIC
-//}
+    get() = this in (Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC)..(Opcodes.ACC_PROTECTED+Opcodes.ACC_STATIC) ||
+            this in (Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC + + Opcodes.ACC_FINAL) .. (Opcodes.ACC_PROTECTED + Opcodes.ACC_STATIC + + Opcodes.ACC_FINAL)
 
 /**
  * 替换数组中的指定 符号元素 为 离他最近的上一个不为符号的元素
@@ -100,7 +97,7 @@ internal fun replaceListWithSymbol(className:List<String>,replaceSymbol:String =
     }
     //记录所有 != * 的元素下标
     val notStarList = mutableSetOf<Int>()
-    className.forEachIndexed { index, s ->
+    className.forEachIndexed { _, s ->
         if (s != replaceSymbol) {
             notStarList.add(className.indexOfFirst { it == s })
         }
