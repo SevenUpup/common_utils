@@ -47,7 +47,9 @@ android.useAndroidX=true
 ```
 ASM Plugin (提供：通过配置替换原生click事件，替换继承类，替换类中(静态)常/变量值)  
 Tips:如果需要替换类中常/变量 当修饰符为 final int/float/double/long = 0 时，此时修改值会失效  
-     因为插件中需要对class **<init>** 方法进行hook，当值为0时，字节码默认不会在 **<init>** 方法对其进行操作？  
+
+######      因为插件中需要对class **<init>** 方法进行hook，当值为0时，字节码默认不会在 **<init>** 方法对其进行操作？  
+
      final + number类型 时最好不要将初始值赋值为0
 ```
     //项目根目录.gradle
