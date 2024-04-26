@@ -45,11 +45,11 @@ dependencies {
 android.enableJetifier=true
 android.useAndroidX=true
 ```
-ASM Plugin(提供：通过配置替换原生click事件，替换继承类，替换类中(静态)常/变量值)
-Tips:如果需要替换类中常/变量 如果修饰为 final int A = 0 时可能,此时修改A值会失效，因为插件中需要对class中<init>方法进行hook，当int值为0时，字节码默认不会在<init>方法对A进行操作？
-     final int时最后不要将初始值赋值为0
+ASM Plugin (提供：通过配置替换原生click事件，替换继承类，替换类中(静态)常/变量值)\n
+Tips:如果需要替换类中常/变量 当修饰符为 final int/float/double/long = 0 时，此时修改值会失效，因为插件中需要对class中'<init>'方法进行hook，当值为0时，字节码默认不会在'<init>'方法对其进行操作？\n
+     final + number 类型时最好不要将初始值赋值为0
 ```
-    项目根目录.gradle
+    //项目根目录.gradle
     buildscript {
          repositories {
              mavenCentral()
@@ -59,7 +59,7 @@ Tips:如果需要替换类中常/变量 如果修饰为 final int A = 0 时可�
              classpath 'com.github.SevenUpup.common_utils:fido_asm:tag'
          }
     }
-    然后 模块下.gradle
+    //然后 模块下.gradle
     plugins {
         //在需要的 的 module 中引用插件：
         id 'com.fido.plugin.asm'

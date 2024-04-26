@@ -31,6 +31,9 @@ class ASMTestAc:AppCompatActivity() {
     var G =  1
     private val INT_VAL:Int = 1
     protected val INT_PROT = -1
+    private val D_VAL = 0f
+    private val LLL_VAL = 0L
+    private val CHAR_VAL = ""
     val INT_PUB = 99
     companion object{
         private var STATCI_VAL_DOUBLE = 20.0
