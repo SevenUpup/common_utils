@@ -1,6 +1,7 @@
 [![](https://jitpack.io/v/SevenUpup/common_utils.svg)](https://jitpack.io/#SevenUpup/common_utils)
 # common_utils
-Android常用工具类
+Android common utils  
+Android asm plugin was underway...目前已支持部分功能
 
 ## 安装
 
@@ -45,10 +46,17 @@ dependencies {
 android.enableJetifier=true
 android.useAndroidX=true
 ```
-ASM Plugin (提供：通过配置替换原生click事件，替换继承类，替换类中(静态)常/变量值)  
-Tips:如果需要替换类中常/变量 当修饰符为 final int/float/double/long = 0 时，此时修改值会失效  
-     因为插件中需要对class中`<init>`方法进行hook，当值为0时，字节码默认不会在`<init>`方法对其进行操作？  
-     final + number类型 时最好不要将初始值赋值为0
+
+### ASM Plugin支持以下功能
+
+#### 通过配置替换原生click事件：一般用于防抖  
+
+#### 替换继承类：可以改变类的继承,例如将继承androidx.appcompat.app.AppCompatActivity改为你的基类Activity  
+
+#### 替换类中(静态)常/变量值：支持基本数据类型  
+如果需要替换类中常/变量 当修饰符为 final int/float/double/long = 0 时，此时修改值会失效  
+因为插件中需要对class中`<init>`方法进行hook，当值为0时，字节码默认不会在`<init>`方法对其进行操作？  
+final + number类型 时最好不要将初始值赋值为0
 ```
     //项目根目录.gradle
     buildscript {
@@ -64,6 +72,12 @@ Tips:如果需要替换类中常/变量 当修饰符为 final int/float/double/l
     plugins {
         //在需要的 的 module 中引用插件：
         id 'com.fido.plugin.asm'
+    }
+    //然后就可以愉快的使用啦，模块下.gradle最外层  
+    HookClassParameter {  //className中“*”会替换成它前面不为“*”的值，及[A,A,A,B,B,B,C,C,C,C]，避免写那么长的类名
+         className = ["xxx.A","*","*","xxx.B","*","*","xxx.C","*","*","*","*","*"]
+         parameterName = ["STATCI_VAL_DOUBLE","STATCI_VAL_LONG","INT_VAL","INT_PROT","INT_PUB"]
+         parameterNewValue = ["6666",16.0,555L,777,true]
     }
 ```
 
