@@ -93,6 +93,7 @@ import com.fido.common.common_utils.customview.CustomViewAc
 import com.fido.common.common_utils.databinding.ActivityMainBinding
 import com.fido.common.common_utils.databinding.DialogTestBinding
 import com.fido.common.common_utils.databinding.LayoutHeaderViewBinding
+import com.fido.common.common_utils.device_info.DeviceInfoAc
 import com.fido.common.common_utils.edittext.CustomStyleActivity
 import com.fido.common.common_utils.eventbus.HEventBus
 import com.fido.common.common_utils.eventbus.Subscribe
@@ -356,6 +357,7 @@ class MainActivity : AppCompatActivity() {
         }
         addView<FloatingImageAc>("拖动悬浮ImageView")
         addView<ASMTestAc>("ASM插装测试")
+        addView<DeviceInfoAc>("获取Device Info(插件测试)")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {

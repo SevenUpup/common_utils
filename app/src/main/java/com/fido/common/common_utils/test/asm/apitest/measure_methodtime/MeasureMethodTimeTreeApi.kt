@@ -37,6 +37,17 @@ fun measureMethodTimeTreeApi() {
             if (methodNode.invisibleAnnotations?.map { it.desc }
                     ?.contains(Type.getDescriptor(MeasureTime::class.java)) == true) {
                 val localVariablesSize = methodNode.localVariables.size
+                methodNode.localVariables.forEach {
+                    println("""
+                        localVariableNode=${it.toString()}
+                        start=${it.start}
+                        end=${it.end}
+                        name=${it.name}
+                        index=${it.index}
+                        desc=${it.desc}
+                        signature=${it.signature}
+                    """.trimIndent())
+                }
                 //在方法的第一个指令之前插入
                 val firstInsnNode = methodNode.instructions.first
                 methodNode.instructions.insertBefore(firstInsnNode, InsnList().apply {

@@ -7,6 +7,10 @@ package com.fido.common.common_utils.test.asm.apitest.measure_methodtime;
  */
 public class MeasureMethodTime2 {
 
+    public int test(int a,boolean b){
+        return 10;
+    }
+
     @MeasureTime
     public void measure(){
         long var1 = System.currentTimeMillis();

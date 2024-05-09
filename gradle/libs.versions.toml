@@ -5,6 +5,7 @@ kotlin = "1.9.0"
 
 asm = "9.6"
 fidoASM = "1.0.0"
+org-jetbrains-kotlin-jvm = "1.7.10"
 
 [libraries]
 agp-core = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -18,3 +19,4 @@ androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 #jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 fidoASM = { id = "com.fido", version.ref = "fidoASM" }
+org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }

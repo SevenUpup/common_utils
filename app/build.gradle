@@ -109,7 +109,7 @@ dependencies {
     implementation project(':common_base_util')
     implementation project(':common_base_ui')
     implementation project(':easy_navigation')
-
+    implementation project(":fido_annotation")
     //lottie
     implementation "com.airbnb.android:lottie:3.0.3-support"
 
@@ -181,10 +181,16 @@ dependencies {
 //    toasterClass = "com.fido.common.common_utils.asm.toast.HToaster"
 //    showToastMethodName = "hToast"
 //}
-HookClassParameter {  // private final int INT_VAL = 0; 全局常量final int 类型时 赋值0，这种方式在字节码中init方法不会进行赋值，所以最后初始值不要设置为0
-    className = ["com.fido.common.common_utils.asm.ASMTestAc","*","*","*","*","*","*","*","*","*","*","*"]
-    parameterName = ["B","H","A","G","K","str","mChar","LL","STATCI_VAL_DOUBLE","STATCI_VAL_LONG","INT_VAL","INT_PROT","INT_PUB"]
-    parameterNewValue = ["6666","HT",false,10086,-10086,"newStr","newmChar","LiaoLiao",16.0,555L,777,888,654]
+
+//HookClassParameter {  // private final int INT_VAL = 0; 全局常量final int 类型时 赋值0，这种方式在字节码中init方法不会进行赋值，所以最后初始值不要设置为0
+//    className = ["com.fido.common.common_utils.asm.ASMTestAc","*","*","*","*","*","*","*","*","*","*","*"]
+//    parameterName = ["B","H","A","G","K","str","mChar","LL","STATCI_VAL_DOUBLE","STATCI_VAL_LONG","INT_VAL","INT_PROT","INT_PUB"]
+//    parameterNewValue = ["6666","HT",false,10086,-10086,"newStr","newmChar","LiaoLiao",16.0,555L,777,888,654]
+//}
+
+ReplaceMethodPluginParameters{
+    enable = true
+    replaceClassName = ["com.fido.common.common_utils.device_info.PrivacyUtil"]
 }
 /**
  * 统一依赖用

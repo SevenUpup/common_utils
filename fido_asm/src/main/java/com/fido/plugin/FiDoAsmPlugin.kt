@@ -15,8 +15,12 @@ import com.fido.config.ReplaceClassPluginParameter
 import com.fido.config.ToastConfig
 import com.fido.config.ToastPluginParameter
 import com.fido.config.ViewClickConfig
+import com.fido.config.replace_method.ReplaceMethodConfig
+import com.fido.config.replace_method.ReplaceMethodPluginParameters
 import com.fido.plugin.custommethod.HookClassVisitorFactory
 import com.fido.plugin.custommethod.HookCustomMethodCVF
+import com.fido.plugin.method_replace.CollectReplaceMethodAnnotationCVF
+import com.fido.plugin.method_replace.ReplaceMethodClassVisitorFactory
 import com.fido.plugin.replace.ReplaceClassClassVisitorFactory
 import com.fido.plugin.toast.ToastClassVisitorFactory
 import org.gradle.api.Plugin
@@ -36,7 +40,6 @@ class FiDoAsmPlugin : Plugin<Project> {
             null
         }
         if (appPlugin != null) {
-//            Log.d(msg = "find android app plugin")
             target.extensions.create(
                 "hookCustomMethod",
                 CustomMethodPluginParameter::class.java
@@ -57,8 +60,13 @@ class FiDoAsmPlugin : Plugin<Project> {
                 HookClassParameter::class.java.simpleName,
                 HookClassParameter::class.java
             )
+            target.extensions.create(
+                ReplaceMethodPluginParameters::class.java.simpleName,
+                ReplaceMethodPluginParameters::class.java
+            )
             val androidComponents = target.extensions.getByType(AndroidComponentsExtension::class.java)
             androidComponents.onVariants { variant: Variant ->
+
                 //hook指定类名&方法 为 目标方法
                 handleCustomMethod(project = target, variant = variant)
                 //处理全局点击
@@ -69,7 +77,43 @@ class FiDoAsmPlugin : Plugin<Project> {
                 handleToastPlugin(target,variant)
                 //替换类中方法或属性
                 handleHookClassPlugin(target,variant)
+                //收集需要通过注解替换方法的一些配置信息,需要与ReplaceMethodClassVisitorFactory一起使用，因为要保证先收集，再修改方法(因为我不知道怎么便收集便修改，不能保证每次字节码修改的顺序，可能没收集到就先到了修改的字节码文件了)
+                handleCollectReplaceMethodPlugin(target,variant)
+                //替换方法，主要用于同意隐私协议前调用系统方法
+                handleReplaceMethodPlugin(target,variant)
                 variant.instrumentation.setAsmFramesComputationMode(FramesComputationMode.COMPUTE_FRAMES_FOR_INSTRUMENTED_METHODS)
+            }
+        }
+    }
+
+    private fun handleCollectReplaceMethodPlugin(target: Project, variant: Variant) {
+        val parameters = target.extensions.findByType(ReplaceMethodPluginParameters::class.java)
+        val collectReplaceMethodAnnotationConfig = if (parameters == null){
+            null
+        }else{
+            ReplaceMethodConfig(parameters)
+        }
+        if (collectReplaceMethodAnnotationConfig != null) {
+            variant.instrumentation.apply {
+                transformClassesWith(CollectReplaceMethodAnnotationCVF::class.java,InstrumentationScope.ALL){replaceMethodConfigParameters ->
+                    replaceMethodConfigParameters.config.set(collectReplaceMethodAnnotationConfig)
+                }
+            }
+        }
+    }
+
+    private fun handleReplaceMethodPlugin(target: Project, variant: Variant) {
+        val parameters = target.extensions.findByType(ReplaceMethodPluginParameters::class.java)
+        val replaceMethodConfig = if (parameters == null) {
+            null
+        }else{
+            ReplaceMethodConfig(parameters)
+        }
+        if (replaceMethodConfig != null) {
+            variant.instrumentation.apply {
+                transformClassesWith(ReplaceMethodClassVisitorFactory::class.java,InstrumentationScope.ALL){replaceMethodConfigParameters ->
+                    replaceMethodConfigParameters.config.set(replaceMethodConfig)
+                }
             }
         }
     }
@@ -81,7 +125,7 @@ class FiDoAsmPlugin : Plugin<Project> {
         }else{
             HookClassConfig(hookClassParameter)
         }
-        if (hookClassParameter != null) {
+        if (hookClassConfig != null) {
             variant.instrumentation.apply {
                 transformClassesWith(HookClassVisitorFactory::class.java,InstrumentationScope.ALL){ hookClassInstrumentationParameters ->
                     hookClassInstrumentationParameters.config.set(hookClassConfig)

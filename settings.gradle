@@ -25,6 +25,7 @@ include ':common_base_ui'
 include ':easy_navigation'
 include ':groovy_lib'
 include ':fido_asm'
+include ':fido_annotation'
 
 
 gradle.addBuildListener(new BuildListener() {

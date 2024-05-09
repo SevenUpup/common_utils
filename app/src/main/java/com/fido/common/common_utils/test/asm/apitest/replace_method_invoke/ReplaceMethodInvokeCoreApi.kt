@@ -71,6 +71,7 @@ private class InterMethodVisitor(val clzName: String, methodVisitor: MethodVisit
         descriptor: String?,
         isInterface: Boolean
     ) {
+
         if (opcode == Opcodes.INVOKEVIRTUAL && owner == TOAST && name == "show" && descriptor == "()V") {
             mv.visitLdcInsn(clzName)
             mv.visitMethodInsn(

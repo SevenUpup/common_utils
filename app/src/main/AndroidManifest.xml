@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
 
+    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -164,7 +165,7 @@
 
         <activity android:name=".asm.ASMTestAc"/>
         <activity android:name=".asm.replace.ReplaceClassTestAc"/>
-
+        <activity android:name=".device_info.DeviceInfoAc"/>
     </application>
 
 </manifest>

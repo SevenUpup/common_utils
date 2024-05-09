@@ -34,6 +34,10 @@ internal fun replaceDotBySlash(className: String): String {
     return className.replace(".", "/")
 }
 
+internal fun replaceSlashByDot(className: String): String {
+    return className.replace("/", ".")
+}
+
 internal fun getClassDesc(className: String): String {
     return "L" + className.replace(".", "/") + ";"
 }

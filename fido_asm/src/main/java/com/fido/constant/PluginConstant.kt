@@ -24,6 +24,9 @@ object PluginConstant {
 
     // =========================== Hook Class ============================
     const val HOOK_CLASS_TAG = "HookClass"
+
+    // =========================== Replace Method ============================
+    const val REPLACE_METHOD_TAG = "REPLACE_METHOD"
 }
 
 fun String.hookMethodMode():String{
