@@ -5,7 +5,7 @@ plugins {
     id 'com.google.devtools.ksp'  // 根布局build.gradle 引入的 版本号要跟当前项目的 kotlin version 对应
 
     //app 的 module 中的 build.gradle 中引用插件：
-    id 'com.fido.plugin.asm'
+//    id 'com.fido.plugin.asm'
 }
 
 android {
@@ -187,10 +187,10 @@ dependencies {
 //    parameterName = ["B","H","A","G","K","str","mChar","LL","STATCI_VAL_DOUBLE","STATCI_VAL_LONG","INT_VAL","INT_PROT","INT_PUB"]
 //    parameterNewValue = ["6666","HT",false,10086,-10086,"newStr","newmChar","LiaoLiao",16.0,555L,777,888,654]
 //}
-ReplaceMethodPluginParameters{
-    enable = true
-    replaceClassName = ["com.fido.common.common_utils.device_info.TestReplaceMethod"]
-}
+//ReplaceMethodPluginParameters{
+//    enable = true
+//    replaceClassName = ["com.fido.common.common_utils.device_info.TestReplaceMethod"]
+//}
 
 /**
  * 统一依赖用
