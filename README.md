@@ -1,4 +1,6 @@
 [![](https://jitpack.io/v/SevenUpup/common_utils.svg)](https://jitpack.io/#SevenUpup/common_utils)
+<!-- ![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/SevenUpup/common_utils/latest/total) -->
+
 # common_utils
 Android common utils  
 Android asm plugin was underway...目前已支持部分功能
