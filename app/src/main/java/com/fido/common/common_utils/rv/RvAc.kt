@@ -21,11 +21,11 @@ import com.fido.common.common_base_util.ext.click
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.startActivity
 import com.fido.common.common_base_util.util.timer.Interval
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.AcRvBinding
-import com.fido.common.common_utils.databinding.ItemRvImgBinding
-import com.fido.common.common_utils.databinding.ItemRvTextBinding
-import com.fido.common.common_utils.databinding.LayoutHeaderViewBinding
+import com.fido.common.R
+import com.fido.common.databinding.AcRvBinding
+import com.fido.common.databinding.ItemRvImgBinding
+import com.fido.common.databinding.ItemRvTextBinding
+import com.fido.common.databinding.LayoutHeaderViewBinding
 import java.util.concurrent.TimeUnit
 
 class RvAc:AppCompatActivity() {

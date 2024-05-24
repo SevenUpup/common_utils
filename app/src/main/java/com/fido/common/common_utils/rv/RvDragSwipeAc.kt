@@ -17,9 +17,9 @@ import com.fido.common.common_base_util.channel.*
 import com.fido.common.common_base_util.ext.*
 import com.fido.common.common_base_util.toJson
 import com.fido.common.common_base_util.util.AssetUtils
+import com.fido.common.R
+import com.fido.common.databinding.AcRvDragSwipeBinding
 import com.fido.common.common_utils.P
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.AcRvDragSwipeBinding
 import com.gyf.immersionbar.ktx.immersionBar
 import kotlinx.coroutines.*
 import kotlin.concurrent.thread

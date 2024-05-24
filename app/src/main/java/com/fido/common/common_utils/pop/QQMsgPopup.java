@@ -4,7 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.fido.common.common_utils.R;
+import com.fido.common.R;
 import com.lxj.xpopup.core.PositionPopupView;
 
 /**

@@ -7,8 +7,8 @@ import com.fido.common.common_base_ui.util.throttleClick
 import com.fido.common.common_base_util.ext.addFragment
 import com.fido.common.common_base_util.ext.startCountDown
 import com.fido.common.common_base_util.ext.toast
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.AcConstraintlayoutBinding
+import com.fido.common.R
+import com.fido.common.databinding.AcConstraintlayoutBinding
 
 class ConstraintLayoutAc:BaseVBActivity<AcConstraintlayoutBinding>() {
 

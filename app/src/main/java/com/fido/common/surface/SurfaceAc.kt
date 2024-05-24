@@ -9,8 +9,8 @@ import android.os.Build
 import android.view.SurfaceHolder
 import com.fido.common.base.BaseVBActivity
 import com.fido.common.common_base_util.ext.toast
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.AcSurfaceBinding
+import com.fido.common.R
+import com.fido.common.databinding.AcSurfaceBinding
 import java.io.IOException
 
 /**

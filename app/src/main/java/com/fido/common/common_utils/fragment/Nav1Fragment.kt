@@ -7,8 +7,8 @@ import com.fido.common.base.BaseVBFragment
 import com.fido.common.common_base_util.ext.click
 import com.fido.common.common_base_util.ext.loge
 import com.fido.common.common_base_util.ext.toast
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.FragmentNav1Binding
+import com.fido.common.R
+import com.fido.common.databinding.FragmentNav1Binding
 import com.fido.common.easy_navigation.*
 
 

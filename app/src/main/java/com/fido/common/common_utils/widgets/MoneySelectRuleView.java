@@ -18,8 +18,8 @@ import android.widget.Scroller;
 
 import androidx.annotation.Nullable;
 
-import com.fido.common.common_utils.BuildConfig;
-import com.fido.common.common_utils.R;
+import com.fido.common.BuildConfig;
+import com.fido.common.R;
 
 /**
  * MoneySelectRuleView

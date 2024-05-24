@@ -27,6 +27,9 @@ object PluginConstant {
 
     // =========================== Replace Method ============================
     const val REPLACE_METHOD_TAG = "REPLACE_METHOD"
+
+    const val FIDO_ASM_REPLACE_METHOD_CLASS = "fido_asm_replace_method_class"
+    const val FIDO_ASM_REPLACE_METHOD_ENABLE = "fido_asm_replace_method_enable"
 }
 
 fun String.hookMethodMode():String{

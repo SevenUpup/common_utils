@@ -3,13 +3,10 @@ package com.fido.common.common_utils.picker
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.fido.common.common_base_util.ext.logGson
-import com.fido.common.common_base_util.ext.logd
 import com.fido.common.common_base_util.ext.loge
-import com.fido.common.common_base_util.log.LogUtils
 import com.fido.common.common_base_util.toJson
-import com.fido.common.common_utils.databinding.ActivityLinkagePickerBinding
-import com.fido.common.common_utils.R
+import com.fido.common.databinding.ActivityLinkagePickerBinding
+import com.fido.common.R
 import com.fido.common.common_utils.picker.entities.City
 import com.zyyoona7.picker.listener.OnDoubleLoadDataListener
 import com.zyyoona7.picker.listener.OnTripleLoadDataListener

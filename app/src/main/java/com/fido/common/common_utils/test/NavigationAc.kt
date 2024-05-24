@@ -6,8 +6,8 @@ import com.fido.common.base.BaseVDActivity
 import com.fido.common.base.BaseViewModel
 import com.fido.common.common_base_ui.util.showNormalListDialog
 import com.fido.common.common_base_util.ext.click
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.AcTestBinding
+import com.fido.common.R
+import com.fido.common.databinding.AcTestBinding
 import com.fido.common.easy_navigation.navigateUp
 import com.fido.common.easy_navigation.popBackStack
 

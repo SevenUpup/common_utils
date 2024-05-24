@@ -13,8 +13,8 @@ import com.fido.common.common_base_ui.ext.setupWithViewPager
 import com.fido.common.common_base_ui.ext.tabs
 import com.fido.common.common_base_ui.util.sp
 import com.fido.common.common_base_util.ext.*
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.AcNotityViewpagerBinding
+import com.fido.common.R
+import com.fido.common.databinding.AcNotityViewpagerBinding
 import com.fido.common.common_utils.fragment.Nav1Fragment
 import com.fido.common.common_utils.test.FunTest.Companion.also
 import kotlin.properties.Delegates

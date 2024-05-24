@@ -1,27 +1,19 @@
 package com.fido.common.common_utils.muilt_process
 
 import android.app.Application
-import android.app.IntentService
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
-import com.fido.common.base.BaseViewModel
 import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_ui.util.throttleClick
 import com.fido.common.common_base_util.ext.isGone
 import com.fido.common.common_base_util.ext.logd
 import com.fido.common.common_base_util.ext.startActivity
 import com.fido.common.common_utils.MainActivity
-import com.fido.common.common_utils.databinding.AcPrivateProcessBinding
+import com.fido.common.databinding.AcPrivateProcessBinding
 import com.fido.common.common_utils.test.FunTest.Companion.also
-import kotlinx.coroutines.flow.flow
-import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: FiDo

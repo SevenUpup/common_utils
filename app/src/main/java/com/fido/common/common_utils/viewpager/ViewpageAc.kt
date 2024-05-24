@@ -11,8 +11,8 @@ import com.fido.common.common_base_ui.util.dp
 import com.fido.common.common_base_ui.util.sp
 import com.fido.common.common_base_util.ext.*
 import com.fido.common.common_base_util.startActivity
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.AcViewpageBinding
+import com.fido.common.R
+import com.fido.common.databinding.AcViewpageBinding
 import com.fido.common.common_utils.fragment.Nav1Fragment
 import com.fido.common.common_utils.fragment.Nav2Fragment
 import com.fido.common.common_utils.fragment.Nav3Fragment

@@ -9,8 +9,8 @@ import com.fido.common.common_base_util.ext.click
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.util.sp.putSp
 import com.fido.common.common_base_util.util.sp.spValue
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.AcSpTestBinding
+import com.fido.common.R
+import com.fido.common.databinding.AcSpTestBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay

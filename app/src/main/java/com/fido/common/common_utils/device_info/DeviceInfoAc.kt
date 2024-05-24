@@ -6,14 +6,14 @@ import android.provider.Settings
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.fido.common.R
 import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_ui.util.throttleClick
 import com.fido.common.common_base_util.app
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.getColor
 import com.fido.common.common_base_util.sp
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.AcDeviceInfoBinding
+import com.fido.common.databinding.AcDeviceInfoBinding
 
 /**
  * @author: FiDo
@@ -22,7 +22,7 @@ import com.fido.common.common_utils.databinding.AcDeviceInfoBinding
  */
 class DeviceInfoAc:AppCompatActivity() {
 
-    private val binding:AcDeviceInfoBinding by binding()
+    private val binding: AcDeviceInfoBinding by binding()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +31,14 @@ class DeviceInfoAc:AppCompatActivity() {
 
         binding.apply {
 
+            hBaseTab.setTabs(listOf("你好","再见","哈哈哈"))
+
             bt1.throttleClick {
                 showCustomToast(bt1.text.toString())
+            }
+
+            bt2.throttleClick {
+                showCustomToast2(bt1.text.toString())
             }
 
             addTextView(androidId)
@@ -56,6 +62,9 @@ class DeviceInfoAc:AppCompatActivity() {
         toast("click $text")
     }
 
+    fun showCustomToast2(text: String) {
+        toast("click $text")
+    }
     @RequiresApi(Build.VERSION_CODES.M)
     private fun updateData() {
         binding.apply {

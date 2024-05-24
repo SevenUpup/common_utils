@@ -9,11 +9,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_ui.util.throttleClick
-import com.fido.common.common_base_util.ext.logD
 import com.fido.common.common_base_util.ext.logd
 import com.fido.common.common_base_util.ext.startActivity
-import com.fido.common.common_base_util.ext.toast
-import com.fido.common.common_utils.databinding.AcGloableProcessBinding
+import com.fido.common.databinding.AcGloableProcessBinding
 
 /**
  * @author: FiDo

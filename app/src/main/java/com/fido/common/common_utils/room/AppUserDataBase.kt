@@ -1,4 +1,4 @@
-package com.fido.common.common_utils.room
+package com.fido.common.Room
 
 import android.content.Context
 import android.util.Log

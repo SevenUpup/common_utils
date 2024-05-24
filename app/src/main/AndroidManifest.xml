@@ -29,7 +29,7 @@
     <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
 
     <application
-        android:name=".App"
+        android:name=".common_utils.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -41,7 +41,7 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".common_utils.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -65,7 +65,7 @@
             android:enabled="false"
             android:label="@string/app_name_new"
             android:icon="@mipmap/h_launch"
-            android:targetActivity=".MainActivity"
+            android:targetActivity=".common_utils.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -73,48 +73,48 @@
             </intent-filter>
         </activity-alias>
 
-        <activity android:name=".rv.RvAc"/>
-        <activity android:name=".rv.RvDragSwipeAc"/>
-        <activity android:name=".rv.RvHorStickyAc"/>
-        <activity android:name=".rv.RvScrollWithWindownAc"/>
+        <activity android:name=".common_utils.rv.RvAc"/>
+        <activity android:name=".common_utils.rv.RvDragSwipeAc"/>
+        <activity android:name=".common_utils.rv.RvHorStickyAc"/>
+        <activity android:name=".common_utils.rv.RvScrollWithWindownAc"/>
 
-        <activity android:name=".time.IntervalTimeAc"/>
+        <activity android:name=".common_utils.time.IntervalTimeAc"/>
 
-        <activity android:name=".spannable.SpannableAc"/>
-        <activity android:name=".edittext.CustomStyleActivity"/>
-        <activity android:name=".picker.PickerViewAc"/>
-        <activity android:name=".picker.LinkagePickerActivity"/>
+        <activity android:name=".common_utils.spannable.SpannableAc"/>
+        <activity android:name=".common_utils.edittext.CustomStyleActivity"/>
+        <activity android:name=".common_utils.picker.PickerViewAc"/>
+        <activity android:name=".common_utils.picker.LinkagePickerActivity"/>
 
-        <activity android:name=".constraintlayout.ConstraintLayoutAc"/>
+        <activity android:name=".common_utils.constraintlayout.ConstraintLayoutAc"/>
 
-        <activity android:name=".viewmodel.ViewModelAc"/>
+        <activity android:name=".common_utils.viewmodel.ViewModelAc"/>
 
-        <activity android:name=".banner.BannerAc"/>
+        <activity android:name=".common_utils.banner.BannerAc"/>
 
         <activity android:name="com.fido.common.surface.SurfaceAc"/>
 
-        <activity android:name=".test.NavigationAc"/>
+        <activity android:name=".common_utils.test.NavigationAc"/>
 
-        <activity android:name=".naviga.CodenavigationAc"/>
+        <activity android:name=".common_utils.naviga.CodenavigationAc"/>
 
-        <activity android:name=".viewpager.ViewpageAc"/>
-        <activity android:name=".viewpager.NotifyViewPagerAc"/>
+        <activity android:name=".common_utils.viewpager.ViewpageAc"/>
+        <activity android:name=".common_utils.viewpager.NotifyViewPagerAc"/>
 
-        <activity android:name=".LiveDataAc"/>
+        <activity android:name=".common_utils.LiveDataAc"/>
 
-        <activity android:name=".sp.SPAc"/>
+        <activity android:name=".common_utils.sp.SPAc"/>
 
-        <activity android:name=".motionlayout.MotionLayoutAc"/>
-        <activity android:name=".motionlayout.MotionLayoutAc2"/>
-        <activity android:name=".motionlayout.MotionBallsAc"/>
-        <activity android:name=".motionlayout.MotionBall2Ac"/>
-        <activity android:name=".motionlayout.MotionCollapsibleAc"/>
-        <activity android:name=".motionlayout.MotionCarouselAc"/>
-        <activity android:name=".motionlayout.MotionCustomCarouselAc"/>
-        <activity android:name=".motionlayout.MotionYouTubeAc"/>
-        <activity android:name=".motionlayout.MotionFakeBossListAc"/>
+        <activity android:name=".common_utils.motionlayout.MotionLayoutAc"/>
+        <activity android:name=".common_utils.motionlayout.MotionLayoutAc2"/>
+        <activity android:name=".common_utils.motionlayout.MotionBallsAc"/>
+        <activity android:name=".common_utils.motionlayout.MotionBall2Ac"/>
+        <activity android:name=".common_utils.motionlayout.MotionCollapsibleAc"/>
+        <activity android:name=".common_utils.motionlayout.MotionCarouselAc"/>
+        <activity android:name=".common_utils.motionlayout.MotionCustomCarouselAc"/>
+        <activity android:name=".common_utils.motionlayout.MotionYouTubeAc"/>
+        <activity android:name=".common_utils.motionlayout.MotionFakeBossListAc"/>
 
-        <activity android:name=".room.RoomAc"/>
+        <activity android:name=".common_utils.room.RoomAc"/>
         <activity android:name="com.fido.common.textview.TextViewAc"/>
 
         <!--注册 FlutterActivity-->
@@ -126,12 +126,12 @@
 
         <activity android:name="com.fido.common.flutter.FlutterInteractiveAc"/>
 
-        <activity android:name=".calendar.WriteCalendarAc"/>
+        <activity android:name=".common_utils.calendar.WriteCalendarAc"/>
 
-        <activity android:name=".accessibility.AdSkipAc"/>
+        <activity android:name=".common_utils.accessibility.AdSkipAc"/>
         <!-- AccessbilityService -->
         <service
-            android:name=".accessibility.AdGunAccessibilityService"
+            android:name=".common_utils.accessibility.AdGunAccessibilityService"
             android:exported="false"
             android:label="AD 滚犊子！！！"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
@@ -144,28 +144,29 @@
         </service>
 
 
-        <activity android:name=".eventbus.ac.EventBusAc"/>
+        <activity android:name=".common_utils.eventbus.ac.EventBusAc"/>
 
-        <activity android:name=".pop.DialogChainAc"/>
+        <activity android:name=".common_utils.pop.DialogChainAc"/>
 
-        <activity android:name=".annotation.AnnotationAc"/>
+        <activity android:name=".common_utils.annotation.AnnotationAc"/>
 
-        <activity android:name=".muilt_process.GloableProcessAc" android:launchMode="singleTask" android:process="com.fido.test"/>
-        <activity android:name=".muilt_process.PrivateProcessAc" android:process=":fido1"/>
+        <activity android:name=".common_utils.muilt_process.GloableProcessAc" android:launchMode="singleTask" android:process="com.fido.test"/>
+        <activity android:name=".common_utils.muilt_process.PrivateProcessAc" android:process=":fido1"/>
         <!-- 指定launchMode 为singleTask 并设置 taskAffinity 实现小程序效果 -->
-        <activity android:name=".muilt_process.Private2ProcessAc" android:process=":fido2" android:launchMode="singleTask" android:taskAffinity=":fido2"/>
-        <activity android:name=".muilt_process.Private3ProcessAc" android:process=":fido2" android:launchMode="singleTask" android:taskAffinity=":fido2"/>
+        <activity android:name=".common_utils.muilt_process.Private2ProcessAc" android:process=":fido2" android:launchMode="singleTask" android:taskAffinity=":fido2"/>
+        <activity android:name=".common_utils.muilt_process.Private3ProcessAc" android:process=":fido2" android:launchMode="singleTask" android:taskAffinity=":fido2"/>
 
-        <activity android:name=".view.FloatingImageAc"/>
-        <activity android:name=".rv.RvEmptyViewAc"/>
+        <activity android:name=".common_utils.view.FloatingImageAc"/>
+        <activity android:name=".common_utils.rv.RvEmptyViewAc"/>
 
-        <activity android:name=".viewpager.Vp2Ac"/>
+        <activity android:name=".common_utils.viewpager.Vp2Ac"/>
 
-        <activity android:name=".customview.CustomViewAc"/>
+        <activity android:name=".common_utils.customview.CustomViewAc"/>
 
-        <activity android:name=".asm.ASMTestAc"/>
-        <activity android:name=".asm.replace.ReplaceClassTestAc"/>
-        <activity android:name=".device_info.DeviceInfoAc"/>
+        <activity android:name=".common_utils.asm.ASMTestAc"/>
+        <activity android:name=".common_utils.asm.replace.ReplaceClassTestAc"/>
+        <activity android:name=".common_utils.device_info.DeviceInfoAc"/>
+        <activity android:name=".common_utils.asm.AsmHookActivity"/>
     </application>
 
 </manifest>

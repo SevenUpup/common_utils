@@ -16,7 +16,7 @@ import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_utils.asm.annotation.UnCheckViewOnClick
 import com.fido.common.common_utils.asm.replace.ReplaceClassTestAc
 import com.fido.common.common_utils.asm.toast.OpenAppMarketUtils
-import com.fido.common.common_utils.databinding.AcAsmTestBinding
+import com.fido.common.databinding.AcAsmTestBinding
 
 
 /**

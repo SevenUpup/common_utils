@@ -34,7 +34,7 @@ import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.RequiresApi;
 
-import com.fido.common.common_utils.R;
+import com.fido.common.R;
 
 
 public class CircleImageView extends androidx.appcompat.widget.AppCompatImageView {

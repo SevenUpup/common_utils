@@ -8,7 +8,7 @@ import com.fido.common.common_base_ui.util.throttleClick
 import com.fido.common.common_base_util.ext.toDateMills
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.util.calendar.CalendarUtils
-import com.fido.common.common_utils.databinding.AcWriteCalendarBinding
+import com.fido.common.databinding.AcWriteCalendarBinding
 
 /**
 @author FiDo

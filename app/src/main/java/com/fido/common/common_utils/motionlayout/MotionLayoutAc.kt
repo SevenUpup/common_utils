@@ -6,8 +6,8 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.transition.TransitionManager
 import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_ui.util.dp
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.AcMotionLayoutBinding
+import com.fido.common.R
+import com.fido.common.databinding.AcMotionLayoutBinding
 
 /**
 @author FiDo

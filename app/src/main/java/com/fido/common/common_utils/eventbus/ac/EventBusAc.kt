@@ -10,7 +10,7 @@ import com.fido.common.common_base_ui.util.throttleClick
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.runMain
 import com.fido.common.common_base_util.util.dialog.DialogManager
-import com.fido.common.common_utils.databinding.AcHEventbusBinding
+import com.fido.common.databinding.AcHEventbusBinding
 import com.fido.common.common_utils.eventbus.HEventBus
 import com.fido.common.common_utils.eventbus.Subscribe
 import com.fido.common.common_utils.eventbus.ThreadMode

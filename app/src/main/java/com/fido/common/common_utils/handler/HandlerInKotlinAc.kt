@@ -6,7 +6,7 @@ import android.os.Looper
 import android.os.Message
 import androidx.appcompat.app.AppCompatActivity
 import com.fido.common.common_base_ui.base.viewbinding.binding
-import com.fido.common.common_utils.databinding.AcHandlerInKotlinBinding
+import com.fido.common.databinding.AcHandlerInKotlinBinding
 import java.lang.ref.WeakReference
 
 /**

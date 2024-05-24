@@ -1,9 +1,8 @@
 package com.fido.common.common_utils.motionlayout
 
 import com.fido.common.base.BaseVBActivity
-import com.fido.common.common_base_util.ext.toast
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.AcMotionBallsBinding
+import com.fido.common.R
+import com.fido.common.databinding.AcMotionBallsBinding
 
 /**
 @author FiDo

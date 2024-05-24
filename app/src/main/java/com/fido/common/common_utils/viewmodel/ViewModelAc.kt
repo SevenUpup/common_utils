@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.fido.common.BuildConfig
 import com.fido.common.base.BaseVBActivity
 import com.fido.common.common_base_ui.util.showNormalInputDialog
 import com.fido.common.common_base_util.ext.loge
@@ -12,9 +13,8 @@ import com.fido.common.common_base_util.ext.longToast
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.toJson
 import com.fido.common.common_base_util.util.ShellUtils
-import com.fido.common.common_utils.BuildConfig
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.AcViewModelBinding
+import com.fido.common.R
+import com.fido.common.databinding.AcViewModelBinding
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlin.concurrent.thread

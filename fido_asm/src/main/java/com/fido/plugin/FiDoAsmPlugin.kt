@@ -1,8 +1,10 @@
 package com.fido.plugin
 
+import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.instrumentation.FramesComputationMode
 import com.android.build.api.instrumentation.InstrumentationScope
 import com.android.build.api.variant.AndroidComponentsExtension
+import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.api.variant.Variant
 import com.fido.plugin.click.ClickViewClassVisitorFactory
 import com.fido.config.ViewClickPluginParameter
@@ -17,11 +19,13 @@ import com.fido.config.ToastPluginParameter
 import com.fido.config.ViewClickConfig
 import com.fido.config.replace_method.ReplaceMethodConfig
 import com.fido.config.replace_method.ReplaceMethodPluginParameters
+import com.fido.constant.PluginConstant
 import com.fido.plugin.custommethod.HookClassVisitorFactory
 import com.fido.plugin.custommethod.HookCustomMethodCVF
 import com.fido.plugin.method_replace.CollectReplaceMethodAnnotationCVF
 import com.fido.plugin.method_replace.ReplaceMethodClassVisitorFactory
 import com.fido.plugin.replace.ReplaceClassClassVisitorFactory
+import com.fido.plugin.task.ModifyClassesTask
 import com.fido.plugin.toast.ToastClassVisitorFactory
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -79,11 +83,45 @@ class FiDoAsmPlugin : Plugin<Project> {
                 handleHookClassPlugin(target,variant)
                 //收集需要通过注解替换方法的一些配置信息,需要与ReplaceMethodClassVisitorFactory一起使用，因为要保证先收集，再修改方法(因为我不知道怎么便收集便修改，不能保证每次字节码修改的顺序，可能没收集到就先到了修改的字节码文件了)
                 handleCollectReplaceMethodPlugin(target,variant)
-                //替换方法，主要用于同意隐私协议前调用系统方法
-                handleReplaceMethodPlugin(target,variant)
+                //替换方法，主要用于同意隐私协议前调用系统方法，目前改为ModifyClassesTask实现
+//                handleReplaceMethodPlugin(target,variant)
                 variant.instrumentation.setAsmFramesComputationMode(FramesComputationMode.COMPUTE_FRAMES_FOR_INSTRUMENTED_METHODS)
+
+                val asmReplaceMethodClassList = target.properties[PluginConstant.FIDO_ASM_REPLACE_METHOD_CLASS]
+                val replaceMethodTaskEnable = target.properties[PluginConstant.FIDO_ASM_REPLACE_METHOD_ENABLE] as? Boolean ?: false
+                if (replaceMethodTaskEnable || asmReplaceMethodClassList != null && (asmReplaceMethodClassList is List<*>)) {
+                    if ((asmReplaceMethodClassList is List<*>) && asmReplaceMethodClassList.isNotEmpty()) {
+                        val taskProvider = target.tasks.register("${variant.name}${ModifyClassesTask::class.java.simpleName}",ModifyClassesTask::class.java)
+                        variant.artifacts.forScope(ScopedArtifacts.Scope.ALL)
+                            .use(taskProvider)
+                            .toTransform(
+                                ScopedArtifact.CLASSES,
+                                ModifyClassesTask::allJars,
+                                ModifyClassesTask::allDirectories,
+                                ModifyClassesTask::output,
+                            )
+                    }
+                }
             }
         }
+
+        /*with(target) {
+            plugins.withType(AppPlugin::class.java){
+                val androidComponents = extensions.findByType(AndroidComponentsExtension::class.java)
+                androidComponents?.onVariants { variant ->
+                    val taskProvider = tasks.register("${variant.name}RouterClassesTask",RouterClassesTask::class.java)
+                    variant.artifacts.forScope(ScopedArtifacts.Scope.ALL)
+                        .use(taskProvider)
+                        .toTransform(
+                            ScopedArtifact.CLASSES,
+                            RouterClassesTask::jars,
+                            RouterClassesTask::dirs,
+                            RouterClassesTask::output,
+                        )
+                }
+            }
+        }*/
+
     }
 
     private fun handleCollectReplaceMethodPlugin(target: Project, variant: Variant) {

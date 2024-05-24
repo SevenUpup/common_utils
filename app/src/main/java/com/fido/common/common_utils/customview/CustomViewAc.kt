@@ -6,7 +6,7 @@ import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_util.ext.click
 import com.fido.common.common_base_util.ext.height
 import com.fido.common.common_base_util.getScreenHeightPx
-import com.fido.common.common_utils.databinding.AcCustomViewBinding
+import com.fido.common.databinding.AcCustomViewBinding
 
 /**
  * @author: FiDo

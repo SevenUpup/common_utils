@@ -15,8 +15,8 @@ import com.fido.common.common_base_util.ext.adjustTextSize
 import com.fido.common.common_base_util.ext.isFakeBoldText
 import com.fido.common.common_base_util.getDrawable
 import com.fido.common.common_base_util.getScreenWidthPx
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.AcTextViewBinding
+import com.fido.common.R
+import com.fido.common.databinding.AcTextViewBinding
 
 
 /**

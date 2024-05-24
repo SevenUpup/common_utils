@@ -8,8 +8,8 @@ import com.fido.common.common_base_ui.ext.bindData
 import com.fido.common.common_base_ui.ext.vertical
 import com.fido.common.common_base_util.ext.gradiendShapeDrawableBg
 import com.fido.common.common_base_util.getColor
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.AcMotionCollapsibleBinding
+import com.fido.common.R
+import com.fido.common.databinding.AcMotionCollapsibleBinding
 
 /**
 @author FiDo

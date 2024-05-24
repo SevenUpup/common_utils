@@ -3,7 +3,7 @@ package com.fido.common.common_utils.rv
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.fido.common.common_base_ui.base.viewbinding.binding
-import com.fido.common.common_utils.databinding.AcRvHorstickyBinding
+import com.fido.common.databinding.AcRvHorstickyBinding
 
 /**
 @author FiDo

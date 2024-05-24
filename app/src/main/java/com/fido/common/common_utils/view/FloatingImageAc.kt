@@ -3,7 +3,7 @@ package com.fido.common.common_utils.view
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.fido.common.common_base_ui.base.viewbinding.binding
-import com.fido.common.common_utils.databinding.AcFloatingImgBinding
+import com.fido.common.databinding.AcFloatingImgBinding
 
 /**
  * @author: FiDo

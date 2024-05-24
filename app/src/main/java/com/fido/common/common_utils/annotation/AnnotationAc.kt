@@ -2,7 +2,7 @@ package com.fido.common.common_utils.annotation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.fido.common.common_utils.R
+import com.fido.common.R
 
 /**
 @author FiDo

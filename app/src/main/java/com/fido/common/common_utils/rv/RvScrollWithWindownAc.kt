@@ -8,8 +8,8 @@ import com.fido.common.common_base_ui.ext.bindMuiltData
 import com.fido.common.common_base_ui.ext.imageview.ScrollWindowImageView
 import com.fido.common.common_base_ui.ext.imageview.loadDrawable
 import com.fido.common.common_base_ui.ext.vertical
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.AcRvScrollWithWindownBinding
+import com.fido.common.R
+import com.fido.common.databinding.AcRvScrollWithWindownBinding
 
 /**
 @author FiDo

@@ -26,8 +26,8 @@ import com.fido.common.common_base_util.ext.loge
 import com.fido.common.common_base_util.ext.rectangleCornerBg
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.util.dialog.*
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.AcDialogChainBinding
+import com.fido.common.R
+import com.fido.common.databinding.AcDialogChainBinding
 import com.fido.common.common_utils.rv.MyItemTouchHelperCallBack
 
 
@@ -152,16 +152,16 @@ class DialogChainAc :AppCompatActivity(){
         binding.mRv.vertical()
             .bindData(
                 mList,
-                com.fido.common.common_utils.R.layout.item_rv_text
+                com.fido.common.R.layout.item_rv_text
             ){holder, position, item ->
-                holder.setGone(com.fido.common.common_utils.R.id.bt_down,true)
-                holder.setGone(com.fido.common.common_utils.R.id.bt_up,true)
-                holder.getView<TextView>(com.fido.common.common_utils.R.id.mTitle).apply {
+                holder.setGone(com.fido.common.R.id.bt_down,true)
+                holder.setGone(com.fido.common.R.id.bt_up,true)
+                holder.getView<TextView>(com.fido.common.R.id.mTitle).apply {
                     text = item
                     textSize = 13.sp.toFloat()
                 }
             }
-            .addItemChildLongClick<String>(com.fido.common.common_utils.R.id.mTitle){ adapter, view, position ->
+            .addItemChildLongClick<String>(com.fido.common.R.id.mTitle){ adapter, view, position ->
                 toast(adapter.items[position])
             }
 

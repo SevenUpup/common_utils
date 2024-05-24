@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_util.ext.context
 import com.fido.common.common_base_util.util.accessbility.jumpAccessibilityServiceSettings
-import com.fido.common.common_utils.databinding.AcAdSkipBinding
+import com.fido.common.databinding.AcAdSkipBinding
 
 /**
 @author FiDo

@@ -17,8 +17,8 @@ import androidx.core.widget.NestedScrollView.OnScrollChangeListener
 import androidx.databinding.DataBindingUtil
 import com.fido.common.common_base_util.ext.*
 import com.fido.common.common_base_util.startActivity
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.AcPickerViewBinding
+import com.fido.common.R
+import com.fido.common.databinding.AcPickerViewBinding
 import com.zyyoona7.picker.helper.TimePickerHelper
 import com.zyyoona7.picker.listener.OnDateSelectedListener
 import com.zyyoona7.wheel.WheelView

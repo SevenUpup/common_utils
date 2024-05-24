@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import com.fido.common.base.BaseVBActivity
 import com.fido.common.common_base_util.ext.loge
-import com.fido.common.common_utils.databinding.AcCodeNavigationBinding
-import com.fido.common.common_utils.R
+import com.fido.common.databinding.AcCodeNavigationBinding
+import com.fido.common.R
 import com.fido.common.easy_navigation.*
 
 /**

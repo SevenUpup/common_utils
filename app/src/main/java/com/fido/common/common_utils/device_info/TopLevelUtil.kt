@@ -92,7 +92,6 @@ fun getDeviceId(context: Activity): String? {
             Manifest.permission.READ_PHONE_STATE
         ) != PackageManager.PERMISSION_GRANTED
     ) {
-
         context.requestPermissions(arrayOf(Manifest.permission.READ_PHONE_STATE), 0)
         return null
     }

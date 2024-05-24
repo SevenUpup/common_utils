@@ -27,6 +27,7 @@ import androidx.core.text.underline
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.fido.common.R
 import com.fido.common.common_base_ui.base.dialog.createPop
 import com.fido.common.common_base_ui.base.dialog.createVBPop
 import com.fido.common.common_base_ui.base.viewbinding.binding
@@ -86,13 +87,12 @@ import com.fido.common.common_utils.anim.AnimUtils
 import com.fido.common.common_utils.anim.ShakeAnim
 import com.fido.common.common_utils.annotation.AnnotationAc
 import com.fido.common.common_utils.asm.ASMTestAc
-import com.fido.common.common_utils.banner.BannerAc
+import com.fido.common.common_utils.asm.AsmHookActivity
 import com.fido.common.common_utils.calendar.WriteCalendarAc
-import com.fido.common.common_utils.constraintlayout.ConstraintLayoutAc
 import com.fido.common.common_utils.customview.CustomViewAc
-import com.fido.common.common_utils.databinding.ActivityMainBinding
-import com.fido.common.common_utils.databinding.DialogTestBinding
-import com.fido.common.common_utils.databinding.LayoutHeaderViewBinding
+import com.fido.common.databinding.ActivityMainBinding
+import com.fido.common.databinding.DialogTestBinding
+import com.fido.common.databinding.LayoutHeaderViewBinding
 import com.fido.common.common_utils.device_info.DeviceInfoAc
 import com.fido.common.common_utils.edittext.CustomStyleActivity
 import com.fido.common.common_utils.eventbus.HEventBus
@@ -110,13 +110,8 @@ import com.fido.common.common_utils.motionlayout.MotionLayoutAc2
 import com.fido.common.common_utils.motionlayout.MotionYouTubeAc
 import com.fido.common.common_utils.muilt_process.Constant
 import com.fido.common.common_utils.muilt_process.GloableProcessAc
-import com.fido.common.common_utils.muilt_process.PrivateProcessAc
-import com.fido.common.common_utils.naviga.CodenavigationAc
 import com.fido.common.common_utils.picker.PickerViewAc
 import com.fido.common.common_utils.pop.DialogChainAc
-import com.fido.common.common_utils.room.RoomAc
-import com.fido.common.common_utils.rv.RvAc
-import com.fido.common.common_utils.sp.SPAc
 import com.fido.common.common_utils.spannable.SpannableAc
 import com.fido.common.common_utils.test.NavigationAc
 import com.fido.common.common_utils.time.IntervalTimeAc
@@ -126,6 +121,13 @@ import com.fido.common.common_utils.viewpager.ViewpageAc
 import com.fido.common.flutter.FlutterInteractiveAc
 import com.fido.common.surface.SurfaceAc
 import com.fido.common.textview.TextViewAc
+import com.fido.common.common_utils.banner.BannerAc
+import com.fido.common.common_utils.constraintlayout.ConstraintLayoutAc
+import com.fido.common.common_utils.muilt_process.PrivateProcessAc
+import com.fido.common.common_utils.naviga.CodenavigationAc
+import com.fido.common.common_utils.room.RoomAc
+import com.fido.common.common_utils.rv.RvAc
+import com.fido.common.common_utils.sp.SPAc
 import com.google.gson.Gson
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
@@ -358,6 +360,7 @@ class MainActivity : AppCompatActivity() {
         addView<FloatingImageAc>("拖动悬浮ImageView")
         addView<ASMTestAc>("ASM插装测试")
         addView<DeviceInfoAc>("获取Device Info(插件测试)")
+        addView<AsmHookActivity>("asm Hook method...")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {
@@ -725,7 +728,7 @@ class MainActivity : AppCompatActivity() {
 //            startActivity<RvAc>()
             Log.d("FiDo", "RvAc : ${RvAc::class.java.name}")
             try {
-                val clazz = Class.forName("com.fido.common.common_utils.rv.RvAc")
+                val clazz = Class.forName("com.fido.common.Rv.RvAc")
                 startActivity(
                     Intent(this, clazz)
                 )

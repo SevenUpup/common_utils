@@ -1,17 +1,15 @@
 package com.fido.common.common_utils.muilt_process
 
-import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_ui.util.throttleClick
 import com.fido.common.common_base_util.ext.isGone
 import com.fido.common.common_base_util.ext.logd
 import com.fido.common.common_base_util.ext.startActivity
-import com.fido.common.common_utils.databinding.AcPrivateProcessBinding
+import com.fido.common.databinding.AcPrivateProcessBinding
 
 /**
  * @author: FiDo

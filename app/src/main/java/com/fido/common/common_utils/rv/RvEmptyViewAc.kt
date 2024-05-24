@@ -8,8 +8,8 @@ import com.fido.common.common_base_ui.ext.bindData
 import com.fido.common.common_base_ui.ext.setEmptyView
 import com.fido.common.common_base_ui.ext.vertical
 import com.fido.common.common_base_ui.util.throttleClick
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.AcRvEmptyViewBinding
+import com.fido.common.R
+import com.fido.common.databinding.AcRvEmptyViewBinding
 
 /**
  * @author: FiDo

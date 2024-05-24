@@ -1,4 +1,4 @@
-package com.fido.common.common_utils.room
+package com.fido.common.Room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

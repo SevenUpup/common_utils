@@ -7,6 +7,8 @@ import android.os.Process
 import android.text.TextUtils
 import com.drake.debugkit.DevTool
 import com.facebook.stetho.Stetho
+import com.fido.common.BuildConfig
+import com.fido.common.R
 import com.fido.common.common_base_util.ext.logd
 import com.fido.common.common_base_util.log.LogUtils
 import com.fido.common.common_base_util.util.toast.ToastConfig

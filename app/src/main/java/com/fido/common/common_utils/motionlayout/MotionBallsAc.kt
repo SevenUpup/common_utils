@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_util.ext.toast
-import com.fido.common.common_utils.databinding.AcMotionBalls2Binding
+import com.fido.common.databinding.AcMotionBalls2Binding
 
 /**
 @author FiDo

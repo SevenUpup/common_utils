@@ -21,8 +21,8 @@ import android.util.Log
 import androidx.annotation.Keep
 import com.fido.annotation.asm.AsmMethodOpcodes
 import com.fido.annotation.asm.AsmMethodReplace
+import com.fido.common.BuildConfig
 import com.fido.common.common_base_util.ext.toast
-import com.fido.common.common_utils.BuildConfig
 import java.util.*
 import kotlin.collections.HashMap
 

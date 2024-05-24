@@ -1,6 +1,6 @@
 package com.fido.common.common_utils.widgets
 
-import com.fido.common.common_utils.R
+import com.fido.common.R
 
 /**
 @author FiDo

@@ -12,11 +12,14 @@ java {
 
 dependencies {
 
+    implementation("com.joom.grip:grip:0.9.1")
+
     implementation(libs.agp.core)
     implementation(libs.agp.api)
 
     implementation(libs.asm)
     implementation(libs.asm.commons)
+
 }
 
 // 让 Gralde 知道我们定义了这么一个插件 可以通过 java-gradle-plugin 插件来简化这个过程，只需要在 kts 脚本中声明就好了。

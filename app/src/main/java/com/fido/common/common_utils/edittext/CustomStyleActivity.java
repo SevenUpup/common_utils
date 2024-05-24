@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.fido.common.common_base_ui.widget.edittext.CodeEditText;
-import com.fido.common.common_utils.R;
+import com.fido.common.R;
 import com.fido.common.common_utils.edittext.style.CustomTextDrawer;
 import com.fido.common.common_utils.edittext.style.CustomeBlockDrawer;
 

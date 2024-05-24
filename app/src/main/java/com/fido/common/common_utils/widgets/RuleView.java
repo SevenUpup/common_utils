@@ -15,9 +15,11 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.Scroller;
+
 import androidx.annotation.Nullable;
-import com.fido.common.common_utils.R;
-import com.fido.common.common_utils.BuildConfig;
+
+import com.fido.common.BuildConfig;
+import com.fido.common.R;
 /**
  * GradationView
  * 刻度卷尺控件

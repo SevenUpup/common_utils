@@ -14,8 +14,8 @@ import com.fido.common.common_base_util.ext.clearFragments
 import com.fido.common.common_base_util.ext.click
 import com.fido.common.common_base_util.ext.removeFragment
 import com.fido.common.common_base_util.ext.toast
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.AcVp2Binding
+import com.fido.common.R
+import com.fido.common.databinding.AcVp2Binding
 
 /**
  * @author: FiDo

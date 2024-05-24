@@ -3,6 +3,7 @@ package com.fido.common.common_utils
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.fido.common.R
 import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_ui.util.dp
 import com.fido.common.common_base_ui.util.throttleClick
@@ -10,7 +11,7 @@ import com.fido.common.common_base_util.ext.*
 import com.fido.common.common_base_util.getColor
 import com.fido.common.common_base_util.getScreenWidthPx
 import com.fido.common.common_base_util.toJson
-import com.fido.common.common_utils.databinding.AcLivedataBinding
+import com.fido.common.databinding.AcLivedataBinding
 
 /**
 @author FiDo

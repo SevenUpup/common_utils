@@ -9,9 +9,7 @@ import android.view.animation.AccelerateInterpolator
 import com.fido.common.common_base_util.dp
 import com.fido.common.common_base_util.windowHeight
 import com.fido.common.common_base_util.windowWidth
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.a
-import kotlin.math.abs
+import com.fido.common.R
 
 /**
  * @author: FiDo

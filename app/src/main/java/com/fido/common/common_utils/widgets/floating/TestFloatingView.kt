@@ -7,7 +7,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.widget.ImageView
 import com.fido.common.common_base_util.dp
-import com.fido.common.common_utils.R
+import com.fido.common.R
 import com.gyf.immersionbar.ktx.statusBarHeight
 
 /**

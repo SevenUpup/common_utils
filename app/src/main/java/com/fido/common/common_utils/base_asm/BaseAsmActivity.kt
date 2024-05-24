@@ -2,7 +2,7 @@ package com.fido.common.common_utils.base_asm
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.fido.common.common_utils.R
+import com.fido.common.R
 import com.gyf.immersionbar.ktx.immersionBar
 import com.gyf.immersionbar.ktx.showStatusBar
 

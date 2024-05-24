@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.fido.common.common_base_util.ext.arguments
 import com.fido.common.common_base_util.ext.withArguments
-import com.fido.common.common_utils.R
+import com.fido.common.R
 
 /**
  * @author: FiDo

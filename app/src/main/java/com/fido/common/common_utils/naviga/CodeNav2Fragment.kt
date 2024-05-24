@@ -2,8 +2,8 @@ package com.fido.common.common_utils.naviga
 
 import com.fido.common.base.BaseVBFragment
 import com.fido.common.common_base_util.ext.click
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.FragmentCodeNav2Binding
+import com.fido.common.R
+import com.fido.common.databinding.FragmentCodeNav2Binding
 import com.fido.common.easy_navigation.LaunchMode
 import com.fido.common.easy_navigation.applyFadeInOut
 import com.fido.common.easy_navigation.navigator

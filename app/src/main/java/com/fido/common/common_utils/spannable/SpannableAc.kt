@@ -24,8 +24,8 @@ import com.fido.common.common_base_util.dp
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.getColor
 import com.fido.common.common_base_util.getDrawable
-import com.fido.common.common_utils.R
-import com.fido.common.common_utils.databinding.AcSpannableBinding
+import com.fido.common.R
+import com.fido.common.databinding.AcSpannableBinding
 
 class SpannableAc:AppCompatActivity() {
 

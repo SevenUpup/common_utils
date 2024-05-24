@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.fido.common.common_base_util.util.timer.Interval
 import com.fido.common.common_base_util.util.timer.countDown
-import com.fido.common.common_utils.databinding.AcIntervalTimeBinding
-import com.fido.common.common_utils.R
+import com.fido.common.databinding.AcIntervalTimeBinding
+import com.fido.common.R
 import java.util.concurrent.TimeUnit
 
 class IntervalTimeAc:AppCompatActivity() {

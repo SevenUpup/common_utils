@@ -9,7 +9,7 @@ import android.view.WindowManager
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.fido.common.common_utils.R
+import com.fido.common.R
 
 
 class DebugFragment : Fragment(R.layout.fragment_debug), View.OnTouchListener {
