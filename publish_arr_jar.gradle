@@ -31,7 +31,7 @@ afterEvaluate {
                     artifact androidSourcesJar
                 } else if (project.plugins.hasPlugin("java-library")) {
                     from components.java
-                    artifact javadocJar
+//                    artifact javadocJar
                     artifact javaSourcesJar
                 }
 //                def projectName = project.name
