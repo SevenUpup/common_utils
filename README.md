@@ -1,4 +1,5 @@
 [![](https://jitpack.io/v/SevenUpup/common_utils.svg)](https://jitpack.io/#SevenUpup/common_utils)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/SevenUpup/common_utils/total)
 <!-- ![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/SevenUpup/common_utils/latest/total) -->
 
 # common_utils
