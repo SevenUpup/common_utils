@@ -7,10 +7,10 @@ apply plugin: 'maven-publish'
 //def ossrhPassword = properties.getProperty("ossrhPassword")
 
 if (project.plugins.hasPlugin("java-library")) {
-    task javadocJar(type: Jar) {
-        from javadoc
-        archiveClassifier = 'javadoc'
-    }
+//    task javadocJar(type: Jar) {
+//        from javadoc
+//        archiveClassifier = 'javadoc'
+//    }
     task javaSourcesJar(type: Jar) {
         from sourceSets.main.java.srcDirs
         archiveClassifier = 'sources'
@@ -34,7 +34,7 @@ afterEvaluate {
                     artifact javadocJar
                     artifact javaSourcesJar
                 }
-                def projectName = project.name
+//                def projectName = project.name
                 groupId = GROUP_ID
 //                artifactId = projectName
                 artifactId = POM_ARTIFACT_ID
