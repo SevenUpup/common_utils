@@ -49,17 +49,16 @@ android.useAndroidX=true
 
 ### ASM Plugin通过‘配置’支持以下功能
 
-#### ViewClickPluginParameter 通过配置替换原生click事件：一般用于防抖  
+#### ViewClickPluginParameter       通过配置替换原生click事件：一般用于防抖  
 
-#### ReplaceClassPluginParameter 全局替换类继承关系：例如将继承androidx.appcompat.app.AppCompatActivity改为基类Activity  
+#### ReplaceClassPluginParameter    全局替换类继承关系：例如将继承androidx.appcompat.app.AppCompatActivity改为基类Activity  
 
-#### HookClassParameter 修改类中(静态)常/变量值：支持基本数据类型，可用于打包时一些动态配置的参数 
+#### HookClassParameter             修改类中(静态)常/变量值：支持基本数据类型，可用于打包时一些动态配置的参数 
 如果需要修改类中常/变量 当修饰符为 final int/float/double/long = 0 时，此时修改值会失效  
 因为插件中需要对class中`<init>`方法进行hook，当值为0时，字节码默认不会在`<init>`方法对其进行操作？  
 final + number类型 时最好不要将初始值赋值为0
-#### ReplaceMethodPluginParameters 提供替换任意类方法的功能，但需配合注解库fido_annotation一起使用
-通过DefaultTask实现先收集注解信息再修改字节码   
-获取需要替换的类提供两种方式     
+#### ReplaceMethodPluginParameters  提供替换任意类方法的功能，但需配合注解库fido_annotation一起使用
+通过DefaultTask实现先收集注解信息再修改字节码,获取需要替换的类提供两种方式     
 1.root的.gradle下添加 ext.fido_asm_replace_method_class = ["xxx"]        
 2.通过ReplaceMethodPluginParameters{ replaceClassName=[] } 且需要root的.gradle添加 ext.fido_asm_replace_method_enable = true
 目前可实现在用户未同意隐私权限前，三方库或现有代码调用获取‘硬件信息’时，替换为，通过‘注解’的方法，具体使用可参考DeviceInfoAc/AsmHookActivity
@@ -75,13 +74,13 @@ final + number类型 时最好不要将初始值赋值为0
              classpath 'com.github.SevenUpup.common_utils:fido_asm:tag'
          }
     }
-    //替换类方法插件(按需) 模块下.gradle
-    implementation 'com.github.SevenUpup.common_utils:fido_annotation:tag'
     //然后 模块下.gradle
     plugins {
         //在需要的 的 module 中引用插件：
         id 'com.fido.plugin.asm'
     }
+    //如需使用替换指定类插件，请添加下面的依赖
+    implementation 'com.github.SevenUpup.common_utils:fido_annotation:v0.3.5'
     //然后就可以愉快的使用啦，模块下.gradle最外层  
     HookClassParameter {  //className中“*”会替换成它前面不为“*”的值，及[A,A,A,B,B,B,C,C,C,C]，避免写那么长的类名
          className = ["xxx.A","*","*","xxx.B","*","*","xxx.C","*","*","*","*","*"]

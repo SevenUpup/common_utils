@@ -13,4 +13,4 @@ dependencies {
     implementation(libs.asm)
 }
 
-apply(rootProject.file("publish-maven-jar.gradle"))
+apply(rootProject.file("publish_arr_jar.gradle"))

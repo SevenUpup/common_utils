@@ -1,0 +1,90 @@
+apply plugin: 'signing'
+apply plugin: 'maven-publish'
+
+//def properties = new Properties()
+//properties.load(rootProject.file("local.properties").newDataInputStream())
+//def ossrhUsername = properties.getProperty("ossrhUsername")
+//def ossrhPassword = properties.getProperty("ossrhPassword")
+
+if (project.plugins.hasPlugin("java-library")) {
+    task javadocJar(type: Jar) {
+        from javadoc
+        archiveClassifier = 'javadoc'
+    }
+    task javaSourcesJar(type: Jar) {
+        from sourceSets.main.java.srcDirs
+        archiveClassifier = 'sources'
+    }
+} else if (project.plugins.hasPlugin("com.android.library")) {
+    task androidSourcesJar(type: Jar) {
+        from android.sourceSets.main.java.srcDirs
+//        classifier = 'sources'
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                if (project.plugins.hasPlugin("com.android.library")) {
+                    from components.release
+                    artifact androidSourcesJar
+                } else if (project.plugins.hasPlugin("java-library")) {
+                    from components.java
+                    artifact javadocJar
+                    artifact javaSourcesJar
+                }
+                def projectName = project.name
+                groupId = GROUP_ID
+//                artifactId = projectName
+                artifactId = POM_ARTIFACT_ID
+                version = VERSION_NAME
+
+                /*pom {
+                    name = 'xxx'
+                    description = 'xxx'
+                    url = 'https://github.com/SevenUpup/annotation'
+                    licenses {
+                        license {
+                            name = 'The Apache Software License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'xxx'
+                            name = 'xxx'
+                            email = 'xxx'
+                        }
+                    }
+                    scm {
+                        connection = 'https://github.com/SevenUpup/annotation'
+                        developerConnection = 'https://github.com/SevenUpup/annotation.git'
+                        url = 'https://github.com/SevenUpup/annotation'
+                    }
+                }*/
+            }
+        }
+        /*repositories {
+            maven {
+                name 'local'
+                url "${rootProject.buildDir}"
+            }
+            maven {
+                name 'mavenCentral'
+                if (fido_annotation_version.endsWith("SNAPSHOT")) {
+                    url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+                } else {
+                    url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+                }
+                credentials {
+                    username = ossrhUsername
+                    password = ossrhPassword
+                }
+            }
+        }*/
+    }
+    /*signing {
+        sign publishing.publications.release
+    }*/
+}

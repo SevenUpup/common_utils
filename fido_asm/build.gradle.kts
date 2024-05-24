@@ -31,7 +31,7 @@ gradlePlugin{
     }
 }
 
-val localMavenDir = File(rootProject.rootDir,"local_maven")
+/*val localMavenDir = File(rootProject.rootDir,"local_maven")
 if (!localMavenDir.exists()) {
     localMavenDir.mkdirs()
 }
@@ -112,6 +112,6 @@ publishing{
         }
 
     }
-}
+}*/
 
-//apply(rootProject.file("publish-maven-jar.gradle"))
+apply(rootProject.file("publish-maven-jar.gradle"))
