@@ -45,4 +45,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <Button
+        android:id="@+id/bt_dialog_chain"
+        android:textAllCaps="false"
+        android:text="Dialog Chain拦截器模式"
+        app:layout_constraintBottom_toTopOf="@id/bt3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/bt_dialog_chain_login"
+        android:textAllCaps="false"
+        android:text="拦截器模式，模拟未登录跳转个人中心页"
+        app:layout_constraintBottom_toTopOf="@id/bt_dialog_chain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/bt_interceptor_by_coroutines"
+        android:textAllCaps="false"
+        android:text="登陆拦截场景 -> Kotlin Coroutines"
+        app:layout_constraintBottom_toTopOf="@id/bt_dialog_chain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

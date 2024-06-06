@@ -78,7 +78,6 @@ class SpannableAc:AppCompatActivity() {
             AbsoluteSizeSpan(19,true),
             StyleSpan(Typeface.BOLD)
         ))
-
         _binding.tv3.text = "头像".addSpan("网络头像",GlideImageSpan(_binding.tv3,"https://avatars.githubusercontent.com/u/21078112?v=4")
             .setRequestOption(RequestOptions.circleCropTransform())
             .setDrawableSize(60.dp)

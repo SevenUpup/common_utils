@@ -167,6 +167,8 @@
         <activity android:name=".common_utils.asm.replace.ReplaceClassTestAc"/>
         <activity android:name=".common_utils.device_info.DeviceInfoAc"/>
         <activity android:name=".common_utils.asm.AsmHookActivity"/>
+        <activity android:name=".common_utils.login.LoginAc"/>
+        <activity android:name=".common_utils.login.UserProfileAc"/>
     </application>
 
 </manifest>

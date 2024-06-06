@@ -27,6 +27,18 @@ import com.fido.common.common_base_util.ext.rectangleCornerBg
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.util.dialog.*
 import com.fido.common.R
+import com.fido.common.common_base_util.ext.lifecycleOwner
+import com.fido.common.common_base_util.ext.startActivity
+import com.fido.common.common_utils.login.LoginAc
+import com.fido.common.common_utils.login.UserProfileAc
+import com.fido.common.common_utils.pop.base_interceptor.InterceptorChain
+import com.fido.common.common_utils.pop.interceptor.InterceptorBean
+import com.fido.common.common_utils.pop.interceptor.InterceptorInfoFill
+import com.fido.common.common_utils.pop.interceptor.InterceptorNewMember
+import com.fido.common.common_utils.pop.interceptor.InterceptorUserFace
+import com.fido.common.common_utils.pop.interceptor_by_coroutines.LoginInterceptorCoroutinesManager
+import com.fido.common.common_utils.pop.login_interceptor.LoginInterceptorChain
+import com.fido.common.common_utils.pop.login_interceptor.LoginNextInterceptor
 import com.fido.common.databinding.AcDialogChainBinding
 import com.fido.common.common_utils.rv.MyItemTouchHelperCallBack
 
@@ -45,7 +57,8 @@ class DialogChainAc :AppCompatActivity(){
     "九阳神功,乾坤大挪移,易经经",
     "曼城,多特蒙德,阿森纳,皇马",
     )
-
+    private var loginInterceptorCoroutinesManager:LoginInterceptorCoroutinesManager?=null
+    private var newMemberInterceptor:InterceptorNewMember?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -62,6 +75,49 @@ class DialogChainAc :AppCompatActivity(){
         mediatorLiveData.observe(this){
             loge(it.toString())
             toast(it.toString())
+        }
+
+        loginInterceptorCoroutinesManager = LoginInterceptorCoroutinesManager.get()
+        lifecycleOwner.lifecycle.addObserver(loginInterceptorCoroutinesManager!!)
+        binding.btInterceptorByCoroutines.throttleClick {
+            loginInterceptorCoroutinesManager?.checkLogin({
+                //默认未登录状态
+                toast("当前未登录，跳转登录页登陆")
+                startActivity<LoginAc>() },{
+                toast("登陆成功，去个人中心咯")
+                startActivity<UserProfileAc>()
+            })
+        }
+
+        binding.btDialogChainLogin.throttleClick {
+            LoginInterceptorChain.addInterceptor(LoginNextInterceptor{
+                toast("登陆成功，去个人中心咯")
+                startActivity<UserProfileAc>()
+            }).process()
+        }
+
+
+        val interceptorBean = InterceptorBean(isNewMember = true,isFillInfo = false,isNeedFace = true)
+        newMemberInterceptor = InterceptorNewMember(interceptorBean){
+            interceptorBean.isNewMember = false
+            newMemberInterceptor?.resetNewMember()
+        }
+        val chain = InterceptorChain
+            .creator()
+            .attach(this@DialogChainAc)
+            .addInterceptor(newMemberInterceptor!!)
+            .addInterceptor(InterceptorUserFace(interceptorBean))
+            .addInterceptor(InterceptorInfoFill(bean = interceptorBean))
+            .build()
+        binding.btDialogChain.throttleClick {
+//            val chain = InterceptorChain
+//                .creator()
+//                .attach(this@DialogChainAc)
+//                .addInterceptor(newMemberInterceptor!!)
+//                .addInterceptor(InterceptorUserFace(interceptorBean))
+//                .addInterceptor(InterceptorInfoFill(bean = interceptorBean))
+//                .build()
+            chain.process()
         }
 
         binding.bt3.apply {
@@ -112,7 +168,7 @@ class DialogChainAc :AppCompatActivity(){
             val list = mutableListOf("A","B","C")
             var dialogConfigs = mutableListOf<DialogManager.Config<Any>>()
             dialogConfigs = list.mapIndexed { index, it ->
-                showNormalConfirmDialog(title = "i am 第${(index+1)} 个弹窗", content = it, isAutoShow = false, onCancleBlock = {
+                showNormalConfirmDialog(title = "i am 第${(index+1)} 个弹窗", content = it, isAutoShow = false, onCancelBlock = {
                     if (dialogConfigs.isNotEmpty()) {
                         toast("index =${index}")
                     }

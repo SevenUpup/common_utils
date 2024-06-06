@@ -31,19 +31,22 @@ gradlePlugin{
     }
 }
 
-/*val localMavenDir = File(rootProject.rootDir,"local_maven")
-if (!localMavenDir.exists()) {
-    localMavenDir.mkdirs()
-}
-publishing{
-    repositories{
-        // Local
-        maven {
-            name = "LocalMaven"
-            url = uri(localMavenDir.canonicalPath)
-        }
+//当前是否是发布模式
+val isUseLocal = project.properties["USE_LOCAL"].toString().toBoolean()
+if (isUseLocal) {
+    val localMavenDir = File(rootProject.rootDir,"local_maven")
+    if (!localMavenDir.exists()) {
+        localMavenDir.mkdirs()
+    }
+    publishing{
+        repositories{
+            // Local
+            maven {
+                name = "LocalMaven"
+                url = uri(localMavenDir.canonicalPath)
+            }
 
-        // Remote
+            // Remote
 //        maven {
 //            name = "RemoteMaven"
 //            credentials {
@@ -53,28 +56,28 @@ publishing{
 //            url = uri("")
 //        }
 
-        val sourceJar by tasks.creating(Jar::class.java) {
-            archiveClassifier.set("sources")
-            from(sourceSets.getByName("main").allSource)
-        }
+            val sourceJar by tasks.creating(Jar::class.java) {
+                archiveClassifier.set("sources")
+                from(sourceSets.getByName("main").allSource)
+            }
 
-        publications {
-            val defaultPublication: MavenPublication = this.create("Default", MavenPublication::class.java)
-            with(defaultPublication) {
-                groupId = properties["GROUP_ID"].toString()
-                artifactId = properties["PLUGIN_ARTIFACT_ID"].toString()
-                version = properties["VERSION"].toString()
-                // For aar
+            publications {
+                val defaultPublication: MavenPublication = this.create("Default", MavenPublication::class.java)
+                with(defaultPublication) {
+                    groupId = properties["GROUP_ID"].toString()
+                    artifactId = properties["PLUGIN_ARTIFACT_ID"].toString()
+                    version = properties["VERSION"].toString()
+                    // For aar
 //            afterEvaluate {
 //                artifact(tasks.getByName("bundleReleaseAar"))
 //            }
-                // jar
+                    // jar
 //            artifact("${layout.buildDirectory.asFile.get().absolutePath}${File.separator}libs${File.separator}plugin.jar")
-                afterEvaluate {
-                    artifact(tasks.getByName("jar"))
-                }
-                // source Code.
-                artifact(sourceJar)
+                    afterEvaluate {
+                        artifact(tasks.getByName("jar"))
+                    }
+                    // source Code.
+                    artifact(sourceJar)
 //                pom {
 //                    name = "FiDo-plugin"
 //                    description = "Plugin demo for AGP."
@@ -93,25 +96,28 @@ publishing{
 //                    }
 //                }
 
-                pom.withXml {
-                    val dependencies = asNode().appendNode("dependencies")
-                    configurations.implementation.get().allDependencies.all {
-                        val dependency = this
-                        if (dependency.group == null || dependency.version == null || dependency.name == "unspecified") {
-                            return@all
+                    pom.withXml {
+                        val dependencies = asNode().appendNode("dependencies")
+                        configurations.implementation.get().allDependencies.all {
+                            val dependency = this
+                            if (dependency.group == null || dependency.version == null || dependency.name == "unspecified") {
+                                return@all
+                            }
+                            val dependencyNode = dependencies.appendNode("dependency")
+                            dependencyNode.appendNode("groupId", dependency.group)
+                            dependencyNode.appendNode("artifactId", dependency.name)
+                            dependencyNode.appendNode("version", dependency.version)
+                            dependencyNode.appendNode("scope", "implementation")
                         }
-                        val dependencyNode = dependencies.appendNode("dependency")
-                        dependencyNode.appendNode("groupId", dependency.group)
-                        dependencyNode.appendNode("artifactId", dependency.name)
-                        dependencyNode.appendNode("version", dependency.version)
-                        dependencyNode.appendNode("scope", "implementation")
                     }
                 }
+
             }
 
         }
-
     }
-}*/
+}else{
+    apply(rootProject.file("publish-maven-jar.gradle"))
+}
 
-apply(rootProject.file("publish-maven-jar.gradle"))
+

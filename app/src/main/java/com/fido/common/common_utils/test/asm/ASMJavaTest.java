@@ -34,6 +34,22 @@ public class ASMJavaTest {
 
     public static void main(String[] args) throws Exception {
 
+
+        int mI = 0;
+        int mJ = 0;
+        for(int i=0;i<4;i++){
+            for(int j=0;j<5;j++){
+                System.out.println("i="+i+"; j="+j);
+                if(j==3) {
+                    i=4;
+                    mI = i;
+                    mJ = j;
+                    break;
+                }
+            }
+        }
+        System.out.println("mI ="+mI + " mJ=" + mJ);
+
         char[] arr = {'A', '*', '*', 'B', '*', 'C', 'C', 'C', '*', 'D', '*', 'E', 'E', 'E', '*', '*'};
         int n = arr.length;
         int writeIndex = 0;

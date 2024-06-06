@@ -11,7 +11,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.fido.common.common_base_util.app
-import com.fido.common.common_base_util.ext.logD
 
 /**
  * @author: FiDo
@@ -23,10 +22,14 @@ object NetWorkChangeUtils {
     private val onNetworkChangedList = mutableSetOf<(Boolean)->Unit>()
     private val networkChangeReceiverMap = mutableMapOf<Context?,NetworkChangeReceiver?>()
 
+    /**
+     * 注册网路变化监听
+     * @param context 当context 为 fragment/Activity 会自定解绑，否则需要手动调用 unregisterNetworkChangeReceiver
+     * <p> 需添加权限 {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>} </p>
+     */
     @JvmStatic
-    fun registerNetworkChangeReceiver(context: Context?,onNetChange:(available:Boolean)->Unit){
-        if (context == null) return
-        logD("registerNetworkChangeReceiver context=${context}")
+    fun registerNetworkChangeReceiver(context: Context,onNetChange:(available:Boolean)->Unit){
+//        logD("registerNetworkChangeReceiver context=${context}")
         onNetworkChangedList.add(onNetChange)
         var networkChangeReceiver = networkChangeReceiverMap[context]
         if (networkChangeReceiver == null) {
@@ -82,8 +85,8 @@ object NetWorkChangeUtils {
     }
 
     @JvmStatic
-    fun unregisterNetworkChangeReceiver(context: Context?){
-        logD("unregisterNetworkChangeReceiver context=${context}")
+    fun unregisterNetworkChangeReceiver(context: Context){
+//        logD("unregisterNetworkChangeReceiver context=${context}")
         if (context == null) return
         val receiver = networkChangeReceiverMap[context]
         if (receiver != null) {

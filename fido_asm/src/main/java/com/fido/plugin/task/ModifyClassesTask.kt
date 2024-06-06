@@ -63,7 +63,7 @@ internal abstract class ModifyClassesTask : DefaultTask() {
     @get:OutputFile
     abstract val output: RegularFileProperty*/
 
-    // 在项目根目录加上 ext.fido_asm_replace_method_class = ["xxx"]
+    // 在项目根目录.gradle 加上 ext.fido_asm_replace_method_class = ["xxx"]
     private var replaceMethodClass =
         project.properties[PluginConstant.FIDO_ASM_REPLACE_METHOD_CLASS] as? List<String>
             ?: emptyList()
