@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * @author: FiDo
  * @date: 2024/5/7
- * @des:
+ * @des:  该注解将替换指定类名的方法
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.CLASS)

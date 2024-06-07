@@ -5,7 +5,6 @@ import com.fido.plugin.method_replace.REPLACE_METHOD_ANNO_DES
 import com.fido.plugin.method_replace.ReplaceMethodAnnotationItem
 import com.fido.plugin.method_replace.asmConfigs
 import com.fido.plugin.method_replace.replaceMethodConfigClassList
-import com.fido.utils.LogPrint
 import com.fido.utils.replaceDotBySlash
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.Directory
@@ -130,7 +129,7 @@ internal abstract class ModifyClassesTask : DefaultTask() {
                     //INVOKEVIRTUAL android/app/ActivityManager.getRunningAppProcesses ()Ljava/util/List; ->
                     //INVOKESTATIC  com/lanshifu/asm_plugin_library/privacy/PrivacyUtil.getRunningAppProcesses (Landroid/app/ActivityManager;)Ljava/util/List;
 
-                    if (
+                    /*if (
 //                        asmItem.oriClass == "com.fido.common.common_utils.asm.AsmHookActivity".replace(".","/") &&
                         (insnNode.name == "privateStaticFun" || insnNode.name == "pubStaticFun")){
                         LogPrint.normal("FiDo"){
@@ -142,7 +141,7 @@ internal abstract class ModifyClassesTask : DefaultTask() {
                                 insnNode.owner=>${insnNode.owner}
                             """.trimIndent()
                         }
-                    }
+                    }*/
 
                     if (asmItem.oriDesc == insnNode.desc && asmItem.oriMethod == insnNode.name
                         && insnNode.opcode == asmItem.oriAccess &&

@@ -87,7 +87,6 @@ class FiDoAsmPlugin : Plugin<Project> {
 //                handleReplaceMethodPlugin(target,variant)
                 variant.instrumentation.setAsmFramesComputationMode(FramesComputationMode.COMPUTE_FRAMES_FOR_INSTRUMENTED_METHODS)
 
-//                val asmReplaceMethodClassList = target.properties[PluginConstant.FIDO_ASM_REPLACE_METHOD_CLASS]
                 val replaceMethodTaskEnable = target.properties[PluginConstant.FIDO_ASM_REPLACE_METHOD_ENABLE] as? Boolean ?: false
                 if (replaceMethodTaskEnable) {
                     val taskProvider = target.tasks.register("${variant.name}${ModifyClassesTask::class.java.simpleName}",ModifyClassesTask::class.java)

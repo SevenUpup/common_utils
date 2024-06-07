@@ -67,9 +67,9 @@ final + number类型 时最好不要将初始值赋值为0
 #### 替换指定方法
 ##### 提供替换指定方法的功能(需引入注解库fido_annotation通过AsmMethodReplace注解实现)
 ##### 开关控制:root下[build.gradle](build.gradle)添加 ext.fido_asm_replace_method_enable = true，debug时可以置为false,以免影响编译效率
-通过以下方式添加含有注解的全类名(object 静态方法记得添加 @JvmStatic哦)
+通过以下方式添加含有注解的全类名(object 静态方法记得添加 @JvmStatic哦)     
 1.root下的.gradle添加 ext.fido_asm_replace_method_class = ["xxx"]        
-2.通过ReplaceMethodPluginParameters{ replaceClassName=[] }    
+2.通过ReplaceMethodPluginParameters{ replaceClassName=[] }     
 目前可实现在用户未同意隐私权限前，三方库或现有代码调用获取‘硬件信息’时，替换为，通过‘注解’的方法，具体使用可参考DeviceInfoAc/AsmHookActivity   
 
 ```
@@ -97,6 +97,12 @@ final + number类型 时最好不要将初始值赋值为0
          parameterNewValue = ["6666",16.0,555L,777,true]
     }
 ```
+## 开发中功能
+
+```
+emm...关于插件功能，目前正在新增并完善，欢迎提出你的想法(因为提了我也不一定理)
+```
+
 
 ## License
 
