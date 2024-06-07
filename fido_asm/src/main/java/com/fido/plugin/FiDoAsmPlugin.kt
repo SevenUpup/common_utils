@@ -87,20 +87,18 @@ class FiDoAsmPlugin : Plugin<Project> {
 //                handleReplaceMethodPlugin(target,variant)
                 variant.instrumentation.setAsmFramesComputationMode(FramesComputationMode.COMPUTE_FRAMES_FOR_INSTRUMENTED_METHODS)
 
-                val asmReplaceMethodClassList = target.properties[PluginConstant.FIDO_ASM_REPLACE_METHOD_CLASS]
+//                val asmReplaceMethodClassList = target.properties[PluginConstant.FIDO_ASM_REPLACE_METHOD_CLASS]
                 val replaceMethodTaskEnable = target.properties[PluginConstant.FIDO_ASM_REPLACE_METHOD_ENABLE] as? Boolean ?: false
-                if (replaceMethodTaskEnable || asmReplaceMethodClassList != null && (asmReplaceMethodClassList is List<*>)) {
-                    if ((asmReplaceMethodClassList is List<*>) && asmReplaceMethodClassList.isNotEmpty()) {
-                        val taskProvider = target.tasks.register("${variant.name}${ModifyClassesTask::class.java.simpleName}",ModifyClassesTask::class.java)
-                        variant.artifacts.forScope(ScopedArtifacts.Scope.ALL)
-                            .use(taskProvider)
-                            .toTransform(
-                                ScopedArtifact.CLASSES,
-                                ModifyClassesTask::allJars,
-                                ModifyClassesTask::allDirectories,
-                                ModifyClassesTask::output,
-                            )
-                    }
+                if (replaceMethodTaskEnable) {
+                    val taskProvider = target.tasks.register("${variant.name}${ModifyClassesTask::class.java.simpleName}",ModifyClassesTask::class.java)
+                    variant.artifacts.forScope(ScopedArtifacts.Scope.ALL)
+                        .use(taskProvider)
+                        .toTransform(
+                            ScopedArtifact.CLASSES,
+                            ModifyClassesTask::allJars,
+                            ModifyClassesTask::allDirectories,
+                            ModifyClassesTask::output,
+                        )
                 }
             }
         }

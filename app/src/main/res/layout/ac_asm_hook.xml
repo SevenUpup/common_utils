@@ -22,6 +22,31 @@
             android:textSize="11sp"
             android:text="点我可以吐司(替换静态方法调用)"/>
 
+        <Button
+            android:id="@+id/bt_private_static_method_replace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:text="(反射调用私有静态方法)如果未替换吐司：内容222"/>
+        <Button
+            android:id="@+id/bt_private_static_method_indirect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:text="(间接调用私有静态方法)如果未替换吐司：内容333"/>
+        <Button
+            android:id="@+id/bt_private_static_method_outer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:text="(调用外部类静态方法)如果未替换吐司：内容444"/>
+        <Button
+            android:id="@+id/bt_static_method_replace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:text="(hook内部类静态方法)如果未替换吐司：内容111"/>
+
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

@@ -28,7 +28,14 @@ object PluginConstant {
     // =========================== Replace Method ============================
     const val REPLACE_METHOD_TAG = "REPLACE_METHOD"
 
+    /**
+     * 收集需要替换的类的List
+     */
     const val FIDO_ASM_REPLACE_METHOD_CLASS = "fido_asm_replace_method_class"
+
+    /**
+     * 替换类方法的Task开关
+     */
     const val FIDO_ASM_REPLACE_METHOD_ENABLE = "fido_asm_replace_method_enable"
 }
 

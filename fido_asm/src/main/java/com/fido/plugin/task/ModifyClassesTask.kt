@@ -5,6 +5,7 @@ import com.fido.plugin.method_replace.REPLACE_METHOD_ANNO_DES
 import com.fido.plugin.method_replace.ReplaceMethodAnnotationItem
 import com.fido.plugin.method_replace.asmConfigs
 import com.fido.plugin.method_replace.replaceMethodConfigClassList
+import com.fido.utils.LogPrint
 import com.fido.utils.replaceDotBySlash
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.Directory
@@ -98,8 +99,11 @@ internal abstract class ModifyClassesTask : DefaultTask() {
             classNode.accept(classWriter)
             jarOutput.write(classWriter.toByteArray())
         }
-        // 获取需要替换的类提供两种方式 1.根目录下 ext.fido_asm_replace_method_class = ["xxx"] 2. ReplaceMethodPluginParameters{ replaceClassName=[] } 且需要跟目录 ext.fido_asm_replace_method_enable = true
-        val mutableList = replaceMethodClass.toMutableList()
+        // 获取需要替换的类提供两种方式
+        // 1.根目录下 ext.fido_asm_replace_method_class = ["xxx"]
+        val mutableList = mutableSetOf<String>()
+        mutableList.addAll(replaceMethodClass)
+        // 2. ReplaceMethodPluginParameters{ replaceClassName=[] }
         if (taskEnable && replaceMethodConfigClassList.isNotEmpty()) {
             mutableList.addAll(replaceMethodConfigClassList)
         }
@@ -125,6 +129,21 @@ internal abstract class ModifyClassesTask : DefaultTask() {
                 asmConfigs.forEach { asmItem ->
                     //INVOKEVIRTUAL android/app/ActivityManager.getRunningAppProcesses ()Ljava/util/List; ->
                     //INVOKESTATIC  com/lanshifu/asm_plugin_library/privacy/PrivacyUtil.getRunningAppProcesses (Landroid/app/ActivityManager;)Ljava/util/List;
+
+                    if (
+//                        asmItem.oriClass == "com.fido.common.common_utils.asm.AsmHookActivity".replace(".","/") &&
+                        (insnNode.name == "privateStaticFun" || insnNode.name == "pubStaticFun")){
+                        LogPrint.normal("FiDo"){
+                            """
+                                asmItem=>${asmItem.toString()}
+                                insnNode.desc=>${insnNode.desc}
+                                insnNode.name=>${insnNode.name}
+                                insnNode.opcode=>${insnNode.opcode}
+                                insnNode.owner=>${insnNode.owner}
+                            """.trimIndent()
+                        }
+                    }
+
                     if (asmItem.oriDesc == insnNode.desc && asmItem.oriMethod == insnNode.name
                         && insnNode.opcode == asmItem.oriAccess &&
                         (insnNode.owner == asmItem.oriClass || asmItem.oriClass == "java/lang/Object")

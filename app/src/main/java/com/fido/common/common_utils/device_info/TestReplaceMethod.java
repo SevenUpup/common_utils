@@ -8,6 +8,7 @@ import com.fido.annotation.asm.AsmMethodOpcodes;
 import com.fido.annotation.asm.AsmMethodReplace;
 import com.fido.common.common_base_util.ext.ToastExtKt;
 import com.fido.common.common_utils.asm.AsmHookActivity;
+import com.fido.common.common_utils.asm.AsmHookUtils;
 import com.fido.common.common_utils.asm.KtAsmToast;
 
 /**
@@ -17,7 +18,7 @@ import com.fido.common.common_utils.asm.KtAsmToast;
  */
 public class TestReplaceMethod {
 
-    @AsmMethodReplace(oriClass = DeviceInfoAc.class,oriAccess = AsmMethodOpcodes.INVOKEVIRTUAL)
+    @AsmMethodReplace(oriClass = DeviceInfoAc.class,oriAccess = AsmMethodOpcodes.INVOKESPECIAL)
     public static void showCustomToast2(String text){
         ToastExtKt.toast(TestReplaceMethod.class.getSimpleName() + "通过AsmMethodReplace 替换方法");
     }
@@ -34,6 +35,21 @@ public class TestReplaceMethod {
     @AsmMethodReplace(oriClass = KtAsmToast.class,oriAccess = AsmMethodOpcodes.INVOKESTATIC)
     public static void showAsmCustomToast(Context context,String text){
         new AlertDialog.Builder(context).setMessage(text).show();
+    }
+
+    @AsmMethodReplace(oriClass = AsmHookActivity.PrivateStaticUtils.class,oriAccess = AsmMethodOpcodes.INVOKESTATIC)
+    public static void pubStaticFun(){
+        ToastExtKt.toast("asm修改后吐司666");
+    }
+
+    @AsmMethodReplace(oriClass = AsmHookUtils.class,oriAccess = AsmMethodOpcodes.INVOKESTATIC)
+    public static void privateStaticFun(){
+        ToastExtKt.toast("asm修改私有静态方法成功：666");
+    }
+
+    @AsmMethodReplace(oriClass = AsmHookUtils.class,oriAccess = AsmMethodOpcodes.INVOKESTATIC)
+    public static void pubStaticFun2(){
+        ToastExtKt.toast("asm修改静态方法成功:777");
     }
 
 }

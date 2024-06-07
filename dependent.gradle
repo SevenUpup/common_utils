@@ -1,5 +1,5 @@
 ext {
-//    fido_asm_replace_method_class = ["com.fido.common.common_utils.device_info.PrivacyUtil"]
+    fido_asm_replace_method_class = [/*"com.fido.common.common_utils.device_info.PrivacyUtil"*/"com.fido.common.common_utils.device_info.TestReplaceMethod"]
     fido_asm_replace_method_enable = true
 
     versions = [

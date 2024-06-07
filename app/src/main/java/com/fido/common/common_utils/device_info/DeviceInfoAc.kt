@@ -38,7 +38,7 @@ class DeviceInfoAc:AppCompatActivity() {
             }
 
             bt2.throttleClick {
-                showCustomToast2(bt1.text.toString())
+                showCustomToast2(bt2.text.toString())
             }
 
             addTextView(androidId)
@@ -62,9 +62,10 @@ class DeviceInfoAc:AppCompatActivity() {
         toast("click $text")
     }
 
-    fun showCustomToast2(text: String) {
+    private fun showCustomToast2(text: String) {
         toast("click $text")
     }
+
     @RequiresApi(Build.VERSION_CODES.M)
     private fun updateData() {
         binding.apply {

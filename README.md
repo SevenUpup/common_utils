@@ -64,12 +64,13 @@ android.useAndroidX=true
 如果需要修改类中常/变量 当修饰符为 final int/float/double/long = 0 时，此时修改值会失效  
 因为插件中需要对class中`<init>`方法进行hook，当值为0时，字节码默认不会在`<init>`方法对其进行操作？  
 final + number类型 时最好不要将初始值赋值为0
-#### ReplaceMethodPluginParameters  
-##### 提供替换任意类方法的功能，但需配合注解库fido_annotation一起使用
-需提供含有注解的类名，通过以下两种方式添加
-1.root的.gradle下添加 ext.fido_asm_replace_method_class = ["xxx"]        
-2.通过ReplaceMethodPluginParameters{ replaceClassName=[] } 且root下[build.gradle](build.gradle)添加 ext.fido_asm_replace_method_enable = true
-目前可实现在用户未同意隐私权限前，三方库或现有代码调用获取‘硬件信息’时，替换为，通过‘注解’的方法，具体使用可参考DeviceInfoAc/AsmHookActivity
+#### 替换指定方法
+##### 提供替换指定方法的功能(需引入注解库fido_annotation通过AsmMethodReplace注解实现)
+##### 开关控制:root下[build.gradle](build.gradle)添加 ext.fido_asm_replace_method_enable = true，debug时可以置为false,以免影响编译效率
+通过以下方式添加含有注解的全类名(object 静态方法记得添加 @JvmStatic哦)
+1.root下的.gradle添加 ext.fido_asm_replace_method_class = ["xxx"]        
+2.通过ReplaceMethodPluginParameters{ replaceClassName=[] }    
+目前可实现在用户未同意隐私权限前，三方库或现有代码调用获取‘硬件信息’时，替换为，通过‘注解’的方法，具体使用可参考DeviceInfoAc/AsmHookActivity   
 
 ```
     //项目根目录.gradle
