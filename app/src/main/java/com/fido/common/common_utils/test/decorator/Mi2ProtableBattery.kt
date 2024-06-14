@@ -1,6 +1,6 @@
 package com.fido.common.common_utils.test.decorator
 
-class Mi2ProtableBattery(protableBattery: ProtableBattery):XiaoMiProtableBatteryDecorator(protableBattery) {
+class Mi2ProtableBattery(protableBattery: PortableBattery):XiaoMiProtableBatteryDecorator(protableBattery) {
 
     override fun charge() {
         super.charge()

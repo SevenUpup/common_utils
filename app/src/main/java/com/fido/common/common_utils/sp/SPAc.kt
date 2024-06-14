@@ -1,6 +1,7 @@
 package com.fido.common.common_utils.sp
 
 import android.os.Bundle
+import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
 import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_ui.ext.bindData
@@ -10,6 +11,7 @@ import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.util.sp.putSp
 import com.fido.common.common_base_util.util.sp.spValue
 import com.fido.common.R
+import com.fido.common.common_base_util.data_store.EasyStore
 import com.fido.common.databinding.AcSpTestBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -41,11 +43,21 @@ class SPAc : AppCompatActivity() {
         } else {
             toast("没到时间，别点")
         }
+
     }
+
 
     private fun plusSp() {
         commonPreferences.addValue("plusValue", "plus00")
         bindRvData()
+
+        val b = kotlin.run {
+            11
+            Unit
+        }
+        val wb = WebView(this).settings.run {
+            javaScriptEnabled = true
+        }
     }
 
     private fun initEvent() {
@@ -76,6 +88,15 @@ class SPAc : AppCompatActivity() {
                 userName = "edit"
             }
             bindRvData()
+        }
+
+        binding.btAddData.click {
+            GlobalScope.launch {
+                EasyStore.put("FiDo",122)
+                withContext(Dispatchers.Main){
+                    binding.tvDataStore.text = EasyStore.get("FiDo",0).toString()
+                }
+            }
         }
     }
 

@@ -74,13 +74,6 @@ private class InternalClassVisitor(
             methodNode.invisibleAnnotations?.forEach { annotationNode ->
                 if (annotationNode.desc == REPLACE_METHOD_ANNO_DES) {
                     val asmItem = ReplaceMethodAnnotationItem(name, methodNode, annotationNode)
-//                    LogPrint.normal("Collect Annotation") {
-//                        """
-//                            mOwner=${mOwner}
-//                            name=${name}
-//                            asmItem=${asmItem}
-//                        """.trimIndent()
-//                    }
                     if (!asmConfigs.contains(asmItem)) {
                         asmConfigs.add(asmItem)
                     }

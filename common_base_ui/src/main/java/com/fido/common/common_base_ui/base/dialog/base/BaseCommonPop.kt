@@ -1,10 +1,12 @@
 package com.fido.common.common_base_ui.base.dialog.base
 
 import android.content.Context
+import android.view.Gravity
 import android.view.View
 import com.lxj.xpopup.core.AttachPopupView
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.core.BottomPopupView
+import com.lxj.xpopup.core.CenterPopupView
 
 
 @PublishedApi
@@ -13,7 +15,8 @@ internal class BaseCommonPopStrategy(
     private val layoutResId: Int,
     private val init: (BasePopupView.() -> Unit)? = null,
     private val offSet: Int? = null,
-    private val atView: View? = null
+    private val atView: View? = null,
+    private val popGravity:Int = Gravity.CENTER,
 ) {
     fun getPop(): BasePopupView {
         if (atView != null) {
@@ -23,7 +26,27 @@ internal class BaseCommonPopStrategy(
             HPositionPopupView.BASE_POSITION_POP_LAYOUTRES = layoutResId
             return BaseCommonPositionPop(context, layoutResId, init)
         }
-        return BaseCommonBottomPop(context, layoutResId, init)
+        return when(popGravity){
+            Gravity.CENTER -> BaseCommonCenterPop(context, layoutResId, init)
+            Gravity.BOTTOM -> BaseCommonBottomPop(context, layoutResId, init)
+            else -> BaseCommonBottomPop(context, layoutResId, init)
+        }
+    }
+}
+
+internal class BaseCommonCenterPop(
+    context: Context,
+    private val layoutResId: Int,
+    private val init: (BasePopupView.() -> Unit)?
+):CenterPopupView(context){
+
+    override fun onCreate() {
+        super.onCreate()
+        init?.invoke(this)
+    }
+
+    override fun getImplLayoutId(): Int {
+        return layoutResId
     }
 }
 

@@ -45,7 +45,7 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/mVp2"
             android:layout_width="match_parent"
-            android:layout_height="200dp"/>
+            android:layout_height="180dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -85,11 +85,26 @@
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="这是一个VP2"/>
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="这是第二个VP2"/>
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp2_2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

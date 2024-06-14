@@ -221,7 +221,12 @@ fun ViewPager2.bindFragment(
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
     override fun getItemCount(): Int = fragments.size
     override fun createFragment(position: Int): Fragment = fragments[position]
-    override fun getItemId(position: Int): Long = fragments[position].hashCode().toLong()
+    override fun getItemId(position: Int): Long{
+//        return fragments[position].hashCode().toLong()
+        val name = fragments[position].javaClass.simpleName + position
+        val toLong = name.hashCode().toLong()
+        return toLong
+    }
 }
 
 val ViewPager2.recyclerView get() = this.getChildAt(0) as RecyclerView
@@ -286,7 +291,7 @@ fun ViewPager2.clearFragments() = apply {
 
 /**
  * @param viewLayoutRes ViewPage2 需要填充的 layout id
- * @param bindView      回调 onBindViewHolder() you can init some view
+ * @param bindView      callback onBindViewHolder() you can do some init
  */
 fun ViewPager2.bindView(
     itemCount:Int,

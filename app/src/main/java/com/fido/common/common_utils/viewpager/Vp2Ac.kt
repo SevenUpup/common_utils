@@ -1,7 +1,6 @@
 package com.fido.common.common_utils.viewpager
 
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.fido.common.common_base_ui.base.viewbinding.binding
@@ -9,12 +8,13 @@ import com.fido.common.common_base_util.ext.CommonVp2FragmentStateAdapter
 import com.fido.common.common_base_util.ext.addFragment
 import com.fido.common.common_base_util.ext.addFragment2Front
 import com.fido.common.common_base_util.ext.bindFragment
-import com.fido.common.common_base_util.ext.bindView
 import com.fido.common.common_base_util.ext.clearFragments
 import com.fido.common.common_base_util.ext.click
 import com.fido.common.common_base_util.ext.removeFragment
 import com.fido.common.common_base_util.ext.toast
-import com.fido.common.R
+import com.fido.common.common_base_ui.ext.findFragment
+import com.fido.common.common_base_util.ext.arguments
+import com.fido.common.common_base_util.ext.logD
 import com.fido.common.databinding.AcVp2Binding
 
 /**
@@ -27,12 +27,14 @@ class Vp2Ac:AppCompatActivity() {
     val binding:AcVp2Binding by binding()
 
     private val mFragments = mutableListOf<Fragment>()
+    private val mVp2Fragments = mutableListOf<Fragment>()
     private var index = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         for (i in 0..5) {
             mFragments.add(TestFragment.newInstance("i am Fragment $i "))
+            mVp2Fragments.add(TestFragment.newInstance("VP2 Fragment $i "))
         }
         binding.apply {
 
@@ -59,6 +61,11 @@ class Vp2Ac:AppCompatActivity() {
             mVp2.bindFragment(supportFragmentManager,this@Vp2Ac.lifecycle,mFragments,5)
 
             initCustomVp2Adapter(this)
+
+            vp22.bindFragment(supportFragmentManager,this@Vp2Ac.lifecycle,mVp2Fragments,mVp2Fragments.size)
+
+            val fragment = vp22.findFragment<TestFragment>(supportFragmentManager,0)
+            logD("vp2 position2 fragment=${fragment} argValue=${fragment?.arguments<String>("S")}")
         }
     }
 
@@ -93,14 +100,14 @@ class Vp2Ac:AppCompatActivity() {
                 vp2.clearFragments()
             }
 
-            binding.vp2.bindView(5,R.layout.item_rv_img_match){ position ->
-                findViewById<ImageView>(R.id.mIv).apply {
-                    setImageResource(R.drawable.bg)
-                    click {
-                        toast(position.toString())
-                    }
-                }
-            }
+//            vp2.bindView(5,R.layout.item_rv_img_match){ position ->
+//                findViewById<ImageView>(R.id.mIv).apply {
+//                    setImageResource(R.drawable.bg)
+//                    click {
+//                        toast(position.toString())
+//                    }
+//                }
+//            }
 
         }
 

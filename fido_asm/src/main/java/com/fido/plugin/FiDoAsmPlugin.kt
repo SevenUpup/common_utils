@@ -6,6 +6,7 @@ import com.android.build.api.instrumentation.InstrumentationScope
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.api.variant.Variant
+import com.fido.config.CommonPluginConfig
 import com.fido.plugin.click.ClickViewClassVisitorFactory
 import com.fido.config.ViewClickPluginParameter
 import com.fido.config.CustomMethodPluginParameter
@@ -20,6 +21,11 @@ import com.fido.config.ViewClickConfig
 import com.fido.config.replace_method.ReplaceMethodConfig
 import com.fido.config.replace_method.ReplaceMethodPluginParameters
 import com.fido.constant.PluginConstant
+import com.fido.plugin.common.CommonPluginUtils
+import com.fido.plugin.common.CommonPluginUtils.checkSnapshot
+import com.fido.plugin.common.CommonPluginUtils.doAnalysisSo
+import com.fido.plugin.common.CommonPluginUtils.doPrintDependencies
+import com.fido.plugin.common.CommonPluginUtils.permissionsToRemove
 import com.fido.plugin.custommethod.HookClassVisitorFactory
 import com.fido.plugin.custommethod.HookCustomMethodCVF
 import com.fido.plugin.method_replace.CollectReplaceMethodAnnotationCVF
@@ -40,7 +46,7 @@ class FiDoAsmPlugin : Plugin<Project> {
         // 判断是否有 com.android.application 插件来判断该 module 是否是一个 Android App 的 moudle，我们只处理 Android APP
         val appPlugin = try {
             target.plugins.getPlugin("com.android.application")
-        }catch (e:Throwable){
+        } catch (e: Throwable) {
             null
         }
         if (appPlugin != null) {
@@ -68,28 +74,34 @@ class FiDoAsmPlugin : Plugin<Project> {
                 ReplaceMethodPluginParameters::class.java.simpleName,
                 ReplaceMethodPluginParameters::class.java
             )
-            val androidComponents = target.extensions.getByType(AndroidComponentsExtension::class.java)
+            val androidComponents =
+                target.extensions.getByType(AndroidComponentsExtension::class.java)
             androidComponents.onVariants { variant: Variant ->
 
                 //hook指定类名&方法 为 目标方法
                 handleCustomMethod(project = target, variant = variant)
                 //处理全局点击
-                handleViewClickPlugin(target,variant)
+                handleViewClickPlugin(target, variant)
                 //替换类名
-                handleReplaceClassPlugin(target,variant)
+                handleReplaceClassPlugin(target, variant)
                 //替换系统toast,可以解决7.0系统toast
-                handleToastPlugin(target,variant)
+                handleToastPlugin(target, variant)
                 //替换类中方法或属性
-                handleHookClassPlugin(target,variant)
+                handleHookClassPlugin(target, variant)
                 //收集需要通过注解替换方法的一些配置信息,需要与ReplaceMethodClassVisitorFactory一起使用，因为要保证先收集，再修改方法(因为我不知道怎么便收集便修改，不能保证每次字节码修改的顺序，可能没收集到就先到了修改的字节码文件了)
-                handleCollectReplaceMethodPlugin(target,variant)
+                handleCollectReplaceMethodPlugin(target, variant)
                 //替换方法，主要用于同意隐私协议前调用系统方法，目前改为ModifyClassesTask实现
 //                handleReplaceMethodPlugin(target,variant)
                 variant.instrumentation.setAsmFramesComputationMode(FramesComputationMode.COMPUTE_FRAMES_FOR_INSTRUMENTED_METHODS)
 
-                val replaceMethodTaskEnable = target.properties[PluginConstant.FIDO_ASM_REPLACE_METHOD_ENABLE] as? Boolean ?: false
+                val replaceMethodTaskEnable =
+                    target.properties[PluginConstant.FIDO_ASM_REPLACE_METHOD_ENABLE] as? Boolean
+                        ?: false
                 if (replaceMethodTaskEnable) {
-                    val taskProvider = target.tasks.register("${variant.name}${ModifyClassesTask::class.java.simpleName}",ModifyClassesTask::class.java)
+                    val taskProvider = target.tasks.register(
+                        "${variant.name}${ModifyClassesTask::class.java.simpleName}",
+                        ModifyClassesTask::class.java
+                    )
                     variant.artifacts.forScope(ScopedArtifacts.Scope.ALL)
                         .use(taskProvider)
                         .toTransform(
@@ -98,6 +110,40 @@ class FiDoAsmPlugin : Plugin<Project> {
                             ModifyClassesTask::allDirectories,
                             ModifyClassesTask::output,
                         )
+                }
+            }
+
+            /*
+             * 扩展的配置要在 project.afterEvaluate 之后获取哦
+             * 因为配置阶段完成，才能读取参数
+             * 且配置完成，才能拿到所有的依赖
+             */
+            val extension = target.extensions.create(CommonPluginConfig.NAME_SPACE,CommonPluginConfig::class.java)
+            target.afterEvaluate {
+                if (extension.printDependencies) {
+                    println(CommonPluginUtils.TAG + "已开启依赖打印")
+                    doPrintDependencies(target)
+                } else {
+                    println(CommonPluginUtils.TAG + "已关闭依赖打印")
+                }
+
+                if (extension.analysisSo) {
+                    println(CommonPluginUtils.TAG + "已开启so打印")
+                    doAnalysisSo(target)
+                } else {
+                    println(CommonPluginUtils.TAG + "已关闭so打印")
+                }
+
+                if (extension.checkSnapshot) {
+                    println(CommonPluginUtils.TAG + "已开启snapshot版本检查")
+                    checkSnapshot(target, extension.blockSnapshot)
+                } else {
+                    println(CommonPluginUtils.TAG + "已关闭snapshot版本检查")
+                }
+
+                if (extension.permissionsToRemove.isNotEmpty()) {
+                    println(CommonPluginUtils.TAG + "已开启权限移除")
+                    permissionsToRemove(target, extension.permissionsToRemove)
                 }
             }
         }
@@ -123,14 +169,17 @@ class FiDoAsmPlugin : Plugin<Project> {
 
     private fun handleCollectReplaceMethodPlugin(target: Project, variant: Variant) {
         val parameters = target.extensions.findByType(ReplaceMethodPluginParameters::class.java)
-        val collectReplaceMethodAnnotationConfig = if (parameters == null){
+        val collectReplaceMethodAnnotationConfig = if (parameters == null) {
             null
-        }else{
+        } else {
             ReplaceMethodConfig(parameters)
         }
         if (collectReplaceMethodAnnotationConfig != null) {
             variant.instrumentation.apply {
-                transformClassesWith(CollectReplaceMethodAnnotationCVF::class.java,InstrumentationScope.ALL){replaceMethodConfigParameters ->
+                transformClassesWith(
+                    CollectReplaceMethodAnnotationCVF::class.java,
+                    InstrumentationScope.ALL
+                ) { replaceMethodConfigParameters ->
                     replaceMethodConfigParameters.config.set(collectReplaceMethodAnnotationConfig)
                 }
             }
@@ -141,12 +190,15 @@ class FiDoAsmPlugin : Plugin<Project> {
         val parameters = target.extensions.findByType(ReplaceMethodPluginParameters::class.java)
         val replaceMethodConfig = if (parameters == null) {
             null
-        }else{
+        } else {
             ReplaceMethodConfig(parameters)
         }
         if (replaceMethodConfig != null) {
             variant.instrumentation.apply {
-                transformClassesWith(ReplaceMethodClassVisitorFactory::class.java,InstrumentationScope.ALL){replaceMethodConfigParameters ->
+                transformClassesWith(
+                    ReplaceMethodClassVisitorFactory::class.java,
+                    InstrumentationScope.ALL
+                ) { replaceMethodConfigParameters ->
                     replaceMethodConfigParameters.config.set(replaceMethodConfig)
                 }
             }
@@ -155,14 +207,17 @@ class FiDoAsmPlugin : Plugin<Project> {
 
     private fun handleHookClassPlugin(target: Project, variant: Variant) {
         val hookClassParameter = target.extensions.findByType(HookClassParameter::class.java)
-        val hookClassConfig = if (hookClassParameter == null){
+        val hookClassConfig = if (hookClassParameter == null) {
             null
-        }else{
+        } else {
             HookClassConfig(hookClassParameter)
         }
         if (hookClassConfig != null) {
             variant.instrumentation.apply {
-                transformClassesWith(HookClassVisitorFactory::class.java,InstrumentationScope.ALL){ hookClassInstrumentationParameters ->
+                transformClassesWith(
+                    HookClassVisitorFactory::class.java,
+                    InstrumentationScope.ALL
+                ) { hookClassInstrumentationParameters ->
                     hookClassInstrumentationParameters.config.set(hookClassConfig)
                 }
             }
@@ -171,14 +226,17 @@ class FiDoAsmPlugin : Plugin<Project> {
 
     private fun handleToastPlugin(target: Project, variant: Variant) {
         val parameter = target.extensions.findByType(ToastPluginParameter::class.java)
-        val toastPluginConfig = if (parameter == null){
+        val toastPluginConfig = if (parameter == null) {
             null
-        }else{
+        } else {
             ToastConfig(parameter)
         }
         if (toastPluginConfig != null) {
             variant.instrumentation.apply {
-                transformClassesWith(ToastClassVisitorFactory::class.java,InstrumentationScope.ALL){toastConfigParameter ->
+                transformClassesWith(
+                    ToastClassVisitorFactory::class.java,
+                    InstrumentationScope.ALL
+                ) { toastConfigParameter ->
                     toastConfigParameter.config.set(toastPluginConfig)
                 }
             }
@@ -187,14 +245,17 @@ class FiDoAsmPlugin : Plugin<Project> {
 
     private fun handleReplaceClassPlugin(target: Project, variant: Variant) {
         val pluginParameter = target.extensions.findByType(ReplaceClassPluginParameter::class.java)
-        val replaceClassPluginConfig = if (pluginParameter == null){
+        val replaceClassPluginConfig = if (pluginParameter == null) {
             null
-        }else{
+        } else {
             ReplaceClassConfig(parameter = pluginParameter)
         }
         if (replaceClassPluginConfig != null) {
             variant.instrumentation.apply {
-                transformClassesWith(ReplaceClassClassVisitorFactory::class.java,InstrumentationScope.ALL){replaceClassConfigParameters ->
+                transformClassesWith(
+                    ReplaceClassClassVisitorFactory::class.java,
+                    InstrumentationScope.ALL
+                ) { replaceClassConfigParameters ->
                     replaceClassConfigParameters.config.set(replaceClassPluginConfig)
                 }
             }
@@ -203,10 +264,14 @@ class FiDoAsmPlugin : Plugin<Project> {
 
     private fun handleViewClickPlugin(target: Project, variant: Variant) {
         val viewClickParameter = target.extensions.findByType(ViewClickPluginParameter::class.java)
-        val viewClickConfig = if (viewClickParameter == null) null else ViewClickConfig(parameter = viewClickParameter)
+        val viewClickConfig =
+            if (viewClickParameter == null) null else ViewClickConfig(parameter = viewClickParameter)
         if (viewClickConfig != null) {
             variant.instrumentation.apply {
-                transformClassesWith(ClickViewClassVisitorFactory::class.java,InstrumentationScope.ALL){clickViewConfigParameter ->
+                transformClassesWith(
+                    ClickViewClassVisitorFactory::class.java,
+                    InstrumentationScope.ALL
+                ) { clickViewConfigParameter ->
                     clickViewConfigParameter.config.set(viewClickConfig)
                 }
             }

@@ -1,8 +1,8 @@
 package com.fido.common.common_utils.pop
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +27,9 @@ import com.fido.common.common_base_util.ext.rectangleCornerBg
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.util.dialog.*
 import com.fido.common.R
+import com.fido.common.base.popup.enu.PopupType
+import com.fido.common.base.popup.showPopup
+import com.fido.common.common_base_ui.base.dialog.createVBPop
 import com.fido.common.common_base_util.ext.lifecycleOwner
 import com.fido.common.common_base_util.ext.startActivity
 import com.fido.common.common_utils.login.LoginAc
@@ -41,6 +44,8 @@ import com.fido.common.common_utils.pop.login_interceptor.LoginInterceptorChain
 import com.fido.common.common_utils.pop.login_interceptor.LoginNextInterceptor
 import com.fido.common.databinding.AcDialogChainBinding
 import com.fido.common.common_utils.rv.MyItemTouchHelperCallBack
+import com.fido.common.databinding.ItemRvImgBinding
+import com.lxj.xpopup.enums.PopupPosition
 
 
 /**
@@ -62,6 +67,8 @@ class DialogChainAc :AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initEvent()
+
         val liveData = MutableLiveData<String>()
         val liveDta2 = MutableLiveData<Int>()
         val mediatorLiveData = MediatorLiveData<Any>().apply {
@@ -80,13 +87,15 @@ class DialogChainAc :AppCompatActivity(){
         loginInterceptorCoroutinesManager = LoginInterceptorCoroutinesManager.get()
         lifecycleOwner.lifecycle.addObserver(loginInterceptorCoroutinesManager!!)
         binding.btInterceptorByCoroutines.throttleClick {
-            loginInterceptorCoroutinesManager?.checkLogin({
+            loginInterceptorCoroutinesManager?.checkLogin(
+                loginAction = {
                 //默认未登录状态
                 toast("当前未登录，跳转登录页登陆")
-                startActivity<LoginAc>() },{
+                startActivity<LoginAc>() },
+                nextAction = {
                 toast("登陆成功，去个人中心咯")
                 startActivity<UserProfileAc>()
-            })
+                })
         }
 
         binding.btDialogChainLogin.throttleClick {
@@ -228,6 +237,29 @@ class DialogChainAc :AppCompatActivity(){
         )
     }
 
+    private fun initEvent() {
+        binding.apply {
+            btDialogNormal.throttleClick {
+//                createPop(R.layout.layout_header_view, popGravity = Gravity.CENTER){
+//                    findViewById<TextView>(R.id.tv_header_title).text = "i am normal center popup"
+//                }.show()
+                showPopup(
+                    PopupType.CENTER,
+                    viewBinding = {
+                        ItemRvImgBinding.inflate(it)
+                    },
+//                    onCreateListener = {itemRvImgBinding: ItemRvImgBinding, iPopupController: IPopupController ->
+//
+//                    }
+                )
+            }
+
+            btDialogVb.throttleClick {
+                createVBPop<ItemRvImgBinding>(R.layout.item_rv_img, popPosition = PopupPosition.Top, popGravity = Gravity.BOTTOM).show()
+            }
+        }
+    }
+
 }
 
 class MyDialogFragment(private val initBlock:(()->Unit)?=null):DialogFragment(){
@@ -246,7 +278,7 @@ class MyDialogFragment(private val initBlock:(()->Unit)?=null):DialogFragment(){
         val view: View = inflater.inflate(R.layout.layout_header_view, null)
             builder.setView(view)
                 .setPositiveButton("Sign in",
-                DialogInterface.OnClickListener { dialog, id -> }).setNegativeButton("Cancel", null)
+                    { dialog, id -> }).setNegativeButton("Cancel", null)
         return builder.create()
     }
 

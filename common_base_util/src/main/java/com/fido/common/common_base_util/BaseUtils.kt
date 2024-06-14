@@ -22,6 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.annotation.LayoutRes
+import androidx.annotation.RequiresPermission
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
@@ -84,11 +85,17 @@ fun Context.px2sp(pxValue: Float): Int {
 
 /**
  * 短促的震动
- *
  * @param millis 震动时长
  */
+@RequiresPermission("android.permission.VIBRATE")
 fun Context.vibrateShot(millis: Long) {
-    val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
+    val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        val vibratorManager = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+        vibratorManager.defaultVibrator
+    } else {
+        getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
+    }
+//    val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
     vibrator?.let {
         if (it.hasVibrator()) {
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
@@ -405,7 +412,7 @@ fun Array<out Pair<String, Any?>>.toBundle(): Bundle? {
     }
 }
 
-//data class 对象的深拷贝
+//data class 对象的深拷贝(需要依赖Kotlin反射库)
 fun <T : Any> T.deepCopy(): T {
     //如果不是数据类，直接返回
     if (!this::class.isData) {

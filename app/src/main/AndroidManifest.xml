@@ -27,7 +27,7 @@
 
     <uses-permission android:name="android.permission.READ_CALENDAR"/>
     <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
-
+    <uses-permission android:name="android.permission.VIBRATE"/>
     <application
         android:name=".common_utils.App"
         android:allowBackup="true"
@@ -169,6 +169,7 @@
         <activity android:name=".common_utils.asm.AsmHookActivity"/>
         <activity android:name=".common_utils.login.LoginAc"/>
         <activity android:name=".common_utils.login.UserProfileAc"/>
+        <activity android:name=".common_utils.design_pattern.DesignPatternAc"/>
     </application>
 
 </manifest>

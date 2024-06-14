@@ -69,7 +69,10 @@ final + number类型 时最好不要将初始值赋值为0
 ##### 开关控制:root下[build.gradle](build.gradle)添加 ext.fido_asm_replace_method_enable = true，debug时可以置为false,以免影响编译效率
 通过以下方式添加含有注解的全类名(object 静态方法记得添加 @JvmStatic哦)     
 1.root下的.gradle添加 ext.fido_asm_replace_method_class = ["xxx"]        
-2.通过ReplaceMethodPluginParameters{ replaceClassName=[] }     
+2.通过ReplaceMethodPluginParameters{          
+        enable = true     
+        replaceClassName=[]     
+}        
 目前可实现在用户未同意隐私权限前，三方库或现有代码调用获取‘硬件信息’时，替换为，通过‘注解’的方法，具体使用可参考DeviceInfoAc/AsmHookActivity   
 
 ```
@@ -96,6 +99,18 @@ final + number类型 时最好不要将初始值赋值为0
          parameterName = ["STATCI_VAL_DOUBLE","STATCI_VAL_LONG","INT_VAL","INT_PROT","INT_PUB"]
          parameterNewValue = ["6666",16.0,555L,777,true]
     }
+```
+
+#### common plugin
+```
+plugins {
+    id 'com.fido.plugin.asm'
+}
+
+fido {
+    printDependencies = true //print project dependencies 并输出到桌面
+    permissionsToRemove = ['android.permission.XXX','android.permission.XXX']  // delete permission 并将结果输出到桌面
+}
 ```
 ## 开发中功能
 

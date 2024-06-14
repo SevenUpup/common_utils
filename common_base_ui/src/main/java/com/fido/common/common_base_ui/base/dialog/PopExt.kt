@@ -1,6 +1,7 @@
 package com.fido.common.common_base_ui.base.dialog
 
 import android.content.Context
+import android.view.Gravity
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import com.fido.common.common_base_ui.base.dialog.base.*
@@ -15,11 +16,13 @@ import kotlin.math.max
 
 /**
  * @param layoutResId : your pop xml
- * @param popPosition : 弹窗位置（需要传 atView）
+ * @param popGravity  : 弹窗位置：默认居中弹出
+ * @param popPosition : 需要绑定参数:[atView] 弹窗位置相对于(atView)的Position
  * @param init        : do some init 可以通过作用域直接拿到view
  */
 inline fun <reified VB : ViewDataBinding> Context.createVBPop(
     layoutResId: Int,
+    popGravity:Int = Gravity.CENTER,
     hasShadowBg: Boolean = false,
     isClickThrough: Boolean = false,
     isDestroyOnDismiss: Boolean = true, //对于只使用一次的弹窗，推荐设置这个
@@ -29,7 +32,7 @@ inline fun <reified VB : ViewDataBinding> Context.createVBPop(
     moveUpToKeyboard: Boolean = false,
     isDarkTheme: Boolean = false,
     hasStatusBarShadow: Boolean = false, //启用状态栏阴影
-    isLightStatusBar: Boolean = false,   //置状态栏是否是亮色
+    isLightStatusBar: Boolean = false,   //设置状态栏是否是亮色
     popHeight: Int = -1,
     popWidth: Int = -1,
     offsetX: Int? = null,
@@ -48,7 +51,9 @@ inline fun <reified VB : ViewDataBinding> Context.createVBPop(
         layoutResId,
         init,
         atView,
-        if (offsetX != null || offsetY != null) max(offsetX ?: 0, offsetY ?: 0) else null
+        if (offsetX != null || offsetY != null) max(offsetX ?: 0, offsetY ?: 0) else null,
+        popGravity
+
     ).getBaseVBPop()
     creatXPopCustomView(basePop).apply {
         isDarkTheme(isDarkTheme)
@@ -79,11 +84,12 @@ inline fun <reified VB : ViewDataBinding> Context.createVBPop(
 /**
  * 建议使用createVBPop 可以做更多
  * @param layoutResId : your pop xml
- * @param popPosition : 弹窗位置（需要传 atView）
+ * @param popPosition : 弹窗位置相对于atView（需要 atView）
  * @param init        : 做一些初始化操作 findViewById等都在这
  */
 fun Context.createPop(
     layoutResId: Int,
+    popGravity:Int = Gravity.CENTER,
     hasShadowBg: Boolean = false,
     isClickThrough: Boolean = false,
     isDestroyOnDismiss: Boolean = true, //对于只使用一次的弹窗，推荐设置这个
@@ -110,7 +116,8 @@ fun Context.createPop(
         layoutResId,
         init,
         if (offsetX != null || offsetY != null) max(offsetX ?: 0, offsetY ?: 0) else null,
-        atView
+        atView,
+        popGravity,
     ).getPop()
     creatXPopCustomView(basePop).apply {
         isDarkTheme(isDarkTheme)

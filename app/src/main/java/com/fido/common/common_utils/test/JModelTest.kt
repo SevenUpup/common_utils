@@ -3,7 +3,7 @@ package com.fido.common.common_utils.test
 import com.fido.common.common_utils.test.FunTest.Companion.also
 import com.fido.common.common_utils.test.decorator.Mi2ProtableBattery
 import com.fido.common.common_utils.test.decorator.MiProtableBattery
-import com.fido.common.common_utils.test.decorator.ProtableBattery
+import com.fido.common.common_utils.test.decorator.PortableBattery
 import kotlinx.coroutines.*
 
 class JModelTest {
@@ -14,7 +14,7 @@ class JModelTest {
 
         @JvmStatic
         fun main(args: Array<String>) {
-            val protableBattery:ProtableBattery = MiProtableBattery()
+            val protableBattery:PortableBattery = MiProtableBattery()
             protableBattery.charge()
 
             val mi2ProtableBattery = Mi2ProtableBattery(protableBattery)

@@ -67,9 +67,11 @@ class LoginInterceptorCoroutinesManager private constructor() : DefaultLifecycle
 
     override fun onDestroy(owner: LifecycleOwner) {
         loge("${this::class.simpleName} onDestroy------")
-        broadcastChannel.cancel()
-        //coroutines cancel
-        cancel()
+        kotlin.runCatching {
+            broadcastChannel.cancel()
+            //coroutines cancel
+            cancel()
+        }
     }
 
 }

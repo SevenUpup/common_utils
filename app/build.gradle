@@ -153,7 +153,7 @@ dependencies {
 //originalMethodName = "showMyToast",
 //targetClassName = "com.fido.common.common_utils.asm.KtAsmToast",
 //targetMethodName = "showKtToast",
-//handleMode = "A"
+//handleMode = "A" 添加
 //hookCustomMethod{
 //    configs = [
 //            new MethodsConfig("com.fido.common.common_utils.asm.KtAsmToast","showKtToast","com.fido.common.common_utils.asm.ASMTestAc", "showMyToast","A"),
@@ -187,9 +187,20 @@ dependencies {
 //    parameterName = ["B","H","A","G","K","str","mChar","LL","STATCI_VAL_DOUBLE","STATCI_VAL_LONG","INT_VAL","INT_PROT","INT_PUB"]
 //    parameterNewValue = ["6666","HT",false,10086,-10086,"newStr","newmChar","LiaoLiao",16.0,555L,777,888,654]
 //}
-ReplaceMethodPluginParameters{
-    enable = true
-    replaceClassName = ["com.fido.common.common_utils.device_info.TestReplaceMethod"]
+def useLocal = project.properties['USE_LOCAL'].toString().toBoolean()
+if (useLocal) {
+    ReplaceMethodPluginParameters{
+        enable = true
+        replaceClassName = ["com.fido.common.common_utils.device_info.TestReplaceMethod"]
+    }
+
+    fido{
+        printDependencies = true
+        analysisSo = false
+        checkSnapshot = false
+        blockSnapshot = false
+        permissionsToRemove = ['android.permission.READ_EXTERNAL_STORAGE','android.permission.WRITE_EXTERNAL_STORAGE']
+    }
 }
 
 /**

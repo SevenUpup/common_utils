@@ -37,6 +37,10 @@ object PluginConstant {
      * 替换类方法的Task开关
      */
     const val FIDO_ASM_REPLACE_METHOD_ENABLE = "fido_asm_replace_method_enable"
+
+    // ========================= Common Plugin ================================
+    const val FIDO_COMMON_PLUGIN = "fido"
+
 }
 
 fun String.hookMethodMode():String{

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/bt_strategy_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="策略模式"/>
+
+        <Button
+            android:id="@+id/bt_loadApk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="DownloadManager bilibili apk"/>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

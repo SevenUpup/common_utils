@@ -10,7 +10,7 @@ package com.fido.common.common_utils.test.decorator
 //}
 
 
-abstract class XiaoMiProtableBatteryDecorator(val protableBattery: ProtableBattery):XiaoMiProtableBattery{
+abstract class XiaoMiProtableBatteryDecorator(val protableBattery: PortableBattery):XiaoMiProtableBattery{
     override fun charge() {
         protableBattery.charge()
     }

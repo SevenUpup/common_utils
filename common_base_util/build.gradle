@@ -90,6 +90,9 @@ dependencies {
     api deps.android.ktx_coroutines_core
     api deps.android.ktx_coroutines_android
 
+    //Google DataStore
+    api deps.android.data_store
+
     //workmanager(国内商城可能判定为自启动？)
 //    api deps.android.work_manager
 

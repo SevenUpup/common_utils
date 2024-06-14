@@ -54,9 +54,9 @@ internal fun CommonFragmentStateAdapter(
          * 本来想 利用反射 set fragment 的 tag 主要 给[findFragment] 用的
          * 发现[FragmentStateAdapter.placeFragmentInViewHolder]  line: 338 会自己拼 f + itemId = "f0"
          * mFragmentManager.beginTransaction()
-            .add(fragment, "f" + holder.getItemId())
-            .setMaxLifecycle(fragment, STARTED)
-            .commitNow();
+        .add(fragment, "f" + holder.getItemId())
+        .setMaxLifecycle(fragment, STARTED)
+        .commitNow();
          */
 
         /*try{
@@ -72,6 +72,7 @@ internal fun CommonFragmentStateAdapter(
         if (isLazyLoading) recyclerView.setItemViewCacheSize(itemCount)
     }
 }
+
 
 fun <T : Fragment> ViewPager2.findFragment(fragmentManager: FragmentManager, position: Int) =
     fragmentManager.findFragmentByTag("f$position") as T?

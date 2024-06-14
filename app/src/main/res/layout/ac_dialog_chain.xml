@@ -69,4 +69,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <Button
+        android:id="@+id/bt_dialog_normal"
+        android:textAllCaps="false"
+        android:text="测试普通弹窗，居中弹出"
+        app:layout_constraintBottom_toTopOf="@id/bt_interceptor_by_coroutines"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/bt_dialog_vb"
+        android:textAllCaps="false"
+        android:text="测试ViewBinding弹窗,底部弹出"
+        app:layout_constraintBottom_toTopOf="@id/bt_dialog_normal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
