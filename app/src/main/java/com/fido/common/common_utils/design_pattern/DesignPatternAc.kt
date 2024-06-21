@@ -15,6 +15,7 @@ import com.fido.common.common_base_util.ext.click
 import com.fido.common.common_base_util.ext.logd
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_utils.design_pattern.strategy.RuleExecute
+import com.fido.common.common_utils.test.asm.PrintTest
 import com.fido.common.databinding.AcDesignPatternBinding
 import java.io.File
 
@@ -27,8 +28,17 @@ class DesignPatternAc:AppCompatActivity() {
 
     private val binding:AcDesignPatternBinding by binding()
 
+    private val isChange = PrintTest.C
+
+    private val isChange2 = 4.0f
+    private var isChange3 = "77"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        binding.tv.text = "isChange=${isChange} isChange2=${isChange2} isChange3=${isChange3}"
+        logd("isChange=${isChange} isChange2=${isChange2} isChange3=${isChange3}")
+        toast("isChange=${isChange} isChange2=${isChange2} isChange3=${isChange3}")
 
         val jobCheck = JobCheck(
             "S9876543A", "Singapore", "Singapore", 16f,

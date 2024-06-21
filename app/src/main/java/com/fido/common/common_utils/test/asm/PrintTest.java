@@ -7,7 +7,7 @@ package com.fido.common.common_utils.test.asm;
  */
 public class PrintTest {
 
-
+    public static boolean C = false;
     public static void main(String[] args) {
         test();
     }

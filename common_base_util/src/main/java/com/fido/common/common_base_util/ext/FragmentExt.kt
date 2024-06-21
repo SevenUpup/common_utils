@@ -37,13 +37,13 @@ fun FragmentActivity.replaceFragment(
 
 //添加fragment
 fun FragmentActivity.addFragment(
-    layoutId: Int,
+    containerId: Int,
     f: Fragment,
     bundle: Array<out Pair<String, Any?>>? = null
 ) {
     if (bundle != null) f.arguments = bundle.toBundle()
     supportFragmentManager.beginTransaction()
-        .add(layoutId, f)
+        .add(containerId, f)
         .commitAllowingStateLoss()
 }
 

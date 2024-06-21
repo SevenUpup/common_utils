@@ -170,6 +170,8 @@
         <activity android:name=".common_utils.login.LoginAc"/>
         <activity android:name=".common_utils.login.UserProfileAc"/>
         <activity android:name=".common_utils.design_pattern.DesignPatternAc"/>
+        <activity android:name=".common_utils.jetpack.JetPackAc"/>
+        <activity android:name=".common_utils.jetpack.JetPackageContainerAc"/>
     </application>
 
 </manifest>

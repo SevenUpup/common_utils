@@ -2,6 +2,7 @@ package com.fido.common.common_base_util.util;
 
 import static com.fido.common.common_base_util.BaseUtilsKt.app;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
@@ -127,6 +128,27 @@ public class BrightnessUtils {
             return getBrightness();
         }
         return (int) (brightness * 255);
+    }
+
+    /**
+     * 是否使屏幕常亮
+     *
+     * @param activity 当前的页面的Activity
+     *
+     */
+    public static void keepScreenLongLight(Activity activity, boolean isOpenLight, boolean maxBrightness) {
+
+        Window window = activity.getWindow();
+        if (isOpenLight) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        } else {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+
+        WindowManager.LayoutParams windowLayoutParams = window.getAttributes();
+        windowLayoutParams.screenBrightness = maxBrightness ?
+                WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL : WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+        window.setAttributes(windowLayoutParams);
     }
 
 

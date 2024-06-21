@@ -53,6 +53,7 @@ fun ViewPager.bind(count: Int, bindView: (container: ViewGroup, position: Int) -
 
 /**
  * 给ViewPager绑定Fragment
+ * @param behavior behavior 参数，当为1的时候就不会回调 setUserVisibleHint 方法了，我们直接监听 OnResume 即可
  */
 fun ViewPager.bindFragment(
     fm: FragmentManager,

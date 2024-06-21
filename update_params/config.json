@@ -1,0 +1,17 @@
+[
+  {
+    "file_path": "../common_utils/app/src/main/java/com/fido/common/common_utils/test/asm/PrintTest.java",
+    "old_value": "public static boolean C = true;",
+    "new_value": "public static boolean C = false;"
+  },
+  {
+    "file_path": "../common_utils/app/src/main/java/com/fido/common/common_utils/design_pattern/DesignPatternAc.kt",
+    "old_value": "private val isChange2 = 3.2f",
+    "new_value": "private val isChange2 = 4.0f"
+  },
+  {
+    "file_path": "../common_utils/app/src/main/java/com/fido/common/common_utils/design_pattern/DesignPatternAc.kt",
+    "old_value": "private var isChange3 = \"66\"",
+    "new_value": "private var isChange3 = \"77\""
+  }
+]
