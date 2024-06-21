@@ -11,7 +11,12 @@
   },
   {
     "file_path": "../common_utils/app/src/main/java/com/fido/common/common_utils/design_pattern/DesignPatternAc.kt",
-    "old_value": "private var isChange3 = \"66\"",
-    "new_value": "private var isChange3 = \"77\""
+    "old_value": "private var isChange3 = \"77\"",
+    "new_value": "private var isChange3 = \"66\""
+  },
+  {
+    "file_path": "../common_utils/app/src/main/java/com/fido/common/common_utils/design_pattern/DesignPatternAc.kt",
+    "old_value": "private var isChange4 = \"1234\"",
+    "new_value": "private var isChange4 = \"4567\""
   }
 ]

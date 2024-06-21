@@ -31,7 +31,7 @@ class DesignPatternAc:AppCompatActivity() {
     private val isChange = PrintTest.C
 
     private val isChange2 = 4.0f
-    private var isChange3 = "77"
+    private var isChange3 = "66"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
