@@ -12,9 +12,23 @@ import androidx.appcompat.app.AppCompatActivity
 import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_ui.util.showNormalConfirmDialog
 import com.fido.common.common_base_util.ext.click
+import com.fido.common.common_base_util.ext.lifecycleOwner
 import com.fido.common.common_base_util.ext.logd
 import com.fido.common.common_base_util.ext.toast
+import com.fido.common.common_utils.design_pattern.intercept_chain.InterceptChain
+import com.fido.common.common_utils.design_pattern.intercept_chain.PartPrivacyInterceptor
+import com.fido.common.common_utils.design_pattern.intercept_chain.PrivacyAgreedInterceptor
+import com.fido.common.common_utils.design_pattern.intercept_chain.PrivacyInterceptBean
+import com.fido.common.common_utils.design_pattern.intercept_chain.PrivacyResultInterceptor
+import com.fido.common.common_utils.design_pattern.interceptor2.DialogPass
+import com.fido.common.common_utils.design_pattern.interceptor2.InterceptorHandler
+import com.fido.common.common_utils.design_pattern.interceptor2.interceptors.OneIntercept
+import com.fido.common.common_utils.design_pattern.interceptor2.interceptors.ThreeIntercept
+import com.fido.common.common_utils.design_pattern.interceptor2.interceptors.TipsIntercept
+import com.fido.common.common_utils.design_pattern.interceptor2.interceptors.TwoIntercept
+import com.fido.common.common_utils.design_pattern.interceptor2.interceptors.VerifyIntercept
 import com.fido.common.common_utils.design_pattern.strategy.RuleExecute
+import com.fido.common.common_utils.jetpack.CoroutineTest
 import com.fido.common.common_utils.test.asm.PrintTest
 import com.fido.common.databinding.AcDesignPatternBinding
 import java.io.File
@@ -35,6 +49,13 @@ class DesignPatternAc:AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        binding.btCoroutine.click {
+            val imgUrl = "https://gd-hbimg.huaban.com/5c94c28ad72061a418df7525079fecb2b42a296116b61-b7nVlM_fw658webp"
+            CoroutineTest.getInstance().downloadImgMaybeTimeout(lifecycleOwner,imgUrl,300){
+                toast(it.absolutePath)
+            }
+        }
 
         binding.tv.text = "isChange=${isChange} isChange2=${isChange2} isChange3=${isChange3}"
         logd("isChange=${isChange} isChange2=${isChange2} isChange3=${isChange3}")
@@ -99,7 +120,26 @@ class DesignPatternAc:AppCompatActivity() {
             btLoadApk.click {
                 startDownLoad()
             }
+
+            btDialogChain.click {
+                showDialogChainIntercept()
+            }
+
+            btDialogQueue.click {
+                showDialogQueue()
+            }
         }
+    }
+
+    private fun showDialogQueue() {
+        val interceptorHandler = InterceptorHandler<DialogPass>()
+        interceptorHandler.add(TipsIntercept())
+        interceptorHandler.add(VerifyIntercept())
+        interceptorHandler.add(OneIntercept())
+        interceptorHandler.add(TwoIntercept())
+        interceptorHandler.add(ThreeIntercept())
+
+        interceptorHandler.intercept(DialogPass("是否同意全部隐私协议",1))
     }
 
     private fun pushButtonAgain() = toast("再点一次刚才的按钮")
@@ -180,5 +220,15 @@ class DesignPatternAc:AppCompatActivity() {
         startActivity(intent)
     }
 
+    private fun showDialogChainIntercept() {
+        val interceptBean = PrivacyInterceptBean()
+        InterceptChain.create()
+            .attach(this)
+            .addIntercept(PrivacyAgreedInterceptor(interceptBean))
+            .addIntercept(PartPrivacyInterceptor(interceptBean))
+            .addIntercept(PrivacyResultInterceptor(interceptBean))
+            .build()
+            .process()
+    }
 
 }

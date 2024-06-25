@@ -8,8 +8,6 @@ import com.fido.common.common_utils.design_pattern.strategy.RuleResult
  * @date: 2024/6/14
  * @des:
  */
-
-
 data class JobCheck(
     //人物要求
     val nric: String,

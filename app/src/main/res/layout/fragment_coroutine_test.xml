@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:autoLink="web"
+            android:text="Glide下载超时解决方案,通过协程withTimeout直接上层处理：\nhttps://juejin.cn/post/7265332526544814119"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/bt_withTimeout"
+            android:textAllCaps="false"
+            android:text="测试协程 withTimeout结果"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/bt_glide_withTimeout_fail"
+            android:textAllCaps="false"
+            android:text="协程 withTimeout处理 Glide下载图片超时(失败处理)"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/bt_glide_withTimeout"
+            android:textAllCaps="false"
+            android:text="协程 withTimeout处理 Glide下载图片超时(成功处理)"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_img_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/iv_glide_load"
+            android:layout_width="200dp"
+            android:layout_height="100dp"/>
+
+    </LinearLayout>
+</layout>

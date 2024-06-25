@@ -21,10 +21,41 @@
                 android:textAllCaps="false"
                 android:text="发送数据"/>
 
+            <Button
+                android:id="@+id/bt_registerFlowBus"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="注册flowBus"/>
+
+            <Button
+                android:id="@+id/bt_registerStickFlowBus"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="注册StickflowBus"/>
+
+            <Button
+                android:id="@+id/bt_sendFlowBus"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="发送flowBus"/>
+
+            <Button
+                android:id="@+id/bt_sendStickFlowBus"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="发送 粘性-flowBus"/>
+
             <TextView
                 android:id="@+id/tv_info"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                />
+
+
 
         </LinearLayout>
 

@@ -79,7 +79,7 @@ public class ScrollWindowImageView extends AppCompatImageView {
         if (translate > 0) {
             translate = 0;
         }
-        Log.e("FiDo", ScrollWindowImageView.this.hashCode() + " translate = " + translate );
+        Log.e(this.getClass().getSimpleName(), ScrollWindowImageView.this.hashCode() + " translate = " + translate );
         matrix.postTranslate(0, translate);
         setImageMatrix(matrix);
     }
@@ -125,10 +125,10 @@ public class ScrollWindowImageView extends AppCompatImageView {
             int scroolY = parentBottom - itemBottom;
             if (firstScrollY == 0) {
                 firstScrollY = scroolY;
-                Log.e("FiDo", ScrollWindowImageView.this.hashCode()+"scrollY: " + firstScrollY);
+                Log.e(this.getClass().getSimpleName(), ScrollWindowImageView.this.hashCode()+"scrollY: " + firstScrollY);
             } else {
                 _currentScroolY = scroolY - firstScrollY;
-                Log.e("FiDo", ScrollWindowImageView.this.hashCode()+ " _currentScroolY=" + _currentScroolY);
+                Log.e(this.getClass().getSimpleName(), ScrollWindowImageView.this.hashCode()+ " _currentScroolY=" + _currentScroolY);
                 scrollWindow(_currentScroolY);
             }
         }

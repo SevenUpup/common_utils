@@ -15,10 +15,30 @@
             android:textColor="@color/black"/>
 
         <Button
+            android:id="@+id/bt_coroutine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="协程test"/>
+
+        <Button
             android:id="@+id/bt_strategy_mode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="策略模式"/>
+
+        <Button
+            android:id="@+id/bt_dialog_chain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="弹窗链模式"/>
+
+        <Button
+            android:id="@+id/bt_dialog_queue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="弹窗队列方式"/>
 
         <Button
             android:id="@+id/bt_loadApk"

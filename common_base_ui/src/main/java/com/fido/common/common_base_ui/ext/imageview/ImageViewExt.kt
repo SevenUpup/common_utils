@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
@@ -13,9 +14,13 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
+import kotlinx.coroutines.suspendCancellableCoroutine
 import java.io.File
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 /**
  *  引擎类
@@ -194,4 +199,44 @@ fun Any.loadDrawable(
         }
 
     })
+}
+
+/**
+ * 使用Glide下载图片，并解决图片下载超时问题
+ * 方式：Coroutine作用域内通过 withTimeout设置超时时间，并捕获异常自己处理
+ *        launch{
+ *             try {
+ *                 val file = withTimeout(15000) {
+ *                     downloadImageWithGlide(userInfo.avatarUrl)
+ *                 }
+ *                 //下载成功之后 获取 文件 file
+ *             } catch (e: TimeoutCancellationException) {
+ *                 checkImageDownloadError(userInfo)
+ *             } catch (e: Exception) {
+ *                 checkImageDownloadError(userInfo)
+ *             }
+ *         }
+ */
+@SuppressLint("CheckResult")
+suspend fun downloadImageWithGlide(context: Context,imgUrl: String): File {
+    return suspendCancellableCoroutine { cancellableContinuation ->
+        Glide.with(context)
+            .load(imgUrl)
+            .timeout(15000)  //设不设都一样，反正不靠你
+            .diskCacheStrategy(DiskCacheStrategy.DATA)
+            .downloadOnly(object : SimpleTarget<File?>() {
+
+                override fun onResourceReady(resource: File, transition: Transition<in File?>?) {
+                    cancellableContinuation.resume(resource)
+                }
+
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    super.onLoadFailed(errorDrawable)
+
+                    cancellableContinuation.resumeWithException(RuntimeException("加载失败了"))
+
+                }
+            })
+
+    }
 }

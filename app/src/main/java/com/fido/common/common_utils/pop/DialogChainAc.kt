@@ -257,6 +257,7 @@ class DialogChainAc :AppCompatActivity(){
             btDialogVb.throttleClick {
                 createVBPop<ItemRvImgBinding>(R.layout.item_rv_img, popPosition = PopupPosition.Top, popGravity = Gravity.BOTTOM).show()
             }
+
         }
     }
 
