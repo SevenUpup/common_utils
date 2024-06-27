@@ -21,7 +21,8 @@
                 android:text="i am a TextView"/>
             <Button
                 android:id="@+id/button"
-                android:text="i am a Button"
+                android:textAllCaps="false"
+                android:text="i am a Button with anim"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <ImageView
@@ -32,6 +33,21 @@
                 android:src="@drawable/bg"/>
         </LinearLayout>
 
+        <com.fido.common.common_utils.widgets.textview.PrintTextView
+            android:id="@+id/printText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.fido.common.common_utils.customview.test_canvas.TestCanvasView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mChatRv"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            />
+
         <com.fido.common.common_base_ui.widget.ninegrid.NineGridLayout
             android:id="@+id/nineGridView"
             android:layout_width="match_parent"
@@ -39,7 +55,6 @@
             app:horizontal_spacing="10dp"
             app:vertical_spacing="10dp"
             android:background="#f1f1f1">
-
         </com.fido.common.common_base_ui.widget.ninegrid.NineGridLayout>
 
         <com.fido.common.common_utils.widgets.CodeRainView

@@ -9,8 +9,13 @@ class LazyStyleSingleton {
 
     companion object{
 
-        private val INSTANCE:LazyStyleSingleton?=null
-            get() = field ?: LazyStyleSingleton()
+        private var INSTANCE:LazyStyleSingleton?=null
+            get(){
+                if (field == null) {
+                    field = LazyStyleSingleton()
+                }
+                return field
+            }
 
         fun getInstance() = INSTANCE!!
 

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="14dp"
+        android:padding="6dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:gravity="center|bottom"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/ps_color_half_grey"
+                android:text="在岗"
+                android:textSize="8sp" />
+
+            <TextView
+                android:id="@+id/on_guard_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/ps_color_half_grey"
+                android:text="230"
+                android:textSize="8sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center|top"
+            android:layout_weight="1"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="总数"
+                android:textSize="8sp" />
+
+            <TextView
+                android:id="@+id/guard_sum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="241"
+                android:textSize="8sp" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_weight="8"
+            android:id="@+id/rl_bar_chart"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp">
+
+            <com.fido.common.common_utils.widgets.chat_bar.BarChartItem
+                android:layout_centerHorizontal="true"
+                android:id="@+id/sum_bar_chart"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="14dp"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_weight="2"
+            android:id="@+id/bar_chart_class_type"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:text="班组1"
+            android:textSize="10sp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+
+    </LinearLayout>
+</layout>

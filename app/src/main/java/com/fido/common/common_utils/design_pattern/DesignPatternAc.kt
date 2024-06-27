@@ -100,7 +100,6 @@ class DesignPatternAc:AppCompatActivity() {
                 val nationalityRule = NationalityRule(listOf("China", "Malaysia"))   //true
                 val visaRule = VisaRule()   //true
 
-
                 val build = RuleExecute
                     .create(jobCheck)
                     .and(listOf(covidRule))

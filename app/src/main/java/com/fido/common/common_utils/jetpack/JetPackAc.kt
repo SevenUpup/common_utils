@@ -105,6 +105,14 @@ class JetPackAc:AppCompatActivity() {
                     tvImgInfo.text = it.absolutePath
                 }
             }
+
+            suspendCoroutine.click {
+                SuspendCancellableCoroutineTest.getInstance().suspendCoroutine(coroutineFragment!!.viewLifecycleOwner)
+            }
+            resumeCoroutine.click {
+                SuspendCancellableCoroutineTest.getInstance().resumeCoroutine()
+            }
+
         }
         fragmentList.add(coroutineFragment!!)
 
