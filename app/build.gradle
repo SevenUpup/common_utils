@@ -72,6 +72,15 @@ android {
         }
     }
 
+    sourceSets {
+        main {
+            res.srcDirs = [
+                    'src/main/res/layout-new',  // 添加新的 layout 文件夹
+                    'src/main/res'
+            ]
+        }
+    }
+
     //让 项目识别 ksp生成的代码
     kotlin {
         sourceSets {

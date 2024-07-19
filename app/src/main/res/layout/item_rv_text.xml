@@ -20,6 +20,7 @@
             android:id="@+id/mTitle"
             tools:text="mTitle...................................."
             android:text="@{data}"
+            android:gravity="center"
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="13sp"

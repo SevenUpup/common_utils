@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Transition app:constraintSetStart="@+id/start"
+        app:constraintSetEnd="@+id/end"
+        app:motionInterpolator="easeInOut"
+        app:duration="500">
+
+        <OnSwipe
+            app:nestedScrollFlags="supportScrollUp"
+            app:autoCompleteMode="continuousVelocity"
+            app:dragDirection="dragRight"
+            app:touchAnchorId="@id/mRv" />
+
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+
+        <Constraint
+            android:id="@+id/mRv"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:layout_constraintTop_toBottomOf="@+id/line_top"
+            />
+
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+
+        <Constraint
+            android:id="@+id/mRv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/line_top"
+            app:layout_constraintBottom_toBottomOf="@+id/line_bottom"
+           />
+
+    </ConstraintSet>
+
+</MotionScene>

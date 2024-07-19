@@ -27,7 +27,9 @@ import com.fido.common.common_base_util.ext.margin
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.getScreenHeightPx
 import com.fido.common.common_base_util.getScreenWidthPx
+import com.fido.common.common_base_util.startActivity
 import com.fido.common.common_utils.customview.bean.ClassInfoBean
+import com.fido.common.common_utils.customview.fake_taobao.FakeTaobaoKingkongViewAc
 import com.fido.common.common_utils.customview.ninegrid.ImageNineGridAdapter
 import com.fido.common.common_utils.widgets.chat_bar.BarChartItem
 import com.fido.common.databinding.AcCustomViewBinding
@@ -51,7 +53,10 @@ class CustomViewAc:AppCompatActivity() {
             click {
                 toast("click img")
                 mTranslationX +=200f
-                binding.imageView.translationX = if (mTranslationX >= getScreenWidthPx()) 0f else mTranslationX
+                binding.imageView.translationX = if (mTranslationX >= getScreenWidthPx()){
+                    mTranslationX = 0f
+                    0f
+                } else mTranslationX
             }
             animate().apply {
                 translationX(200f)
@@ -59,6 +64,10 @@ class CustomViewAc:AppCompatActivity() {
                 start()
             }
 //            ObjectAnimator.ofFloat(binding.imageView,View.TRANSLATION_X,0f,200f).start()
+        }
+
+        binding.btTestBannerVp.click {
+            startActivity<FakeTaobaoKingkongViewAc>()
         }
 
         val view = binding.codeRainView

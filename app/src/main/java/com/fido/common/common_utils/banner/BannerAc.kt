@@ -9,8 +9,6 @@ import com.fido.common.common_utils.widgets.ImageAdapter2
 import com.youth.banner.Banner
 import com.youth.banner.listener.OnBannerListener
 import com.youth.banner.listener.OnPageChangeListener
-import com.youth.banner.transformer.AlphaPageTransformer
-import com.youth.banner.transformer.ZoomOutPageTransformer
 
 /**
 @author FiDo
@@ -44,7 +42,7 @@ class BannerAc : BaseVBActivity<AcBannerBinding>() {
         val banner = findViewById<Banner<String, ImageAdapter>>(R.id.banner)
         banner.apply {
             addBannerLifecycleObserver(this@BannerAc)
-            setBannerRound(20f)
+            setBannerRound(5f)
             setAdapter(ImageAdapter(imageUrls))
             addOnPageChangeListener(object : OnPageChangeListener {
                 override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {
@@ -75,10 +73,10 @@ class BannerAc : BaseVBActivity<AcBannerBinding>() {
             setBannerGalleryMZ(48, 0.8f)
             setAdapter(adapter)
 //            addPageTransformer(DepthPageTransformer())
-            addPageTransformer(AlphaPageTransformer())
+//            addPageTransformer(AlphaPageTransformer())
 //            addPageTransformer(RotateYTransformer())
 //            addPageTransformer(ScaleInTransformer())
-            addPageTransformer(ZoomOutPageTransformer())
+//            addPageTransformer(ZoomOutPageTransformer())
 
             viewPager2.offscreenPageLimit = 5
             addOnPageChangeListener(object : OnPageChangeListener {
