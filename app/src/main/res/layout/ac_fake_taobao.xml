@@ -17,9 +17,40 @@
             android:id="@+id/mRv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:itemCount="50"
+            tools:itemCount="2"
             android:background="@color/colorAccent"
-            tools:listitem="@layout/item_rv_text"/>
+            tools:listitem="@layout/item_kingkong_test"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="一个跟屁虫"/>
+
+
+        <LinearLayout
+            android:id="@+id/ll_rv2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mRv2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:itemCount="2"
+                android:background="@color/colorAccent"
+                tools:listitem="@layout/item_kingkong_test"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="第二个跟屁虫"/>
 
         <!--<androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
