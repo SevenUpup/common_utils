@@ -37,10 +37,16 @@ val RecyclerView.canScrollRight get() = canScrollHorizontally(-1)
 //获取Rv横向滑动百分比
 val RecyclerView.scrollHorPercent:Float
     get() {
+        //Rv 已经滚动的距离
         val scrollX = computeHorizontalScrollOffset()
+        //computeHorizontalScrollRange = Rv 实际宽度
         val maxScrollX = computeHorizontalScrollRange() - width
         return scrollX.toFloat() / maxScrollX.toFloat()
     }
+
+//rvCanScrollDistance = RecyclerView可以滚动的距离
+private val RecyclerView.canScrollHorizontalDistance
+    get() = (computeHorizontalScrollRange()) - (computeHorizontalScrollExtent()?:0)
 
 fun RecyclerView.setEmptyView(owner: LifecycleOwner,emptyView:View) =
     observeDataEmpty(owner) { emptyView.isVisible = it }

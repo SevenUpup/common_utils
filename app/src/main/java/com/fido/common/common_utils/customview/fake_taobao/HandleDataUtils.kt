@@ -36,4 +36,26 @@ object HandleDataUtils {
         return result
     }
 
+
+    fun transformList(input: List<String?>): List<String?> {
+        // 创建一个与输入列表大小相等的空列表
+        val result = MutableList(input.size) { null as String? }
+
+        // 将input列表中的元素按规则重新排列到result列表中
+        val length = 16
+        for (i in input.indices) {
+            if (input[i] != null) {
+                val index = if (i < length) {
+                    i % 4 * 4 + i / 4
+                } else {
+                    length + i - length
+                }
+                result[index] = input[i]
+            }
+        }
+
+        return result
+    }
+
+
 }

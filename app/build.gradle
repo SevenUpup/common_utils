@@ -50,11 +50,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '17'
         freeCompilerArgs += [
                 "-Xjvm-default=all",
         ]
@@ -114,6 +114,8 @@ dependencies {
 
     implementation deps.support.retrofit2
     implementation deps.support.retrofit_gson
+
+    implementation 'com.gitee.htgogo:KingKongView:v0.0.3'
 
     implementation project(':common_base_util')
     implementation project(':common_base_ui')

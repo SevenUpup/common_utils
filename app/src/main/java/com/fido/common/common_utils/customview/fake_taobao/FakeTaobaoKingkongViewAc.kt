@@ -1,6 +1,7 @@
 package com.fido.common.common_utils.customview.fake_taobao
 
 import android.animation.ValueAnimator
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,13 +18,22 @@ import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_ui.ext.horizontal
 import com.fido.common.common_base_util.app
 import com.fido.common.common_base_util.dp
+import com.fido.common.common_base_util.ext.click
+import com.fido.common.common_base_util.ext.gradientColorBgAnim
 import com.fido.common.common_base_util.ext.height
 import com.fido.common.common_base_util.ext.logd
+import com.fido.common.common_base_util.ext.loge
 import com.fido.common.common_base_util.ext.margin
+import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.ext.widthAndHeight
+import com.fido.common.common_base_util.getColor
 import com.fido.common.common_base_util.getScreenWidthPx
 import com.fido.common.databinding.AcFakeTaobaoBinding
+import com.fido.kingkongview.KingKongStyle
+import com.fido.kingkongview.KingKongView
+import com.fido.kingkongview.utils.easyKHolderCreator
 import kotlin.math.abs
+import kotlin.math.max
 
 
 /**
@@ -39,21 +49,71 @@ class FakeTaobaoKingkongViewAc : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        for (i in (0 until 20)) {
+        for (i in (0 until 15)) {
             list.add("test${i}")
         }
-        binding?.apply {
 
+        val kkView = binding?.kkView!!
+        initKingKongView(kkView)
+
+        binding?.tvGradientColor?.apply {
+            gradientColorBgAnim(
+                Color.parseColor("#9932CC"),
+                Color.parseColor("#FF69B4"),
+                radius = 15.dp.toFloat(),
+                autoStart = false,
+                infinite = true
+            ){valueAnim->
+                click {
+                    valueAnim?.start()
+                }
+            }
+        }
+
+        val allDataSize = maxSpan * visibleCount * 2
+        if (list.size < allDataSize) {
+//            for (i in list.size until allDataSize) {
+//                list.add((visibleCount),null)
+//            }
+            for (i in 0  until (maxSpan - 1) * visibleCount) {
+                list.add((visibleCount),null)
+            }
+        }
+        loge("allDataSize=${list} size = ${list.size}")
+       /*val indexNeedChangeList =  mutableListOf<Int>()
+        list.forEachIndexed { index, s ->
+            if (index >= allDataSize / 2 && s == null) {
+                indexNeedChangeList.add(index)
+            }
+        }
+        if (indexNeedChangeList.isNotEmpty()) {
+            indexNeedChangeList.forEach {
+                list.add(null)
+                list.removeAt(it)
+            }
+            repeat(indexNeedChangeList.size) {
+
+            }
+        }*/
+
+//        val newList2 = java.util.ArrayList<String>(list)
+        val newList = rearrange(list,maxSpan,visibleCount).toMutableList()
+        loge("newList=${newList} size=${newList.size}")
+//        val transformList = HandleDataUtils.transformList(newList)
+//        loge("newList2 = $newList2 \n==> newList=${newList}  \ngroupListIndexByMod=${HandleDataUtils.groupListIndexByMod(newList,maxSpan)}" +
+//                " \ngroupListByMod=${HandleDataUtils.groupListByMod(newList,maxSpan)}")
+
+        binding?.apply {
             val mRv = binding?.mRv!!
             mRv.horizontal(maxSpan)
-            mAdapter = MyAdapter(list){holder, position ->
+            mAdapter = MyAdapter(newList){holder, position ->
 //                if (position % maxSpan != 0  && position < (maxSpan*visibleCount)) {
 //                    holder.itemView.widthAndHeight(0,0)
 //                }else{
 //                    holder.itemView.widthAndHeight(itemWidth,itemHeight)
 //                }
                 holder.itemView.widthAndHeight(itemWidth,itemHeight)
-                holder.setText(list[position].toString())
+                holder.setText(newList[position].toString())
             }
             mRv.adapter = mAdapter
 
@@ -68,13 +128,83 @@ class FakeTaobaoKingkongViewAc : AppCompatActivity() {
                     }
                 })
 
+//            mRv.addItemDecoration(SpacesItemDecoration())
+
             binding?.mRv?.addOnScrollListener(object :RecyclerView.OnScrollListener(){
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE ){
+                        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                        val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+                        val lastPos = layoutManager.findLastVisibleItemPosition()
+
+                        val scrollX = recyclerView.computeHorizontalScrollOffset()
+                        val maxScrollX = recyclerView.computeHorizontalScrollRange() - recyclerView.width
+                        val scrollPercent = scrollX.toFloat() / maxScrollX.toFloat()
+
+                        if (scrollPercent > 0.33) {
+                            recyclerView.smoothScrollToPosition(newList.size-1)
+                        } else {
+                            recyclerView.smoothScrollToPosition(0)
+                        }
+                    }
+                    logd("newState = ${newState}")
+
+                }
+
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     // 累加水平滑动距离
-                    totalScrollDistance += dx
                     // 根据滑动距离动态调整列数
-//                    adjustSpanCount()
-                    Log.e("FiDo", "onScrolled dx: $dx  itemWidth =${itemWidth} totalScrollDistance=${totalScrollDistance}")
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                    val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+                    val lastPos = layoutManager.findLastVisibleItemPosition()
+                    adjustSpanCount()
+                    Log.e("FiDo", "onScrolled dx: $dx  itemWidth =${itemWidth} itemMargin=${itemMargin} lastMargin=${lastMargin}")
+                    for (position in firstVisibleItemPosition..lastPos) {
+                        val itemView = layoutManager?.findViewByPosition(position)
+                        if (itemView != null) {
+                            val margin = max(lastMargin,itemMargin)
+                            if (itemMargin > lastMargin) {
+                                lastMargin = itemMargin
+                            }
+                            if (lastMargin == itemMargin) {
+                                lastMargin = 0f
+                            }
+                            itemView.margin(leftMargin = margin.toInt()/3*2,rightMargin = margin.toInt()/3)
+//                            itemView.margin(leftMargin = margin.toInt())
+//                            itemView.setPadding(margin.toInt()/2,0,margin.toInt()/2,0)
+                        }
+                    }
+                    /*if (recyclerView.scrollPercent > 0.33) {
+
+                        for (position in firstVisibleItemPosition..lastPos) {
+                            val itemView = layoutManager?.findViewByPosition(position)
+                            if (itemView != null) {
+                                val margin = max(lastMargin,itemMargin)
+                                if (itemMargin > lastMargin) {
+                                    lastMargin = itemMargin
+                                }
+                                if (lastMargin == itemMargin) {
+                                    lastMargin = 0f
+                                    itemMargin = 0f
+                                }
+                                itemView.margin(rightMargin = margin.toInt())
+                            }
+                        }
+                    }else{
+                        val scrollX = recyclerView.computeHorizontalScrollOffset()
+                        for (position in firstVisibleItemPosition..lastPos) {
+                            val itemView = layoutManager?.findViewByPosition(position)
+                            if (itemView != null) {
+//                                val margin = max(lastMargin,itemMargin)
+//                                if (itemMargin > lastMargin) {
+//                                    lastMargin = itemMargin
+//                                }
+//                                itemView.margin(rightMargin = if (scrollX == 0) 0 else margin.toInt())
+                                itemView.margin(rightMargin = 0)
+                            }
+                        }
+                    }*/
                 }
             })
 
@@ -83,10 +213,26 @@ class FakeTaobaoKingkongViewAc : AppCompatActivity() {
         }
     }
 
+    private fun initKingKongView(kkView: KingKongView<Any?>) {
+        kkView.setUp(list, style = KingKongStyle.FAKE_ALI,3,4,0,{data, pos ->
+            toast("pos=${pos} data=${data}")
+        }, holderCreator = easyKHolderCreator(R.layout.item_rv_text_img, onBind = {itemView, holder, data, position ->
+            itemView.findViewById<TextView>(R.id.mTv).text = data.toString()
+        }))
+        kkView.setupIndicator(
+            style = KingKongStyle.FAKE_ALI,
+            indicatorWidth = 10.dp,
+            indicatorHeight = 5.dp,
+            indicatorBgColor = R.color.colorBgBtnNormal.getColor,
+            indicatorThumbColor = R.color.purple_200.getColor,
+        )
+    }
+
+    private var lastMargin = 0f
+
     private lateinit var mAdapter2:MyAdapter
-    private var offScreenWidth = 50
-    private var totalScrollDistance = 0
-    private val maxSpan = 3
+    private var offScreenWidth = 100
+    private var maxSpan = 4
     private val itemHeight = 88.dp
     private val visibleCount = 4
     private val itemWidth by lazy {
@@ -95,10 +241,10 @@ class FakeTaobaoKingkongViewAc : AppCompatActivity() {
     private lateinit var mAdapter:MyAdapter
     private fun initRv2(mRv2: RecyclerView) {
 
-//        val newList = rearrange(list,maxSpan,visibleCount).toMutableList()
-
+        val newList = rearrange(list,maxSpan,visibleCount).toMutableList()
         val groupList = HandleDataUtils.groupListIndexByMod(list,maxSpan)
-//        logd("rearrange = ${newList} \n${groupList}")
+        logd("rearrange = ${newList} \n${groupList}")
+
         mRv2.horizontal(maxSpan)
         mAdapter2 = MyAdapter(list){holder, position ->
             holder.itemView.widthAndHeight(itemWidth,itemHeight)
@@ -186,7 +332,8 @@ class FakeTaobaoKingkongViewAc : AppCompatActivity() {
                                 mHeight = itemHeight
                             }
                             resetItemViewHeight(itemView,mHeight)
-                            resetRvHeight(itemHeight)
+                            binding?.llRv2?.height(itemHeight)
+//                            resetRvHeight(itemHeight)
                         }
                     }
                 }else{
@@ -201,8 +348,9 @@ class FakeTaobaoKingkongViewAc : AppCompatActivity() {
                                     groupPoitions.forEach {
                                         Log.d("Fake", "将${it} 位置的高度置为0")
                                         val itemView = layoutManager.findViewByPosition(it)
+                                        val dynamicHeight= calculateItemHeightBasedOnScroll(itemView, recyclerView)
                                         resetItemViewHeight(itemView, 0)
-//                                        resetRvHeight(itemHeight)
+                                        resetRvHeight(itemHeight)
                                     }
                                 } else {
                                     //需要动态调整高度的item
@@ -210,8 +358,8 @@ class FakeTaobaoKingkongViewAc : AppCompatActivity() {
                                         val itemView = layoutManager.findViewByPosition(it)
                                         val dynamicHeight= calculateItemHeightBasedOnScroll(itemView, recyclerView)
                                         Log.d("Fake", "开始调整${it} 位置的高度 = ${dynamicHeight}")
-                                        resetItemViewHeight(itemView, dynamicHeight)
-                                        resetRvHeight(itemHeight + dynamicHeight)
+                                        resetItemViewHeight(itemView, (dynamicHeight/scrollPercent).toInt())
+//                                        resetRvHeight(itemHeight + dynamicHeight)
                                     }
                                 }
                             }
@@ -219,14 +367,26 @@ class FakeTaobaoKingkongViewAc : AppCompatActivity() {
                     } else {
                         val middleListPos = groupList.size / 2
                         groupList.forEachIndexed { index, groupPoitions ->
-                            if (index > 0 && index>middleListPos) {
-                                //需要动态调整高度的item
-                                groupPoitions.forEach {
-                                    val itemView = layoutManager.findViewByPosition(it)
-                                    val dynamicHeight = calculateItemHeightBasedOnScroll(itemView, recyclerView)
-                                    Log.d("king", "超过半屏 开始调整${it} 位置的高度 =${dynamicHeight}")
-                                    resetItemViewHeight(itemView,dynamicHeight)
-                                    resetRvHeight(itemHeight*index + dynamicHeight)
+//                            if (index > 0 && index>middleListPos) {
+                            if (index > 0 ) {
+                                if (index > middleListPos) {
+                                    //需要动态调整高度的item
+                                    groupPoitions.forEach {
+                                        val itemView = layoutManager.findViewByPosition(it)
+                                        val dynamicHeight = calculateItemHeightBasedOnScroll(itemView, recyclerView)
+                                        Log.d("king", "超过半屏 开始调整${it} 位置的高度 =${dynamicHeight}")
+                                        resetItemViewHeight(itemView,dynamicHeight)
+                                        resetRvHeight(itemHeight*index + dynamicHeight)
+                                    }
+                                }else{
+                                    groupPoitions.forEach {
+                                        val itemView = layoutManager.findViewByPosition(it)
+//                                        val dynamicHeight = calculateItemHeightBasedOnScroll(itemView, recyclerView)
+                                        val dynamicHeight = itemHeight
+//                                        Log.d("king", "超过半屏 开始调整${it} 位置的高度 =${dynamicHeight}")
+                                        resetItemViewHeight(itemView,dynamicHeight)
+//                                        resetRvHeight(itemHeight*index + dynamicHeight)
+                                    }
                                 }
                             }
                         }
@@ -246,7 +406,7 @@ class FakeTaobaoKingkongViewAc : AppCompatActivity() {
     }
 
     private fun resetRvHeight(containerHeight:Int){
-        binding?.llRv2?.height(containerHeight)
+//        binding?.llRv2?.height(containerHeight)
     }
 
     private val RecyclerView.scrollPercent:Float
@@ -272,23 +432,27 @@ class FakeTaobaoKingkongViewAc : AppCompatActivity() {
 
         itemMargin = (offScreenWidth/visibleCount) * scrollPercent
 
-        logd("scrollPercent=${scrollPercent} dynamicHeight=${dynamicHeight}")
+        val containerHeight = abs(((itemHeight*maxSpan)*scrollPercent).toInt())
+        if (containerHeight >= itemHeight) {
+            binding?.llRv2?.height(containerHeight)
+        }
+        logd("scrollPercent=${scrollPercent} dynamicHeight=${dynamicHeight} containerHeight=${containerHeight}")
 
         return dynamicHeight.toInt()
     }
 
     private fun adjustSpanCount() {
-        if (abs(totalScrollDistance) > 0) {
-            //RecyclerView实际宽度
-            val rvScrollRange = binding?.mRv?.computeHorizontalScrollRange()
-            if (rvScrollRange!! <=0 ) return
-            val maxScrollWidth = rvScrollRange - getScreenWidthPx()
-            val scrollPercent = (abs(totalScrollDistance.toDouble()) / maxScrollWidth)
+        val scrollPercent = binding?.mRv?.scrollPercent?:0f
+
+        itemMargin = (offScreenWidth/visibleCount) * scrollPercent
+
+        if (scrollPercent == 0f) {
+            binding?.cardRv!!.height(itemHeight)
+        }else{
             val dynamicHeight = abs(((itemHeight*maxSpan)*scrollPercent).toInt())
-            logd("totalScrollDistance=${abs(totalScrollDistance)} maxScrollWidth=${maxScrollWidth} scrollPercent=${scrollPercent} dynamicHeight=${dynamicHeight}")
+            logd("scrollPercent=${scrollPercent} dynamicHeight=${dynamicHeight}")
             if (dynamicHeight >= itemHeight) {
-//                binding?.mRv?.height(dynamicHeight)
-                changeRecyclerViewHeight(binding?.mRv!!,dynamicHeight)
+                binding?.cardRv!!.height(dynamicHeight)
             }
         }
     }

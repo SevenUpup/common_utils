@@ -3,7 +3,7 @@ ext {
     fido_asm_replace_method_enable = true
 
     versions = [
-            'minSdk'           : 21,
+            'minSdk'           : 24,
             'targetSdk'        : 32,
             'compileSdk'       : 32,
             'kotlin'           : '1.7.10',
