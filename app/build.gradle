@@ -101,6 +101,9 @@ dependencies {
         }
     }*/
 
+    //androidx.pdf minSdkVersion35 需要Android15！！
+//    implementation "androidx.pdf:pdf-viewer-fragment:1.0.0-alpha02"
+
     implementation deps.android.kt_ktx
     implementation deps.android.recyclerview
     implementation deps.android.appcompat
@@ -115,7 +118,7 @@ dependencies {
     implementation deps.support.retrofit2
     implementation deps.support.retrofit_gson
 
-    implementation 'com.gitee.htgogo:KingKongView:v0.0.3'
+    implementation 'com.gitee.htgogo:KingKongView:v0.0.83'
 
     implementation project(':common_base_util')
     implementation project(':common_base_ui')

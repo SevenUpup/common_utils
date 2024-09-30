@@ -173,7 +173,8 @@
         <activity android:name=".common_utils.jetpack.JetPackAc"/>
         <activity android:name=".common_utils.jetpack.JetPackageContainerAc"/>
         <activity android:name=".common_utils.customview.fake_taobao.FakeTaobaoKingkongViewAc"/>
-
+        <activity android:name=".common_utils.result.KtResultAc"/>
+        <activity android:name=".common_utils.pdf.AndroidXPdfActivity"/>
     </application>
 
 </manifest>

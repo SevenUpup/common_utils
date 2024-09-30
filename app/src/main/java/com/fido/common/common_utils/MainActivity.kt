@@ -127,6 +127,8 @@ import com.fido.common.common_utils.design_pattern.DesignPatternAc
 import com.fido.common.common_utils.jetpack.JetPackAc
 import com.fido.common.common_utils.muilt_process.PrivateProcessAc
 import com.fido.common.common_utils.naviga.CodenavigationAc
+import com.fido.common.common_utils.pdf.AndroidXPdfActivity
+import com.fido.common.common_utils.result.KtResultAc
 import com.fido.common.common_utils.room.RoomAc
 import com.fido.common.common_utils.rv.RvAc
 import com.fido.common.common_utils.sp.SPAc
@@ -365,6 +367,8 @@ class MainActivity : AppCompatActivity() {
         addView<AsmHookActivity>("asm Hook method...")
         addView<DesignPatternAc>("“射击”模式之痛")
         addView<JetPackAc>("go jetpack new future")
+        addView<KtResultAc>("Kotlin Result Test")
+        addView<AndroidXPdfActivity>("AndroidX PDF Activity")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {
