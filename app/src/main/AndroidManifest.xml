@@ -175,6 +175,7 @@
         <activity android:name=".common_utils.customview.fake_taobao.FakeTaobaoKingkongViewAc"/>
         <activity android:name=".common_utils.result.KtResultAc"/>
         <activity android:name=".common_utils.pdf.AndroidXPdfActivity"/>
+        <activity android:name=".common_utils.ac_factory2.LayoutFactory2Ac"/>
     </application>
 
 </manifest>

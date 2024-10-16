@@ -82,6 +82,7 @@ import com.fido.common.common_base_util.util.ShellUtils
 import com.fido.common.common_base_util.util.emoji.EmojiChecker
 import com.fido.common.common_base_util.util.timer.Interval
 import com.fido.common.common_base_util.vibrateShot
+import com.fido.common.common_utils.ac_factory2.LayoutFactory2Ac
 import com.fido.common.common_utils.accessibility.AdSkipAc
 import com.fido.common.common_utils.anim.AnimUtils
 import com.fido.common.common_utils.anim.ShakeAnim
@@ -369,6 +370,7 @@ class MainActivity : AppCompatActivity() {
         addView<JetPackAc>("go jetpack new future")
         addView<KtResultAc>("Kotlin Result Test")
         addView<AndroidXPdfActivity>("AndroidX PDF Activity")
+        addView<LayoutFactory2Ac>("LayoutInflater setFactory2 Activity")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {
