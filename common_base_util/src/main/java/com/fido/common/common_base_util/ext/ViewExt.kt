@@ -402,6 +402,27 @@ var View.roundCorners: Float
         }
     }
 
+/**
+ * View 圆角/圆形剪裁
+ */
+fun View.clipToRoundView(radius:Float,isCircle:Boolean=false){
+    if (Build.VERSION.SDK_INT >= 21) {
+        outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View?, outline: Outline?) {
+                if (view == null) return
+                if (isCircle) {
+                    outline?.setOval(0,0,view.width,view.height)
+                }else{
+                    outline?.setRoundRect(0,0,view.width,view.height,radius)
+                }
+            }
+        }
+        //视图会根据outlineProvider提供的轮廓进行裁剪。任何超出轮廓的部分都会被裁剪掉
+        clipToOutline = true
+    }
+}
+
+
 fun View?.isTouchedAt(x: Float, y: Float): Boolean =
     isTouchedAt(x.toInt(), y.toInt())
 

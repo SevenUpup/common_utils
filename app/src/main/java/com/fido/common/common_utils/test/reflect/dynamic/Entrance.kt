@@ -10,11 +10,11 @@ class Entrance {
         @JvmStatic
         fun main(args: Array<String>) {
 
-//            val iOperation = ProxyFactory.getInstance(RealObject()) as IOperation
-//            iOperation.operation()
+            val iOperation = ProxyFactory.getInstance(RealObject()) as IOperation
+            iOperation.operation()
 //
-//            val iOperation2 = ProxyFactory.getInstance(RealObject2()) as IOperation2
-//            iOperation2.operation("just do it!")
+            val iOperation2 = ProxyFactory.getInstance(RealObject2()) as IOperation2
+            iOperation2.operation("just do it!")
 
 
             val num1 = 5 // 二进制表示为 0101
