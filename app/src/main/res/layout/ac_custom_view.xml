@@ -56,6 +56,23 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/view1"
+                android:background="@color/cardview_shadow_start_color"
+                android:layout_width="200dp"
+                android:layout_height="100dp"/>
+            <View
+                android:id="@+id/view2"
+                android:layout_marginLeft="20dp"
+                android:background="@color/colorAccent"
+                android:layout_width="100dp"
+                android:layout_height="100dp"/>
+        </LinearLayout>
+
         <com.fido.common.common_utils.widgets.textview.PrintTextView
             android:id="@+id/printText"
             android:layout_width="match_parent"

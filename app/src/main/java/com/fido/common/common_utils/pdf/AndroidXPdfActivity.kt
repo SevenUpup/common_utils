@@ -26,13 +26,20 @@ class AndroidXPdfActivity:AppCompatActivity() {
 //        setPdfView()
 
         binding.apply {
-
+            tv.text = "implementation(\"androidx.graphics:graphics-shapes:1.0.0-beta01\")"
         }
         /*binding.apply {
             pdfViewerFragment?.documentUri = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf".toUri()
             //搜索功能
             pdfViewerFragment?.isTextSearchActive = true
         }*/
+
+        initView()
+
+    }
+
+    private fun initView() {
+        binding.btAndroidxShape
     }
 
 //    private fun setPdfView() {

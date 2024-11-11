@@ -39,7 +39,6 @@ fun main(){
     val buyer2Subject=dynamicProxy2.newInstance(buyer_2) as Subject
     buyer2Subject.buySomething()
     buyer2Subject.visaAgent(5)
-
 }
 
 class DynamicProxy2(

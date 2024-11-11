@@ -57,6 +57,19 @@ class DesignPatternAc:AppCompatActivity() {
             }
         }
 
+        val url = "667799"
+        when{
+            url.contains("66")->{
+
+            }
+            url.contains("77")->{
+
+            }
+            else ->{
+
+            }
+        }
+
         binding.tv.text = "isChange=${isChange} isChange2=${isChange2} isChange3=${isChange3}"
         logd("isChange=${isChange} isChange2=${isChange2} isChange3=${isChange3}")
         toast("isChange=${isChange} isChange2=${isChange2} isChange3=${isChange3}")

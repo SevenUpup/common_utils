@@ -56,7 +56,7 @@ class SuspendCancellableCoroutineTest private constructor(){
 
     fun resumeCoroutine(){
         mCancellableContinuation?:return
-        toast("点击恢复线程-返回数据")
+        toast("点击恢复线程-返回数据666")
         if (mCancellableContinuation?.isCancelled == true) {
             return
         }

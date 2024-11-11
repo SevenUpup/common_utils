@@ -51,6 +51,7 @@ import com.fido.common.common_base_util.ext.addStatusableDrawableBg
 import com.fido.common.common_base_util.ext.appLanguage
 import com.fido.common.common_base_util.ext.children
 import com.fido.common.common_base_util.ext.click
+import com.fido.common.common_base_util.ext.clipToRoundView
 import com.fido.common.common_base_util.ext.currentTimeString
 import com.fido.common.common_base_util.ext.dateCompare
 import com.fido.common.common_base_util.ext.doOnAppStatusChanged
@@ -80,6 +81,9 @@ import com.fido.common.common_base_util.util.AssetUtils
 import com.fido.common.common_base_util.util.ImageCodeUtils
 import com.fido.common.common_base_util.util.ShellUtils
 import com.fido.common.common_base_util.util.emoji.EmojiChecker
+import com.fido.common.common_base_util.util.hook.HookSetOnClickListenerHelper
+import com.fido.common.common_base_util.util.sp.putSp
+import com.fido.common.common_base_util.util.sp.spValue
 import com.fido.common.common_base_util.util.timer.Interval
 import com.fido.common.common_base_util.vibrateShot
 import com.fido.common.common_utils.ac_factory2.LayoutFactory2Ac
@@ -124,6 +128,7 @@ import com.fido.common.surface.SurfaceAc
 import com.fido.common.textview.TextViewAc
 import com.fido.common.common_utils.banner.BannerAc
 import com.fido.common.common_utils.constraintlayout.ConstraintLayoutAc
+import com.fido.common.common_utils.coroutine.CoroutineTestAc
 import com.fido.common.common_utils.design_pattern.DesignPatternAc
 import com.fido.common.common_utils.jetpack.JetPackAc
 import com.fido.common.common_utils.muilt_process.PrivateProcessAc
@@ -155,6 +160,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object{
         var MAIN_MUILT_PROCESS_TAG = 0
+        val globalGraySpKey = "globalGray"
+
     }
 
     private val mBinding: ActivityMainBinding by binding()
@@ -320,10 +327,22 @@ class MainActivity : AppCompatActivity() {
         }.forEach {
             loge("$it 是否包含emoji = ${EmojiChecker.containsEmoji(it)}")
         }
-
     }
 
+    private val isOpenGlobalGray
+        get() = globalGraySpKey.spValue("")
     private fun addButton() {
+        addView("${if (isOpenGlobalGray.isBlank()) "开启" else "关闭"}全局灰度视图"){
+            if (isOpenGlobalGray.isBlank()) {
+                "1".putSp(globalGraySpKey)
+            }else{
+                "".putSp(globalGraySpKey)
+            }
+            if (it is Button) {
+                it.text = "${if (isOpenGlobalGray.isBlank()) "开启" else "关闭"}全局灰度视图"
+            }
+            toast("${if (isOpenGlobalGray.isNotBlank()) "开启" else "关闭"}成功，请重新启动app")
+        }
         addView<ViewModelAc>("go ViewModel")
         addView<BannerAc>("go Banner")
         addView<SurfaceAc>("Go Surface")
@@ -369,8 +388,9 @@ class MainActivity : AppCompatActivity() {
         addView<DesignPatternAc>("“射击”模式之痛")
         addView<JetPackAc>("go jetpack new future")
         addView<KtResultAc>("Kotlin Result Test")
-        addView<AndroidXPdfActivity>("AndroidX PDF Activity")
+        addView<AndroidXPdfActivity>("AndroidX PDF && Shape Activity")
         addView<LayoutFactory2Ac>("LayoutInflater setFactory2 Activity")
+        addView<CoroutineTestAc>("Kotlin-Coroutine-Test")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {
@@ -378,9 +398,15 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        //利用代理hook 点击事件测试
+        mBinding.container.children.filter { it.id == R.id.tv }.forEach {
+            HookSetOnClickListenerHelper.hook(it.context,it){
+                toast("利用反射Hook点击事件，并在点击前插入代码")
+            }
+        }
     }
 
-    private fun addView(content:String, click:()->Unit){
+    private fun addView(content:String, click:(View)->Unit){
         mBinding.container.addView(
             Button(this).apply {
                 id = R.id.tv
@@ -389,7 +415,7 @@ class MainActivity : AppCompatActivity() {
                 setBackgroundColor(R.color.teal_700.getColor)
                 isAllCaps = false
                 setOnClickListener {
-                    click.invoke()
+                    click.invoke(this)
                 }
                 roundCorners = 10f.dp.toFloat()
             },
@@ -409,7 +435,7 @@ class MainActivity : AppCompatActivity() {
                     startActivity<T>()
                 }
                 roundCorners = 10f.dp.toFloat()
-            },
+             },
             mBinding.container.childCount - 4,ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
         )
     }
@@ -738,7 +764,7 @@ class MainActivity : AppCompatActivity() {
 //            startActivity<RvAc>()
             Log.d("FiDo", "RvAc : ${RvAc::class.java.name}")
             try {
-                val clazz = Class.forName("com.fido.common.Rv.RvAc")
+                val clazz = Class.forName("com.fido.common.common_utils.rv.RvAc")
                 startActivity(
                     Intent(this, clazz)
                 )

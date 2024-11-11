@@ -5,6 +5,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
+import android.content.ComponentName
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
@@ -13,6 +14,8 @@ import android.util.DisplayMetrics
 import android.view.animation.LinearInterpolator
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.asynclayoutinflater.view.AsyncLayoutInflater
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
@@ -20,8 +23,10 @@ import com.fido.common.R
 import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_ui.ext.bindAdapter
 import com.fido.common.common_base_ui.ext.bindData
+import com.fido.common.common_base_util.dp
 import com.fido.common.common_base_util.ext.activity
 import com.fido.common.common_base_util.ext.click
+import com.fido.common.common_base_util.ext.clipToRoundView
 import com.fido.common.common_base_util.ext.height
 import com.fido.common.common_base_util.ext.margin
 import com.fido.common.common_base_util.ext.toast
@@ -47,6 +52,9 @@ class CustomViewAc:AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        binding.view1.clipToRoundView(20.dp.toFloat(),false)
+        binding.view2.clipToRoundView(20.dp.toFloat(),true)
 
         var mTranslationX = 200f
         binding.imageView.apply {

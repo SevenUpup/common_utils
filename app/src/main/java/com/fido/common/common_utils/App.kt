@@ -11,6 +11,8 @@ import com.fido.common.BuildConfig
 import com.fido.common.R
 import com.fido.common.common_base_util.ext.logd
 import com.fido.common.common_base_util.log.LogUtils
+import com.fido.common.common_base_util.util.global_gray.GlobalGray
+import com.fido.common.common_base_util.util.sp.spValue
 import com.fido.common.common_base_util.util.toast.ToastConfig
 import com.fido.common.common_base_util.util.toast.interfaces.ToastGravityFactory
 import com.fido.common.common_utils.privacy.WhaleHook
@@ -74,6 +76,10 @@ class App: Application() {
                 .flyTo(this)
 
             Stetho.initializeWithDefaults(this)
+        }
+
+        if (MainActivity.globalGraySpKey.spValue("").isNotBlank()) {
+            GlobalGray.hook()
         }
     }
 

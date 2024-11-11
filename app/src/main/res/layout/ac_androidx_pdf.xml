@@ -13,6 +13,19 @@
         android:textSize="18sp"
         android:text="minSdkVersion35 需要Android15 别想了"/>
 
+    <Button
+        android:id="@+id/bt_androidx_shape"
+        android:text="AndroidX Shape With Graphics"
+        android:textAllCaps="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""/>
+
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"

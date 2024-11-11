@@ -176,6 +176,9 @@
         <activity android:name=".common_utils.result.KtResultAc"/>
         <activity android:name=".common_utils.pdf.AndroidXPdfActivity"/>
         <activity android:name=".common_utils.ac_factory2.LayoutFactory2Ac"/>
+
+        <activity android:name=".common_utils.coroutine.CoroutineTestAc"/>
+
     </application>
 
 </manifest>
