@@ -127,6 +127,7 @@ import com.fido.common.flutter.FlutterInteractiveAc
 import com.fido.common.surface.SurfaceAc
 import com.fido.common.textview.TextViewAc
 import com.fido.common.common_utils.banner.BannerAc
+import com.fido.common.common_utils.blue_tooth.BlueToothAc
 import com.fido.common.common_utils.constraintlayout.ConstraintLayoutAc
 import com.fido.common.common_utils.coroutine.CoroutineTestAc
 import com.fido.common.common_utils.design_pattern.DesignPatternAc
@@ -138,6 +139,7 @@ import com.fido.common.common_utils.result.KtResultAc
 import com.fido.common.common_utils.room.RoomAc
 import com.fido.common.common_utils.rv.RvAc
 import com.fido.common.common_utils.sp.SPAc
+import com.fido.common.common_utils.webview.WebViewAc
 import com.google.gson.Gson
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
@@ -391,6 +393,8 @@ class MainActivity : AppCompatActivity() {
         addView<AndroidXPdfActivity>("AndroidX PDF && Shape Activity")
         addView<LayoutFactory2Ac>("LayoutInflater setFactory2 Activity")
         addView<CoroutineTestAc>("Kotlin-Coroutine-Test")
+        addView<BlueToothAc>("BlueTooth-Test")
+        addView<WebViewAc>("Let's go WebView")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {
@@ -757,6 +761,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
+        // 在 Android 中，sw 表示屏幕的最小宽度（smallest width）。这是一个 dp 值，用于描述设备屏幕的物理宽度，即屏幕在任何方向上的最小尺寸。最小宽度 (sw) 是开发者在布局和资源文件中适配不同屏幕尺寸的重要参考值。
+        //sw 值的应用
+        //屏幕适配：使用 sw 资源限定符，可以在不同大小的设备上加载不同的资源文件，确保应用布局在各种屏幕尺寸上都有良好的用户体验。
+        //判断设备类型：较大的 sw 值（如 600dp 或 720dp）通常用于平板等大屏设备，而较小的值（如 320dp 或 360dp）则多用于手机。
+        val displayMetrics = resources.displayMetrics
+        val screenWidthDp = displayMetrics.widthPixels / displayMetrics.density
+        val screenHeightDp = displayMetrics.heightPixels / displayMetrics.density
+        val smallestWidthDp = minOf(screenWidthDp, screenHeightDp)
+        mBinding.tvSw.text = "当前手机sw值为：${smallestWidthDp}"
+
         mBinding.iv.setImageBitmap(AssetUtils.loadBitmapAsset(this, "dog.jpg"))
         mBinding.iv3.setImageBitmap(AssetUtils.loadBitmapAsset(this, "dog.jpg"))
 

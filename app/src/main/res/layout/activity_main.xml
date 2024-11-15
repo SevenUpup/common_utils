@@ -23,6 +23,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingVertical="10dp">
+
+                <TextView
+                    android:id="@+id/tv_sw"
+                    android:text="当前手机sw值为：0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">

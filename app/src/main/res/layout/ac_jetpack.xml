@@ -22,6 +22,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <EditText
+            android:id="@+id/et_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="StateFlow默认去重(新收集者时会进行数据重放操作) \nSharedFlow(默认不会重放数据，并且不去重，可以通过设置达到StateFlow效果)"/>
+
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

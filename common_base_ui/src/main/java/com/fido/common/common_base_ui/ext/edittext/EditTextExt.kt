@@ -52,6 +52,7 @@ private fun EditText.textChanges(): Flow<CharSequence?> {
  * @param debounceTime  指定时间内发送的只保留最后一个，其他将被丢弃，防抖用的
  * @param doSearchBlock 用于转成自己需要的结果block,一般可能从service 获取后convert成自己需要的Bean
  * @param collectBlock  处理结果，更新UI等
+ * @param lifecycle     对应这里的flow协程的作用域，所以textChanges中的awaitClose或者作用域结束时被调用，即lifecycle执行 onDestroy()时
  */
 fun <T> EditText.throttleSearch(
     lifecycle: Lifecycle,

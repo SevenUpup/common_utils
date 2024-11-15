@@ -241,7 +241,9 @@ fun RecyclerView.ViewHolder.createDrawable(
 /** json相关 **/
 fun Any.toJson() = Gson().toJson(this)
 
-//内联函数+标注泛型 = 泛型实例化
+/**
+ * 内联函数+标注泛型 = 泛型实例化 json字符串转T
+ */
 inline fun <reified T> String.toBean() = Gson().fromJson<T>(this, object : TypeToken<T>() {}.type)
 
 
