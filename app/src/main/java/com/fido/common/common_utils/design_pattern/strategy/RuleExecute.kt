@@ -5,7 +5,7 @@ package com.fido.common.common_utils.design_pattern.strategy
  * @date: 2024/6/14
  * @des:  规则执行器
  */
-class RuleExecute<T>(private val check: T, private val map: MutableMap<String, List<BaseRule<T>>>) {
+class RuleExecute<T> private constructor(private val check: T, private val map: MutableMap<String, List<BaseRule<T>>>){
 
     companion object {
         @JvmStatic

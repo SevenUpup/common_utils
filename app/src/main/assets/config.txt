@@ -1,0 +1,2 @@
+useLocal=false
+isOpenHotFix=false

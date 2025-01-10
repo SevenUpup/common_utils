@@ -27,12 +27,6 @@
             android:onClick="goDrag"
             android:text="go drag Rv Ac"/>
 
-        <Button
-            android:id="@+id/bt_first"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAllCaps="false"
-            android:text="show smartRefreshRv"/>
 
         <Button
             android:id="@+id/bt_scroll"
@@ -66,12 +60,6 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <com.fido.common.common_base_ui.base.widget.SmartRefreshRecyclerView
-            android:id="@+id/mSRv"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

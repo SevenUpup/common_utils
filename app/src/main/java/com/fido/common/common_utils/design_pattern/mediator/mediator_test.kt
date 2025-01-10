@@ -43,7 +43,7 @@ fun main(){
     chatRoom.addColleague(user2)
     chatRoom.addColleague(user3)
 
-    // 用户发送消息
+    // 用户发送消息,这里user 调用sendMessage时会交给Mediator中介者的实现类也就是ChatRoom去处理
     user1.sendMessage("大家好，欢迎来到聊天室！")
     user2.sendMessage("大家好！")
 }

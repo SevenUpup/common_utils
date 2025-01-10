@@ -1,6 +1,13 @@
 package com.fido.common.common_utils.design_pattern.interceptor2.interceptors
 
+import android.hardware.usb.UsbConstants
+import android.hardware.usb.UsbRequest
+import android.os.Handler
+import android.os.Looper
+import androidx.core.os.postDelayed
+import com.fido.common.common_base_ui.util.showLoading
 import com.fido.common.common_base_ui.util.showNormalConfirmDialog
+import com.fido.common.common_base_ui.util.showNormalInputDialog
 import com.fido.common.common_base_ui.util.showNormalListDialog
 import com.fido.common.common_base_util.ext.loge
 import com.fido.common.common_base_util.ext.toast
@@ -22,8 +29,13 @@ class OneIntercept : InterceptorChain<DialogPass>() {
 
             if (data.passType == 1) {
                 topActivity.showNormalConfirmDialog(content = data.msg, onConfirmBlock = {
-                    data.passType = 2
-                    super.intercept(data)
+
+                    topActivity.showLoading("延迟模拟网络请求获取下一个弹窗的逻辑").show().delayDismiss(2000)
+                    //测试代码随便写的
+                    Handler(Looper.getMainLooper()).postDelayed(2500){
+                        data.passType = 2
+                        super.intercept(data)
+                    }
                 })
             } else {
                 super.intercept(data)

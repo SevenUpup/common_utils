@@ -8,7 +8,9 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.Message
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_ui.util.showNormalConfirmDialog
 import com.fido.common.common_base_util.ext.click
@@ -112,6 +114,7 @@ class DesignPatternAc:AppCompatActivity() {
                 val languageRule = LanguageRule(listOf("Chinese", "English"))   //true
                 val nationalityRule = NationalityRule(listOf("China", "Malaysia"))   //true
                 val visaRule = VisaRule()   //true
+
 
                 val build = RuleExecute
                     .create(jobCheck)

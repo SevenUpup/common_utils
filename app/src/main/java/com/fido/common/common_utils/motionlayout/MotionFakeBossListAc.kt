@@ -1,13 +1,14 @@
 package com.fido.common.common_utils.motionlayout
 
 import androidx.recyclerview.widget.RecyclerView
+import com.fido.common.R
 import com.fido.common.base.BaseVBActivity
-import com.fido.common.common_base_ui.ext.bindData
 import com.fido.common.common_base_ui.ext.canScrollDown
 import com.fido.common.common_base_ui.ext.vertical
 import com.fido.common.common_base_util.ext.click
 import com.fido.common.common_base_util.ext.toast
-import com.fido.common.R
+import com.fido.common.common_utils.rv.bindData
+import com.fido.common.common_utils.rv.setText
 import com.fido.common.databinding.AcMotionFakeBossListBinding
 
 /**

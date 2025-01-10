@@ -167,7 +167,7 @@ fun addToDialogManager(vararg configs: Config<Any>?) = dialogManager.apply {
     }
 }
 
-fun removeFromDialigManager(config: Config<Any>) = dialogManager.apply {
+fun removeFromDialogManager(config: Config<Any>) = dialogManager.apply {
     remove(config)
 }
 

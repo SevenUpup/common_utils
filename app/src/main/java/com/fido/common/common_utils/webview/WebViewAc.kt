@@ -1,7 +1,6 @@
 package com.fido.common.common_utils.webview
 
 import android.os.Bundle
-import android.webkit.ValueCallback
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
@@ -19,11 +18,25 @@ class WebViewAc:AppCompatActivity() {
 
     private val binding:AcWebViewBinding by binding()
 
+    private var _localHtmlName = ""  //存放在asset目录下的文件名
+
+    companion object{
+        const val INTENT_LOAD_LOCAL = "INTENT_LOAD_LOCAL"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        _localHtmlName = intent.getStringExtra(INTENT_LOAD_LOCAL)?:""
         binding.apply {
-            initWeb(mWeb)
+            if (_localHtmlName.isNotEmpty()) {
+                mWeb.loadUrl("file:///android_asset/${_localHtmlName}")
+                with(mWeb.settings){
+                    javaScriptEnabled = true
+                }
+            }else{
+                initWeb(mWeb)
+            }
         }
     }
 

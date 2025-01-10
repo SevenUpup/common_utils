@@ -1,5 +1,6 @@
 package com.fido.common.common_utils.design_pattern.prototype
 
+import com.fido.common.common_base_util.deepCopy
 import kotlin.Cloneable
 /**
  * @author: FiDo
@@ -33,6 +34,55 @@ fun main(){
     val student2 = Student2("77")
     val cloneStudent2 = student2.clone()
     println("student2=$student2 cloneStudent2=${cloneStudent2} is same = ${student2 === cloneStudent2}")
+
+    println("Kotlin 的 data class 已内置 copy 方法，可直接用作原型模式的实现。")
+    val person = Person("小明", Address("合肥"))
+    val prototypePerson = person.copy()
+    // 修改原型对象，验证深拷贝
+    prototypePerson.name = "小艾"
+    prototypePerson.address = Address("安庆")
+    println(person)
+    println(prototypePerson)
+
+    val origin = Original("66", Address("南京"))
+    val copy = origin.copy()
+    copy.name = "77"
+    copy.address = Address("武汉")
+    println("original=$origin")
+    println("copy=$copy")
+
+
+    //浅拷贝？
+    val original = Person1("Alice", 30, Address1("New York", "5th Avenue"))
+    val copied = original.copy()
+
+    println("Before modification:")
+    println("Original: $original")
+    println("Copied: $copied")
+
+    // 修改引用类型字段
+    copied.address.city = "Los Angeles"
+
+    println("After modification:")
+    println("Original: $original") // address.city 会被修改为 Los Angeles，说明是浅拷贝
+    println("Copied: $copied")
+}
+
+data class Address1(var city: String, var street: String)
+data class Person1(var name: String, var age: Int, var address: Address1) {
+    fun deepCopy(): Person1 {
+        return Person1(name, age, Address1(address.city, address.street))
+    }
+}
+
+internal data class Original(var name: String,var address: Address)
+
+internal data class Address(val city:String)
+internal data class Person(var name: String,var address: Address):Cloneable{
+
+    override fun clone(): Person {
+        return copy()
+    }
 }
 
 internal interface Prototype{

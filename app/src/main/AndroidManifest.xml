@@ -189,6 +189,7 @@
         <activity android:name=".common_utils.blue_tooth.BlueToothAc"/>
         <activity android:name=".common_utils.webview.WebViewAc"/>
 
+        <!--  -->
     </application>
 
 </manifest>

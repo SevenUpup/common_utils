@@ -26,19 +26,16 @@ import androidx.core.text.italic
 import androidx.core.text.underline
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
 import com.fido.common.R
 import com.fido.common.common_base_ui.base.dialog.createPop
 import com.fido.common.common_base_ui.base.dialog.createVBPop
 import com.fido.common.common_base_ui.base.viewbinding.binding
-import com.fido.common.common_base_ui.ext.bindData
 import com.fido.common.common_base_ui.ext.image_select.openImageSelect
 import com.fido.common.common_base_ui.ext.image_select.selectImagesPath
 import com.fido.common.common_base_ui.ext.imageview.downloadImage
 import com.fido.common.common_base_ui.ext.imageview.load
 import com.fido.common.common_base_ui.ext.imageview.savePic2Gallery
 import com.fido.common.common_base_ui.ext.permission.extRequestPermission
-import com.fido.common.common_base_ui.ext.vertical
 import com.fido.common.common_base_ui.util.ImagePreviewUtil
 import com.fido.common.common_base_ui.util.showNormalListDialog
 import com.fido.common.common_base_ui.util.throttleClick
@@ -51,7 +48,6 @@ import com.fido.common.common_base_util.ext.addStatusableDrawableBg
 import com.fido.common.common_base_util.ext.appLanguage
 import com.fido.common.common_base_util.ext.children
 import com.fido.common.common_base_util.ext.click
-import com.fido.common.common_base_util.ext.clipToRoundView
 import com.fido.common.common_base_util.ext.currentTimeString
 import com.fido.common.common_base_util.ext.dateCompare
 import com.fido.common.common_base_util.ext.doOnAppStatusChanged
@@ -93,11 +89,13 @@ import com.fido.common.common_utils.anim.ShakeAnim
 import com.fido.common.common_utils.annotation.AnnotationAc
 import com.fido.common.common_utils.asm.ASMTestAc
 import com.fido.common.common_utils.asm.AsmHookActivity
+import com.fido.common.common_utils.banner.BannerAc
+import com.fido.common.common_utils.blue_tooth.BlueToothAc
 import com.fido.common.common_utils.calendar.WriteCalendarAc
+import com.fido.common.common_utils.constraintlayout.ConstraintLayoutAc
+import com.fido.common.common_utils.coroutine.CoroutineTestAc
 import com.fido.common.common_utils.customview.CustomViewAc
-import com.fido.common.databinding.ActivityMainBinding
-import com.fido.common.databinding.DialogTestBinding
-import com.fido.common.databinding.LayoutHeaderViewBinding
+import com.fido.common.common_utils.design_pattern.DesignPatternAc
 import com.fido.common.common_utils.device_info.DeviceInfoAc
 import com.fido.common.common_utils.edittext.CustomStyleActivity
 import com.fido.common.common_utils.eventbus.HEventBus
@@ -106,6 +104,7 @@ import com.fido.common.common_utils.eventbus.ThreadMode
 import com.fido.common.common_utils.eventbus.ac.EventBus2Bean
 import com.fido.common.common_utils.eventbus.ac.EventBusAc
 import com.fido.common.common_utils.eventbus.ac.HEventBusTestBean
+import com.fido.common.common_utils.jetpack.JetPackAc
 import com.fido.common.common_utils.motionlayout.MotionBall2Ac
 import com.fido.common.common_utils.motionlayout.MotionCarouselAc
 import com.fido.common.common_utils.motionlayout.MotionCollapsibleAc
@@ -115,31 +114,28 @@ import com.fido.common.common_utils.motionlayout.MotionLayoutAc2
 import com.fido.common.common_utils.motionlayout.MotionYouTubeAc
 import com.fido.common.common_utils.muilt_process.Constant
 import com.fido.common.common_utils.muilt_process.GloableProcessAc
+import com.fido.common.common_utils.muilt_process.PrivateProcessAc
+import com.fido.common.common_utils.naviga.CodenavigationAc
+import com.fido.common.common_utils.pdf.AndroidXPdfActivity
 import com.fido.common.common_utils.picker.PickerViewAc
 import com.fido.common.common_utils.pop.DialogChainAc
+import com.fido.common.common_utils.result.KtResultAc
+import com.fido.common.common_utils.room.RoomAc
+import com.fido.common.common_utils.rv.RvAc
+import com.fido.common.common_utils.sp.SPAc
 import com.fido.common.common_utils.spannable.SpannableAc
 import com.fido.common.common_utils.test.NavigationAc
 import com.fido.common.common_utils.time.IntervalTimeAc
 import com.fido.common.common_utils.view.FloatingImageAc
 import com.fido.common.common_utils.viewmodel.ViewModelAc
 import com.fido.common.common_utils.viewpager.ViewpageAc
+import com.fido.common.common_utils.webview.WebViewAc
+import com.fido.common.databinding.ActivityMainBinding
+import com.fido.common.databinding.DialogTestBinding
+import com.fido.common.databinding.LayoutHeaderViewBinding
 import com.fido.common.flutter.FlutterInteractiveAc
 import com.fido.common.surface.SurfaceAc
 import com.fido.common.textview.TextViewAc
-import com.fido.common.common_utils.banner.BannerAc
-import com.fido.common.common_utils.blue_tooth.BlueToothAc
-import com.fido.common.common_utils.constraintlayout.ConstraintLayoutAc
-import com.fido.common.common_utils.coroutine.CoroutineTestAc
-import com.fido.common.common_utils.design_pattern.DesignPatternAc
-import com.fido.common.common_utils.jetpack.JetPackAc
-import com.fido.common.common_utils.muilt_process.PrivateProcessAc
-import com.fido.common.common_utils.naviga.CodenavigationAc
-import com.fido.common.common_utils.pdf.AndroidXPdfActivity
-import com.fido.common.common_utils.result.KtResultAc
-import com.fido.common.common_utils.room.RoomAc
-import com.fido.common.common_utils.rv.RvAc
-import com.fido.common.common_utils.sp.SPAc
-import com.fido.common.common_utils.webview.WebViewAc
 import com.google.gson.Gson
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
@@ -387,7 +383,7 @@ class MainActivity : AppCompatActivity() {
         addView<ASMTestAc>("ASM插装测试")
         addView<DeviceInfoAc>("获取Device Info(插件测试)")
         addView<AsmHookActivity>("asm Hook method...")
-        addView<DesignPatternAc>("“射击”模式之痛")
+        addView<DesignPatternAc>("“射击”模式之痛 && DownloadManager")
         addView<JetPackAc>("go jetpack new future")
         addView<KtResultAc>("Kotlin Result Test")
         addView<AndroidXPdfActivity>("AndroidX PDF && Shape Activity")
@@ -395,6 +391,7 @@ class MainActivity : AppCompatActivity() {
         addView<CoroutineTestAc>("Kotlin-Coroutine-Test")
         addView<BlueToothAc>("BlueTooth-Test")
         addView<WebViewAc>("Let's go WebView")
+        addView<WebViewAc>("WebView加载本地HTML", Pair(WebViewAc.INTENT_LOAD_LOCAL,"lottery.html"))
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {
@@ -427,7 +424,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private inline fun <reified T : Activity> addView(title: String) {
+    private inline fun <reified T : Activity> addView(title: String, vararg pairs: Pair<String, Any?>) {
         mBinding.container.addView(
             Button(this).apply {
                 id = R.id.tv
@@ -436,7 +433,7 @@ class MainActivity : AppCompatActivity() {
                 setBackgroundColor(R.color.teal_700.getColor)
                 isAllCaps = false
                 setOnClickListener {
-                    startActivity<T>()
+                    startActivity<T>(pairs = pairs)
                 }
                 roundCorners = 10f.dp.toFloat()
              },
@@ -580,15 +577,6 @@ class MainActivity : AppCompatActivity() {
                 findViewById<TextView>(R.id.tv_header_title).setOnClickListener {
                     toast("click header")
                 }
-                findViewById<RecyclerView>(R.id.mRv)
-                    .vertical()
-                    .bindData(
-                        listOf("1", "2", "3", "4"),
-                        R.layout.item_rv_text
-                    ) { holder, position, item ->
-                        holder.setText(R.id.mTitle, item)
-                    }
-                    .isGone = false
             }.show()
 
         }

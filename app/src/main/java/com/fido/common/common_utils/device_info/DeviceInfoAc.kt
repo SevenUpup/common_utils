@@ -28,7 +28,7 @@ class DeviceInfoAc:AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val androidId = Settings.System.getString(app.contentResolver, Settings.Secure.ANDROID_ID)
-
+        val androidId2 = "ANDROID_ID2:${Settings.Secure.getString(contentResolver,Settings.Secure.ANDROID_ID)}"
         binding.apply {
 
             hBaseTab.setTabs(listOf("你好","再见","哈哈哈"))
@@ -42,6 +42,7 @@ class DeviceInfoAc:AppCompatActivity() {
             }
 
             addTextView(androidId)
+            addTextView(androidId2)
 
             cbAgree.setOnCheckedChangeListener { compoundButton, b ->
                 PrivacyUtil.isAgreePrivacy = b

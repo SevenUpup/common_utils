@@ -6,32 +6,26 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.recyclerview.widget.ItemTouchHelper
-import com.fido.common.common_base_ui.base.viewbinding.binding
-import com.fido.common.common_base_ui.ext.addItemChildLongClick
-import com.fido.common.common_base_ui.ext.bindAdapter
-import com.fido.common.common_base_ui.ext.bindData
-import com.fido.common.common_base_ui.ext.vertical
-import com.fido.common.common_base_ui.util.showNormalConfirmDialog
-import com.fido.common.common_base_ui.util.showNormalListDialog
-import com.fido.common.common_base_ui.util.sp
-import com.fido.common.common_base_ui.util.throttleClick
-import com.fido.common.common_base_util.ext.loge
-import com.fido.common.common_base_util.ext.rectangleCornerBg
-import com.fido.common.common_base_util.ext.toast
-import com.fido.common.common_base_util.util.dialog.*
 import com.fido.common.R
 import com.fido.common.base.popup.enu.PopupType
 import com.fido.common.base.popup.showPopup
 import com.fido.common.common_base_ui.base.dialog.createVBPop
+import com.fido.common.common_base_ui.base.viewbinding.binding
+import com.fido.common.common_base_ui.ext.vertical
+import com.fido.common.common_base_ui.util.showNormalConfirmDialog
+import com.fido.common.common_base_ui.util.showNormalListDialog
+import com.fido.common.common_base_ui.util.throttleClick
 import com.fido.common.common_base_util.ext.lifecycleOwner
+import com.fido.common.common_base_util.ext.loge
+import com.fido.common.common_base_util.ext.rectangleCornerBg
 import com.fido.common.common_base_util.ext.startActivity
+import com.fido.common.common_base_util.ext.toast
+import com.fido.common.common_base_util.util.dialog.*
 import com.fido.common.common_utils.login.LoginAc
 import com.fido.common.common_utils.login.UserProfileAc
 import com.fido.common.common_utils.pop.base_interceptor.InterceptorChain
@@ -42,8 +36,11 @@ import com.fido.common.common_utils.pop.interceptor.InterceptorUserFace
 import com.fido.common.common_utils.pop.interceptor_by_coroutines.LoginInterceptorCoroutinesManager
 import com.fido.common.common_utils.pop.login_interceptor.LoginInterceptorChain
 import com.fido.common.common_utils.pop.login_interceptor.LoginNextInterceptor
+import com.fido.common.common_utils.rv.CommonRvAdapter
+import com.fido.common.common_utils.rv.bindData
+import com.fido.common.common_utils.rv.setGone
+import com.fido.common.common_utils.rv.setText
 import com.fido.common.databinding.AcDialogChainBinding
-import com.fido.common.common_utils.rv.MyItemTouchHelperCallBack
 import com.fido.common.databinding.ItemRvImgBinding
 import com.lxj.xpopup.enums.PopupPosition
 
@@ -183,7 +180,7 @@ class DialogChainAc :AppCompatActivity(){
                     }
                 }){
                     if (dialogConfigs.isNotEmpty() && index == 0) {
-                        removeFromDialigManager(dialogConfigs[1])
+                        removeFromDialogManager(dialogConfigs[1])
                     }
                 }
             }.mapIndexed { index, basePopupView ->
@@ -195,7 +192,7 @@ class DialogChainAc :AppCompatActivity(){
 
         binding.bt.throttleClick {
             DialogManager.getInstance().clear()
-            val data = binding.mRv.bindAdapter.items
+            val data = (binding.mRv.adapter as? CommonRvAdapter<String>)?.list
             toast(data.toString())
             val m = data as? List<String>
             val configList = mutableListOf<DialogManager.Config<Any>>()
@@ -221,20 +218,18 @@ class DialogChainAc :AppCompatActivity(){
             ){holder, position, item ->
                 holder.setGone(com.fido.common.R.id.bt_down,true)
                 holder.setGone(com.fido.common.R.id.bt_up,true)
-                holder.getView<TextView>(com.fido.common.R.id.mTitle).apply {
-                    text = item
-                    textSize = 13.sp.toFloat()
-                }
-            }
-            .addItemChildLongClick<String>(com.fido.common.R.id.mTitle){ adapter, view, position ->
-                toast(adapter.items[position])
+                holder.setText(R.id.mTitle, text = item)
+//                holder.getView<TextView>(com.fido.common.).apply {
+//                    text = item
+//                    textSize = 13.sp.toFloat()
+//                }
             }
 
-        ItemTouchHelper(MyItemTouchHelperCallBack(binding.mRv.bindAdapter).apply {
-            setCanDrag(true)
-        }).attachToRecyclerView(
-            binding.mRv
-        )
+//        ItemTouchHelper(MyItemTouchHelperCallBack(binding.mRv.adapter).apply {
+//            setCanDrag(true)
+//        }).attachToRecyclerView(
+//            binding.mRv
+//        )
     }
 
     private fun initEvent() {

@@ -2,16 +2,18 @@ package com.fido.common.common_utils.room
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.fido.common.R
+import com.fido.common.Room.User
+import com.fido.common.Room.userDao
 import com.fido.common.common_base_ui.base.viewbinding.binding
-import com.fido.common.common_base_ui.ext.bindData
 import com.fido.common.common_base_ui.ext.edittext.throttleSearch
 import com.fido.common.common_base_ui.ext.vertical
 import com.fido.common.common_base_util.ext.click
 import com.fido.common.common_base_util.ext.loge
 import com.fido.common.common_base_util.ext.toast
-import com.fido.common.R
-import com.fido.common.Room.User
-import com.fido.common.Room.userDao
+import com.fido.common.common_utils.rv.bindData
+import com.fido.common.common_utils.rv.setGone
+import com.fido.common.common_utils.rv.setText
 import com.fido.common.databinding.AcRoomBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*

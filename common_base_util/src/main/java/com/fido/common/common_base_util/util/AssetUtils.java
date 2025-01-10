@@ -167,6 +167,12 @@ public final class AssetUtils {
         }
     }
 
+    public static String copyAssetsFileToExternalCache(Context context,String assetsFilePath){
+        String outputPath = context.getExternalCacheDir() + File.separator + assetsFilePath;
+        copyFileFromAssets(context,assetsFilePath,outputPath);
+        return outputPath;
+    }
+
     private static void copyFile(InputStream in, String targetPath) {
         try {
             FileOutputStream fos = new FileOutputStream(new File(targetPath));

@@ -1,5 +1,6 @@
 package com.fido.common.common_utils.design_pattern.iterator
 
+import java.net.DatagramPacket
 import java.util.Arrays
 
 /**
@@ -18,6 +19,36 @@ internal fun main(){
     while (iterator.hasNext()) {
         val next = iterator.next()
         println("next=>$next")
+    }
+
+    val book1 = Book("11","11")
+    val book2 = Book("22","22")
+    val book3 = CaricatureBook("漫画书","漫画书作者")
+
+    val bookCollection = BookCollection(listOf(book1,book2,book3))
+    bookCollection.forEach {
+        println("it=>$it")
+    }
+}
+
+internal open class Book(val title:String, val author:String)
+internal class CaricatureBook(title: String, author: String) :Book(title, author)
+
+internal class BookCollection(val books:List<Book>):kotlin.collections.Iterator<Book?>{
+
+    private var index=0
+
+    override fun hasNext(): Boolean {
+        return index < books.size
+    }
+
+    override fun next(): Book? {
+//        if (hasNext()) {
+//            return books[index++]
+//        }
+//        return null
+        if (!hasNext()) throw NoSuchElementException("No more books.")
+        return books[index++]
     }
 }
 

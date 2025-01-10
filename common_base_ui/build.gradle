@@ -75,11 +75,11 @@ dependencies {
     implementation deps.android.constraint_layout
 
     // brvah-4.0
-    api(deps.support.brvah){
-        exclude group: 'androidx.recyclerview'
-        exclude group: 'androidx.appcompat'
-        exclude group: 'com.google.android.material'
-    }
+//    api(deps.support.brvah){
+//        exclude group: 'androidx.recyclerview'
+//        exclude group: 'androidx.appcompat'
+//        exclude group: 'com.google.android.material'
+//    }
 
     //XPopup弹窗
     api(deps.support.xpopup) {
@@ -90,12 +90,12 @@ dependencies {
     }
 
     //smartrefreshlayout
-    def smartrefresh_version = "2.0.5"
-    api  "io.github.scwang90:refresh-layout-kernel:$smartrefresh_version"      //核心必须依赖
-    api  "io.github.scwang90:refresh-header-classics:$smartrefresh_version"    //经典刷新头
-    api  "io.github.scwang90:refresh-header-material:$smartrefresh_version"    //谷歌刷新头
-    api  "io.github.scwang90:refresh-header-two-level:$smartrefresh_version"   //二级刷新头
-    api  "io.github.scwang90:refresh-footer-classics:$smartrefresh_version"    //经典加载
+//    def smartrefresh_version = "2.0.5"
+//    api  "io.github.scwang90:refresh-layout-kernel:$smartrefresh_version"      //核心必须依赖
+//    api  "io.github.scwang90:refresh-header-classics:$smartrefresh_version"    //经典刷新头
+//    api  "io.github.scwang90:refresh-header-material:$smartrefresh_version"    //谷歌刷新头
+//    api  "io.github.scwang90:refresh-header-two-level:$smartrefresh_version"   //二级刷新头
+//    api  "io.github.scwang90:refresh-footer-classics:$smartrefresh_version"    //经典加载
 
     // glide
     api deps.support.glide

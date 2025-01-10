@@ -5,24 +5,23 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
-import android.content.ComponentName
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.DisplayMetrics
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.asynclayoutinflater.view.AsyncLayoutInflater
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.fido.common.R
 import com.fido.common.common_base_ui.base.viewbinding.binding
-import com.fido.common.common_base_ui.ext.bindAdapter
-import com.fido.common.common_base_ui.ext.bindData
 import com.fido.common.common_base_util.dp
 import com.fido.common.common_base_util.ext.activity
 import com.fido.common.common_base_util.ext.click
@@ -153,10 +152,10 @@ class CustomViewAc:AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
 
     private val barChatLoop = Runnable {
-        val adapter = binding.mChatRv.bindAdapter
+        val adapter = binding.mChatRv.adapter
         val layoutManager = binding.mChatRv.layoutManager as LinearLayoutManager
         val lastVisiblePos = layoutManager.findLastVisibleItemPosition()
-        val index = (lastVisiblePos + 1) % adapter.itemCount
+        val index = (lastVisiblePos + 1) % (adapter?.itemCount?:0)
         if (0 == index) {
             binding.mChatRv.scrollToPosition(index)
         } else {
@@ -175,7 +174,7 @@ class CustomViewAc:AppCompatActivity() {
         super.onResume()
         val layoutManager = binding.mChatRv.layoutManager as LinearLayoutManager
         val lastVisiblePos = layoutManager.findLastVisibleItemPosition()
-        if (lastVisiblePos < binding.mChatRv.bindAdapter.itemCount) {
+        if (lastVisiblePos < (binding.mChatRv.adapter?.itemCount?:0)) {
             handler.post(barChatLoop)
         }
     }
@@ -189,24 +188,8 @@ class CustomViewAc:AppCompatActivity() {
         initBarChartView()
         val layoutManager = MyLinearLayoutManager(this)
         binding.mChatRv.layoutManager = layoutManager
-        binding.mChatRv
-            .bindData(
-                testClassIndoList, R.layout.item_chat_bar
-            ){holder, position, item ->
-                val barChartItem = holder.getView<BarChartItem>(R.id.sum_bar_chart)
-                if(testClassIndoList == null || testClassIndoList.isNullOrEmpty()){
-                    barChartItem.setRatio(0.0);
-                    barChartItem.setBarRatio(0.0);
-                }else{
-                    val classInfoBean = testClassIndoList.get(position)
-                    holder.setText(R.id.on_guard_num,""+classInfoBean.getOnGuardNum())
-                    holder.setText(R.id.guard_sum,""+classInfoBean.getGuardSum())
-                    holder.setText(R.id.bar_chart_class_type,classInfoBean.getOnJobClassName())
-                    barChartItem.setRatio(classInfoBean.getSumRatio()/100.0);
-                    barChartItem.setBarRatio(classInfoBean.getOnGuardNumRatio()/100.0);
-                }
-
-            }
+        val mAdapter = RvBarChatAdapter(testClassIndoList)
+        binding.mChatRv.adapter = mAdapter
     }
 
     private class MyLinearLayoutManager(val context: Context) : LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false) {
@@ -226,6 +209,55 @@ class CustomViewAc:AppCompatActivity() {
             startSmoothScroll(smoothScroller);
 
         }
+    }
+
+
+    class RvBarChatAdapter(val data:ArrayList<ClassInfoBean>?): RecyclerView.Adapter<RvBarChatAdapter.VH>(){
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int
+        ): VH {
+            return VH(LayoutInflater.from(parent.context).inflate(R.layout.item_chat_bar,parent,false))
+        }
+
+        override fun onBindViewHolder(
+            holder: VH,
+            position: Int
+        ) {
+            val barChartItem = holder.barChartItem
+            if(data == null || data.isNullOrEmpty()){
+                barChartItem.setRatio(0.0);
+                barChartItem.setBarRatio(0.0);
+            }else{
+                val classInfoBean = data.get(position)
+                holder.setGuardNum(""+classInfoBean.getOnGuardNum())
+                holder.setGuardSum(""+classInfoBean.getGuardSum())
+                holder.setClassType(classInfoBean.getOnJobClassName())
+                barChartItem.setRatio(classInfoBean.getSumRatio()/100.0);
+                barChartItem.setBarRatio(classInfoBean.getOnGuardNumRatio()/100.0);
+            }
+        }
+
+        override fun getItemCount(): Int = data?.size?:0
+
+        inner class VH(itemView: View): RecyclerView.ViewHolder(itemView) {
+
+            val barChartItem = itemView.findViewById<BarChartItem>(R.id.sum_bar_chart)
+
+            fun setGuardNum(text:String){
+                itemView.findViewById<TextView>(R.id.on_guard_num).text = text
+            }
+
+            fun setGuardSum(text:String){
+                itemView.findViewById<TextView>(R.id.guard_sum).text = text
+            }
+
+            fun setClassType(text:String){
+                itemView.findViewById<TextView>(R.id.bar_chart_class_type).text = text
+            }
+
+        }
+
     }
 
 }

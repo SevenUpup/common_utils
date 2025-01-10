@@ -8,7 +8,6 @@ import android.text.TextUtils
 import com.drake.debugkit.DevTool
 import com.facebook.stetho.Stetho
 import com.fido.common.BuildConfig
-import com.fido.common.R
 import com.fido.common.common_base_util.ext.logd
 import com.fido.common.common_base_util.log.LogUtils
 import com.fido.common.common_base_util.util.global_gray.GlobalGray
@@ -16,11 +15,9 @@ import com.fido.common.common_base_util.util.sp.spValue
 import com.fido.common.common_base_util.util.toast.ToastConfig
 import com.fido.common.common_base_util.util.toast.interfaces.ToastGravityFactory
 import com.fido.common.common_utils.privacy.WhaleHook
-import com.scwang.smart.refresh.footer.ClassicsFooter
-import com.scwang.smart.refresh.header.ClassicsHeader
-import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import me.drakeet.library.CrashWoodpecker
 import me.drakeet.library.PatchMode
+import java.util.Properties
 
 
 class App: Application() {
@@ -40,11 +37,20 @@ class App: Application() {
 
         logd("App onCreate $this processName=${getProcessName(this)}")
         val processName = getProcessName(this, Process.myPid()) //根据进程id获取进程名
+
+        kotlin.runCatching {
+            val inputStream = assets.open("config.text")
+            val properties = Properties()
+            properties.load(inputStream)
+            val isUseLocal = properties["useLocal"]
+            println("config is UseLocal=$isUseLocal")
+        }
+
         if (!TextUtils.isEmpty(processName) && processName.equals(this.packageName)) {
             //隐私合规调试工具
             WhaleHook.init()
 
-            //初始化逻辑
+            /*//初始化逻辑
             SmartRefreshLayout.setDefaultRefreshHeaderCreator { context, layout ->
                 layout.setPrimaryColorsId(R.color.purple_500, android.R.color.white)
                 ClassicsHeader(context)
@@ -53,7 +59,7 @@ class App: Application() {
                 ClassicsFooter(
                     context
                 ).setDrawableSize(20F)
-            }
+            }*/
 
             ToastConfig.toastFactory = ToastGravityFactory()
 

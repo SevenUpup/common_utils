@@ -2,13 +2,11 @@ package com.fido.common.common_utils.rv
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.fido.common.R
 import com.fido.common.common_base_ui.base.viewbinding.binding
-import com.fido.common.common_base_ui.ext.bindAdapter
-import com.fido.common.common_base_ui.ext.bindData
 import com.fido.common.common_base_ui.ext.setEmptyView
 import com.fido.common.common_base_ui.ext.vertical
 import com.fido.common.common_base_ui.util.throttleClick
-import com.fido.common.R
 import com.fido.common.databinding.AcRvEmptyViewBinding
 
 /**
@@ -34,7 +32,7 @@ class RvEmptyViewAc:AppCompatActivity() {
         }
         binding.apply {
             btClear.throttleClick {
-                mRv.bindAdapter.submitList(emptyList())
+                (mRv.adapter as CommonRvAdapter<String>)?.clearData()
             }
 //            TextView(mRv.context).apply {
 //                text = "i am emptyview"

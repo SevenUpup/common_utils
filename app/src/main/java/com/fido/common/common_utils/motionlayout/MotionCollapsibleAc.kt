@@ -3,12 +3,13 @@ package com.fido.common.common_utils.motionlayout
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.fido.common.R
 import com.fido.common.common_base_ui.base.viewbinding.binding
-import com.fido.common.common_base_ui.ext.bindData
 import com.fido.common.common_base_ui.ext.vertical
 import com.fido.common.common_base_util.ext.gradiendShapeDrawableBg
 import com.fido.common.common_base_util.getColor
-import com.fido.common.R
+import com.fido.common.common_utils.rv.bindData
+import com.fido.common.common_utils.rv.setText
 import com.fido.common.databinding.AcMotionCollapsibleBinding
 
 /**
@@ -46,3 +47,5 @@ class MotionCollapsibleAc:AppCompatActivity() {
     }
 
 }
+
+

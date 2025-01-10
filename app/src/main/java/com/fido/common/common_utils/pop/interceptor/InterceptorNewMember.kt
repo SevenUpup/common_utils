@@ -31,6 +31,9 @@ class InterceptorNewMember(private val bean: InterceptorBean,val loginBlock:(()-
     }
 }
 
+/**
+ * 用户信息不完善，完善信息拦截操作
+ */
 class InterceptorInfoFill(val bean: InterceptorBean):BaseInterceptorImp(){
     override fun interceptor(chain: InterceptorChain) {
         super.interceptor(chain)
@@ -47,7 +50,9 @@ class InterceptorInfoFill(val bean: InterceptorBean):BaseInterceptorImp(){
     }
 }
 
-// 是否完善人脸信息
+/**
+ * 是否完善人脸信息 拦截操作
+ */
 class InterceptorUserFace(val bean: InterceptorBean):BaseInterceptorImp(){
     override fun interceptor(chain: InterceptorChain) {
         super.interceptor(chain)

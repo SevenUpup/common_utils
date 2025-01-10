@@ -2,13 +2,16 @@ package com.fido.common.common_utils.rv
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
+import com.fido.common.R
 import com.fido.common.common_base_ui.base.viewbinding.binding
-import com.fido.common.common_base_ui.ext.bindMuiltData
 import com.fido.common.common_base_ui.ext.imageview.ScrollWindowImageView
 import com.fido.common.common_base_ui.ext.imageview.loadDrawable
 import com.fido.common.common_base_ui.ext.vertical
-import com.fido.common.R
 import com.fido.common.databinding.AcRvScrollWithWindownBinding
 
 /**
@@ -82,25 +85,70 @@ class RvScrollWithWindownAc:AppCompatActivity() {
 
     private fun bindRv() {
         binding.mRv.vertical()
-            .bindMuiltData(mTestData){holder, position, item ->
-                when (holder.itemViewType) {
-                    0 -> {
+        val mAdapter = RvScrollWindowAdapter(mTestData)
+        binding.mRv.adapter = mAdapter
+//        binding.mRv.vertical()
+//            .bindMuiltData(mTestData){holder, position, item ->
+//                when (holder.itemViewType) {
+//                    0 -> {
+//
+//                    }
+//                    1->{
+//                        holder.getView<ScrollWindowImageView>(R.id.mIv).apply {
+////                            scrollWindow(binding.mRv)
+////                            setImageDrawable(R.drawable.bg.getDrawable)
+//                            if (drawable == null && !list.isNullOrEmpty()) {
+//                                setImageDrawable(list.first())
+//                                scrollWindow(binding.mRv)
+//                            } else {
+//
+//                            }
+//                        }
+//                    }
+//                }
+//            }
 
-                    }
-                    1->{
-                        holder.getView<ScrollWindowImageView>(R.id.mIv).apply {
-//                            scrollWindow(binding.mRv)
-//                            setImageDrawable(R.drawable.bg.getDrawable)
-                            if (drawable == null && !list.isNullOrEmpty()) {
-                                setImageDrawable(list.first())
-                                scrollWindow(binding.mRv)
-                            } else {
+    }
 
-                            }
-                        }
+
+    inner class RvScrollWindowAdapter(val data: MutableList<MEntity>): RecyclerView.Adapter<RvScrollWindowAdapter.VH>(){
+
+        override fun getItemViewType(position: Int): Int {
+            return data.get(position).itemType
+        }
+
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int
+        ): VH {
+            if (viewType == 0) {
+                return VH(LayoutInflater.from(parent.context).inflate(R.layout.item_view,parent,false))
+            }else{
+                return VH(LayoutInflater.from(parent.context).inflate(R.layout.item_rv_scroll_with_windown_img,parent,false))
+            }
+        }
+
+        override fun onBindViewHolder(
+            holder: VH,
+            position: Int
+        ) {
+            if (data.get(position).itemType == 1) {
+                holder.itemView.findViewById<ScrollWindowImageView>(R.id.mIv)?.apply {
+                    if (drawable == null && !list.isNullOrEmpty()) {
+                        setImageDrawable(list.first())
+                        scrollWindow(binding.mRv)
+                    } else {
+
                     }
                 }
             }
+        }
+
+        override fun getItemCount(): Int = data?.size?:0
+
+        inner class VH(itemView: View): RecyclerView.ViewHolder(itemView) {
+
+        }
 
     }
 

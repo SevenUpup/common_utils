@@ -1,5 +1,11 @@
 package com.fido.common.common_utils.design_pattern.chain_responsibility_pattern
 
+import android.os.Build
+import java.io.File
+import java.io.FileInputStream
+import java.lang.invoke.MethodHandle
+import java.lang.invoke.MethodHandles
+
 /**
  * @author: FiDo
  * @date: 2024/11/13
@@ -18,6 +24,21 @@ fun main() {
     errorLogger.log(Logger.LEVEL_INFO, "This is an information.")
     errorLogger.log(Logger.LEVEL_DEBUG, "This is a debug level information.")
     errorLogger.log(Logger.LEVEL_ERROR, "This is an error information.")
+
+    val file =
+        File("E:\\HT_Demo\\codeandnotes\\hotfixandplugin\\HotFixAndPluginDemo\\app\\src\\main\\java\\com\\dream\\hotfixandplugindemo\\MainActivity.java")
+    try {
+        val fileInputStream = FileInputStream(file)
+        val bytes = ByteArray(1024)
+        var len: Int
+        while (((fileInputStream.read(bytes).also { len = it }) != -1)) {
+            println(String(bytes, 0, len))
+        }
+        fileInputStream.close()
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+
 }
 
 internal abstract class Logger{
