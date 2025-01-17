@@ -35,6 +35,15 @@
             android:textColor="@color/black"
             android:text="StateFlow默认去重(新收集者时会进行数据重放操作) \nSharedFlow(默认不会重放数据，并且不去重，可以通过设置达到StateFlow效果)"/>
 
+        <Button
+            android:id="@+id/bt_kt_coroutine"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="测试 Kotlin 协程 特性"/>
+
+
+
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

@@ -17,7 +17,9 @@ import com.fido.common.common_base_util.ext.lifecycleOwner
 import com.fido.common.common_base_util.ext.logd
 import com.fido.common.common_base_util.ext.loge
 import com.fido.common.common_base_util.ext.toast
+import com.fido.common.common_base_util.startActivity
 import com.fido.common.common_utils.eventbus.flow_bus.FlowBus
+import com.fido.common.common_utils.jetpack.coroutine.KotlinCoroutineAc
 import com.fido.common.databinding.AcJetpackBinding
 import com.fido.common.databinding.FragmentCoroutineTestBinding
 import com.fido.common.databinding.FragmentJetpackageFlowBinding
@@ -54,6 +56,10 @@ class JetPackAc : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        binding.btKtCoroutine.click {
+            startActivity<KotlinCoroutineAc>()
+        }
 
         observeValue()
 
