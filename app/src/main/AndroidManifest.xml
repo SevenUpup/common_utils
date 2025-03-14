@@ -170,6 +170,7 @@
         <activity android:name=".common_utils.viewpager.Vp2Ac"/>
 
         <activity android:name=".common_utils.customview.CustomViewAc"/>
+        <activity android:name=".common_utils.customview.HTCustomViewAc"/>
 
         <activity android:name=".common_utils.asm.ASMTestAc"/>
         <activity android:name=".common_utils.asm.replace.ReplaceClassTestAc"/>
@@ -189,7 +190,7 @@
         <activity android:name=".common_utils.blue_tooth.BlueToothAc"/>
         <activity android:name=".common_utils.webview.WebViewAc"/>
         <activity android:name=".common_utils.jetpack.coroutine.KotlinCoroutineAc"/>
-
+        <activity android:name=".common_utils.customview.SlidingConflictAc"/>
     </application>
 
 </manifest>

@@ -17,11 +17,14 @@ import android.view.animation.LinearInterpolator
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.fido.common.R
 import com.fido.common.common_base_ui.base.viewbinding.binding
+import com.fido.common.common_base_ui.util.throttleClick
 import com.fido.common.common_base_util.dp
 import com.fido.common.common_base_util.ext.activity
 import com.fido.common.common_base_util.ext.click
@@ -54,6 +57,18 @@ class CustomViewAc:AppCompatActivity() {
 
         binding.view1.clipToRoundView(20.dp.toFloat(),false)
         binding.view2.clipToRoundView(20.dp.toFloat(),true)
+
+        val tLiveData = MutableLiveData<Int>()
+        val transformationData = Transformations.map(tLiveData){
+            it.toString()
+        }
+
+        binding.btMyCustom.throttleClick {
+            startActivity<HTCustomViewAc>()
+        }
+        binding.btSlidingConflict.throttleClick {
+            startActivity<SlidingConflictAc>()
+        }
 
         var mTranslationX = 200f
         binding.imageView.apply {

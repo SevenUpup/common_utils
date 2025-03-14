@@ -21,8 +21,10 @@ open class BaseViewModel : ViewModel() {
     }
 
     suspend fun <T> launchOnIO(block: suspend CoroutineScope.() -> T) {
-        withContext(Dispatchers.IO) {
-            block
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                block()
+            }
         }
     }
 

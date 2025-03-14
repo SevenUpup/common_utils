@@ -240,3 +240,26 @@ suspend fun downloadImageWithGlide(context: Context,imgUrl: String): File {
 
     }
 }
+
+
+//fun ImageView.setBlurViewFromBitmap(
+//    view: View,
+//    blurRadius:Int = 25,
+//){
+//    setBlurViewFromBitmap(view.toBitmap(),this,blurRadius)
+//}
+//
+///**
+// * 将ImageView 设置为 传入的 bitmap 的高斯模糊效果
+// * 需要依赖 Glide 的 jp.wasabeef:glide-transformations:4.3.0
+// */
+//fun setBlurViewFromBitmap(
+//    bitmap:Bitmap,
+//    targetView:ImageView,
+//    blurRadius:Int = 25,
+//){
+//    Glide.with(targetView.context)
+//        .load(bitmap)
+//        .apply(RequestOptions.bitmapTransform(BlurTransformation(blurRadius,3)))
+//        .into(targetView)
+//}

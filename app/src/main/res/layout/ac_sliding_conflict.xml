@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+        <!-- 内部必须有一个横向 LinearLayout 来容纳多个 RecyclerView -->
+        <com.fido.common.common_utils.customview.custom.CustomScrollViewGroup
+            android:id="@+id/container"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mRv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mRv2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mRv3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+
+        </com.fido.common.common_utils.customview.custom.CustomScrollViewGroup>
+
+    <!-- 横向滑动的 HorizontalScrollView -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/ps_color_33"
+        android:textStyle="bold"
+        android:layout_margin="10dp"
+        android:text="DragLookMoreContainer 子View为 RecyclerView"/>
+    <com.fido.common.common_base_ui.base.widget.DragLookMoreContainer
+        android:id="@+id/dragContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_drag_look_more"
+            android:layout_width="match_parent"
+            android:nestedScrollingEnabled="false"
+            android:layout_height="wrap_content"/>
+
+    </com.fido.common.common_base_ui.base.widget.DragLookMoreContainer>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/ps_color_33"
+        android:textStyle="bold"
+        android:layout_margin="10dp"
+        android:text="DragLookMoreContainer 子View为 HorizontalScrollView"/>
+
+    <com.fido.common.common_base_ui.base.widget.DragLookMoreContainer
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <View
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/Blue_10"/>
+                <View
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/Blue_1"/>
+                <View
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/Blue_5"/>
+                <View
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/Blue_7"/>
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+    </com.fido.common.common_base_ui.base.widget.DragLookMoreContainer>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/ps_color_33"
+        android:textStyle="bold"
+        android:layout_margin="10dp"
+        android:text="DragLookMoreContainer 子View为 LinearLayout"/>
+    <com.fido.common.common_base_ui.base.widget.DragLookMoreContainer
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/Red_3"/>
+
+    </com.fido.common.common_base_ui.base.widget.DragLookMoreContainer>
+
+
+    <!-- 竖向嵌套横向导致滑动冲突 -->
+    <androidx.core.widget.NestedScrollView
+        android:visibility="gone"
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- 一个普通的 TextView -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:gravity="center"
+                android:text="顶部内容" />
+
+           <!-- &lt;!&ndash; 横向滑动的 HorizontalScrollView &ndash;&gt;
+            <com.fido.common.common_base_ui.base.widget.DragLookMoreContainer
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_drag_look_more"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"/>
+
+            </com.fido.common.common_base_ui.base.widget.DragLookMoreContainer>-->
+
+            <!-- android:nestedScrollingEnabled="false" 滑动事件交给NestedScrollView处理 -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView4"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#EEEEEE" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:scrollbars="none"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:textStyle="bold"
+                    android:text="ScrollView 中嵌套Rv 导致滑动冲突"
+                    android:gravity="center"
+                    android:background="@color/Green_1"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv1"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:background="@color/Green_1"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <com.fido.common.common_utils.customview.custom.MyScrollView
+            android:id="@+id/mScrollView"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:scrollbars="none"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/Deeporange_5"
+                    android:text="MyScrollView 中嵌套Rv 解决滑动冲突"
+                    android:gravity="center"
+                    android:background="@color/Green_1"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv3"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:background="@color/Green_1"/>
+
+            </LinearLayout>
+
+        </com.fido.common.common_utils.customview.custom.MyScrollView>
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:textStyle="bold"
+                    android:text="NestedScrollView 中嵌套Rv 系统已解决滑动冲突"
+                    android:textColor="@color/cw_trace_text"
+                    android:gravity="center"
+                    android:background="@color/Green_2"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv2"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:background="@color/Green_2"/>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

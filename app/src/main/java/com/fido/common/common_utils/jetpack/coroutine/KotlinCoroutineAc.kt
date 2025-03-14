@@ -3,6 +3,7 @@ package com.fido.common.common_utils.jetpack.coroutine
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.fido.common.common_base_ui.base.viewbinding.binding
+import com.fido.common.common_base_ui.util.throttleClick
 import com.fido.common.databinding.AcKotlinCoroutineBinding
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.cancel
@@ -23,6 +24,10 @@ class KotlinCoroutineAc:AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.apply {
+
+            binding.root.throttleClick {
+
+            }
 
         }
     }

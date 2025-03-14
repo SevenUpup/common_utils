@@ -23,25 +23,25 @@ object AnimUtils {
     private var animator: ObjectAnimator? = null
 
     fun beginBounceAnima(view: View,lifecycleOwner: LifecycleOwner?=null){
-        cancle()
+        cancel()
         val owner = lifecycleOwner?:view.findViewTreeLifecycleOwner()
         owner?.lifecycle?.addObserver(object : LifecycleEventObserver {
             override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
                 when (event) {
-                    Lifecycle.Event.ON_PAUSE -> cancle()
+                    Lifecycle.Event.ON_PAUSE -> cancel()
                     Lifecycle.Event.ON_RESUME -> start()
-                    Lifecycle.Event.ON_DESTROY -> cancle()
+                    Lifecycle.Event.ON_DESTROY -> cancel()
                     else -> {}
                 }
             }
             fun start(){
-                cancle()
+                cancel()
                 beginTransAnimation(view)
             }
         })
     }
 
-    fun cancle(){
+    fun cancel(){
         CUR_ROUND = 0
         animator?.removeAllListeners()
         animator?.removeAllUpdateListeners()

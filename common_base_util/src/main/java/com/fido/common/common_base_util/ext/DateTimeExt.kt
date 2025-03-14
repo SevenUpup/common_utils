@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 /**
@@ -590,4 +592,64 @@ enum class DateCompare{
      * default error
      */
     ERROR
+}
+
+
+/**
+ * 根据当前时间返回 格式化后 一周的 拼接数组 ["周一 12.16","周二 12.17",....]
+ */
+fun getCurrentWeekDates(format:String = "MM.dd",split:String = " "): Array<String> {
+    val calendar = Calendar.getInstance()
+    val dateFormat = SimpleDateFormat(format, Locale.getDefault())
+    val weekDates = Array(7) { "" }
+
+    // 设置 Calendar 为当前周的周一
+    calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+
+    for (i in 0 until 7) {
+        val date = calendar.time
+        val dayOfWeek = when (calendar.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.MONDAY -> "周一"
+            Calendar.TUESDAY -> "周二"
+            Calendar.WEDNESDAY -> "周三"
+            Calendar.THURSDAY -> "周四"
+            Calendar.FRIDAY -> "周五"
+            Calendar.SATURDAY -> "周六"
+            Calendar.SUNDAY -> "周日"
+            else -> ""
+        }
+        weekDates[i] = "$dayOfWeek${split}${dateFormat.format(date)}"
+        calendar.add(Calendar.DAY_OF_MONTH, 1)
+    }
+
+    return weekDates
+}
+
+
+/**
+ * 获取今后多少天后的日期
+ * Get the date some days later.
+ * @param year the year
+ * @param month month of the year
+ * @param day day of the month
+ * @param internalDay add days number
+ * @return if the parameter is illegal this will return null
+ */
+@SuppressLint("SimpleDateFormat")
+fun getClosingDate(year: Int, month: Int, day: Int,internalDay:Int = 31): String? {
+    val pattern = "yyyy-MM-dd"
+    val dateFormat: DateFormat = SimpleDateFormat(pattern)
+    val closingDate: Date
+    try {
+        val thisDay = Calendar.getInstance()
+        thisDay[Calendar.YEAR] = year
+        thisDay[Calendar.MONTH] = month - 1 // the first month of the year is 0.
+        thisDay[Calendar.DAY_OF_MONTH] = day
+        thisDay.add(Calendar.DAY_OF_MONTH, internalDay)
+        closingDate = thisDay.time
+    } catch (e: java.lang.Exception) {
+        e.printStackTrace()
+        return null
+    }
+    return dateFormat.format(closingDate)
 }

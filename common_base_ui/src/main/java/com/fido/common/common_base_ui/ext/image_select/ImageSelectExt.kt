@@ -2,7 +2,6 @@ package com.fido.common.common_base_ui.ext.image_select
 
 import android.Manifest
 import android.content.Context
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.fido.common.common_base_ui.ext.image_select.ImageFileCompressEngine.Companion.createImageCompressEngine
@@ -16,8 +15,6 @@ import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.luck.picture.lib.language.LanguageConfig
 import com.luck.picture.lib.permissions.PermissionChecker
 import com.luck.picture.lib.utils.*
-import top.zibin.luban.Luban
-import top.zibin.luban.LubanUtils
 
 /**
  * 返回选择图片的file path
