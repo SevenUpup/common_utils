@@ -127,6 +127,7 @@ class DragLookMoreContainer @JvmOverloads constructor(
     }
 
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+//        Log.d(TAG, "onInterceptTouchEvent: action=>${ev.action}")
         var intercept = false
         when (ev.action) {
             MotionEvent.ACTION_DOWN -> {
@@ -171,6 +172,7 @@ class DragLookMoreContainer @JvmOverloads constructor(
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
+//        Log.d(TAG, "onTouchEvent: action=>${event.action}")
         when (event.action) {
             MotionEvent.ACTION_DOWN->{
                 mHintLeftMargin = 0f

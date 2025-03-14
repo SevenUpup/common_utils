@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.fido.common.common_utils.customview.custom.MapView
+        android:id="@+id/map"
+        app:layout_constraintTop_toBottomOf="@id/ll_actions"
+        android:layout_width="match_parent"
+        android:layout_height="500dp" />
+
+    <com.fido.common.common_utils.customview.MyNestedScrollView2
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <com.fido.common.common_utils.customview.TransparentView
+                android:id="@+id/transparentView"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:background="#00000000"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="900dp"
+                android:background="@color/cw_trace_text"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.fido.common.common_utils.customview.MyNestedScrollView2>
+
+    <LinearLayout
+        android:id="@+id/ll_actions"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="解决方案就是，判断当手指触摸时在否在mapView范围内，在的话将事件交给MapView处理，否则交给ScrollView处理"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btShow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="显示ScrollView"/>
+            <Button
+                android:id="@+id/btHide"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="隐藏ScrollView"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

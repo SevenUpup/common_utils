@@ -4,6 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <Button
+        android:id="@+id/bt_dragMap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:text="仿MapView + ScrollView 滑动冲突解决"/>
 
         <!-- 内部必须有一个横向 LinearLayout 来容纳多个 RecyclerView -->
         <com.fido.common.common_utils.customview.custom.CustomScrollViewGroup

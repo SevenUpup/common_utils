@@ -9,10 +9,12 @@ import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_ui.ext.horizontal
 import com.fido.common.common_base_ui.ext.vertical
 import com.fido.common.common_base_ui.util.dp
+import com.fido.common.common_base_ui.util.throttleClick
 import com.fido.common.common_base_util.ext.children
 import com.fido.common.common_base_util.ext.setDrawable
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.ext.widthAndHeight
+import com.fido.common.common_base_util.startActivity
 import com.fido.common.common_utils.rv.bindData
 import com.fido.common.common_utils.rv.setText
 import com.fido.common.databinding.AcSlidingConflictBinding
@@ -34,12 +36,28 @@ class SlidingConflictAc:AppCompatActivity() {
 
     private val data = Array(10){it.toString()}.toList()
 
+    //返回true Activity将所有事件拦截,就玩不了哦
+//    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+//        Log.d("SlidingConflictAc", "SlidingConflictAc dispatchTouchEvent: action=>${ev.action}")
+//        return true
+//    }
+
+//    override fun onTouchEvent(event: MotionEvent): Boolean {
+//        Log.d("SlidingConflictAc", "SlidingConflictAc onTouchEvent: action=>${event.action}")
+//        return true
+//    }
 
     private fun initView() {
         binding.apply {
-            dragContainer.setHintTextView {
-                setDrawable(leftDrawable = R.mipmap.back_black)
-            }.setOnShowMoreListener {
+            btDragMap.throttleClick {
+                startActivity<MapDragAc>()
+            }
+
+            dragContainer.setUp(
+                initHintText = {
+                    setDrawable(leftDrawable = R.mipmap.back_black)
+                }
+            ) {
                 toast("进入更多页面")
             }
             rvDragLookMore.horizontal()
