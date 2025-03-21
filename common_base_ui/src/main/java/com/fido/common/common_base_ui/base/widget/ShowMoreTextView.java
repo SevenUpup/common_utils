@@ -143,4 +143,13 @@ public class ShowMoreTextView extends AppCompatTextView {
         }
         invalidate();
     }
+
+    /**
+     * 设置贝塞尔曲线的背景色
+     */
+    public void setTextShadowBgColor(int bgColor){
+        this.textBgColor = bgColor;
+
+    }
+
 }

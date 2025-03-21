@@ -192,6 +192,7 @@
         <activity android:name=".common_utils.jetpack.coroutine.KotlinCoroutineAc"/>
         <activity android:name=".common_utils.customview.SlidingConflictAc"/>
         <activity android:name=".common_utils.customview.MapDragAc"/>
+        <activity android:name=".common_utils.handler.HandlerInKotlinAc"/>
     </application>
 
 </manifest>

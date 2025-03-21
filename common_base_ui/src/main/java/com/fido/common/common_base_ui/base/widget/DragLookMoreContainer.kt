@@ -37,8 +37,8 @@ class DragLookMoreContainer @JvmOverloads constructor(
     private var showMoreTextHeight = 0
 
     private var mHintLeftMargin = 0f
-    private val RELEASE_MORE = "查看详情"
-    private val SCROLL_MORE = "释放查看"
+    private var RELEASE_MORE = "查看详情"
+    private var SCROLL_MORE = "释放查看"
 
     //右侧布局的偏移量
     private var mOffsetWidth = 0f
@@ -79,6 +79,17 @@ class DragLookMoreContainer @JvmOverloads constructor(
         this.releaseAnimDuration = releaseAnimDuration
         this.RATIO = dampingRation
         this.mShowMoreListener = showMoreListener
+    }
+
+    /**
+     * 设置默认文案
+     */
+    fun setHintText(
+        firstText:String = SCROLL_MORE,
+        moreText:String = RELEASE_MORE,
+    ) = apply {
+        this.SCROLL_MORE = firstText
+        this.RELEASE_MORE = moreText
     }
 
     override fun onFinishInflate() {

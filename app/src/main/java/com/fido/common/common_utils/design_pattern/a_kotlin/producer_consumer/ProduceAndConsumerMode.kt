@@ -1,6 +1,7 @@
 package com.fido.common.common_utils.design_pattern.a_kotlin.producer_consumer
 
 import android.util.Log
+import com.fido.common.common_utils.design_pattern.a_kotlin.systemPrinterUtf8
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.Executors
 import java.util.concurrent.LinkedBlockingQueue
@@ -15,13 +16,15 @@ import kotlin.random.Random
 
 fun main() {
 
+    systemPrinterUtf8()
+    println("任务开始了：1111")
     val manager = ImageDownloadManager()
     manager.addTask("111")
     manager.addTask("222")
     manager.addTask("333")
 
 //    manager.stop()
-
+    println("任务结束了？2222")
 //    生产者（addTask()） 把 ImageDownloadTask 任务放入 BlockingQueue 中。
 //    消费者（startConsumer()） 从 BlockingQueue 取出任务，并用线程池执行 task.download()。
 //    如果生产速度大于消费速度，队列会自动缓存任务，防止丢失任务。
@@ -29,6 +32,31 @@ fun main() {
 //    如果队列空了，消费者会阻塞等待，不会频繁轮询消耗 CPU。
 
 
+    println("开启 loop")
+    loop("123")
+    println("结束 loop")
+    loop("")
+    println("loop 后 执行代码")
+    manager.addTask("444")
+}
+
+val msgList = mutableListOf<String>()
+fun loop(msg:String){
+    if (msg.isNotBlank()) {
+        msgList.add(msg)
+    }
+    while (true) {
+        if (msg.isNullOrBlank()) { // 替换为你的退出条件
+            println("退出循环")
+            break
+        }else{
+            if (msgList.isEmpty()) break
+            val index = msgList.indexOf(msg)
+            val result = msgList[index]
+            println("result=${result}")
+            msgList.removeAt(index)
+        }
+    }
 }
 
 /**

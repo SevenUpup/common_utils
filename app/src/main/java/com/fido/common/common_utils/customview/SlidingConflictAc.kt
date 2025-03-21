@@ -14,10 +14,12 @@ import com.fido.common.common_base_util.ext.children
 import com.fido.common.common_base_util.ext.setDrawable
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.ext.widthAndHeight
+import com.fido.common.common_base_util.getColor
 import com.fido.common.common_base_util.startActivity
 import com.fido.common.common_utils.rv.bindData
 import com.fido.common.common_utils.rv.setText
 import com.fido.common.databinding.AcSlidingConflictBinding
+
 
 /**
  * @author: FiDo
@@ -56,9 +58,10 @@ class SlidingConflictAc:AppCompatActivity() {
             dragContainer.setUp(
                 initHintText = {
                     setDrawable(leftDrawable = R.mipmap.back_black)
+                    setTextShadowBgColor(R.color.colorBgBtnText.getColor)
                 }
             ) {
-                toast("进入更多页面")
+                toast("进入详情页面")
             }
             rvDragLookMore.horizontal()
                 .bindData(data, R.layout.item_rv_img) { holder, position, item ->
@@ -100,5 +103,6 @@ class SlidingConflictAc:AppCompatActivity() {
             }
         }
     }
+
 
 }
