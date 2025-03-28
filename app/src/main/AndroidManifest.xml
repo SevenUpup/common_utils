@@ -188,6 +188,8 @@
 
         <activity android:name=".common_utils.coroutine.CoroutineTestAc"/>
         <activity android:name=".common_utils.blue_tooth.BlueToothAc"/>
+        <activity android:name=".common_utils.blue_tooth.BlueToothSendFileComputerActivity"/>
+
         <activity android:name=".common_utils.webview.WebViewAc"/>
         <activity android:name=".common_utils.jetpack.coroutine.KotlinCoroutineAc"/>
         <activity android:name=".common_utils.customview.SlidingConflictAc"/>

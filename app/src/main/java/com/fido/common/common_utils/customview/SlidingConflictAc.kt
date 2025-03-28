@@ -25,6 +25,18 @@ import com.fido.common.databinding.AcSlidingConflictBinding
  * @author: FiDo
  * @date: 2025/3/12
  * @des:  滑动冲突Ac
+ *
+ * 滑动冲突总结：
+ *                  fun dispatchTouchEvent(ev: MotionEvent): Boolean{
+ *                      var consume = false
+ *                      if(onInterceptToucheEvent(ev)){
+ *                          consume = onTouchEvent(ev)
+ *                      }else{
+ *                          consume = child.dispatchTouchEvent(ev)
+ *                      }
+ *                      return consume
+ *                  }
+ *
  */
 class SlidingConflictAc:AppCompatActivity() {
 
@@ -104,5 +116,5 @@ class SlidingConflictAc:AppCompatActivity() {
         }
     }
 
-
 }
+

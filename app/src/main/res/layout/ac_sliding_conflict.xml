@@ -166,7 +166,7 @@
 
 
     <LinearLayout
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -183,7 +183,7 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="150dp"
                     android:textStyle="bold"
                     android:text="ScrollView 中嵌套Rv 导致滑动冲突"
                     android:gravity="center"
@@ -196,7 +196,7 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="500dp"
+                    android:layout_height="300dp"
                     android:background="@color/Green_1"/>
 
             </LinearLayout>
@@ -217,7 +217,7 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="150dp"
                     android:textStyle="bold"
                     android:textColor="@color/Deeporange_5"
                     android:text="MyScrollView 中嵌套Rv 解决滑动冲突"
@@ -231,7 +231,7 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="500dp"
+                    android:layout_height="300dp"
                     android:background="@color/Green_1"/>
 
             </LinearLayout>
@@ -251,7 +251,7 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="150dp"
                     android:textStyle="bold"
                     android:text="NestedScrollView 中嵌套Rv 系统已解决滑动冲突"
                     android:textColor="@color/cw_trace_text"
@@ -265,7 +265,7 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="500dp"
+                    android:layout_height="300dp"
                     android:background="@color/Green_2"/>
 
             </LinearLayout>

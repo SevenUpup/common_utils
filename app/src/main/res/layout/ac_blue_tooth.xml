@@ -20,6 +20,11 @@
             android:layout_height="wrap_content"
             android:text="低功耗蓝牙BLE"/>
 
+        <Button
+            android:id="@+id/bt_bleSend2Computer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="与电脑蓝牙匹配成功后将文件发送给电脑\n好像多次一举，匹配成功后自然可以将文件以蓝牙发送\n仅测试标准SPP UUID"/>
 
 
     </LinearLayout>

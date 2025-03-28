@@ -24,6 +24,7 @@ import androidx.core.app.ActivityCompat
 import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_util.ext.click
 import com.fido.common.common_base_util.ext.loge
+import com.fido.common.common_base_util.startActivity
 import com.fido.common.common_base_util.toJson
 import com.fido.common.databinding.AcBlueToothBinding
 import java.util.UUID
@@ -59,6 +60,10 @@ class BlueToothAc:AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding.apply {
+            btBleSend2Computer.click {
+                startActivity<BlueToothSendFileComputerActivity>()
+            }
+
             btClassic.click {
                 //1.启用蓝牙
                 checkBlueToothEnable()
@@ -170,7 +175,9 @@ class BlueToothAc:AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        unregisterReceiver(classicBtReceiver)
+        if (classicBtReceiver != null) {
+            unregisterReceiver(classicBtReceiver)
+        }
         releaseBt()
     }
 

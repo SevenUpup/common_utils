@@ -1,11 +1,13 @@
 package com.fido.common.common_utils.viewmodel
 
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.fido.common.BuildConfig
+import com.fido.common.R
 import com.fido.common.base.BaseVBActivity
 import com.fido.common.common_base_ui.util.showNormalInputDialog
 import com.fido.common.common_base_util.ext.loge
@@ -13,13 +15,17 @@ import com.fido.common.common_base_util.ext.longToast
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.toJson
 import com.fido.common.common_base_util.util.ShellUtils
-import com.fido.common.R
 import com.fido.common.databinding.AcViewModelBinding
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
+import java.util.Timer
 import kotlin.concurrent.thread
+import kotlin.concurrent.timerTask
 
-class ViewModelAc : BaseVBActivity<AcViewModelBinding>() {
+/**
+ * 双向绑定
+ */
+class ViewModelAc : BaseVBActivity<AcViewModelBinding>(),DefaultLifecycleObserver {
 
     //    private val mViewModel:MViewModel by viewModels()
     private val mViewModel: MViewModel by lazy {
@@ -37,10 +43,21 @@ class ViewModelAc : BaseVBActivity<AcViewModelBinding>() {
 
         toast(applicationInfo.processName)
         loge("APPLICATION_ID=${BuildConfig.APPLICATION_ID} packageName=${applicationContext.packageName} applicationInfo.packageName=${applicationInfo.packageName}")
+
+        binding.tvTimerInfo.text = "mViewModel.timer=${mViewModel.timer}"
+        mViewModel.setOnTimeChangeListener(object : MViewModel.OnTimeChangeLister {
+            override fun onTimeChanged(second: Int) {
+                runOnUiThread {
+                    binding.tvTimer.text = second.toString()
+                }
+            }
+        })
+        mViewModel.start()
+
     }
 
     override fun initData() {
-        showNormalInputDialog {
+        showNormalInputDialog(content = "点击确认执行 adb devices 并吐司结果") {
             thread {
 
 //                val externalFilePath: String = Environment.getExternalStorageDirectory().getPath() + "/" + fileName
@@ -48,12 +65,11 @@ class ViewModelAc : BaseVBActivity<AcViewModelBinding>() {
 //                val process: Process = Runtime.getRuntime().exec("shell", "/bin/sh", "-c", command)
 //                val reader = BufferedReader(InputStreamReader(process.inputStream))
 
-                val execCmd = ShellUtils.execCmd("adb devices", false)
+                val execCmd = ShellUtils.execCmd("devices", false)
                 loge(execCmd.toJson())
-                longToast(execCmd.toJson())
+                longToast("success:${execCmd.successMsg} error:${execCmd.errorMsg}")
             }
         }
-
     }
 
     private var index = 1
@@ -95,4 +111,31 @@ class MViewModel : ViewModel() {
     var mResult = MutableLiveData<String>()
     var data = MutableSharedFlow<String>()
     val bool = MutableLiveData<Boolean>()
+
+
+//    private val timer: Timer = Timer()
+    val timer: Timer = Timer()
+    private var timeChangeListener: OnTimeChangeLister? = null
+    private var currentSecond: Int = 0
+    fun start() {
+        loge("start 执行了")
+        timer.schedule(timerTask {
+            currentSecond++
+            timeChangeListener?.onTimeChanged(currentSecond)
+        }, 1000, 1000)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        timer.cancel()
+    }
+
+    fun setOnTimeChangeListener(listener: OnTimeChangeLister) {
+        timeChangeListener = listener
+    }
+
+    interface OnTimeChangeLister {
+        fun onTimeChanged(second: Int)
+    }
+
 }

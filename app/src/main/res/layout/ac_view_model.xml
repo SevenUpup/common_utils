@@ -53,5 +53,27 @@
             android:textStyle="bold"
             android:text='@{viewModel.MResult,default="defult"}' />
 
+        <LinearLayout
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/tv_timerInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="当前计时器："/>
+
+            <TextView
+                android:id="@+id/tv_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="测试ViewModel在屏幕旋转后计时器情况:"/>
+
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

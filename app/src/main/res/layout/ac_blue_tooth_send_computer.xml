@@ -1,0 +1,55 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <Button
+        android:id="@+id/btn_select_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="选择文件"/>
+
+    <Button
+        android:id="@+id/btn_select_device"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="选择蓝牙设备"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/tv_selected_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="未选择文件"/>
+
+    <TextView
+        android:id="@+id/tv_selected_device"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="未选择设备"/>
+
+    <Button
+        android:id="@+id/btn_send_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送文件"
+        android:layout_marginTop="16dp"
+        android:enabled="false"/>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"/>
+</LinearLayout>

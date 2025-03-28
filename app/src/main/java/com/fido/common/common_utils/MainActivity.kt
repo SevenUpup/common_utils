@@ -160,7 +160,6 @@ class MainActivity : AppCompatActivity() {
     companion object{
         var MAIN_MUILT_PROCESS_TAG = 0
         val globalGraySpKey = "globalGray"
-
     }
 
     private val mBinding: ActivityMainBinding by binding()
@@ -176,7 +175,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        HEventBus.getDefault().register(this)
+        HEventBus.getDefault().unRegister(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -328,6 +327,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     private val isOpenGlobalGray
         get() = globalGraySpKey.spValue("")
     private fun addButton() {
@@ -342,7 +345,7 @@ class MainActivity : AppCompatActivity() {
             }
             toast("${if (isOpenGlobalGray.isNotBlank()) "开启" else "关闭"}成功，请重新启动app")
         }
-        addView<ViewModelAc>("go ViewModel")
+        addView<ViewModelAc>("ViewModel + DataBinding 双向绑定")
         addView<BannerAc>("go Banner")
         addView<SurfaceAc>("Go Surface")
         addView<NavigationAc>("Go Nav")

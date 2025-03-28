@@ -177,7 +177,7 @@ class DragLookMoreContainer @JvmOverloads constructor(
                     mLastY = ev.y
                 }
             }
-            MotionEvent.ACTION_UP-> intercept = false
+            MotionEvent.ACTION_UP -> intercept = false
         }
         return intercept
     }
