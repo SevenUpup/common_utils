@@ -106,6 +106,7 @@ import com.fido.common.common_utils.eventbus.ac.EventBusAc
 import com.fido.common.common_utils.eventbus.ac.HEventBusTestBean
 import com.fido.common.common_utils.handler.HandlerInKotlinAc
 import com.fido.common.common_utils.jetpack.JetPackAc
+import com.fido.common.common_utils.js.JsAc
 import com.fido.common.common_utils.motionlayout.MotionBall2Ac
 import com.fido.common.common_utils.motionlayout.MotionCarouselAc
 import com.fido.common.common_utils.motionlayout.MotionCollapsibleAc
@@ -397,6 +398,7 @@ class MainActivity : AppCompatActivity() {
         addView<WebViewAc>("Let's go WebView")
         addView<WebViewAc>("WebView加载本地HTML", Pair(WebViewAc.INTENT_LOAD_LOCAL,"lottery.html"))
         addView<HandlerInKotlinAc>("Android Handler机制")
+        addView<JsAc>("Android JS 交互")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {

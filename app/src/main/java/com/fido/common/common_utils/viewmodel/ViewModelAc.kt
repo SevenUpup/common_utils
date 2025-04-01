@@ -37,12 +37,14 @@ class ViewModelAc : BaseVBActivity<AcViewModelBinding>(),DefaultLifecycleObserve
     }
 
     override fun initView() {
+
+
         binding.viewModel = mViewModel
         val clickProxy = ClickProxy()
         binding.clickProxy = clickProxy
 
         toast(applicationInfo.processName)
-        loge("APPLICATION_ID=${BuildConfig.APPLICATION_ID} packageName=${applicationContext.packageName} applicationInfo.packageName=${applicationInfo.packageName}")
+        loge("APPLICATION_ID=${BuildConfig.APPLICATION_ID} packageName=${applicationContext.packageName} applicationInfo.packageName=${applicationInfo.packageName} mResult Value=${mViewModel.mResult.value}")
 
         binding.tvTimerInfo.text = "mViewModel.timer=${mViewModel.timer}"
         mViewModel.setOnTimeChangeListener(object : MViewModel.OnTimeChangeLister {
@@ -53,7 +55,6 @@ class ViewModelAc : BaseVBActivity<AcViewModelBinding>(),DefaultLifecycleObserve
             }
         })
         mViewModel.start()
-
     }
 
     override fun initData() {
@@ -64,6 +65,7 @@ class ViewModelAc : BaseVBActivity<AcViewModelBinding>(),DefaultLifecycleObserve
 //                val command = "ls -l $externalFilePath"
 //                val process: Process = Runtime.getRuntime().exec("shell", "/bin/sh", "-c", command)
 //                val reader = BufferedReader(InputStreamReader(process.inputStream))
+                mViewModel.mResult.postValue("666")
 
                 val execCmd = ShellUtils.execCmd("devices", false)
                 loge(execCmd.toJson())

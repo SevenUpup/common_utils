@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="Android调用JS方法"/>
+
+        <Button
+            android:id="@+id/bt_alert"
+            android:text="通知网页弹窗 loadUrl 方式"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/bt_evaluate"
+            android:text="通知网页弹窗 evaluateJavascript 方式"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="JS调用Android方法"/>
+
+        <Button
+            android:id="@+id/bt_addJSInterface"
+            android:text="1.通过 addJavaScriptInterface()进行映射"
+            android:textAllCaps="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/bt_shouldOverrideUrlLoading"
+            android:text="2.WebViewClient shouldOverrideUrlLoading拦截路由后,回传参数\n只能通过loadUrl()方式"
+            android:textAllCaps="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tv_parameters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/bt_webChromeClient"
+            android:text="3.通过 WebChromeClient 的onJsAlert()、onJsConfirm()、onJsPrompt() 方法\n回调拦截JS对话框alert()、confirm()、prompt() 消息"
+            android:textAllCaps="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+        <WebView
+            android:id="@+id/mWeb"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+</layout>

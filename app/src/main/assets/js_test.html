@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>I am a Title</title>
+    <h1>我是一个网页</h1>
+    <div>
+        <button type="button" id="button1" onclick="jsCallAndroid()">通过Android中@JavaScriptInterface注解定义的类调用Android方法</button>
+    </div>
+
+    <div>
+        <button type="button" id="button2" onclick="shouldOverrideUrl()">通过Android中shouldOverrideUrlLoading调用Android方法</button>
+    </div>
+    <div>
+        <h4>1.常用的拦截是：拦截 JS的输入框（即prompt() 方法）<br><br>2.因为只有prompt（）可以返回任意类型的值，操作最全面方便、更加灵活；而alert() 对话框没有返回值；confirm（）对话框只能返回两种状态（确定 / 取消）两个值</h4>
+        <button type="button" id="button3" onclick="clickPrompt()">Android同过WebChromeClient覆写onJsPrompt()拦截Js里面的弹窗事件</button>
+    </div>
+    <script>
+            // Android需要调用的方法
+           function callJS(){
+              alert("Android调用了JS的callJS方法");
+           }
+
+        // =========================== JS 调通 Android 方法 ============================
+        function jsCallAndroid(){
+            // 由于对象映射，所以调用test对象等于调用Android映射的对象
+            test.hello("js调用了android中的hello方法")
+        }
+
+        function shouldOverrideUrl(){
+            /*约定的url协议为：js://webview?arg1=111&arg2=222*/
+            document.location = "js://webview?arg1=111&arg2=222";
+        }
+
+        function returnResult(result){
+            alert("result is" + result);
+        }
+
+        function clickPrompt(){
+            // 调用prompt（）
+            var result = prompt("js://demo?arg1=111&arg2=222");
+            alert(result);
+        }
+
+    </script>
+
+</head>
+
+</html>
+

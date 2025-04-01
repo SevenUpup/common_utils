@@ -195,6 +195,9 @@
         <activity android:name=".common_utils.customview.SlidingConflictAc"/>
         <activity android:name=".common_utils.customview.MapDragAc"/>
         <activity android:name=".common_utils.handler.HandlerInKotlinAc"/>
+
+        <activity android:name=".common_utils.js.JsAc"/>
+
     </application>
 
 </manifest>
