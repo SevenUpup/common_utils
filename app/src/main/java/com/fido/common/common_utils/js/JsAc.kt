@@ -10,12 +10,15 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_ui.util.throttleClick
 import com.fido.common.common_base_util.ext.loge
 import com.fido.common.common_base_util.ext.toast
 import com.fido.common.common_base_util.toJson
 import com.fido.common.databinding.AcJsInteractionBinding
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 /**
  * @author: FiDo
@@ -24,10 +27,24 @@ import com.fido.common.databinding.AcJsInteractionBinding
  */
 class JsAc:AppCompatActivity() {
 
+//    private val vm :BaseViewModel by viewModels()
+
     private val binding:AcJsInteractionBinding by binding()
+    private var job:Job?=null
+
+    override fun onDestroy() {
+        job?.cancel()
+        super.onDestroy()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+//        pressBackTwiceToExitApp("再按一次退出")
+
+        job = lifecycleScope.launch {
+
+        }
 
         binding.apply {
             mWeb.loadUrl("file:///android_asset/js_test.html")
@@ -101,7 +118,6 @@ class JsAc:AppCompatActivity() {
                 mWeb.addJavascriptInterface(AndroidToJs(),"test")
                 mWeb.loadUrl("file:///android_asset/js_test.html")
             }
-
             btShouldOverrideUrlLoading.throttleClick {
                 val result = 0
                 mWeb.loadUrl("javascript:returnResult(" + result + ")")
