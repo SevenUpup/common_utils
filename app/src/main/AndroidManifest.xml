@@ -198,6 +198,8 @@
 
         <activity android:name=".common_utils.js.JsAc"/>
 
+        <activity android:name=".common_utils.event_dispatch.DispatchEventAc"/>
+
     </application>
 
 </manifest>

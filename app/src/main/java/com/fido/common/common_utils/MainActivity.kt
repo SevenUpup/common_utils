@@ -98,6 +98,7 @@ import com.fido.common.common_utils.customview.CustomViewAc
 import com.fido.common.common_utils.design_pattern.DesignPatternAc
 import com.fido.common.common_utils.device_info.DeviceInfoAc
 import com.fido.common.common_utils.edittext.CustomStyleActivity
+import com.fido.common.common_utils.event_dispatch.DispatchEventAc
 import com.fido.common.common_utils.eventbus.HEventBus
 import com.fido.common.common_utils.eventbus.Subscribe
 import com.fido.common.common_utils.eventbus.ThreadMode
@@ -399,6 +400,7 @@ class MainActivity : AppCompatActivity() {
         addView<WebViewAc>("WebView加载本地HTML", Pair(WebViewAc.INTENT_LOAD_LOCAL,"lottery.html"))
         addView<HandlerInKotlinAc>("Android Handler机制")
         addView<JsAc>("Android JS 交互")
+        addView<DispatchEventAc>("Android 事件分发")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {
