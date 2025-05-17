@@ -60,15 +60,12 @@ class HookSmsActivity :AppCompatActivity(){
 
     private fun initView() {
         binding.apply {
-
             btSmsPermission.click {
                 requestSmsPermission()
             }
 
             btInsert.click {
-
                 addSmsToInbox(this@HookSmsActivity,"111","测试的")
-
             }
 
             btSmsManagerSend.click {
