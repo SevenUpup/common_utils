@@ -81,19 +81,19 @@
                 <View
                     android:layout_width="300dp"
                     android:layout_height="match_parent"
-                    android:background="@color/Blue_10"/>
+                    android:background="@color/ps_color_20c064"/>
                 <View
                     android:layout_width="300dp"
                     android:layout_height="match_parent"
-                    android:background="@color/Blue_1"/>
+                    android:background="@color/colorTextBlack"/>
                 <View
                     android:layout_width="300dp"
                     android:layout_height="match_parent"
-                    android:background="@color/Blue_5"/>
+                    android:background="@color/colorAccent"/>
                 <View
                     android:layout_width="300dp"
                     android:layout_height="match_parent"
-                    android:background="@color/Blue_7"/>
+                    android:background="@color/colorBgBtnGray"/>
             </LinearLayout>
 
         </HorizontalScrollView>
@@ -115,7 +115,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/Red_3"/>
+            android:background="@color/colorTextDiv"/>
 
     </com.fido.common.common_base_ui.base.widget.DragLookMoreContainer>
 
@@ -187,7 +187,7 @@
                     android:textStyle="bold"
                     android:text="ScrollView 中嵌套Rv 导致滑动冲突"
                     android:gravity="center"
-                    android:background="@color/Green_1"/>
+                    android:background="@color/cardview_shadow_end_color"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv1"
@@ -197,7 +197,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    android:background="@color/Green_1"/>
+                    android:background="@color/cardview_shadow_end_color"/>
 
             </LinearLayout>
 
@@ -219,10 +219,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:textStyle="bold"
-                    android:textColor="@color/Deeporange_5"
+                    android:textColor="@color/cardview_light_background"
                     android:text="MyScrollView 中嵌套Rv 解决滑动冲突"
                     android:gravity="center"
-                    android:background="@color/Green_1"/>
+                    android:background="@color/cardview_shadow_end_color"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv3"
@@ -232,7 +232,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    android:background="@color/Green_1"/>
+                    android:background="@color/cardview_shadow_end_color"/>
 
             </LinearLayout>
 
@@ -256,7 +256,7 @@
                     android:text="NestedScrollView 中嵌套Rv 系统已解决滑动冲突"
                     android:textColor="@color/cw_trace_text"
                     android:gravity="center"
-                    android:background="@color/Green_2"/>
+                    android:background="@color/cardview_dark_background"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv2"
@@ -266,7 +266,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    android:background="@color/Green_2"/>
+                    android:background="@color/cardview_dark_background"/>
 
             </LinearLayout>
 

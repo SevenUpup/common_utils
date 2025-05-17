@@ -125,6 +125,7 @@ import com.fido.common.common_utils.pop.DialogChainAc
 import com.fido.common.common_utils.result.KtResultAc
 import com.fido.common.common_utils.room.RoomAc
 import com.fido.common.common_utils.rv.RvAc
+import com.fido.common.common_utils.sms.HookSmsActivity
 import com.fido.common.common_utils.sp.SPAc
 import com.fido.common.common_utils.spannable.SpannableAc
 import com.fido.common.common_utils.test.NavigationAc
@@ -401,6 +402,7 @@ class MainActivity : AppCompatActivity() {
         addView<HandlerInKotlinAc>("Android Handler机制")
         addView<JsAc>("Android JS 交互")
         addView<DispatchEventAc>("Android 事件分发")
+        addView<HookSmsActivity>("Hook Sms")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {

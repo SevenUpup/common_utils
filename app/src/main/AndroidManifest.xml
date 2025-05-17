@@ -36,6 +36,14 @@
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
 
+    <!-- SMS -->
+<!--    <uses-feature-->
+<!--        android:name="android.hardware.telephony"-->
+<!--        android:required="false" />-->
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.WRITE_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+
     <application
         android:name=".common_utils.App"
         android:allowBackup="true"
@@ -199,6 +207,18 @@
         <activity android:name=".common_utils.js.JsAc"/>
 
         <activity android:name=".common_utils.event_dispatch.DispatchEventAc"/>
+
+        <!-- 声明应用可用作默认短信应用 -->
+        <receiver android:name=".common_utils.sms.MySmsReceiver"
+            android:exported="true"
+            android:permission="android.permission.BROADCAST_SMS">
+            <intent-filter android:priority="1000">
+                <action android:name="android.provider.Telephony.SMS_DELIVER" />
+            </intent-filter>
+        </receiver>
+
+
+        <activity android:name=".common_utils.sms.HookSmsActivity"/>
 
     </application>
 
