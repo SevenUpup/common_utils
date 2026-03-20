@@ -42,6 +42,9 @@ class JsAc:AppCompatActivity() {
 
 //        pressBackTwiceToExitApp("再按一次退出")
 
+        //  Android 调用JS代码 两种方式
+//        1. 通过WebView的loadUrl（）
+//        2. 通过WebView的evaluateJavascript（）
         job = lifecycleScope.launch {
 
         }
@@ -56,17 +59,26 @@ class JsAc:AppCompatActivity() {
 
             btAlert.throttleClick {
                 post {
+                    //Android 调用 JS 的 function callJS() 方法
                     mWeb.loadUrl("javascript:callJS()")
                 }
             }
 
             btEvaluate.throttleClick {
                 post {
-                    mWeb.evaluateJavascript("callJS()") {
-                            value -> loge("onReceiveValue=${value}")
+                    mWeb.evaluateJavascript("javascript:callJS()") { value ->
+                        loge("onReceiveValue=${value}")
+                        post {
+                            toast(value)
+                        }
                     }
                 }
             }
+
+            //JS调用Android
+//            通过WebView的addJavascriptInterface（）进行对象映射
+//            通过 WebViewClient 的shouldOverrideUrlLoading ()方法回调拦截 url
+//            通过 WebChromeClient 的onJsAlert()、onJsConfirm()、onJsPrompt（）方法回调拦截JS对话框alert()、confirm()、prompt（） 消息
 
             initJSCallAndroid()
 
