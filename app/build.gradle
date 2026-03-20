@@ -78,6 +78,7 @@ android {
                     'src/main/res/layout-new',  // 添加新的 layout 文件夹
                     'src/main/res'
             ]
+            aidl.srcDirs = ['src/main/aidl']
         }
     }
 

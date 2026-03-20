@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/bt_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="use VP2"/>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/mVp2"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/bt1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="仪表" />
+
+        <Button
+            android:id="@+id/bt2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="模式" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/rightContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/ps_color_8D57FC" />
+
+        <View
+            android:id="@+id/originalContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/ps_color_20c064" />
+
+    </FrameLayout>
+
+
+</LinearLayout>

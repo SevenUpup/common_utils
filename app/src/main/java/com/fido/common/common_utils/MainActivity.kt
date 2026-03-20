@@ -86,6 +86,7 @@ import com.fido.common.common_utils.ac_factory2.LayoutFactory2Ac
 import com.fido.common.common_utils.accessibility.AdSkipAc
 import com.fido.common.common_utils.anim.AnimUtils
 import com.fido.common.common_utils.anim.ShakeAnim
+import com.fido.common.common_utils.animation.AnimationAc
 import com.fido.common.common_utils.annotation.AnnotationAc
 import com.fido.common.common_utils.asm.ASMTestAc
 import com.fido.common.common_utils.asm.AsmHookActivity
@@ -188,7 +189,6 @@ class MainActivity : AppCompatActivity() {
         val date = "2322-06-21"
         Log.e("FiDo", "$date 解析结果 year=${date.getYearFromTime()} month=${date.getMonthFromTime()} day=${date.getDayFromTime()}")
         Log.e("FiDo", "currentTimeString = ${currentTimeString()} compareresult = ${dateCompare(currentTimeString(),date)}")
-
 
         runCatching { 100 / 0 }
             .onSuccess { value -> loge("onSuccess:$value") } //runCatching{}中执行成功，并传入执行结果
@@ -403,6 +403,7 @@ class MainActivity : AppCompatActivity() {
         addView<JsAc>("Android JS 交互")
         addView<DispatchEventAc>("Android 事件分发")
         addView<HookSmsActivity>("Hook Sms")
+        addView<AnimationAc>("Anim Test")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {

@@ -505,7 +505,7 @@ public class RuleView extends View {
     @SuppressWarnings("all")
     private void logD(String format, Object... args) {
         if (LOG_ENABLE) {
-            Log.d("GradationView", String.format("zjun@" + format, args));
+            Log.d("GradationView", String.format("--" + format, args));
         }
     }
 

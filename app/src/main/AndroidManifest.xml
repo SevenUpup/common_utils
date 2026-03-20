@@ -220,6 +220,7 @@
 
         <activity android:name=".common_utils.sms.HookSmsActivity"/>
 
+        <activity android:name=".common_utils.animation.AnimationAc"/>
     </application>
 
 </manifest>

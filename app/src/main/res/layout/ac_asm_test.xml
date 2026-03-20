@@ -54,6 +54,7 @@
             android:layout_height="wrap_content"/>
 
         <com.fido.common.common_utils.widgets.CircleImageView
+            android:id="@+id/iv_circle"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:src="@drawable/bg"
