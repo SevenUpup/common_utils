@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+
+    <Button
+        android:id="@+id/bt_bind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:textSize="40sp"
+        android:text="Bind Server"/>
+
+    <Button
+        android:id="@+id/bt_unbind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"
+        android:textSize="40sp"
+        android:text="UnBind Server"/>
+
+    <Button
+        android:id="@+id/bt_register"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"
+        android:textSize="40sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="registerCallback"/>
+
+    <Button
+        android:id="@+id/bt_unregister"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"
+        android:textSize="40sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UnregisterCallback"/>
+
+    <TextView
+        android:id="@+id/tv_tips"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

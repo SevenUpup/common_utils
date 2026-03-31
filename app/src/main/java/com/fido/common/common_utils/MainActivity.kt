@@ -84,6 +84,7 @@ import com.fido.common.common_base_util.util.timer.Interval
 import com.fido.common.common_base_util.vibrateShot
 import com.fido.common.common_utils.ac_factory2.LayoutFactory2Ac
 import com.fido.common.common_utils.accessibility.AdSkipAc
+import com.fido.common.common_utils.aidl.AidlAc
 import com.fido.common.common_utils.anim.AnimUtils
 import com.fido.common.common_utils.anim.ShakeAnim
 import com.fido.common.common_utils.animation.AnimationAc
@@ -404,6 +405,7 @@ class MainActivity : AppCompatActivity() {
         addView<DispatchEventAc>("Android 事件分发")
         addView<HookSmsActivity>("Hook Sms")
         addView<AnimationAc>("Anim Test")
+        addView<AidlAc>("================AIDL Test================")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {

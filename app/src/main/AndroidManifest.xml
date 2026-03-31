@@ -221,6 +221,19 @@
         <activity android:name=".common_utils.sms.HookSmsActivity"/>
 
         <activity android:name=".common_utils.animation.AnimationAc"/>
+
+        <!-- AIDL -->
+        <service
+            android:name=".aidlservice.MyAidlService"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.fido.common.aidlservice.MyAidlService" />
+            </intent-filter>
+        </service>
+        <activity android:name=".common_utils.aidl.AidlAc"/>
+        <!-- AIDL -->
+
     </application>
 
 </manifest>

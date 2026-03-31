@@ -48,6 +48,21 @@ const val DEFAULT_DES_TRANSFORMATION = "DES/CBC/PKCS5Padding"
 const val DEFAULT_RSA_KEY_LENGTH = 1024
 const val DEFAULT_RSA_TRANSFORMATION = "RSA"
 
+/**
+ * 验证文件的MD5值是否与指定值相等
+ *
+ * @param expectedMd5 期望的MD5值
+ * @return 如果文件的MD5值与期望值相等则返回true，否则返回false
+ */
+fun File.verifyMd5(expectedMd5: String): Boolean {
+    return try {
+        val fileMd5 = this.md5()
+        fileMd5.equals(expectedMd5, ignoreCase = true)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        false
+    }
+}
 
 /**
  * ByteArray转换成16进制字符串

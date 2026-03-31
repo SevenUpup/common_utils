@@ -1,6 +1,6 @@
 // IMyAidlInterface.aidl
 package com.fido.common;
-
+import com.fido.common.IMyCallback;
 // Declare any non-default types here with import statements
 
 interface IMyAidlInterface {
@@ -13,6 +13,10 @@ interface IMyAidlInterface {
 
 
     void getPay(int status, String message);
+
+    void registerCallback(IMyCallback callback);
+
+    void unregisterCallback(IMyCallback callback);
 
 
     String getMessage();
