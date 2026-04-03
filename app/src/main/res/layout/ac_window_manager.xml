@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bt_open_window_manager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Open Window manager"/>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bt_close_window_manager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Close Window manager"/>
+
+</LinearLayout>

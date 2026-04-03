@@ -136,6 +136,7 @@ import com.fido.common.common_utils.view.FloatingImageAc
 import com.fido.common.common_utils.viewmodel.ViewModelAc
 import com.fido.common.common_utils.viewpager.ViewpageAc
 import com.fido.common.common_utils.webview.WebViewAc
+import com.fido.common.common_utils.window_manager.WindowManagerAc
 import com.fido.common.databinding.ActivityMainBinding
 import com.fido.common.databinding.DialogTestBinding
 import com.fido.common.databinding.LayoutHeaderViewBinding
@@ -406,6 +407,7 @@ class MainActivity : AppCompatActivity() {
         addView<HookSmsActivity>("Hook Sms")
         addView<AnimationAc>("Anim Test")
         addView<AidlAc>("================AIDL Test================")
+        addView<WindowManagerAc>("========= WindowManagerAc Test =========")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {

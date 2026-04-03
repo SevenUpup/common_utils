@@ -127,6 +127,8 @@ fido {
 类似于咸鱼 拖拽到最右边时 显示 “更多” -> "释放查看"的过程 (DragLookMoreContainer 只能包含一个子View,可以是Rv,ScrollView,ViewGroup,View...)
 <p align="center"><img src="doc/drag_container_guide.gif" align="center" width="30%;" /></p>
 
+## [日常Tips](common_tips)
+
 
 ## 开发中功能
 

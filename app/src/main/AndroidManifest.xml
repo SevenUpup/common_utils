@@ -44,6 +44,9 @@
     <uses-permission android:name="android.permission.WRITE_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
 
+    <!-- 悬浮窗 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+
     <application
         android:name=".common_utils.App"
         android:allowBackup="true"
@@ -233,6 +236,11 @@
         </service>
         <activity android:name=".common_utils.aidl.AidlAc"/>
         <!-- AIDL -->
+
+
+        <!-- WindowManage -->
+        <activity android:name=".common_utils.window_manager.WindowManagerAc"/>
+        <!-- WindowManage -->
 
     </application>
 
