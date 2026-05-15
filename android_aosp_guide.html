@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Android 14 源码编译、Fastboot 刷机与设备部署完整指南</title>
+    <style>
+        :root {
+            --primary: #3DDC84;
+            --primary-dark: #073042;
+            --accent: #4285F4;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #202124;
+            --text-secondary: #5f6368;
+            --border: #dadce0;
+            --code-bg: #1e1e1e;
+            --warning-bg: #fff8e1;
+            --danger-bg: #ffebee;
+            --info-bg: #e8f5e9;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+        .hero {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #1a73e8 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .hero h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .hero p { font-size: 1.2em; opacity: 0.9; }
+        .hero .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 5px;
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        .toc {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px 32px;
+            margin: 30px 0;
+        }
+        .toc h2 { margin-bottom: 16px; font-size: 1.3em; }
+        .toc ol { padding-left: 24px; }
+        .toc li { margin: 6px 0; }
+        .toc a { color: var(--accent); text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            margin: 24px 0;
+        }
+        h2 {
+            font-size: 1.8em;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary);
+        }
+        h3 {
+            font-size: 1.3em;
+            color: var(--primary-dark);
+            margin: 24px 0 12px;
+        }
+        h4 {
+            font-size: 1.1em;
+            color: #333;
+            margin: 16px 0 8px;
+        }
+        p { margin: 8px 0; }
+        code {
+            background: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background: var(--code-bg);
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 12px 0;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+        .comment { color: #6a9955; }
+        .cmd { color: #569cd6; }
+        .flag { color: #ce9178; }
+        .string { color: #ce9178; }
+        .prompt { color: #dcdcaa; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+        th, td {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+        th {
+            background: var(--primary-dark);
+            color: white;
+        }
+        tr:nth-child(even) { background: #f5f5f5; }
+        .warning {
+            background: var(--warning-bg);
+            border-left: 4px solid #ff9800;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .danger {
+            background: var(--danger-bg);
+            border-left: 4px solid #f44336;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .info {
+            background: var(--info-bg);
+            border-left: 4px solid #4caf50;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .flow-diagram {
+            background: var(--primary-dark);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 16px 0;
+            font-family: monospace;
+            font-size: 0.95em;
+            line-height: 2;
+        }
+        .tag {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--primary-dark);
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin: 0 2px;
+        }
+        ul, ol { padding-left: 24px; }
+        li { margin: 4px 0; }
+        .comparison-table td:first-child { font-weight: bold; }
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+        }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8em; }
+            section { padding: 20px; }
+            pre { padding: 12px; font-size: 0.8em; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <h1>Android 14 源码编译、Fastboot 刷机与设备部署</h1>
+    <p>从源码到设备 — 完整技术指南</p>
+    <div>
+        <span class="badge">Android 14 (U)</span>
+        <span class="badge">AOSP</span>
+        <span class="badge">Fastboot</span>
+        <span class="badge">AAOS / IVI</span>
+    </div>
+</div>
+
+<div class="container">
+
+<div class="toc">
+    <h2>目录</h2>
+    <ol>
+        <li><a href="#overview">概述与核心概念</a></li>
+        <li><a href="#fastboot">Fastboot 协议详解</a></li>
+        <li><a href="#partitions">Android 分区体系结构</a></li>
+        <li><a href="#build-env">编译环境准备</a></li>
+        <li><a href="#build-process">AOSP 编译流程</a></li>
+        <li><a href="#build-artifacts">编译产物与输出</a></li>
+        <li><a href="#flashing">将产物刷入设备</a></li>
+        <li><a href="#phone-vs-ivi">手机 vs 车机 (IVI) 差异对比</a></li>
+        <li><a href="#aaos-specific">Android Automotive (AAOS) 特殊考量</a>
+            <ol>
+                <li><a href="#aaos-ota">AAOS OTA 架构</a></li>
+                <li><a href="#aaos-partitions">车机分区特殊性</a></li>
+                <li><a href="#multi-domain">车机多域架构 (重点)</a></li>
+                <li><a href="#vhal">VHAL 开发调试</a></li>
+                <li><a href="#qnx-deep">QNX 详解</a></li>
+            </ol>
+        </li>
+        <li><a href="#troubleshooting">常见问题排查</a></li>
+        <li><a href="#summary">总结速查表</a></li>
+    </ol>
+</div>
+
+<!-- 1. 概述 -->
+<section id="overview">
+    <h2>1. 概述与核心概念</h2>
+    <p>本文将从零开始，系统性地讲解以下内容：</p>
+    <ul>
+        <li><strong>Fastboot 协议</strong> — Android 设备底层刷机协议</li>
+        <li><strong>AOSP 编译系统</strong> — Android 14 源码的构建工具链和流程</li>
+        <li><strong>产物生成与刷入</strong> — 如何将编译产物部署到真实设备</li>
+        <li><strong>手机 vs 车机</strong> — Android 手机与 Android Automotive (IVI) 在编译、刷机和更新方面的本质差异</li>
+    </ul>
+
+    <h3>1.1 整体流程图</h3>
+    <div class="flow-diagram">
+AOSP 源码 ──► 编译环境 (envsetup.sh + lunch) ──► make/bazel 编译 ──► 产物 (img 文件)
+                                                                 │
+                                                                 ▼
+              设备 &lt;── Fastboot flash / ADB sideload / OTA ◄── 产物打包 (target_files)
+    </div>
+
+    <h3>1.2 关键术语</h3>
+    <table>
+        <tr><th>术语</th><th>说明</th></tr>
+        <tr><td><code>AOSP</code></td><td>Android Open Source Project，Android 开源项目</td></tr>
+        <tr><td><code>Fastboot</code></td><td>引导加载程序(bootloader)级别的刷机协议和工具</td></tr>
+        <tr><td><code>Bootloader</code></td><td>设备启动时运行的第一段代码，负责加载操作系统</td></tr>
+        <tr><td><code>Recovery</code></td><td>Android 的恢复模式，用于OTA更新和恢复出厂设置</td></tr>
+        <tr><td><code>Soong</code></td><td>Android 的主要构建系统(Go 语言)，读取 Android.bp</td></tr>
+        <tr><td><code>Kati</code></td><td>GNU Make 克隆，将 Android.mk 转换为 Ninja 格式</td></tr>
+        <tr><td><code>Ninja</code></td><td>实际执行编译的构建引擎</td></tr>
+        <tr><td><code>AVB</code></td><td>Android Verified Boot，验证启动链的安全机制</td></tr>
+        <tr><td><code>VTS/CTS</code></td><td>供应商/兼容性测试套件</td></tr>
+    </table>
+</section>
+
+<!-- 2. Fastboot 详解 -->
+<section id="fastboot">
+    <h2>2. Fastboot 协议详解</h2>
+
+    <h3>2.1 什么是 Fastboot？</h3>
+    <p>Fastboot 是 Android 设备 <strong>Bootloader 阶段</strong>的一种通信协议。当设备进入 Fastboot 模式时，可以通过 USB 连接电脑，使用 <code>fastboot</code> 命令行工具直接与 Bootloader 通信，实现对设备分区的读写操作。</p>
+
+    <div class="info">
+        <strong>Fastboot 与 Bootloader 的关系：</strong>Bootloader 是设备上电后执行的第一段程序（类似 PC 的 BIOS/UEFI），而 Fastboot 是 Bootloader 中实现的一种模式/协议。两者不是并列关系，而是包含关系。
+    </div>
+
+    <h3>2.2 如何进入 Fastboot 模式</h3>
+    <table>
+        <tr><th>方式</th><th>操作方法</th></tr>
+        <tr><td><strong>物理按键</strong></td><td>关机状态下，按住 <strong>音量减 + 电源键</strong>（不同设备组合键可能不同）</td></tr>
+        <tr><td><strong>ADB 命令</strong></td><td><code>adb reboot bootloader</code></td></tr>
+        <tr><td><strong>Fastboot 重启</strong></td><td><code>fastboot reboot-bootloader</code></td></tr>
+    </table>
+
+    <h3>2.3 Fastboot 常用命令一览</h3>
+    <pre><code><span class="comment"># ===== 设备管理 =====</span>
+<span class="prompt">$</span> fastboot devices                    <span class="comment"># 列出已连接的 fastboot 设备</span>
+<span class="prompt">$</span> fastboot getvar all                 <span class="comment"># 获取设备所有变量信息</span>
+<span class="prompt">$</span> fastboot getvar version-bootloader  <span class="comment"># 查看 bootloader 版本</span>
+<span class="prompt">$</span> fastboot getvar product             <span class="comment"># 查看产品代号</span>
+<span class="prompt">$</span> fastboot getvar unlocked            <span class="comment"># 查看解锁状态 (0=锁定, 1=解锁)</span>
+
+<span class="comment"># ===== Bootloader 解锁 =====</span>
+<span class="prompt">$</span> fastboot flashing unlock          <span class="comment"># 解锁 bootloader (Android 较新设备)</span>
+<span class="prompt">$</span> fastboot oem unlock               <span class="comment"># 旧版本 Android 解锁方式</span>
+<span class="prompt">$</span> fastboot flashing unlock_critical <span class="comment"># 解锁 critical 分区 (谨慎!)</span>
+
+<span class="comment"># ===== 刷机命令 =====</span>
+<span class="prompt">$</span> fastboot flash boot boot.img           <span class="comment"># 刷入 boot 分区</span>
+<span class="prompt">$</span> fastboot flash system system.img       <span class="comment"># 刷入 system 分区</span>
+<span class="prompt">$</span> fastboot flash vendor vendor.img       <span class="comment"># 刷入 vendor 分区</span>
+<span class="prompt">$</span> fastboot flash vbmeta vbmeta.img       <span class="comment"># 刷入验证启动元数据</span>
+<span class="prompt">$</span> fastboot flash super super.img         <span class="comment"># 刷入 super 超级分区 (动态分区)</span>
+<span class="prompt">$</span> fastboot flash recovery recovery.img   <span class="comment"># 刷入 recovery 分区</span>
+
+<span class="comment"># ===== 擦除命令 =====</span>
+<span class="prompt">$</span> fastboot erase cache              <span class="comment"># 擦除 cache 分区</span>
+<span class="prompt">$</span> fastboot erase userdata           <span class="comment"># 擦除 userdata 分区</span>
+<span class="prompt">$</span> fastboot format:ext4 userdata     <span class="comment"># 格式化 userdata 为 ext4</span>
+
+<span class="comment"># ===== 其他常用 =====</span>
+<span class="prompt">$</span> fastboot boot boot.img            <span class="comment"># 临时从镜像启动 (不刷入)</span>
+<span class="prompt">$</span> fastboot reboot                   <span class="comment"># 重启设备</span>
+<span class="prompt">$</span> fastboot reboot fastboot          <span class="comment"># 重启到 fastbootd (用户空间 fastboot)</span>
+<span class="prompt">$</span> fastboot flashall                 <span class="comment"># 刷入所有镜像并重启</span>
+<span class="prompt">$</span> fastboot update image-xxx.zip     <span class="comment"># 从 zip 包更新</span>
+
+<span class="comment"># ===== 动态分区 =====</span>
+<span class="prompt">$</span> fastboot flash super super.img    <span class="comment"># 刷入动态超级分区</span>
+<span class="prompt">$</span> fastboot delete-logical-partition <span class="string">product_a</span>  <span class="comment"># 删除逻辑分区</span>
+<span class="prompt">$</span> fastboot create-logical-partition <span class="string">product_a</span> <span class="flag">1000000</span>  <span class="comment"># 创建逻辑分区</span></code></pre>
+
+    <h3>2.4 Fastboot 的两种模式</h3>
+    <table>
+        <tr><th>特性</th><th>Bootloader Fastboot (传统)</th><th>Fastbootd (用户空间)</th></tr>
+        <tr><td>运行环境</td><td>Bootloader 中</td><td>Recovery 用户空间中</td></tr>
+        <tr><td>引入版本</td><td>Android 4.0+</td><td>Android 10+</td></tr>
+        <tr><td>功能范围</td><td>仅支持分区读写</td><td>支持所有 recovery 功能，动态分区管理</td></tr>
+        <tr><td>命令</td><td><code>adb reboot bootloader</code></td><td><code>fastboot reboot fastboot</code></td></tr>
+        <tr><td>动态分区</td><td>不支持</td><td>支持</td></tr>
+        <tr><td>OTA sideload</td><td>不支持</td><td>支持</td></tr>
+    </table>
+
+    <h3>2.5 AVB (Android Verified Boot) 与 Fastboot</h3>
+    <p>Android 14 默认启用 <strong>AVB 2.0</strong> 验证启动链。刷机时需要处理：</p>
+    <pre><code><span class="comment"># 关闭验证启动 (刷机开发时常用)</span>
+<span class="prompt">$</span> fastboot flash vbmeta <span class="flag">--disable-verity --disable-verification</span> vbmeta.img
+
+<span class="comment"># 或者刷入自定义的 vbmeta 镜像</span>
+<span class="prompt">$</span> fastboot flash vbmeta vbmeta.img
+<span class="prompt">$</span> fastboot flash vbmeta_system vbmeta_system.img
+<span class="prompt">$</span> fastboot flash vbmeta_vendor vbmeta_vendor.img</code></pre>
+
+    <div class="warning">
+        <strong>注意：</strong>关闭验证启动会降低设备安全性，不建议在生产环境中使用。仅在开发和测试阶段关闭。
+    </div>
+</section>
+
+<!-- 3. 分区体系结构 -->
+<section id="partitions">
+    <h2>3. Android 分区体系结构</h2>
+
+    <h3>3.1 传统分区 vs 动态分区</h3>
+    <table>
+        <tr><th>分区</th><th>作用</th><th>传统分区</th><th>动态分区 (Android 10+)</th></tr>
+        <tr><td><code>boot</code></td><td>Linux 内核 + ramdisk (init 等)</td><td>独立分区</td><td>super 分区内</td></tr>
+        <tr><td><code>system</code></td><td>Android 框架、系统应用</td><td>独立分区</td><td>super 分区内</td></tr>
+        <tr><td><code>vendor</code></td><td>硬件厂商专有代码、HAL 驱动</td><td>独立分区</td><td>super 分区内</td></tr>
+        <tr><td><code>product</code></td><td>产品定制内容 (GMS 等)</td><td>独立分区</td><td>super 分区内</td></tr>
+        <tr><td><code>odm</code></td><td>ODM 厂商定制</td><td>独立分区</td><td>super 分区内</td></tr>
+        <tr><td><code>system_ext</code></td><td>系统扩展 (Android 11+)</td><td>独立分区</td><td>super 分区内</td></tr>
+        <tr><td><code>userdata</code></td><td>用户数据 / 应用程序</td><td>独立分区</td><td>独立分区</td></tr>
+        <tr><td><code>cache</code></td><td>OTA 缓存 (已弃用)</td><td>独立分区</td><td>A/B 设备不再需要</td></tr>
+        <tr><td><code>recovery</code></td><td>恢复模式</td><td>独立分区</td><td>A/B 设备不再需要</td></tr>
+        <tr><td><code>vbmeta</code></td><td>验证启动元数据 (哈希树等)</td><td>独立分区</td><td>独立分区</td></tr>
+        <tr><td><code>dtbo</code></td><td>设备树覆盖 (Device Tree)</td><td>独立分区</td><td>独立分区</td></tr>
+        <tr><td><code>super</code></td><td>超级分区容器 (容纳 system 等)</td><td>无</td><td>独立大分区</td></tr>
+    </table>
+
+    <h3>3.2 A/B 分区 (无缝更新)</h3>
+    <div class="flow-diagram">
+A/B 分区布局:
+  boot_a   boot_b     ← 内核
+  system_a system_b   ← 系统框架
+  vendor_a vendor_b   ← 硬件抽象层
+  product_a product_b ← 产品定制
+  vbmeta_a vbmeta_b   ← 验证启动
+  super (容器) ──────────────────► slot_a │ slot_b
+</div>
+    <p><strong>A/B 分区优势：</strong>更新写入非活动槽位 (slot B)，更新完成后切换活动槽位，实现无缝重启。如果新系统启动失败，Bootloader 自动回退到原槽位。</p>
+
+    <h3>3.3 GKI (Generic Kernel Image) 分区</h3>
+    <p>Android 13/14 采用 GKI 架构：</p>
+    <ul>
+        <li><code>boot.img</code> — 仅包含 GKI 通用内核</li>
+        <li><code>vendor_boot.img</code> — 包含厂商内核模块和 ramdisk</li>
+        <li>这实现了内核与厂商驱动的解耦</li>
+    </ul>
+</section>
+
+<!-- 4. 编译环境准备 -->
+<section id="build-env">
+    <h2>4. 编译环境准备</h2>
+
+    <h3>4.1 硬件要求</h3>
+    <table>
+        <tr><th>要求</th><th>最低配置</th><th>推荐配置</th></tr>
+        <tr><td>CPU</td><td>8 核</td><td>16 核+ (线程越多越好)</td></tr>
+        <tr><td>内存</td><td>32 GB</td><td>64 GB+</td></tr>
+        <tr><td>磁盘</td><td>400 GB SSD</td><td>500 GB+ NVMe SSD</td></tr>
+        <tr><td>系统</td><td>Ubuntu 20.04/22.04 LTS</td><td>Ubuntu 22.04 LTS</td></tr>
+    </table>
+
+    <div class="warning">
+        <strong>重要：</strong>Android 14 编译需要 <strong>Ubuntu 20.04 或 22.04</strong>。macOS 可以编译但支持有限。Windows 原生编译不支持（可用 WSL2）。磁盘空间务必充足 — 源码 + 编译产物总计约 <strong>300-400 GB</strong>。
+    </div>
+
+    <h3>4.2 安装依赖 (Ubuntu 22.04)</h3>
+    <pre><code><span class="comment"># 安装基础工具和依赖</span>
+<span class="prompt">$</span> sudo apt update
+<span class="prompt">$</span> sudo apt install -y git-core gnupg flex bison build-essential \
+    zip curl zlib1g-dev libc6-dev lib32ncurses5-dev x11proto-core-dev \
+    libx11-dev lib32z1-dev libgl1-mesa-dev libxml2-utils xsltproc unzip \
+    python3 python3-pip openjdk-17-jdk ccache \
+    libssl-dev libncurses5 wget
+
+<span class="comment"># Android 14 需要 JDK 17</span>
+<span class="prompt">$</span> sudo apt install openjdk-17-jdk
+
+<span class="comment"># 安装 repo 工具 (AOSP 多仓库管理工具)</span>
+<span class="prompt">$</span> mkdir -p ~/bin
+<span class="prompt">$</span> curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+<span class="prompt">$</span> chmod a+x ~/bin/repo
+<span class="prompt">$</span> export PATH=~/bin:$PATH</code></pre>
+
+    <h3>4.3 下载 AOSP 源码</h3>
+    <pre><code><span class="comment"># 创建源码目录</span>
+<span class="prompt">$</span> mkdir ~/aosp-android14 && cd ~/aosp-android14
+
+<span class="comment"># 初始化 repo (选择 Android 14 分支)</span>
+<span class="prompt">$</span> repo init -u https://android.googlesource.com/platform/manifest \
+    -b android-14.0.0_r1
+
+<span class="comment"># 同步源码 (j 参数为并发线程数,根据带宽调整)</span>
+<span class="prompt">$</span> repo sync -c -j8 --no-tags --no-clone-bundle
+
+<span class="comment"># 源码下载完成后目录约 100GB+</span></code></pre>
+
+    <h3>4.4 配置 ccache (加速重复编译)</h3>
+    <pre><code><span class="comment"># 设置 ccache 缓存大小 (推荐 50-100GB)</span>
+<span class="prompt">$</span> export USE_CCACHE=1
+<span class="prompt">$</span> export CCACHE_EXEC=/usr/bin/ccache
+<span class="prompt">$</span> ccache -M 50G
+
+<span class="comment"># 在 ~/.bashrc 中添加以上变量以持久化</span></code></pre>
+</section>
+
+<!-- 5. 编译流程 -->
+<section id="build-process">
+    <h2>5. AOSP 编译流程</h2>
+
+    <h3>5.1 构建系统架构 (Android 14)</h3>
+    <div class="flow-diagram">
+Android.bp ──────► Soong (Go) ───────┐
+                                     ▼
+Android.mk ──────► Kati ─────────► Ninja ──► 编译产物 (.img, .apk, .so ...)
+                                     ▲
+Make (core/) ────► 生成 Makefile ───┘
+    </div>
+    <table>
+        <tr><th>组件</th><th>语言</th><th>作用</th></tr>
+        <tr><td><strong>Soong</strong></td><td>Go</td><td>读取 Android.bp，生成 Ninja 规则。现代构建系统的核心。</td></tr>
+        <tr><td><strong>Kati</strong></td><td>C++</td><td>GNU Make 克隆，将 Android.mk 转换为 Ninja 格式，兼容旧代码。</td></tr>
+        <tr><td><strong>Ninja</strong></td><td>C++</td><td>实际执行编译的构建引擎，高度并行化。</td></tr>
+        <tr><td><strong>Make (core/)</strong></td><td>Make</td><td>遗留系统，定义 product/device 配置，与 Soong/Kati 协作。</td></tr>
+        <tr><td><strong>Blueprint</strong></td><td>Go</td><td>Soong 的底层模块定义框架，解析 .bp 文件。</td></tr>
+    </table>
+
+    <div class="info">
+        <strong>Android 14 的演进方向：</strong>Android 14 开始向 <strong>Bazel</strong> 构建系统过渡，目前内核构建已使用 Bazel。Soong + Ninja 体系仍是主力，但 Bazel 是未来方向。
+    </div>
+
+    <h3>5.2 标准编译步骤</h3>
+    <pre><code><span class="comment"># ===== 第一步: 初始化编译环境 =====</span>
+<span class="prompt">$</span> cd ~/aosp-android14
+<span class="prompt">$</span> source build/envsetup.sh
+<span class="comment"># 或 . build/envsetup.sh</span>
+<span class="comment"># 这会导入 lunch, m, mm, mmm 等快捷命令</span>
+
+<span class="comment"># ===== 第二步: 选择编译目标 (lunch) =====</span>
+<span class="prompt">$</span> lunch
+<span class="comment"># 会显示所有可用的编译目标列表，选择对应设备</span>
+
+<span class="comment"># 或直接指定编译目标 (格式: product-variant)</span>
+<span class="prompt">$</span> lunch <span class="flag">aosp_cf_x86_64_phone-userdebug</span>    <span class="comment"># Cuttlefish 模拟器</span>
+<span class="prompt">$</span> lunch <span class="flag">aosp_barbet-userdebug</span>             <span class="comment"># Pixel 4a (5G)</span>
+<span class="prompt">$</span> lunch <span class="flag">aosp_cheetah-userdebug</span>            <span class="comment"># Pixel 7</span>
+<span class="prompt">$</span> lunch <span class="flag">aosp_husky-userdebug</span>              <span class="comment"># Pixel 8 Pro</span>
+<span class="prompt">$</span> lunch <span class="flag">aosp_car_x86_64-userdebug</span>         <span class="comment"># Android Automotive (x86_64)</span>
+
+<span class="comment"># ===== 第三步: 开始编译 =====</span>
+<span class="comment"># 方式一: make 命令 (默认)</span>
+<span class="prompt">$</span> make -j$(nproc)
+
+<span class="comment"># 方式二: m 命令 (envsetup.sh 提供)</span>
+<span class="prompt">$</span> m -j$(nproc)
+
+<span class="comment"># 方式三: 使用 Ninja (需要先生成)</span>
+<span class="prompt">$</span> ninja -j$(nproc)
+
+<span class="comment"># 首次完整编译约需 1-4 小时 (取决于硬件配置)</span>
+
+<span class="comment"># ===== 编译特定模块 =====</span>
+<span class="prompt">$</span> m framework                 <span class="comment"># 仅编译 framework</span>
+<span class="prompt">$</span> m Settings                  <span class="comment"># 仅编译 Settings 应用</span>
+<span class="prompt">$</span> m boot.img                  <span class="comment"># 仅生成 boot.img</span>
+<span class="prompt">$</span> m vendorboot.img            <span class="comment"># 仅生成 vendor_boot.img</span>
+<span class="prompt">$</span> m systemimage               <span class="comment"># 仅生成 system.img</span>
+<span class="prompt">$</span> m dist                      <span class="comment"># 将所有产物复制到 out/dist/</span></code></pre>
+
+    <h3>5.3 Build Variants 说明</h3>
+    <table>
+        <tr><th>Variant</th><th>用途</th><th>特点</th></tr>
+        <tr><td><code>user</code></td><td>发布版</td><td>无 root，最小调试，最大优化，安全锁开启</td></tr>
+        <tr><td><code>userdebug</code></td><td>开发/调试</td><td>有 root 权限，额外调试信息，安全测试模式 <span class="tag">推荐开发使用</span></td></tr>
+        <tr><td><code>eng</code></td><td>工程调试</td><td>额外调试工具，模块编译不完整也可运行</td></tr>
+    </table>
+
+    <h3>5.4 Android Automotive (车机) 编译目标</h3>
+    <pre><code><span class="comment"># Android Automotive (AAOS) 常用编译目标</span>
+<span class="prompt">$</span> lunch <span class="flag">aosp_car_x86_64-userdebug</span>           <span class="comment"># AAOS x86_64 (模拟器/开发板)</span>
+<span class="prompt">$</span> lunch <span class="flag">aosp_car_arm64-userdebug</span>            <span class="comment"># AAOS ARM64 (真实车机硬件)</span>
+<span class="prompt">$</span> lunch <span class="flag">aosp_car_emu_arm64-userdebug</span>        <span class="comment"># AAOS ARM64 模拟器</span>
+<span class="prompt">$</span> lunch <span class="flag">aosp_car_emu_x86_64-userdebug</span>       <span class="comment"># AAOS x86_64 模拟器</span>
+
+<span class="comment"># 带 Google Automotive Services (GAS) 的编译目标</span>
+<span class="prompt">$</span> lunch <span class="flag">aosp_car_x86_64_gas-userdebug</span>      <span class="comment"># 包含 GMS 的车机版本</span></code></pre>
+
+    <h3>5.5 编译关键环境变量</h3>
+    <pre><code><span class="comment"># 常用环境变量 (可在 lunch 前设置)</span>
+<span class="prompt">$</span> export TARGET_BUILD_VARIANT=userdebug    <span class="comment"># 编译变体</span>
+<span class="prompt">$</span> export TARGET_PRODUCT=aosp_car_x86_64    <span class="comment"># 目标产品</span>
+<span class="prompt">$</span> export USE_CCACHE=1                      <span class="comment"># 启用编译缓存</span>
+<span class="prompt">$</span> export CCACHE_COMPILERCHECK=content       <span class="comment"># 缓存基于文件内容</span>
+<span class="prompt">$</span> export BUILD_SYSTEM_DEBUG=true           <span class="comment"># 启用构建系统调试输出</span>
+<span class="prompt">$</span> export OUT_DIR_COMMON=out               <span class="comment"># 指定输出目录</span></code></pre>
+</section>
+
+<!-- 6. 编译产物 -->
+<section id="build-artifacts">
+    <h2>6. 编译产物与输出</h2>
+
+    <h3>6.1 产物位置</h3>
+    <p>编译完成后，所有产物位于 <code>out/target/product/&lt;product_name&gt;/</code> 目录下。</p>
+
+    <h3>6.2 核心镜像文件</h3>
+    <table>
+        <tr><th>文件</th><th>大小</th><th>对应分区</th><th>说明</th></tr>
+        <tr><td><code>boot.img</code></td><td>~64MB</td><td>boot</td><td>Linux 内核 + ramdisk (init, 启动脚本等)。GKI 架构下仅含通用内核。</td></tr>
+        <tr><td><code>vendor_boot.img</code></td><td>~64MB</td><td>vendor_boot</td><td>GKI 架构下的厂商内核模块 + 厂商 ramdisk</td></tr>
+        <tr><td><code>system.img</code></td><td>~1-2GB</td><td>system</td><td>Android 框架、核心系统应用、库文件</td></tr>
+        <tr><td><code>system_ext.img</code></td><td>~200MB</td><td>system_ext</td><td>系统扩展内容</td></tr>
+        <tr><td><code>vendor.img</code></td><td>~300-800MB</td><td>vendor</td><td>HAL 驱动、厂商专有库和设备配置</td></tr>
+        <tr><td><code>product.img</code></td><td>~200-500MB</td><td>product</td><td>产品定制 (GMS 服务等)</td></tr>
+        <tr><td><code>odm.img</code></td><td>~100MB</td><td>odm</td><td>ODM 厂商定制内容</td></tr>
+        <tr><td><code>super.img</code></td><td>~4-8GB</td><td>super</td><td>动态分区容器，包含 system/vendor/product/odm 等 (Android 10+)</td></tr>
+        <tr><td><code>userdata.img</code></td><td>~1-5GB</td><td>userdata</td><td>用户数据分区镜像</td></tr>
+        <tr><td><code>vbmeta.img</code></td><td>~1MB</td><td>vbmeta</td><td>验证启动元数据 (哈希/签名信息)</td></tr>
+        <tr><td><code>dtbo.img</code></td><td>~8MB</td><td>dtbo</td><td>设备树覆盖 (Device Tree Blob Overlay)</td></tr>
+        <tr><td><code>recovery.img</code></td><td>~64MB</td><td>recovery</td><td>恢复模式镜像 (A/B 设备可能不需要)</td></tr>
+        <tr><td><code>init_boot.img</code></td><td>~8MB</td><td>init_boot</td><td>通用 init ramdisk (Android 13+)</td></tr>
+    </table>
+
+    <h3>6.3 其他产物</h3>
+    <table>
+        <tr><th>文件/目录</th><th>说明</th></tr>
+        <tr><td><code>target-files.zip</code></td><td>用于 OTA 制作的完整目标文件包</td></tr>
+        <tr><td><code>obj/</code></td><td>中间编译产物 (.o, .a 等)</td></tr>
+        <tr><td><code>obj/STATIC_LIBRARIES/</code></td><td>静态库</td></tr>
+        <tr><td><code>obj/SHARED_LIBRARIES/</td><td>动态库 (.so)</td></tr>
+        <tr><td><code>obj/APPS/</code></td><td>编译出的 APK 文件</td></tr>
+        <tr><td><code>installed-files.txt</code></td><td>安装文件清单</td></tr>
+        <tr><td><code>system/build.prop</code></td><td>系统属性文件</td></tr>
+        <tr><td><code>vendor/build.prop</code></td><td>厂商属性文件</td></tr>
+    </table>
+
+    <h3>6.4 OTA 包制作</h3>
+    <pre><code><span class="comment"># 生成 OTA 包 (需要先编译 target-files)</span>
+<span class="prompt">$</span> m dist
+
+<span class="comment"># 使用 target-files 生成 OTA zip</span>
+<span class="prompt">$</span> ./build/make/tools/releasetools/ota_from_target_files \
+    out/dist/aosp_car_x86_64-target_files.zip \
+    ota_update.zip
+
+<span class="comment"># 生成完整 OTA 包</span>
+<span class="prompt">$</span> ./build/make/tools/releasetools/ota_from_target_files \
+    -p out/host/linux-x86 \
+    out/target/product/aosp_car_x86_64/obj/PACKAGING/target_files_intermediates/*.zip \
+    full_ota_update.zip</code></pre>
+</section>
+
+<!-- 7. 刷入设备 -->
+<section id="flashing">
+    <h2>7. 将编译产物刷入设备</h2>
+
+    <h3>7.1 前置条件</h3>
+    <ul>
+        <li>设备 Bootloader 已解锁 (<code>fastboot flashing unlock</code>)</li>
+        <li>ADB/Fastboot 工具已安装 (<code>sudo apt install android-tools-adb android-tools-fastboot</code>)</li>
+        <li>USB 调试已开启 (开发者选项中)</li>
+        <li>USB 驱动正常 (Windows 需要 Google USB Driver)</li>
+    </ul>
+
+    <h3>7.2 方案一：逐分区手动刷入</h3>
+    <pre><code><span class="comment"># 进入 fastboot 模式</span>
+<span class="prompt">$</span> adb reboot bootloader
+
+<span class="comment"># 确认设备连接</span>
+<span class="prompt">$</span> fastboot devices
+
+<span class="comment"># 关闭验证启动 (开发阶段推荐)</span>
+<span class="prompt">$</span> fastboot flash vbmeta <span class="flag">--disable-verity --disable-verification</span> \
+    out/target/product/<span class="flag">aosp_car_x86_64</span>/vbmeta.img
+
+<span class="comment"># 刷入核心分区</span>
+<span class="prompt">$</span> fastboot flash boot out/target/product/<span class="flag">aosp_car_x86_64</span>/boot.img
+<span class="prompt">$</span> fastboot flash vendor_boot out/target/product/<span class="flag">aosp_car_x86_64</span>/vendor_boot.img
+<span class="prompt">$</span> fastboot flash dtbo out/target/product/<span class="flag">aosp_car_x86_64</span>/dtbo.img
+
+<span class="comment"># 刷入动态分区 (super.img 包含了 system/vendor/product/odm)</span>
+<span class="prompt">$</span> fastboot flash super out/target/product/<span class="flag">aosp_car_x86_64</span>/super.img
+
+<span class="comment"># 刷入 userdata (首次刷机需要)</span>
+<span class="prompt">$</span> fastboot flash userdata out/target/product/<span class="flag">aosp_car_x86_64</span>/userdata.img
+
+<span class="comment"># 如果存在 A/B 槽位，需要分别刷入</span>
+<span class="prompt">$</span> fastboot set_active a          <span class="comment"># 设置活动槽位为 a</span>
+<span class="prompt">$</span> fastboot flash boot_a boot.img
+<span class="prompt">$</span> fastboot flash boot_b boot.img
+
+<span class="comment"># 重启设备</span>
+<span class="prompt">$</span> fastboot reboot</code></pre>
+
+    <h3>7.3 方案二：flash-all.sh 一键刷入</h3>
+    <p>AOSP 编译完成后会在产物目录生成脚本：</p>
+    <pre><code><span class="comment"># 使用 AOSP 生成的一键刷机脚本</span>
+<span class="prompt">$</span> cd out/target/product/<span class="flag">aosp_car_x86_64</span>/
+<span class="prompt">$</span> ./flash-all.sh
+
+<span class="comment"># 该脚本自动完成: 解锁 → 刷入所有分区 → 重启</span>
+<span class="comment"># 查看脚本内容了解具体步骤:</span>
+<span class="prompt">$</span> cat flash-all.sh</code></pre>
+
+    <h3>7.4 方案三：fastboot flashall 一键刷入</h3>
+    <pre><code><span class="comment"># 在 AOSP 源码根目录下执行</span>
+<span class="prompt">$</span> source build/envsetup.sh
+<span class="prompt">$</span> lunch <span class="flag">aosp_car_x86_64-userdebug</span>
+<span class="prompt">$</span> fastboot flashall
+
+<span class="comment"># flashall 会自动识别编译目标并刷入所有必要镜像</span></code></pre>
+
+    <h3>7.5 方案四：OTA 更新方式</h3>
+    <pre><code><span class="comment"># ADB sideload (设备需在 recovery 模式)</span>
+<span class="prompt">$</span> adb reboot recovery          <span class="comment"># 或 fastboot reboot fastboot</span>
+<span class="prompt">$</span> adb sideload ota_update.zip
+
+<span class="comment"># Fastbootd 模式 sideload</span>
+<span class="prompt">$</span> fastboot reboot fastboot
+<span class="prompt">$</span> fastboot sideload ota_update.zip
+
+<span class="comment"># Fastboot update (从 zip 更新)</span>
+<span class="prompt">$</span> fastboot update out/dist/aosp_car_x86_64-img_*.zip</code></pre>
+
+    <h3>7.6 方案五：仅更新单个模块 (开发常用)</h3>
+    <pre><code><span class="comment"># 开发时只修改了某个模块，增量编译并推送</span>
+
+<span class="comment"># 1. 编译单个模块</span>
+<span class="prompt">$</span> m FrameworksBase    <span class="comment"># 修改了 framework 后</span>
+<span class="prompt">$</span> m Settings          <span class="comment"># 修改了 Settings 后</span>
+
+<span class="comment"># 2. 通过 ADB 推送 (需要 root)</span>
+<span class="prompt">$</span> adb root
+<span class="prompt">$</span> adb remount         <span class="comment"># 重新挂载 system 分区为可写</span>
+<span class="prompt">$</span> adb sync            <span class="comment"># 自动同步变更的文件到设备</span>
+<span class="prompt">$</span> adb reboot          <span class="comment"># 重启生效</span>
+
+<span class="comment"># 3. 或者手动推送特定文件</span>
+<span class="prompt">$</span> adb push out/target/product/<span class="flag">aosp_car_x86_64</span>/system/framework/framework.jar \
+    /system/framework/framework.jar</code></pre>
+
+    <div class="warning">
+        <strong>adb remount 注意事项：</strong>Android 14 默认启用 dm-verity，需要先禁用验证才能 remount：
+        <pre><code><span class="prompt">$</span> adb root
+<span class="prompt">$</span> adb disable-verity
+<span class="prompt">$</span> adb reboot
+<span class="prompt">$</span> adb root
+<span class="prompt">$</span> adb remount</code></pre>
+    </div>
+</section>
+
+<!-- 8. 手机 vs 车机差异 -->
+<section id="phone-vs-ivi">
+    <h2>8. 手机 vs 车机 (IVI) 差异对比</h2>
+
+    <p>虽然 Android 手机和 Android Automotive 车机运行的是同一套 Android 代码，但在编译、刷机、更新等方面存在显著差异。</p>
+
+    <h3>8.1 核心差异对比表</h3>
+    <table class="comparison-table">
+        <tr><th>维度</th><th>Android 手机</th><th>Android Automotive (车机/IVI)</th></tr>
+        <tr>
+            <td>编译目标</td>
+            <td><code>aosp_&lt;device&gt;-userdebug</code><br>(如 aosp_cheetah-userdebug)</td>
+            <td><code>aosp_car_x86_64-userdebug</code><br><code>aosp_car_arm64-userdebug</code></td>
+        </tr>
+        <tr>
+            <td>硬件平台</td>
+            <td>高通/联发科/三星等 SoC<br>ARM 架构为主</td>
+            <td>高通 SA8155/8295、瑞萨 R-Car、<br>恩智浦 i.MX8，x86/ARM 均有</td>
+        </tr>
+        <tr>
+            <td>分区布局</td>
+            <td>标准 Android 分区<br>A/B 槽位，super 动态分区</td>
+            <td>更复杂：额外有 <code>vehicle</code> 分区，<br>可能包含多个 hypervisor 分区</td>
+        </tr>
+        <tr>
+            <td>刷机方式</td>
+            <td>标准 Fastboot 流程<br>ADB sideload OTA</td>
+            <td>开发阶段用 Fastboot；<br>产线用专用工具 (EDL/SP Flash Tool)<br>量产用 U 盘/服务器 OTA</td>
+        </tr>
+        <tr>
+            <td>OTA 更新</td>
+            <td>Google/厂商服务器推送<br>用户可控制更新时间</td>
+            <td>车厂 OTA 服务器推送<br>需考虑车辆状态 (行驶中禁止更新)<br>更严格的回退机制</td>
+        </tr>
+        <tr>
+            <td>安全要求</td>
+            <td>标准 Android 安全模型</td>
+            <td>功能安全 (ISO 26262)<br>网络安全 (ISO/SAE 21434)<br>更严格的 AVB 策略</td>
+        </tr>
+        <tr>
+            <td>Hypervisor</td>
+            <td>无 (直接运行 Android)</td>
+            <td>通常运行在 Hypervisor 上<br>(QNX Hypervisor / ACRN)<br>与仪表、ADAS 共享硬件</td>
+        </tr>
+        <tr>
+            <td>Car 服务</td>
+            <td>无 CarService</td>
+            <td>CarService、Vehicle HAL (VHAL)<br>空调、座椅、驾驶模式等车辆控制</td>
+        </tr>
+        <tr>
+            <td>启动时间</td>
+            <td>10-30 秒可接受</td>
+            <td>倒车影像必须 &lt;2 秒启动<br>系统需要快速启动优化</td>
+        </tr>
+        <tr>
+            <td>认证</td>
+            <td>Google GMS 认证 (海外)</td>
+            <td>GAS (Google Automotive Services) 认证<br>车规认证更复杂</td>
+        </tr>
+    </table>
+
+    <h3>8.2 车机编译特殊配置</h3>
+    <pre><code><span class="comment"># 车机编译特有的配置项</span>
+<span class="prompt">$</span> lunch <span class="flag">aosp_car_x86_64-userdebug</span>
+
+<span class="comment"># 设置车辆 HAL 属性 (开发时)</span>
+<span class="prompt">$</span> export VHAL_CONFIG=vehicle/<span class="flag">generic</span>/emulated
+
+<span class="comment"># 车机特有的 build properties</span>
+<span class="comment"># 在 BoardConfig.mk 中:</span>
+<span class="comment"># TARGET_NO_KERNEL := true              (模拟器不需要内核)</span>
+<span class="comment"># BOARD_USES_GENERIC_AUDIO := true      (通用音频)</span>
+<span class="comment"># CAR_BUILD := true                     (标记为车机构建)</span></code></pre>
+
+    <h3>8.3 车机刷机特殊考量</h3>
+    <ul>
+        <li><strong>开发阶段：</strong>使用 Cuttlefish 模拟器或 Fastboot 刷入真实车机硬件。流程与手机类似。</li>
+        <li><strong>产线阶段：</strong>OEM 使用专用烧录工具（如高通 EDL 模式、SP Flash Tool）批量烧录 eMMC/UFS。</li>
+        <li><strong>售后 OTA：</strong>通过车厂 OTA 服务器推送。需要考虑：
+            <ul>
+                <li>更新前检查车辆状态 (驻车/行驶中)</li>
+                <li>保证 12V 蓄电池电量充足</li>
+                <li>更新失败后的安全回退机制</li>
+                <li>多 ECU 协同更新 (仪表、HUD、车控模块)</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<!-- 9. AAOS 特殊考量 -->
+<section id="aaos-specific">
+    <h2>9. Android Automotive (AAOS) 特殊考量</h2>
+
+    <h3>9.1 AAOS OTA 架构</h3>
+    <div class="flow-diagram">
+AAOS OTA 更新流程:
+1. 服务器发布 OTA 包 ──► 2. 车端下载并校验
+                              │
+              ┌───────────────┴───────────────┐
+              ▼                               ▼
+        行驶中: 仅下载                      驻车 + 电量足: 准备安装
+              │                               │
+              ▼                               ▼
+        延迟到驻车时                     3. 写入非活动槽位 (slot B)
+                                         │
+                                         ▼
+                                  4. 切换活动槽位 ──► 5. 重启验证
+    </div>
+
+    <h3>9.2 车机分区特殊性</h3>
+    <table>
+        <tr><th>分区</th><th>说明</th></tr>
+        <tr><td><code>vehicle</code></td><td>车辆特定配置和 VHAL 数据</td></tr>
+        <tr><td><code>oem</code></td><td>OEM 定制内容（可能包含安全证书）</td></tr>
+        <tr><td><code>metadata</code></td><td>OTA 状态、加密元数据</td></tr>
+        <tr><td><code>misc</code></td><td>Bootloader 与 Recovery 共享数据</td></tr>
+    </table>
+
+    <h3 id="multi-domain">9.3 车机多域架构 (重点详解)</h3>
+
+    <h4>9.3.1 什么是"多域架构"？为什么需要？</h4>
+    <p>在传统汽车中，一个功能对应一个独立的 ECU（电子控制单元）。仪表盘是一块仪表 ECU，中控屏是一块娱乐 ECU，空调又是一块 ECU。一辆车可能有多达 <strong>100+ 个独立 ECU</strong>。这种方式导致：</p>
+    <ul>
+        <li>线束复杂、成本高、重量大</li>
+        <li>每个 ECU 各自为政，无法协同</li>
+        <li>OTA 更新困难</li>
+    </ul>
+    <p>现代汽车的发展趋势是 <strong>域集中化 (Domain Consolidation)</strong>：将多个 ECU 的功能合并到一个高性能 SoC 上，通过 <strong>Hypervisor（虚拟机监视器）</strong> 在同一颗芯片上同时运行多个操作系统。</p>
+
+    <h4>9.3.2 典型座舱多域架构全景图</h4>
+    <div class="flow-diagram">
+╔══════════════════════════════════════════════════════════╗
+║                  Qualcomm SA8295/SA8155 SoC              ║
+║  ┌──────────────────────────────────────────────────┐   ║
+║  │           QNX Hypervisor 2.0                      │   ║
+║  │  (Type-1 裸金属虚拟机监视器, ASIL-D 级别)        │   ║
+║  └───────┬──────────────────┬───────────────────┬────┘   ║
+║          ▼                  ▼                   ▼        ║
+║  ┌───────────────┐  ┌──────────────┐   ┌──────────────┐  ║
+║  │  Guest VM #1  │  │  Guest VM #2 │   │  Guest VM #3 │  ║
+║  │  QNX Safety   │  │  Android     │   │  Linux /     │  ║
+║  │  OS (仪表)    │  │  Automotive  │   │  ADAS Lite   │  ║
+║  │  ASIL-B/D     │  │  (IVI)       │   │              │  ║
+║  │               │  │  userdebug   │   │              │  ║
+║  └───────┬───────┘  └──────┬───────┘   └──────┬───────┘  ║
+║          │                 │                  │          ║
+║  屏幕: 仪表屏          中控屏/HUD         副驾屏/后娱    ║
+║  实时性: &lt;100ms        启动 &lt;5s           独立运行      ║
+║  安全: 仪表信息必须可靠  可崩溃重启          隔离运行      ║
+║          │                 │                  │          ║
+║  ┌───────┴─────────────────┴──────────────────┴───────┐  ║
+║  │              VirtIO 共享通道                        │  ║
+║  │         (显示/音频/网络/存储虚拟化)                   │  ║
+║  └──────────────────────┬─────────────────────────────┘  ║
+╚═════════════════════════╪═══════════════════════════════╝
+                          │ CAN/CAN-FD / 以太网 / SPI
+                          ▼
+              ┌───────────────────────┐
+              │    NXP S32G MCU       │
+              │  (网关 / 车身控制)     │
+              │  ASIL-D, CAN/LIN/Eth  │
+              └───────────────────────┘
+    </div>
+
+    <h4>9.3.3 各域详解</h4>
+
+    <p><strong>域 #1 — 仪表域 (Instrument Cluster)</strong></p>
+    <p>仪表盘是车辆上 <strong>最关键的安全相关显示设备</strong>，因为它显示车速、档位、警告灯、故障码等信息。这些信息直接关系到驾驶安全，因此仪表域 OS 必须满足：</p>
+    <ul>
+        <li><strong>实时性</strong>：必须在 <strong>100ms 内</strong>完成启动并显示关键信息（如倒车影像、警告灯）</li>
+        <li><strong>功能安全</strong>：必须达到 <strong>ISO 26262 ASIL-B 或 ASIL-D</strong> 等级</li>
+        <li><strong>高可靠性</strong>：不能崩溃、不能卡死、不能黑屏</li>
+    </ul>
+    <p>因此仪表域通常运行 <strong>QNX OS</strong>（而非 Android），原因见下方 9.5 QNX 详解。少数方案也使用另一个 Android 实例，但需要额外的安全机制保证。</p>
+
+    <p><strong>域 #2 — Android 域 (IVI 信息娱乐)</strong></p>
+    <p>这是中控大屏运行的系统，负责导航、音乐、蓝牙电话、第三方 App 等。这正是我们从 AOSP 源码编译出来的 <strong>Android Automotive</strong> 系统。它的特点：</p>
+    <ul>
+        <li>运行完整的 Android 框架 (Framework, SystemServer, CarService)</li>
+        <li>启动时间可以容忍 3-10 秒</li>
+        <li>崩溃后自动重启不影响仪表</li>
+        <li>可以安装第三方 APK（Google Play 或厂商 App Store）</li>
+        <li>通过 <strong>VirtIO</strong> 与仪表域共享数据（如将导航信息投射到仪表）</li>
+    </ul>
+
+    <p><strong>域 #3 — Linux/ADAS 域（可选）</strong></p>
+    <p>部分高端方案在同一个 SoC 上再划分一个 VM 运行 Linux，处理 ADAS 可视化、环视摄像头、或副驾娱乐。这个域与 Android 域隔离，互不干扰。</p>
+
+    <p><strong>MCU 域 — NXP S32G（外部芯片）</strong></p>
+    <p>S32G 是一颗独立的 MCU 芯片，与 SoC 通过以太网/CAN 通信，负责：</p>
+    <ul>
+        <li>车辆网络网关 (CAN/CAN-FD/LIN/Ethernet 路由)</li>
+        <li>车身控制（车门、灯光、空调等实时控制）</li>
+        <li>OTA 升级管理（下载、校验、切换分区）</li>
+        <li>功能安全监控（看门狗，确保 SoC 正常运行）</li>
+    </ul>
+
+    <h4>9.3.4 Hypervisor 详解</h4>
+    <p>Hypervisor 是多域架构的核心。它是运行在硬件和所有操作系统之间的一层软件：</p>
+
+    <table>
+        <tr><th>特性</th><th>QNX Hypervisor</th><th>ACRN (Intel 开源)</th><th>Ubuntu KVM</th></tr>
+        <tr><td>类型</td><td>Type-1 (裸金属)</td><td>Type-1 (裸金属)</td><td>Type-2 (宿主型)</td></tr>
+        <tr><td>开源</td><td>否 (商业授权)</td><td>是 (Linux Foundation)</td><td>是</td></tr>
+        <tr><td>安全认证</td><td>ISO 26262 ASIL-D</td><td>无</td><td>无</td></tr>
+        <tr><td>车规支持</td><td>是</td><td>部分</td><td>否</td></tr>
+        <tr><td>支持的 Guest OS</td><td>QNX, Android, Linux</td><td>QNX, Android, Linux</td><td>Linux, Android</td></tr>
+        <tr><td>典型 SoC</td><td>SA8155, SA8295, i.MX8</td><td>Intel APL/CML, JASPAR</td><td>x86 服务器</td></tr>
+        <tr><td>厂商采用率</td><td>~60%+ 车厂采用</td><td>部分 OEM 探索</td><td>极少</td></tr>
+    </table>
+
+    <h4>9.3.5 主流 SoC 平台与多域支持</h4>
+    <table>
+        <tr><th>SoC</th><th>制程</th><th>CPU</th><th>GPU</th><th>AI (NPU)</th><th>典型多域方案</th><th>代表车型</th></tr>
+        <tr>
+            <td>高通 SA8155P</td><td>7nm</td><td>8x Kryo 485</td><td>Adreno 680</td><td>—</td>
+            <td>QNX Hypervisor<br>+ QNX (仪表) + Android (IVI)</td>
+            <td>小鹏 P7、蔚来 ES6、<br>理想 ONE 等</td>
+        </tr>
+        <tr>
+            <td>高通 SA8295P</td><td>5nm</td><td>8x Kryo</td><td>Adreno</td><td>30 TOPS</td>
+            <td>QNX Hypervisor<br>+ QNX (仪表) + Android (IVI) + Linux (ADAS)</td>
+            <td>极氪 001、蔚来 ET7、<br>小米 SU7 等</td>
+        </tr>
+        <tr>
+            <td>恩智浦 i.MX8QM</td><td>16nm</td><td>6x Cortex-A72</td><td>GC7000</td><td>—</td>
+            <td>QNX Hypervisor<br>+ QNX (仪表) + Android (IVI)</td>
+            <td>福特部分车型</td>
+        </tr>
+        <tr>
+            <td>瑞萨 R-Car V4</td><td>5nm</td><td>8x Cortex-A76</td><td>PowerVR</td><td>34 TOPS</td>
+            <td>QNX Hypervisor<br>+ 多域方案</td>
+            <td>本田部分车型</td>
+        </tr>
+    </table>
+
+    <h4>9.3.6 域间通信机制</h4>
+    <p>多个域之间需要相互通信（如仪表显示导航信息、IVI 读取车速数据）。主要通信方式：</p>
+    <table>
+        <tr><th>方式</th><th>说明</th><th>典型场景</th></tr>
+        <tr><td><strong>VirtIO</strong></td><td>半虚拟化 I/O 框架，Hypervisor 提供的标准通信通道</td><td>显示共享、音频共享、网络共享</td></tr>
+        <tr><td><strong>SHMEM (共享内存)</strong></td><td>两个 Guest OS 之间映射同一段物理内存</td><td>高速数据传递（摄像头帧、传感器数据）</td></tr>
+        <tr><td><strong>RPMsg / IPC</strong></td><td>基于 VirtIO 的远程处理器通信协议</td><td>Guest OS 之间的控制消息</td></tr>
+        <tr><td><strong>CAN / 以太网</strong></td><td>通过外部 MCU (S32G) 进行通信</td><td>与车身控制模块通信</td></tr>
+    </table>
+
+    <h4>9.3.7 启动时序 (以 SA8155 + QNX Hypervisor 为例)</h4>
+    <div class="flow-diagram">
+T=0ms    : 上电 → BootROM → SPL (二级引导)
+T=50ms   : QNX Hypervisor 启动 (最先加载, ~50ms)
+           ├─ 初始化虚拟化硬件
+           ├─ 分配内存/中断给各 Guest
+T=100ms  : QNX Guest (仪表域) 启动 ← 优先级最高!
+           ├─ 加载仪表 UI
+T=500ms  : 仪表屏点亮, 显示车速/警告灯 ← 满足 &lt;1s 启动要求
+T=1s     : Android Guest (IVI 域) 启动
+           ├─ 加载 Linux Kernel → init → Zygote → SystemServer
+T=5-8s   : Android 桌面显示 (导航/音乐/蓝牙等可用)
+T=10-15s : 完全启动完成 (所有服务就绪)
+    </div>
+
+    <h4>9.3.8 多域架构下的"刷机"意味着什么？</h4>
+    <p>在手机的语境中，"刷机"就是刷一个 Android 系统。但在车机多域架构下，一次完整的"刷机"涉及：</p>
+    <ol>
+        <li><strong>刷 Hypervisor 镜像</strong> — 更新 QNX Hypervisor 本身（极少操作，通常出厂固定）</li>
+        <li><strong>刷 QNX 仪表镜像</strong> — 通过 QNX 专用工具（QNX Momentics / QNX Software Center）烧录</li>
+        <li><strong>刷 Android 镜像</strong> — 通过 Fastboot / OTA（这正是本文前面讲的内容）</li>
+        <li><strong>刷 Linux 镜像</strong>（如有）— 通过各自的刷机方式</li>
+        <li><strong>刷 MCU 固件</strong> — 通过 S32G 专用工具（如 S32 Design Studio）</li>
+    </ol>
+    <p>作为 Android AOSP 开发者，你通常只需要关注 <strong>第 3 步 — 刷 Android 部分</strong>，其他域由对应团队负责。但你需要知道它们的存在，因为：</p>
+    <ul>
+        <li>Android 的 VHAL 需要通过 VirtIO 与 QNX 仪表通信</li>
+        <li>Android 编译产物中可能包含跨域的共享配置</li>
+        <li>OTA 包需要协调多个域的同步升级</li>
+    </ul>
+
+    <h3 id="qnx-deep">9.4 QNX 详解</h3>
+
+    <h4>9.4.1 什么是 QNX？</h4>
+    <p><strong>QNX</strong> 是一款商业的 <strong>实时操作系统 (RTOS)</strong>，最初由加拿大 QNX Software Systems 公司开发，2004 年被 <strong>BlackBerry（黑莓）</strong> 收购。现在归属于 BlackBerry QNX 部门。</p>
+
+    <p>QNX 与 Windows、Linux、Android 完全不同：</p>
+    <table>
+        <tr><th>维度</th><th>QNX</th><th>Android</th><th>Linux</th></tr>
+        <tr><td>内核类型</td><td><strong>微内核 (Microkernel)</strong></td><td>宏内核 (Monolithic)</td><td>宏内核</td></tr>
+        <tr><td>开源</td><td>否 (商业授权)</td><td>是 (AOSP)</td><td>是</td></tr>
+        <tr><td>实时性</td><td><strong>硬实时 (Hard RTOS)</strong></td><td>软实时</td><td>软实时 (PREEMPT_RT)</td></tr>
+        <tr><td>安全认证</td><td><strong>ISO 26262 ASIL-D</strong></td><td>无</td><td>无</td></tr>
+        <tr><td>内核大小</td><td>~100 KB</td><td>~10 MB+</td><td>~10 MB+</td></tr>
+        <tr><td>主要用途</td><td>汽车仪表、医疗设备、工业控制</td><td>手机、车机、物联网</td><td>服务器、嵌入式</td></tr>
+        <tr><td>市场占比</td><td>汽车领域 ~50%+</td><td>车机领域增长迅速</td><td>通用领域</td></tr>
+    </table>
+
+    <h4>9.4.2 微内核架构 — QNX 为什么可靠？</h4>
+    <p>QNX 的核心设计理念是 <strong>微内核架构</strong>。与 Linux/Android 的宏内核不同：</p>
+
+    <div class="flow-diagram">
+┌────────────────────────────────────────────────────────────┐
+│              Linux/Android (宏内核架构)                    │
+│                                                            │
+│  ┌────────────────────────────────────────────────────┐   │
+│  │            Linux Kernel (宏内核)                     │   │
+│  │  ┌────────┬────────┬────────┬────────┬─────────┐   │   │
+│  │  │ 调度器 │ 内存   │ 文件系统│ 网络   │ 设备驱动 │   │   │
+│  │  │        │ 管理   │        │ 栈     │ (内核态) │   │   │
+│  │  └────────┴────────┴────────┴────────┴─────────┘   │   │
+│  │                    ↑ 一个驱动崩溃 → 整个内核崩溃    │   │
+│  └────────────────────────────────────────────────────┘   │
+│                         │                                  │
+│                  用户空间应用                                │
+└────────────────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────┐
+│                    QNX (微内核架构)                        │
+│                                                            │
+│  ┌──────┐  ┌────────┐  ┌────────┐  ┌─────────┐  ┌──────┐  │
+│  │设备  │  │文件系统│  │ 网络   │  │ 图形    │  │ 其他 │  │
+│  │驱动  │  │服务    │  │ 服务   │  │ 服务    │  │ 服务 │  │
+│  │(用户态│  │(用户态 │  │(用户态 │  │(用户态  │  │(用户态│  │
+│  │ 进程)│  │ 进程)  │  │ 进程)  │  │ 进程)   │  │ 进程)│  │
+│  └──┬───┘  └──┬─────┘  └──┬─────┘  └──┬──────┘  └──┬───┘  │
+│     └─────────┴───────────┴───────────┴────────────┘      │
+│                         │ IPC (消息传递)                    │
+│  ┌──────────────────────────────────────────────────┐     │
+│  │         QNX 微内核 (仅 ~100KB)                    │     │
+│  │    ┌────────┬────────┬────────┬────────┐         │     │
+│  │    │ 线程   │ 中断   │ IPC    │ 定时器 │         │     │
+│  │    │ 调度   │ 处理   │ 消息   │        │         │     │
+│  │    └────────┴────────┴────────┴────────┘         │     │
+│  │    ← 最小化内核，只保留最核心的功能 →              │     │
+│  └──────────────────────────────────────────────────┘     │
+│                                                            │
+│  一个驱动崩溃 → 只影响该驱动进程 → 内核和其他服务不受影响    │
+│  系统可自动重启崩溃的驱动进程 → 仪表仍然正常显示             │
+└────────────────────────────────────────────────────────────┘
+    </div>
+
+    <p><strong>关键区别：</strong></p>
+    <ul>
+        <li>在 Linux 中，设备驱动运行在<strong>内核态</strong>，一个驱动崩溃 → 整个系统崩溃 (kernel panic)</li>
+        <li>在 QNX 中，设备驱动运行在<strong>用户态进程</strong>中，一个驱动崩溃 → 只影响该进程 → 系统自动重启该驱动 → 其他服务（如仪表显示）不受影响</li>
+    </ul>
+
+    <h4>9.4.3 QNX 在车中的具体应用位置</h4>
+    <table>
+        <tr><th>应用场景</th><th>使用的 QNX 产品</th><th>安全等级</th><th>说明</th></tr>
+        <tr><td><strong>数字仪表</strong></td><td>QNX OS for Safety</td><td>ASIL-D</td><td>车速、转速、警告灯等关键信息，必须实时可靠</td></tr>
+        <tr><td><strong>HUD (抬头显示)</strong></td><td>QNX OS for Safety</td><td>ASIL-B</td><td>将车速、导航信息投射到挡风玻璃</td></tr>
+        <tr><td><strong>ADAS 控制器</strong></td><td>QNX OS for Safety + QNX Hypervisor</td><td>ASIL-D</td><td>自动驾驶域控制器，处理摄像头/雷达数据</td></tr>
+        <tr><td><strong>网关</strong></td><td>QNX OS</td><td>ASIL-B</td><td>车辆网络通信管理 (CAN/Ethernet 路由)</td></tr>
+        <tr><td><strong>信息娱乐 (IVI)</strong></td><td>QNX Hypervisor (运行 Android Guest)</td><td>—</td><td>QNX 本身不运行 IVI，而是通过 Hypervisor 托管 Android</td></tr>
+        <tr><td><strong>Hypervisor</strong></td><td>QNX Hypervisor 2.0</td><td>ASIL-D</td><td>虚拟化层，隔离多个 Guest OS</td></tr>
+    </table>
+
+    <h4>9.4.4 QNX 版本演进</h4>
+    <table>
+        <tr><th>版本</th><th>年份</th><th>关键特性</th></tr>
+        <tr><td>QNX Neutrino 6.x</td><td>2007-2015</td><td>早期车机广泛使用，微内核 RTOS</td></tr>
+        <tr><td>QNX SDP 7.0</td><td>2018</td><td>支持 Hypervisor、Android Guest、VirtIO</td></tr>
+        <tr><td>QNX SDP 7.1</td><td>2021</td><td>SA8155 平台广泛采用，QNX Hypervisor 2.0</td></tr>
+        <tr><td>QNX SDP 8.0</td><td>2024</td><td>支持 SA8295 等新芯片，增强 VirtIO 虚拟设备</td></tr>
+        <tr><td>QNX OS for Safety 8.0</td><td>2025</td><td>最新安全认证版本，TÜV Rheinland ASIL-D 认证，ISO/SAE 21434 网络安全认证</td></tr>
+    </table>
+
+    <h4>9.4.5 为什么仪表不用 Android？</h4>
+    <table>
+        <tr><th>要求</th><th>Android</th><th>QNX</th><th>结果</th></tr>
+        <tr><td>启动时间 &lt;1s</td><td>需要 3-15s</td><td><strong>&lt;200ms</strong></td><td>QNX 胜</td></tr>
+        <tr><td>ISO 26262 安全认证</td><td>无认证</td><td><strong>ASIL-D 认证</strong></td><td>QNX 胜</td></tr>
+        <tr><td>崩溃后自动恢复</td><td>需重启 SystemServer</td><td><strong>进程级隔离+自动重启</strong></td><td>QNX 胜</td></tr>
+        <tr><td>显示第三方 App</td><td><strong>完美支持</strong></td><td>不支持</td><td>Android 胜</td></tr>
+        <tr><td>生态系统</td><td><strong>丰富 (Google Play)</strong></td><td>封闭</td><td>Android 胜</td></tr>
+        <tr><td>OTA 更新</td><td><strong>成熟 (A/B 分区)</strong></td><td>需专用工具</td><td>Android 胜</td></tr>
+    </table>
+    <p>正因为各自优劣，现代车机选择了 <strong>QNX (仪表) + Android (娱乐) 共存</strong> 的方案 — 通过 Hypervisor 在同一芯片上同时运行两者。</p>
+
+    <h4>9.4.6 QNX 与 Android 在车中的协作关系</h4>
+    <div class="flow-diagram">
+QNX 仪表 ◄── VirtIO/SHMEM ──► Android IVI
+    │                                │
+    │  车速、转速                     │  导航、音乐、蓝牙
+    │  警告灯、故障码                 │  第三方 App
+    │  档位、续航里程                 │  语音助手
+    │                                │
+    │  ◄─── 导航信息投射请求 ────────│
+    │  ───► 车速数据 (供 HUD 显示)  │
+    │                                │
+    │  ◄─── 倒车影像显示请求 ────────│
+    │  (QNX 必须在 2 秒内显示)       │
+    │                                │
+    ▼                                ▼
+  仪表屏 (7-12 寸)              中控屏 (10-17 寸)
+    </div>
+
+    <h4>9.4.7 作为 Android 开发者需要了解 QNX 的原因</h4>
+
+    <h5>① CarService 与 VHAL 数据来源于 QNX</h5>
+    <p>Android 的车速、档位、空调状态等信息并非 Android 自己产生的，而是 <strong>由 QNX 域通过 VirtIO 传递过来的</strong>。具体数据链路如下：</p>
+    <div class="flow-diagram">
+完整数据链路 (从 CAN 总线到 Android App):
+
+物理层:  CAN 总线 (CAN-FD / 车载以太网)
+              │  车身各 ECU 持续广播 CAN Frame
+              ▼
+MCU 层:  CAN 控制器 → CAN 驱动 (QNX 内核态)
+              │  原始 CAN Frame (ID + 8字节 Data)
+              ▼
+QNX 域:  信号网关进程 (QNX 用户态)
+              │  CAN Signal → 物理值解析 (DBC 文件)
+              │  例: CAN ID 0x123, Byte[0]=0x64 → 车速 100 km/h
+              ▼
+QNX VHAL Server: 车辆属性管理层
+              │  物理值 → VHAL Property 映射
+              │  例: 100 km/h → VehicleProperty.PERF_VEHICLE_SPEED = 100.0f
+              ▼
+VirtIO Transport 层 (跨 VM 通信)
+              │  gRPC over vsock / 共享内存 ring buffer
+              │  消息: {propertyId: 0x0E01, value: 100.0f, timestamp: ...}
+              ▼
+AAOS 域:  VHAL Client (Android Guest 中)
+              │  接收 VirtIO 消息 → 转换为 CarPropertyValue 对象
+              ▼
+CarService (Android 系统服务)
+              │  Binder IPC → 通知订阅者
+              ▼
+CarPropertyManager API (App 层)
+              │  carPropertyManager.registerCallback(...)
+              ▼
+第三方 App / 系统 App
+    </div>
+
+    <h5>② Android 和 QNX 之间用什么通信？</h5>
+    <p>在 QNX Hypervisor 架构下，Android Guest VM 与 QNX Host 之间有多种通信方式，不同场景选择不同的通道：</p>
+    <table>
+        <tr><th>通信方式</th><th>原理</th><th>延迟</th><th>典型用途</th></tr>
+        <tr>
+            <td><strong>VirtIO-vsock</strong><br>(虚拟 socket)</td>
+            <td>Hypervisor 提供的虚拟 socket 设备，类似 TCP socket 但在 VM 内部。Android 端通过 Linux 内核的 <code>af_vsock</code> 驱动访问，QNX 端通过 QNX 的 vsock 服务访问。</td>
+            <td>~1-5ms</td>
+            <td>VHAL Client/Server 通信（gRPC over vsock）、控制命令传递、OTA 协调</td>
+        </tr>
+        <tr>
+            <td><strong>共享内存</strong><br>(Shared Memory)</td>
+            <td>Hypervisor 将同一段物理内存映射到两个 Guest VM 的地址空间。QNX 端写入数据，Android 端直接读取，无需内核拷贝。通常配合 ring buffer 或锁机制使用。</td>
+            <td>~100μs</td>
+            <td>高频传感器数据（摄像头帧、音频流、车速等实时性要求高的数据）</td>
+        </tr>
+        <tr>
+            <td><strong>RPMsg</strong><br>(Remote Processor Messaging)</td>
+            <td>基于 VirtIO 的轻量级消息协议，主要用于 Android 内核与 MCU (S32G/R5 核心) 之间的通信。</td>
+            <td>~1-10ms</td>
+            <td>内核级事件通知、电源管理、Garage 模式</td>
+        </tr>
+        <tr>
+            <td><strong>VirtIO 设备</strong><br>(标准 VirtIO)</td>
+            <td>QNX 端实现 VirtIO 后端 (Backend)，Android 端使用标准 VirtIO 前端驱动。包括 VirtIO-serial、VirtIO-gpu、VirtIO-audio 等。</td>
+            <td>~1-5ms</td>
+            <td>显示共享 (VirtIO-gpu)、音频共享 (VirtIO-audio)、串口调试 (VirtIO-console)</td>
+        </tr>
+        <tr>
+            <td><strong>CAN/以太网</strong><br>(通过外部 MCU)</td>
+            <td>Android 不直接访问 CAN 总线，而是通过外部 NXP S32G 网关芯片，以 TCP/IP 或 SOME/IP 协议传递数据。</td>
+            <td>~5-20ms</td>
+            <td>车身控制（车门、灯光、空调等通过 S32G 中转的信号）</td>
+        </tr>
+    </table>
+
+    <div class="info">
+        <strong>实际产品中的选择：</strong>在 Qualcomm SA8155/8295 + QNX Hypervisor 的主流方案中，VHAL 数据通常使用 <strong>gRPC over VirtIO-vsock</strong>。2025 年后，部分厂商开始转向 <strong>共享内存 + ring buffer</strong> 以追求更低延迟。Android AOSP 的 <strong>trout 参考平台</strong>（虚拟参考平台）默认使用 gRPC over vsock 作为 VHAL Client/Server 的通信方式。
+    </div>
+
+    <h5>③ CAN 信号是怎么回事？</h5>
+    <p>CAN (Controller Area Network) 是汽车上 <strong>ECU 之间通信的物理总线协议</strong>，类似以太网但更简单、更可靠。理解 CAN 是理解整个车机数据流的关键。</p>
+
+    <h5>什么是 CAN 总线？</h5>
+    <ul>
+        <li>CAN 总线是一根 <strong>双绞线</strong>（CAN-H 和 CAN-L），车上的所有 ECU 都挂在这根总线上</li>
+        <li>任何 ECU 都可以向总线上 <strong>广播</strong> 一条消息，所有其他 ECU 都能收到</li>
+        <li>每条消息有一个 <strong>ID（标识符）</strong>，优先级由 ID 决定（ID 越小优先级越高）</li>
+        <li>CAN 总线速度：经典 CAN 最高 <strong>1 Mbps</strong>，CAN-FD 最高 <strong>5 Mbps</strong></li>
+        <li>每帧数据最多 <strong>8 字节</strong>（CAN-FD 最多 64 字节）</li>
+    </ul>
+
+    <div class="flow-diagram">
+CAN 总线 Frame 格式示例:
+
+  ┌────────┬──────┬────────┬───────┬───────┐
+  │ ID(11bit) │ DLC  │ DATA(8B) │ CRC   │ ACK   │
+  │ 0x123  │  8   │ 64 00 ... │ ...   │ ...   │
+  └────────┴──────┴────────┴───────┴───────┘
+       │              │
+       │              │  车速信号可能在 Byte[0]:
+       │              │  0x64 = 100 (km/h)
+       │              │
+       └─ 这个 ID 对应 DBC 文件中定义的
+          "VehicleSpeed" 信号
+
+DBC 文件 (数据库):
+  BO_ 291 VehicleInfo: 8 XXX
+    SG_ VehicleSpeed : 0|8@1+ (1,0) [0|255] "km/h"  ECU_Engine
+    SG_ GearPosition : 8|4@1+ (1,0) [0|15] ""       ECU_Transmission
+    SG_ TurnSignal   : 12|2@1+ (1,0) [0|3] ""       ECU_Body
+    </div>
+
+    <h5>CAN 信号的下发与接收</h5>
+    <table>
+        <tr><th>问题</th><th>答案</th></tr>
+        <tr>
+            <td><strong>谁下发 CAN 信号？</strong></td>
+            <td>
+                <strong>物理 ECU 下发</strong>，不是 Android 或 QNX 下发的。具体:<br>
+                • <strong>发动机 ECU</strong> → 广播车速、转速、扭矩<br>
+                • <strong>变速箱 ECU</strong> → 广播档位<br>
+                • <strong>车身控制 ECU (BCM)</strong> → 广播车门状态、灯光、雨刮<br>
+                • <strong>电池管理 ECU (BMS)</strong> → 广播 SOC、电压、温度<br>
+                • 这些 ECU 是独立的 <strong>单片机</strong>（如英飞凌 Aurix、NXP S32K），按固定周期（如 10ms/100ms）持续广播
+            </td>
+        </tr>
+        <tr>
+            <td><strong>谁接收 CAN 信号？</strong></td>
+            <td>
+                <strong>所有挂接在 CAN 总线上的 ECU 都能收到</strong>（广播机制），但只有需要的 ECU 会处理。<br>
+                在座舱场景中，<strong>NXP S32G 网关芯片</strong> 或 <strong>SoC 内置的 CAN 控制器</strong> 是主要的接收者。
+            </td>
+        </tr>
+        <tr>
+            <td><strong>CAN 信号到达 Android 需要经过几层？</strong></td>
+            <td>
+                CAN 总线 → CAN 控制器 (硬件) → CAN 驱动 (QNX 内核) → 信号网关进程 (QNX 用户态, 用 DBC 解析) → VHAL Server → VirtIO → VHAL Client (Android) → CarService → CarPropertyManager → App
+                <br>通常需要 <strong>6-8 层跳转</strong>
+            </td>
+        </tr>
+    </table>
+
+    <h5>QNX 如何获取车速和档位？</h5>
+    <div class="flow-diagram">
+QNX 获取车速/档位的完整过程:
+
+步骤1: CAN 控制器初始化 (QNX BSP 层)
+  • QNX 启动时加载 CAN 驱动 (dev-can)
+  • 打开 CAN 设备节点, 设置波特率 (如 500kbps)
+  • 注册 CAN 消息接收回调函数
+
+步骤2: 持续接收 CAN Frame (QNX 内核层)
+  • CAN 驱动收到硬件中断 → 读取 CAN Frame
+  • CAN Frame 格式: {id: 0x123, dlc: 8, data: [0x64, 0x00, ...]}
+  • 通过 socketCAN 或 QNX 原生 CAN API 传递给用户态进程
+
+步骤3: 信号解析 (QNX 信号网关进程, 用户态)
+  • 加载 DBC 文件 (CAN 数据库文件, 由车厂提供)
+  • DBC 定义了每个 CAN ID 对应哪些信号、如何解析
+  • 例: DBC 定义 ID 0x123 的 Byte[0] 是车速, 比例因子 1, 偏移 0
+  • 解析: data[0] = 0x64 = 100 → 车速 = 100 * 1 + 0 = 100 km/h
+
+步骤4: 映射为 VHAL Property (QNX VHAL Server)
+  • 车速 100 km/h → VehicleProperty.PERF_VEHICLE_SPEED (ID: 0x0E01)
+  • 档位 3 → VehicleProperty.GEAR_SELECTION (ID: 0x0E03)
+  • 打包为 VHAL 消息: {propertyId, value, zone, timestamp, status}
+
+步骤5: 跨 VM 传递到 Android (VirtIO 层)
+  • 方式 A: gRPC over vsock (trout 参考平台默认)
+  • 方式 B: 共享内存 ring buffer (低延迟方案)
+  • 消息发送到 Android Guest VM 中的 VHAL Client
+
+步骤6: Android VHAL Client 接收并上报
+  • VHAL Client 收到消息 → 转换为 CarPropertyValue
+  • 通过 Binder 通知 CarService
+  • CarService 通知所有订阅了该属性的 App
+    </div>
+
+    <h5>④ 编译产物中可能包含跨域共享配置</h5>
+    <ul>
+        <li>Android 的 VHAL overlay 配置可能需要与 QNX 仪表主题联动</li>
+        <li>AOSP 编译产物中的 <code>vehicle/*.json</code> 定义了 VHAL 属性列表，这些定义需要与 QNX 侧的信号映射一致</li>
+    </ul>
+
+    <h5>⑤ OTA 需要多域同步</h5>
+    <ul>
+        <li>Android OTA 包需要与 QNX 仪表固件版本号匹配</li>
+        <li>如果 VHAL 协议版本升级（如新增了一个 VehicleProperty），QNX 侧的 VHAL Server 也必须同步升级</li>
+    </ul>
+
+    <h5>⑥ 调试问题可能跨域</h5>
+    <ul>
+        <li>如果仪表不显示车速，问题可能在 QNX 的 CAN 驱动侧，而非 Android 侧</li>
+        <li>调试时需要同时查看：Android logcat + QNX slogger + CAN 总线抓包</li>
+    </ul>
+
+    <h3 id="vhal">9.5 VHAL (Vehicle HAL) 深度解析</h3>
+
+    <h4>9.5.1 VHAL 是什么？</h4>
+    <p><strong>Vehicle Hardware Abstraction Layer (VHAL)</strong> 是 Android Automotive 中最核心的硬件抽象层。它定义了 Android 框架与车辆硬件之间的 <strong>标准接口契约</strong>。</p>
+    <p>如果没有 VHAL，每个车厂都需要修改 Android Framework 来适配自己的车辆信号。有了 VHAL，车厂只需实现 VHAL 接口，Android Framework 保持不变。</p>
+
+    <div class="flow-diagram">
+Android Automotive 完整软件栈 (自上而下):
+
+┌──────────────────────────────────────────────────────────┐
+│                    App 层                                │
+│  导航 App │ 音乐 App │ 空调控制 App │ 系统设置 │ 第三方App │
+└──────────────────────────────────┬───────────────────────┘
+                                   │ CarPropertyManager API
+┌──────────────────────────────────┴───────────────────────┐
+│                  CarService                              │
+│  (packages/services/Car)                                 │
+│  • 管理车辆属性权限                                        │
+│  • 处理属性订阅/通知                                       │
+│  • 协调 Garage 模式、电源管理                              │
+└──────────────────────────────────┬───────────────────────┘
+                                   │ Binder (AIDL)
+                                   │ IVehicle.aidl
+┌──────────────────────────────────┴───────────────────────┐
+│                VHAL (Vehicle HAL)                        │
+│  (hardware/interfaces/automotive/vehicle)                │
+│  ┌────────────────────────────────────────────────────┐ │
+│  │  VHAL Client (AAOS Guest 中)                       │ │
+│  │  • 轻量级 AIDL 服务实现                             │ │
+│  │  • 通过 VirtIO 与 VHAL Server 通信                 │ │
+│  └───────────────────────┬────────────────────────────┘ │
+│                          │ VirtIO (gRPC/vsock/SHMEM)    │
+│  ┌───────────────────────┴────────────────────────────┐ │
+│  │  VHAL Server (QNX Host / 独立 Service VM)          │ │
+│  │  • CAN 信号解析 (DBC)                               │ │
+│  │  • CAN Signal → VHAL Property 映射                 │ │
+│  │  • 属性缓存与订阅管理                                │ │
+│  └───────────────────────┬────────────────────────────┘ │
+└──────────────────────────┼──────────────────────────────┘
+                           │ CAN Controller / socketCAN
+┌──────────────────────────┴──────────────────────────────┐
+│              CAN 总线 / 车载以太网                        │
+│  发动机 ECU │ 变速箱 ECU │ BCM │ BMS │ ADAS ECU │ ...   │
+└─────────────────────────────────────────────────────────┘
+    </div>
+
+    <h4>9.5.2 VHAL 核心概念：Vehicle Property</h4>
+    <p>VHAL 的核心是 <strong>VehicleProperty</strong> —— 一套由 Google 定义的标准化车辆属性体系。每个属性有唯一的 ID、数据类型、访问权限、区域信息。</p>
+
+    <table>
+        <tr><th>Property ID</th><th>属性名称</th><th>类型</th><th>访问</th><th>说明</th></tr>
+        <tr><td><code>0x0E01</code></td><td>PERF_VEHICLE_SPEED</td><td>FLOAT</td><td>只读</td><td>车速 (km/h)</td></tr>
+        <tr><td><code>0x0E03</code></td><td>GEAR_SELECTION</td><td>INT32</td><td>只读</td><td>档位 (P/R/N/D/1/2...)</td></tr>
+        <tr><td><code>0x0E02</code></td><td>ENGINE_OIL_TEMP</td><td>FLOAT</td><td>只读</td><td>机油温度 (°C)</td></tr>
+        <tr><td><code>0x0801</code></td><td>HVAC_TEMPERATURE_SET</td><td>FLOAT</td><td>读写</td><td>空调目标温度 (°C)</td></tr>
+        <tr><td><code>0x0802</code></td><td>HVAC_FAN_SPEED</td><td>INT32</td><td>读写</td><td>风扇转速 (0-100)</td></tr>
+        <tr><td><code>0x0A01</code></td><td>DOOR_LOCK</td><td>INT32</td><td>读写</td><td>车门锁状态</td></tr>
+        <tr><td><code>0x0A02</code></td><td>DOOR_OPEN</td><td>INT32</td><td>只读</td><td>车门开启状态</td></tr>
+        <tr><td><code>0x0B01</code></td><td>PARKING_BRAKE_ON</td><td>BOOLEAN</td><td>只读</td><td>手刹状态</td></tr>
+        <tr><td><code>0x0E04</code></td><td>FUEL_LEVEL</td><td>FLOAT</td><td>只读</td><td>油量百分比</td></tr>
+        <tr><td><code>0x0E05</code></td><td>FUEL_DOOR_OPEN</td><td>BOOLEAN</td><td>只读</td><td>油箱盖状态</td></tr>
+        <tr><td><code>0x0E06</code></td><td>EV_BATTERY_LEVEL</td><td>FLOAT</td><td>只读</td><td>电动车电量百分比</td></tr>
+        <tr><td><code>0x0E07</code></td><td>EV_CHARGE_PORT_CONNECTED</td><td>BOOLEAN</td><td>只读</td><td>充电枪连接状态</td></tr>
+        <tr><td><code>0x0D01</code></td><td>TURNSIGNAL</td><td>INT32</td><td>读写</td><td>转向灯 (左/右/关)</td></tr>
+        <tr><td><code>0x0F01</code></td><td>HEADLIGHTS_STATE</td><td>INT32</td><td>读写</td><td>大灯状态</td></tr>
+    </table>
+
+    <h4>9.5.3 VHAL 的两种架构：Monolithic vs Split</h4>
+    <table>
+        <tr><th>维度</th><th>Monolithic VHAL (单体内置)</th><th>Split VHAL (分离式, trout 平台)</th></tr>
+        <tr><td>架构</td><td>VHAL 完整实现在 Android Guest VM 内部</td><td>VHAL 分为 Client (Android) + Server (QNX/Service VM)</td></tr>
+        <tr><td>CAN 访问</td><td>Android 内核通过 socketCAN 直接访问 CAN 控制器</td><td>QNX Host 访问 CAN，Android 不接触硬件</td></tr>
+        <tr><td>通信方式</td><td>Binder IPC (进程内)</td><td>gRPC over vsock / 共享内存 (跨 VM)</td></tr>
+        <tr><td>适用场景</td><td>非虚拟化架构 (单 OS)</td><td>QNX Hypervisor 虚拟化架构</td></tr>
+        <tr><td>安全性</td><td>Android 内核暴露 CAN 访问权限</td><td>Android 完全隔离，只有 QNX 访问硬件</td></tr>
+        <tr><td>AOSP 支持</td><td>AOSP 直接支持</td><td>AOSP trout 参考平台支持 (Android 13+)</td></tr>
+        <tr><td>编译产物</td><td>标准 Android 镜像</td><td>需要额外的 VHAL Server 组件 (QNX 侧编译)</td></tr>
+    </table>
+
+    <h4>9.5.4 VHAL Client/Server 通信协议 (gRPC over vsock)</h4>
+    <p>在 Split VHAL 架构中，Client 和 Server 之间的通信是关键。Google 的 trout 参考平台推荐使用 <strong>gRPC over VirtIO-vsock</strong>：</p>
+    <div class="flow-diagram">
+VHAL Client/Server 通信栈:
+
+Android Guest VM                    QNX Host / Service VM
+┌─────────────────┐                 ┌─────────────────┐
+│  VHAL Client    │                 │  VHAL Server    │
+│  (AIDL Service) │                 │  (C++ Daemon)   │
+└────────┬────────┘                 └────────┬────────┘
+         │                                   │
+┌────────┴────────┐                 ┌────────┴────────┐
+│  gRPC Client    │                 │  gRPC Server    │
+│  (protobuf)     │◄── gRPC ───────►│  (protobuf)     │
+└────────┬────────┘                 └────────┬────────┘
+         │                                   │
+┌────────┴────────┐                 ┌────────┴────────┐
+│  af_vsock       │◄── VirtIO ─────►│  vsock backend  │
+│  (Linux Kernel) │    vsock        │  (QNX Hypervisor)│
+└────────┬────────┘                 └────────┬────────┘
+         │                                   │
+         └───────── Hypervisor ─────────────┘
+         (QNX Hypervisor 2.0 / ACRN)
+
+通信内容 (protobuf 消息):
+  - GetProperty:       请求属性值
+  - SetProperty:       设置属性值 (如 HVAC 温度)
+  - SubscribeProperty: 订阅属性变化通知
+  - UnsubscribeProperty: 取消订阅
+  - GetAllProperties:  获取所有属性列表
+  - OnPropertyEvent:   Server 主动推送属性变化
+    </div>
+
+    <h4>9.5.5 VHAL 属性数据流详解 — 以车速为例</h4>
+    <div class="flow-diagram">
+车速数据流的完整生命周期:
+
+T0: CAN 总线广播 (物理层)
+    CAN ID: 0x123, Data: [0x64, 0x00, 0x00, ...]
+    ↓
+T0+1ms: QNX CAN 驱动接收 (内核态)
+    can_frame = {can_id: 0x123, can_dlc: 8, data: {0x64, ...}}
+    ↓
+T0+2ms: QNX 信号网关解析 (用户态, DBC 解析)
+    DBC: BO_ 291 VehicleInfo → SG_ VehicleSpeed : 0|8@1+ (1,0)
+    解析: value = 0x64 * 1 + 0 = 100 km/h
+    ↓
+T0+3ms: VHAL Server 属性映射
+    CAN Signal → VehicleProperty.PERF_VEHICLE_SPEED (0x0E01)
+    CarPropertyValue: {propId: 0x0E01, value: 100.0f, zone: 0, status: AVAILABLE}
+    ↓
+T0+4ms: gRPC over vsock 发送
+    protobuf: VehiclePropertyEvent {
+      property: 0x0E01,
+      value: {float: 100.0},
+      timestamp: 1715788800000,
+      zone: 0,
+      status: AVAILABLE
+    }
+    ↓
+T0+6ms: VHAL Client 接收 (Android Guest)
+    解析 protobuf → CarPropertyValue 对象
+    ↓
+T0+7ms: CarService 收到 Binder 通知
+    CarService 检查订阅者列表:
+    - 仪表盘 App 订阅了 0x0E01
+    - 导航 App 订阅了 0x0E01
+    ↓
+T0+8ms: App 回调触发
+    callback.onChangeEvent(CarPropertyValue{speed: 100.0})
+    仪表盘更新数字显示
+    </div>
+
+    <h4>9.5.6 VHAL 开发调试命令</h4>
+    <pre><code><span class="comment"># ===== 查看 VHAL 属性状态 =====</span>
+
+<span class="comment"># 列出所有 VHAL 属性</span>
+<span class="prompt">$</span> adb shell dumpsys car_service
+
+<span class="comment"># 查看特定属性值 (车速)</span>
+<span class="prompt">$</span> adb shell cmd car_service get-property <span class="flag">0x0E01</span>
+
+<span class="comment"># 设置属性 (空调温度设为 22°C)</span>
+<span class="prompt">$</span> adb shell cmd car_service set-property <span class="flag">0x0801</span> <span class="flag">22.0</span>
+
+<span class="comment"># ===== 注入模拟车辆数据 (开发调试) =====</span>
+
+<span class="comment"># 注入车速变化事件</span>
+<span class="prompt">$</span> adb shell cmd car_service inject-vhal-event <span class="flag">0x0E01</span> <span class="flag">100.0</span>
+<span class="comment"># 注入车速 100 km/h</span>
+
+<span class="comment"># 注入档位变化 (P=1, R=2, N=3, D=4)</span>
+<span class="prompt">$</span> adb shell cmd car_service inject-vhal-event <span class="flag">0x0E03</span> <span class="flag">4</span>
+<span class="comment"># 注入 D 档</span>
+
+<span class="comment"># 注入车门打开事件</span>
+<span class="prompt">$</span> adb shell cmd car_service inject-vhal-event <span class="flag">0x0A02</span> <span class="flag">1</span>
+
+<span class="comment"># ===== VHAL 日志查看 =====</span>
+
+<span class="prompt">$</span> adb logcat | grep -i <span class="flag">"CarService\|VHAL\|VehicleHal"</span>
+
+<span class="prompt">$</span> adb shell logcat -s <span class="flag">CarService</span>
+<span class="prompt">$</span> adb shell logcat -s <span class="flag">VehicleHal</span>
+<span class="prompt">$</span> adb shell logcat -s <span class="flag">CarPropertyService</span>
+
+<span class="comment"># ===== VHAL HAL 接口调试 =====</span>
+
+<span class="prompt">$</span> adb shell lshal | grep -i <span class="flag">automotive</span>
+<span class="comment"># 查看 VHAL 服务是否注册到 hwservicemanager</span>
+
+<span class="prompt">$</span> adb shell ps -A | grep -i <span class="flag">car</span>
+<span class="comment"># 查看 CarService 进程状态</span>
+
+<span class="comment"># ===== 模拟器中的 VHAL 配置 =====</span>
+
+<span class="comment"># 查看 emulator 的 VHAL 配置文件</span>
+<span class="prompt">$</span> cat /data/misc/car/<span class="flag">vehicle_properties.json</span>
+
+<span class="comment"># 模拟器启动时指定 VHAL 配置</span>
+<span class="prompt">$</span> emulator -qemu -vehiclehal <span class="flag">path/to/vehicle_properties.json</span></code></pre>
+
+    <h4>9.5.7 VHAL 配置文件 (vehicle_properties.json)</h4>
+    <p>VHAL 的所有属性由一个 JSON 配置文件定义，车厂需要根据自己的车辆能力定制：</p>
+    <pre><code><span class="comment">// vehicle_properties.json 示例</span>
+{
+  <span class="string">"properties"</span>: [
+    {
+      <span class="string">"prop"</span>: <span class="flag">0x0E01</span>,
+      <span class="string">"propName"</span>: <span class="flag">"PERF_VEHICLE_SPEED"</span>,
+      <span class="string">"valueType"</span>: <span class="flag">"FLOAT"</span>,
+      <span class="string">"access"</span>: [<span class="flag">"READ"</span>],
+      <span class="string">"minSampleRate"</span>: <span class="flag">10</span>,
+      <span class="string">"maxSampleRate"</span>: <span class="flag">100</span>,
+      <span class="string">"configArray"</span>: [<span class="flag">0</span>, <span class="flag">255</span>]  <span class="comment">// 车速范围 0-255 km/h</span>
+    },
+    {
+      <span class="string">"prop"</span>: <span class="flag">0x0801</span>,
+      <span class="string">"propName"</span>: <span class="flag">"HVAC_TEMPERATURE_SET"</span>,
+      <span class="string">"valueType"</span>: <span class="flag">"FLOAT"</span>,
+      <span class="string">"access"</span>: [<span class="flag">"READ"</span>, <span class="flag">"WRITE"</span>],
+      <span class="string">"configArray"</span>: [<span class="flag">160</span>, <span class="flag">320</span>],  <span class="comment">// 16°C - 32°C (乘以 10)</span>
+      <span class="string">"areaConfigs"</span>: [
+        {<span class="string">"areaId"</span>: <span class="flag">0x0001</span>, <span class="string">"areaName"</span>: <span class="flag">"DRIVER"</span>},
+        {<span class="string">"areaId"</span>: <span class="flag">0x0002</span>, <span class="string">"areaName"</span>: <span class="flag">"PASSENGER"</span>}
+      ]
+    }
+  ]
+}</code></pre>
+
+    <h4>9.5.8 从模拟器到真车：VHAL 替换流程</h4>
+    <p>开发时我们使用 AOSP 自带的 <strong>Emulated VHAL</strong>（模拟数据），量产时需要替换为 <strong>Real VHAL</strong>（对接真实 CAN 总线）：</p>
+    <div class="flow-diagram">
+VHAL 演进路径:
+
+阶段1: 纯软件开发 (无硬件)
+  ┌──────────────────────────────┐
+  │  Emulated VHAL (AOSP 默认)    │
+  │  • 模拟车速、档位、空调数据     │
+  │  • 通过 inject-vhal-event 注入 │
+  │  • Android Emulator / Cuttlefish │
+  └──────────────────────────────┘
+
+阶段2: 开发板/台架测试
+  ┌──────────────────────────────┐
+  │  Stub VHAL + CAN 模拟器       │
+  │  • CANoe / PCAN 发送 CAN 信号 │
+  │  • VHAL Server 解析 DBC       │
+  │  • VirtIO 传递到 Android       │
+  │  • 运行在 SA8155 开发板上      │
+  └──────────────────────────────┘
+
+阶段3: 工程样车
+  ┌──────────────────────────────┐
+  │  Real VHAL + 真实 CAN 总线    │
+  │  • 对接真实车辆 CAN 网络       │
+  │  • DBC 文件由车厂提供          │
+  │  • VHAL Server 运行在 QNX     │
+  │  • 全功能测试 + 安全认证       │
+  └──────────────────────────────┘
+
+阶段4: 量产
+  ┌──────────────────────────────┐
+  │  Production VHAL             │
+  │  • 完整的 DBC 解析            │
+  │  • ASIL-D 安全认证            │
+  │  • 与 QNX 仪表联动             │
+  │  • OTA 更新支持                │
+  └──────────────────────────────┘
+    </div>
+
+    <h4>9.5.9 VHAL 安全与权限</h4>
+    <p>VHAL 属性涉及车辆控制（如车门锁、空调、灯光），因此 Android 对 VHAL 访问有严格的权限管理：</p>
+    <table>
+        <tr><th>权限层级</th><th>说明</th><th>示例</th></tr>
+        <tr><td><strong>App 权限</strong></td><td>App 需要在 AndroidManifest.xml 中声明权限</td><td><code>android.car.permission.CAR_SPEED</code></td></tr>
+        <tr><td><strong>系统签名</strong></td><td>部分属性仅限系统签名 App 访问</td><td>车门锁控制、ADAS 相关</td></tr>
+        <tr><td><strong>VHAL 内部权限</strong></td><td>VHAL 实现本身可以拒绝非法请求</td><td>行驶中禁止切换 P 档</td></tr>
+        <tr><td><strong>Hypervisor 隔离</strong></td><td>Android 无法直接访问 CAN 硬件</td><td>必须通过 QNX VHAL Server 中转</td></tr>
+    </table>
+
+    <h4>9.5.10 作为 Android 开发者，你需要关注的 VHAL 要点</h4>
+    <ul>
+        <li><strong>App 层</strong>：使用 <code>CarPropertyManager</code> API 读取/设置车辆属性，处理回调</li>
+        <li><strong>Framework 层</strong>：理解 CarService 与 VHAL 的 Binder 通信机制</li>
+        <li><strong>VHAL 层</strong>：如果是 VHAL 开发，需要实现 <code>IVehicle.aidl</code> 接口，对接 CAN/DBC</li>
+        <li><strong>跨域协作</strong>：与 QNX 团队协调 VHAL Property 定义、VirtIO 通信协议、DBC 文件版本</li>
+        <li><debugging>调试时善用 <code>dumpsys car_service</code> 和 <code>inject-vhal-event</code>，不需要每次都依赖真实 CAN 信号</debugging></li>
+    </ul>
+</section>
+
+<!-- 10. 常见问题排查 -->
+<section id="troubleshooting">
+    <h2>10. 常见问题排查</h2>
+
+    <h3>10.1 编译问题</h3>
+    <table>
+        <tr><th>问题</th><th>原因</th><th>解决方案</th></tr>
+        <tr>
+            <td><code>Out of memory</code></td>
+            <td>内存不足</td>
+            <td>减少 <code>-j</code> 并发数；增加 swap</td>
+        </tr>
+        <tr>
+            <td><code>Jack server</code> 启动失败</td>
+            <td>端口冲突/内存不足</td>
+            <td><code>jack-admin kill-server</code> 后重试；增加 Jack 堆大小</td>
+        </tr>
+        <tr>
+            <td>JDK 版本不匹配</td>
+            <td>Android 14 需要 JDK 17</td>
+            <td><code>sudo apt install openjdk-17-jdk</code></td>
+        </tr>
+        <tr>
+            <td>Python 版本不匹配</td>
+            <td>需要 Python 3.8+</td>
+            <td><code>sudo apt install python3</code></td>
+        </tr>
+        <tr>
+            <td><code>repo sync</code> 失败</td>
+            <td>网络问题</td>
+            <td>使用镜像源；加 <code>--no-clone-bundle</code> 参数</td>
+        </tr>
+    </table>
+
+    <h3>10.2 刷机问题</h3>
+    <table>
+        <tr><th>问题</th><th>原因</th><th>解决方案</th></tr>
+        <tr>
+            <td><code>fastboot: command not found</code></td>
+            <td>未安装 fastboot 工具</td>
+            <td><code>sudo apt install android-tools-fastboot</code></td>
+        </tr>
+        <tr>
+            <td><code>FAILED (remote: 'device locked')</code></td>
+            <td>Bootloader 未解锁</td>
+            <td><code>fastboot flashing unlock</code></td>
+        </tr>
+        <tr>
+            <td><code>Invalid sparse file format</code></td>
+            <td>img 格式问题</td>
+            <td>使用 <code>fastboot flash</code> 而非 <code>fastboot update</code>，或转换镜像格式</td>
+        </tr>
+        <tr>
+            <td>刷入后无法开机 (bootloop)</td>
+            <td>分区不匹配 / 验证启动失败</td>
+            <td>重新刷入 boot/vbmeta；检查 product 名称是否匹配</td>
+        </tr>
+        <tr>
+            <td><code>fastboot devices</code> 无输出</td>
+            <td>USB 驱动/权限问题</td>
+            <td>检查 USB 线；安装驱动；Linux 下添加 udev 规则</td>
+        </tr>
+    </table>
+
+    <h3>10.3 udev 规则 (Linux)</h3>
+    <pre><code><span class="comment"># 创建 udev 规则允许非 root 用户访问 Android 设备</span>
+<span class="prompt">$</span> sudo tee /etc/udev/rules.d/51-android.rules <span class="flag">'</span>
+<span class="flag">SUBSYSTEM=="usb", ATTR{idVendor}=="18d1", MODE="0666", GROUP="plugdev"
+SUBSYSTEM=="usb", ATTR{idVendor}=="05c6", MODE="0666", GROUP="plugdev"
+SUBSYSTEM=="usb", ATTR{idVendor}=="04e8", MODE="0666", GROUP="plugdev"</span><span class="flag">'</span>
+
+<span class="prompt">$</span> sudo chmod a+r /etc/udev/rules.d/51-android.rules
+<span class="prompt">$</span> sudo udevadm control <span class="flag">--reload-rules</span>
+<span class="prompt">$</span> sudo udevadm trigger</code></pre>
+</section>
+
+<!-- 11. 总结速查表 -->
+<section id="summary">
+    <h2>11. 总结速查表</h2>
+
+    <h3>11.1 从零开始的完整流程 (一句话版)</h3>
+    <pre><code><span class="comment"># 1. 环境 → 2. 源码 → 3. 编译 → 4. 刷机 → 5. 验证</span>
+
+<span class="comment"># 第1步: 准备 Ubuntu 22.04 环境，安装依赖</span>
+<span class="prompt">$</span> sudo apt install git-core gnupg flex bison build-essential zip curl \
+    zlib1g-dev libc6-dev lib32ncurses5-dev x11proto-core-dev libx11-dev \
+    lib32z1-dev libgl1-mesa-dev libxml2-utils xsltproc unzip \
+    python3 python3-pip openjdk-17-jdk ccache
+
+<span class="comment"># 第2步: 下载 AOSP 源码</span>
+<span class="prompt">$</span> repo init -u https://android.googlesource.com/platform/manifest -b android-14.0.0_r1
+<span class="prompt">$</span> repo sync -c -j8 --no-tags
+
+<span class="comment"># 第3步: 编译</span>
+<span class="prompt">$</span> source build/envsetup.sh
+<span class="prompt">$</span> lunch <span class="flag">aosp_car_x86_64-userdebug</span>   <span class="comment"># 手机换 aosp_cheetah-userdebug</span>
+<span class="prompt">$</span> make -j$(nproc)
+
+<span class="comment"># 第4步: 刷机到设备</span>
+<span class="prompt">$</span> adb reboot bootloader
+<span class="prompt">$</span> fastboot devices
+<span class="prompt">$</span> fastboot flashing unlock
+<span class="prompt">$</span> fastboot flash vbmeta <span class="flag">--disable-verity --disable-verification</span> vbmeta.img
+<span class="prompt">$</span> fastboot flash boot boot.img
+<span class="prompt">$</span> fastboot flash super super.img
+<span class="prompt">$</span> fastboot flash userdata userdata.img
+<span class="prompt">$</span> fastboot reboot
+
+<span class="comment"># 第5步: 验证</span>
+<span class="prompt">$</span> adb shell getprop ro.build.display.id
+<span class="prompt">$</span> adb shell getprop ro.product.model</code></pre>
+
+    <h3>11.2 手机 vs 车机关键差异速览</h3>
+    <table class="comparison-table">
+        <tr><th></th><th>手机</th><th>车机</th></tr>
+        <tr><td>编译目标</td><td><code>aosp_cheetah-userdebug</code></td><td><code>aosp_car_x86_64-userdebug</code></td></tr>
+        <tr><td>刷机工具</td><td>Fastboot (统一标准)</td><td>Fastboot + 产线专用工具</td></tr>
+        <tr><td>OTA</td><td>用户控制</td><td>车厂控制，需考虑车辆状态</td></tr>
+        <tr><td>安全</td><td>标准 Android 安全</td><td>功能安全 + 网络安全双认证</td></tr>
+        <tr><td>启动速度</td><td>宽松</td><td>倒车影像 &lt;2s 硬性要求</td></tr>
+        <tr><td>特有模块</td><td>Telephony、Camera</td><td>CarService、VHAL、多域管理</td></tr>
+    </table>
+
+    <h3>11.3 常用命令速查</h3>
+    <table>
+        <tr><th>场景</th><th>命令</th></tr>
+        <tr><td>进入 fastboot</td><td><code>adb reboot bootloader</code></td></tr>
+        <tr><td>进入 fastbootd</td><td><code>fastboot reboot fastboot</code></td></tr>
+        <tr><td>解锁 bootloader</td><td><code>fastboot flashing unlock</code></td></tr>
+        <tr><td>查看设备信息</td><td><code>fastboot getvar all</code></td></tr>
+        <tr><td>设置活动槽位</td><td><code>fastboot set_active a</code></td></tr>
+        <tr><td>临时启动镜像</td><td><code>fastboot boot boot.img</code></td></tr>
+        <tr><td>一键刷机</td><td><code>fastboot flashall</code> 或 <code>./flash-all.sh</code></td></tr>
+        <tr><td>增量更新开发</td><td><code>adb remount &amp;&amp; adb sync</code></td></tr>
+        <tr><td>OTA sideload</td><td><code>adb sideload ota.zip</code></td></tr>
+        <tr><td>查看 build id</td><td><code>adb shell getprop ro.build.id</code></td></tr>
+    </table>
+</section>
+
+<div class="info" style="margin: 24px 0; padding: 20px; border-radius: 12px;">
+    <h3>参考资源</h3>
+    <ul>
+        <li>官方 AOSP 编译文档: <a href="https://source.android.com/docs/setup/build">source.android.com/docs/setup/build</a></li>
+        <li>官方 Fastboot 刷机文档: <a href="https://source.android.com/docs/setup/test/running">source.android.com/docs/setup/test/running</a></li>
+        <li>Soong 构建系统: <a href="https://source.android.com/docs/setup/build/make-to-soong">Make to Soong 迁移指南</a></li>
+        <li>Android Automotive 入门: <a href="https://source.android.com/docs/automotive/start/what_automotive">What is Android Automotive?</a></li>
+        <li>A/B 分区 OTA 更新: <a href="https://source.android.com/docs/core/ota/ab">A/B System Updates</a></li>
+        <li>AAOS OTA 更新机制: <a href="https://promwad.com/news/android-automotive-os-updates-impact-ivi-development-2025">How Android Automotive OS Updates Are Reshaping IVI</a></li>
+        <li>Soong 构建系统详解: <a href="https://medium.com/@mmohamedrashik/the-aosp-build-system-an-in-depth-guide-f686d89d28b7">Inside the AOSP Build System</a></li>
+        <li>Fastboot 模式详解: <a href="https://docs.u-boot.org/en/latest/android/fastboot.html">U-Boot Android Fastboot</a></li>
+        <li>QNX Hypervisor 产品页: <a href="https://qnx.software/en/software/products-and-solutions/qnx-hypervisor-and-hypervisor-for-safety">QNX Hypervisor and Hypervisor for Safety</a></li>
+        <li>QNX OS for Safety 8.0: <a href="https://qnx.software/en/software/products-and-solutions/qnx-os-and-os-for-safety">QNX OS for Safety 8.0</a></li>
+        <li>NXP i.MX8QM + QNX Hypervisor 架构: <a href="https://community.nxp.com/t5/i-MX-Processors/QNX-Hypervisor-with-Android-IVI-and-Qt-for-Cluster-iMX8QM-MEK/m-p/1872152">NXP Community</a></li>
+        <li>SA8155 QNX Hypervisor 实战: <a href="https://blog.csdn.net/alice7model/article/details/150545781">CSDN - SA8155 QNX Hypervisor 搭建智能座舱虚拟机</a></li>
+        <li>CES 2025 QNX Cabin Demo: <a href="https://www.youtube.com/watch?v=G34niFHgRY8">YouTube - QNX Cabin Demo</a></li>
+        <li>智能座舱平台配置策略: <a href="https://en.eeworld.com.cn/news/qcdz/eic693020.html">EEWorld - Automotive Intelligent Cockpit Software Architecture</a></li>
+        <li>BlackBerry + Google + Qualcomm 合作: <a href="https://www.semi.org.cn/site/semi/article/91296130b74a4a7eb8f57cb625342574.html">BlackBerry 携手谷歌与高通推动下一代驾驶座舱</a></li>
+        <li>AOSP VHAL 官方文档: <a href="https://source.android.com/docs/automotive/vhal">Vehicle HAL Overview</a></li>
+        <li>AOSP VHAL 接口规范: <a href="https://source.android.com/docs/automotive/vhal/vhal-interface">VHAL Interface (IVehicle.aidl)</a></li>
+        <li>AOSP 虚拟化架构: <a href="https://source.android.com/docs/automotive/virtualization/architecture">AAOS Virtualization Architecture</a></li>
+        <li>AOSP trout 参考平台: <a href="https://source.android.com/docs/automotive/virtualization/reference_platform">Trout Reference Platform</a></li>
+        <li>VHAL 属性列表: <a href="https://source.android.com/docs/automotive/vhal/system-properties">Supported System Properties</a></li>
+        <li>QNX VirtIO-vsock 文档: <a href="https://qnx.com/developers/docs/7.1/com.qnx.doc.qavf.overview/topic/vdev_virtio-vsock.html">vdev virtio-vsock</a></li>
+        <li>QNX Hypervisor 共享内存: <a href="https://www.qnx.com/developers/docs/7.0.0/#com.qnx.doc.hypervisor.user/topic/share/share_mem.html">QNX Shared Memory</a></li>
+        <li>VHAL 实战从模拟器到真车: <a href="https://blog.csdn.net/weixin_42520573/article/details/160173470">CSDN - Android Automotive VHAL 实战</a></li>
+        <li>CarService 模块解析: <a href="https://zhuanlan.zhihu.com/p/616520805">知乎 - Android AutoMotive 模块之 CarService</a></li>
+        <li>QNX Hypervisor + VirtIO 赋能 SDV: <a href="https://www.electronicdesign.com/markets/automotive/video/21285003/electronic-design-qnx-hypervisor-empowers-software-defined-vehicles-with-virtio">Electronic Design</a></li>
+    </ul>
+</div>
+
+</div>
+
+<footer>
+    <p>Android 14 源码编译、Fastboot 刷机与设备部署完整指南</p>
+    <p>生成日期: 2026/05/15</p>
+</footer>
+
+</body>
+</html>
