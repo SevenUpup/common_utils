@@ -23,7 +23,7 @@ class PrintTextView: AppCompatTextView,DefaultLifecycleObserver {
         defStyleAttr
     )
 
-    private val text = "Hello World"
+    private var text = "Hello World"
 
     private val handler = object :Handler(Looper.getMainLooper()){
 
@@ -34,6 +34,12 @@ class PrintTextView: AppCompatTextView,DefaultLifecycleObserver {
                 printTextBack()
             }
         }
+    }
+
+    fun setTextWithAnim(text:CharSequence){
+        this.text = text.toString()
+        setText(text)
+        start()
     }
 
     fun start(){
@@ -47,10 +53,12 @@ class PrintTextView: AppCompatTextView,DefaultLifecycleObserver {
     }
 
     private var currentIndex = 0
-    fun printText(){
+    private fun printText(){
         currentIndex += 1
-        val m = text.substring(0,currentIndex)
-        setText(m)
+        if (currentIndex <= text.length) {
+            val m = text.substring(0,currentIndex)
+            setText(m)
+        }
         if (currentIndex >= text.length) {
             currentIndex = text.length
             sendMsg(1)
@@ -72,7 +80,7 @@ class PrintTextView: AppCompatTextView,DefaultLifecycleObserver {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        start()
+//        start()
     }
 
     override fun onDetachedFromWindow() {

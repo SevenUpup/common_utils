@@ -19,5 +19,53 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <LinearLayout
+            android:id="@+id/ll_actions"
+            app:layout_constraintTop_toBottomOf="@id/toggleView"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+            <Button
+                android:id="@+id/bt_start"
+                android:text="开始"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"/>
+            <Button
+                android:id="@+id/bt_stop"
+                android:text="停止"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            app:layout_constraintTop_toBottomOf="@+id/ll_actions"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <com.fido.common.common_utils.widgets.textview.PrintTextView
+                android:id="@+id/printTextHandler"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+
+            <com.fido.common.common_base_ui.ext.textview.PrinterTextView
+                android:id="@+id/printerTextFlow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="16dp"
+                android:background="#FFF5F5"
+                android:textSize="20sp"
+                android:textColor="#333"
+                app:typingSpeed="60"
+                app:cursorBlinkSpeed="500"
+                app:showPrintTextCursor="true"
+                app:typewriterText="Hello, this is a typewriter effect using Kotlin Coroutines and Flow!Hello, this is a typewriter effect using Kotlin Coroutines and Flow!Hello, this is a typewriter effect using Kotlin Coroutines and Flow!Hello, this is a typewriter effect using Kotlin Coroutines and Flow!Hello, this is a typewriter effect using Kotlin Coroutines and Flow!Hello, this is a typewriter effect using Kotlin Coroutines and Flow!Hello, this is a typewriter effect using Kotlin Coroutines and Flow!Hello, this is a typewriter effect using Kotlin Coroutines and Flow!Hello, this is a typewriter effect using Kotlin Coroutines and Flow!Hello, this is a typewriter effect using Kotlin Coroutines and Flow!"
+                />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

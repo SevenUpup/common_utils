@@ -63,6 +63,7 @@ class CustomViewAc:AppCompatActivity() {
             it.toString()
         }
 
+        binding.printText.setTextWithAnim("Hello Hello Hello Hello Hello, World!")
         binding.btMyCustom.throttleClick {
             startActivity<HTCustomViewAc>()
         }

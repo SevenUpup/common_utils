@@ -74,4 +74,11 @@
     </declare-styleable>
 
 
+    <declare-styleable name="PrinterTextView">
+        <attr name="typingSpeed" format="integer" />
+        <attr name="cursorBlinkSpeed" format="integer" />
+        <attr name="showPrintTextCursor" format="boolean" />
+        <attr name="typewriterText" format="string" />
+    </declare-styleable>
+
 </resources>
