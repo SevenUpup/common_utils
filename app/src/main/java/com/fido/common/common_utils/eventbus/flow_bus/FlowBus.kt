@@ -1,5 +1,6 @@
 package com.fido.common.common_utils.eventbus.flow_bus
 
+import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -61,7 +62,7 @@ object FlowBus {
     }
 
     //真正实现类
-    open class EventBus<T>(private val key: String) : LifecycleObserver {
+    open class EventBus<T>(private val key: String) : DefaultLifecycleObserver {
 
         //私有对象用于发送消息
         private val _events: MutableSharedFlow<T> by lazy {
@@ -102,8 +103,8 @@ object FlowBus {
         }
 
         //自动销毁
-        @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-        fun onDestroy() {
+        override fun onDestroy(owner: LifecycleOwner) {
+            super.onDestroy(owner)
             val subscriptCount = _events.subscriptionCount.value
             logd("FlowBus - 自动onDestroy subscriptCount=${subscriptCount}")
             if (subscriptCount <= 0){

@@ -16,8 +16,6 @@ import kotlinx.coroutines.withTimeout
  * @date: 2024/11/12
  * @des:
  */
-
-
 fun main() {
     val scope = runBlocking {
         val callbackFlow = callbackFlow<String> {
@@ -40,5 +38,4 @@ fun main() {
         }
     }
     println("end")
-
 }

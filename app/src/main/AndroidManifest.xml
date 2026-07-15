@@ -242,6 +242,9 @@
         <activity android:name=".common_utils.window_manager.WindowManagerAc"/>
         <!-- WindowManage -->
 
+        <!--PackageManager-->
+        <activity android:name=".common_utils.package_manager.PmAc"/>
+
     </application>
 
 </manifest>

@@ -121,6 +121,7 @@ import com.fido.common.common_utils.muilt_process.Constant
 import com.fido.common.common_utils.muilt_process.GloableProcessAc
 import com.fido.common.common_utils.muilt_process.PrivateProcessAc
 import com.fido.common.common_utils.naviga.CodenavigationAc
+import com.fido.common.common_utils.package_manager.PmAc
 import com.fido.common.common_utils.pdf.AndroidXPdfActivity
 import com.fido.common.common_utils.picker.PickerViewAc
 import com.fido.common.common_utils.pop.DialogChainAc
@@ -408,6 +409,7 @@ class MainActivity : AppCompatActivity() {
         addView<AnimationAc>("Anim Test")
         addView<AidlAc>("================AIDL Test================")
         addView<WindowManagerAc>("========= WindowManagerAc Test =========")
+        addView<PmAc>("========= PackageManagerAc Test =========")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {

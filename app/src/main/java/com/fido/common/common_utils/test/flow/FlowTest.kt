@@ -127,7 +127,9 @@ fun main() {
         }
 
         //5. flatMapLatest
-//        flatMapLatest 是一个操作符，用于将一个流中的元素转换为多个流，并只保留最新发出的流，丢弃之前的流。先转化成Flow的Flow再顺序展开的操作符，flatMapConcat 也是顺序展开，它和 flatMapConcat 的区别是在于它的名字里边的Latest。mapLatest, transforLatest, 这两个也是顺序展开。但flatMapLatest并不是在手机和转发Flow的时候卡住上游Flow的生产。而是上游继续生产。并且一旦下一个Flow生产出来，就终止当前Flow的收集。开始收集和转发这个刚生产的Flow，展开只是对多个Flow的合并的一种形式。它是把多个Flow的数据放在一个统一的Flow里发送。
+//        flatMapLatest 是一个操作符，用于将一个流中的元素转换为多个流，并只保留最新发出的流，丢弃之前的流。先转化成Flow的Flow再顺序展开的操作符，
+//        flatMapConcat 也是顺序展开，它和 flatMapConcat 的区别是在于它的名字里边的Latest。mapLatest, transforLatest, 这两个也是顺序展开。
+//        但flatMapLatest并不是在手机和转发Flow的时候卡住上游Flow的生产。而是上游继续生产。并且一旦下一个Flow生产出来，就终止当前Flow的收集。开始收集和转发这个刚生产的Flow，展开只是对多个Flow的合并的一种形式。它是把多个Flow的数据放在一个统一的Flow里发送。
 //        flatMapLatest 的主要特点
 //        只保留最新的流：
 //
