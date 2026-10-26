@@ -50,20 +50,16 @@ class AnimLifecycleUtils private constructor():DefaultLifecycleObserver {
 
             mHandler?.post {
                 mAnim = animator.setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator?) {
+                    override fun onAnimationEnd(animation: Animator) {
                         super.onAnimationEnd(animation)
                         destory()
                     }
 
-                    override fun onAnimationCancel(animation: Animator?) {
+                    override fun onAnimationCancel(animation: Animator) {
                         super.onAnimationCancel(animation)
                         destory()
                     }
 
-                    override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
-                        super.onAnimationEnd(animation, isReverse)
-                        destory()
-                    }
                 })
                 mAnim?.start()
             }

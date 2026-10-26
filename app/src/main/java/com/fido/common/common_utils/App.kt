@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 import android.os.Process
 import android.text.TextUtils
+import android.util.Log
 import com.drake.debugkit.DevTool
 import com.facebook.stetho.Stetho
 import com.fido.common.BuildConfig
@@ -39,11 +40,12 @@ class App: Application() {
         val processName = getProcessName(this, Process.myPid()) //根据进程id获取进程名
 
         kotlin.runCatching {
-            val inputStream = assets.open("config.text")
+            val inputStream = assets.open("config.txt")
             val properties = Properties()
             properties.load(inputStream)
             val isUseLocal = properties["useLocal"]
-            println("config is UseLocal=$isUseLocal")
+            Log.d("FiDo", "config is UseLocal=$isUseLocal")
+            inputStream.close()
         }
 
         if (!TextUtils.isEmpty(processName) && processName.equals(this.packageName)) {
@@ -74,12 +76,12 @@ class App: Application() {
                 //新 兜底
 //                CrashPortrayHelper.init(this,getCrashPortrayConfig(),getAppImp())
             }
-            CrashWoodpecker.instance()
-                .withKeys("widget", "me.drakeet")
-                .setPatchMode(PatchMode.SHOW_LOG_PAGE)
-                .setPatchDialogUrlToOpen("https://drakeet.me")
-                .setPassToOriginalDefaultHandler(true)
-                .flyTo(this)
+//            CrashWoodpecker.instance()
+//                .withKeys("widget", "me.drakeet")
+//                .setPatchMode(PatchMode.SHOW_LOG_PAGE)
+//                .setPatchDialogUrlToOpen("https://drakeet.me")
+//                .setPassToOriginalDefaultHandler(true)
+//                .flyTo(this)
 
             Stetho.initializeWithDefaults(this)
         }

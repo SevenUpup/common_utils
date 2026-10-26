@@ -18,13 +18,13 @@ class MyMotionLayout@JvmOverloads constructor(
 
     var block:(()->Unit)?=null
 
-    override fun onInterceptTouchEvent(event: MotionEvent?): Boolean {
+    override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
         return super.onInterceptTouchEvent(event)
     }
 
     private var lastAction = -1
     @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
+    override fun onTouchEvent(event: MotionEvent): Boolean {
         if (event?.action == MotionEvent.ACTION_UP) {
             if (lastAction == MotionEvent.ACTION_DOWN) {
                 block?.invoke()

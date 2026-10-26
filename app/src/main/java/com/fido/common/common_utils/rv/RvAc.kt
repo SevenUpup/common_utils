@@ -11,10 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fido.common.common_base_ui.base.entity.BaseMuiltEntity
 import com.fido.common.common_base_ui.base.viewbinding.binding
 import com.fido.common.common_base_ui.ext.image_select.clearImageSelectCache
+import com.fido.common.common_base_ui.util.throttleClick
 import com.fido.common.common_base_ui.util.ui.RVScrollUtils
 import com.fido.common.common_base_ui.util.ui.SmoothLinearLayoutManager
+import com.fido.common.common_base_util.createDrawable
 import com.fido.common.common_base_util.ext.click
 import com.fido.common.common_base_util.ext.loge
+import com.fido.common.common_base_util.ext.rectangleCornerBg
 import com.fido.common.common_base_util.startActivity
 import com.fido.common.common_base_util.util.timer.Interval
 import com.fido.common.databinding.AcRvBinding
@@ -70,6 +73,8 @@ class RvAc:AppCompatActivity() {
     }
 
     private fun initEvent() {
+
+        mBinding.btScroll.createDrawable()
 
         mBinding.btScroll.click {
             runCatching {

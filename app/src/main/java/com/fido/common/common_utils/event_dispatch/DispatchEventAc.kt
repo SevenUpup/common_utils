@@ -47,8 +47,8 @@ class DispatchEventAc : AppCompatActivity() {
         }
     }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        loge("Activity onTouchEvent event:${event?.action}")
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        loge("Activity onTouchEvent event:${event.action}")
         return super.onTouchEvent(event)
     }
 

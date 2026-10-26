@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import android.widget.ImageView
 import com.fido.common.common_base_util.dp
 import com.fido.common.R
+import com.fido.common.common_base_util.ext.widthAndHeight
 import com.gyf.immersionbar.ktx.statusBarHeight
 
 /**
@@ -23,6 +24,7 @@ class TestFloatingView @JvmOverloads constructor(
 
         setImageResource(R.drawable.ic_zelda)
 
+        widthAndHeight()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -34,7 +36,7 @@ class TestFloatingView @JvmOverloads constructor(
     private var dx = 0f
     private var dy = 0f
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
+    override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event?.action) {
             MotionEvent.ACTION_DOWN -> {
                 dx = this.x - event.rawX
@@ -64,7 +66,7 @@ class TestFloatingView @JvmOverloads constructor(
         Log.d("LL", "onLayout: -------")
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         Log.d("LL", "onDraw: -------")
     }

@@ -4,8 +4,8 @@ ext {
 
     versions = [
             'minSdk'           : 24,
-            'targetSdk'        : 32,
-            'compileSdk'       : 32,
+            'targetSdk'        : 33,
+            'compileSdk'       : 33,
             'kotlin'           : '1.7.10',
             'coroutine_version': '1.6.1',  //协程扩展库
             'work_manager_version' : '2.8.0',

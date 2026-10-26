@@ -138,12 +138,12 @@ class CustomViewAc:AppCompatActivity() {
                     )
                 }
                 addListener(object : Animator.AnimatorListener {
-                    override fun onAnimationRepeat(animation: Animator?) {}
-                    override fun onAnimationEnd(animation: Animator?) {
+                    override fun onAnimationRepeat(animation: Animator) {}
+                    override fun onAnimationEnd(animation: Animator) {
                         Toast.makeText(activity,"animation end",Toast.LENGTH_SHORT).show()
                     }
-                    override fun onAnimationCancel(animation: Animator?) {}
-                    override fun onAnimationStart(animation: Animator?) {}
+                    override fun onAnimationCancel(animation: Animator) {}
+                    override fun onAnimationStart(animation: Animator) {}
                 })
                 start()
             }

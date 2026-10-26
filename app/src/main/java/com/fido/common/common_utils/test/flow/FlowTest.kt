@@ -154,9 +154,19 @@ fun main() {
         }
 //        numbersFlow 依次发出 1, 2, 3 三个整数。flatMapLatest 对每个数字生成一个新的流，该流会发出两个字符串（"First" 和 "Second"）。由于 flatMapLatest 只保留最新的流：
 
-//        当数字 1 发出时，流开始执行，并发出 1: First。
-//        数字 2 很快发出，此时之前的流会被取消，新的流发出 2: First。
-//        数字 3 发出时，流再次被取消，新的流发出 3: First 和 3: Second。
+//        发射 1：
+//        创建内部 flow，发射 "1: First"
+//        准备 delay(100) 后发射 "1: Second"
+//        立即发射 2（上游 flowOf 没有延迟）：
+//        取消 1 对应的内部 flow（还没来得及发射 "1: Second"）
+//        创建新的内部 flow，发射 "2: First"
+//        准备 delay(100) 后发射 "2: Second"
+//        立即发射 3：
+//        取消 2 对应的内部 flow
+//        创建新的内部 flow，发射 "3: First"
+//        准备 delay(100) 后发射 "3: Second"
+//        100ms 后：
+//        "3: Second" 发射成功
 
 //        适用场景
 //        用户输入处理：比如在搜索框中输入字符时，flatMapLatest 可以确保只处理用户最后输入的字符，取消之前的搜索请求。

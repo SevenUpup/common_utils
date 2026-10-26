@@ -99,6 +99,7 @@ import com.fido.common.common_utils.coroutine.CoroutineTestAc
 import com.fido.common.common_utils.customview.CustomViewAc
 import com.fido.common.common_utils.design_pattern.DesignPatternAc
 import com.fido.common.common_utils.device_info.DeviceInfoAc
+import com.fido.common.common_utils.dexclassloader.DexClassLoaderAc
 import com.fido.common.common_utils.edittext.CustomStyleActivity
 import com.fido.common.common_utils.event_dispatch.DispatchEventAc
 import com.fido.common.common_utils.eventbus.HEventBus
@@ -110,6 +111,7 @@ import com.fido.common.common_utils.eventbus.ac.HEventBusTestBean
 import com.fido.common.common_utils.handler.HandlerInKotlinAc
 import com.fido.common.common_utils.jetpack.JetPackAc
 import com.fido.common.common_utils.js.JsAc
+import com.fido.common.common_utils.media.FileScannerAc
 import com.fido.common.common_utils.motionlayout.MotionBall2Ac
 import com.fido.common.common_utils.motionlayout.MotionCarouselAc
 import com.fido.common.common_utils.motionlayout.MotionCollapsibleAc
@@ -128,6 +130,7 @@ import com.fido.common.common_utils.pop.DialogChainAc
 import com.fido.common.common_utils.result.KtResultAc
 import com.fido.common.common_utils.room.RoomAc
 import com.fido.common.common_utils.rv.RvAc
+import com.fido.common.common_utils.service.StartServiceAc
 import com.fido.common.common_utils.sms.HookSmsActivity
 import com.fido.common.common_utils.sp.SPAc
 import com.fido.common.common_utils.spannable.SpannableAc
@@ -410,6 +413,9 @@ class MainActivity : AppCompatActivity() {
         addView<AidlAc>("================AIDL Test================")
         addView<WindowManagerAc>("========= WindowManagerAc Test =========")
         addView<PmAc>("========= PackageManagerAc Test =========")
+        addView<DexClassLoaderAc>("========= DexClassLoader Test =========")
+        addView<FileScannerAc>("========= FileScanner Test =========")
+        addView<StartServiceAc>("========= StartService Test =========")
         for (i in 0 until mBinding.container.childCount) {
             if (mBinding.container.getChildAt(i).id == R.id.tv) {
                 mBinding.container.getChildAt(i).run {
@@ -622,13 +628,13 @@ class MainActivity : AppCompatActivity() {
                     )
                 set.duration = 500
                 set.addListener(object : AnimatorListener {
-                    override fun onAnimationStart(animation: Animator?) {}
+                    override fun onAnimationStart(animation: Animator) {}
 
-                    override fun onAnimationEnd(animation: Animator?) {}
+                    override fun onAnimationEnd(animation: Animator) {}
 
-                    override fun onAnimationCancel(animation: Animator?) {}
+                    override fun onAnimationCancel(animation: Animator) {}
 
-                    override fun onAnimationRepeat(animation: Animator?) {}
+                    override fun onAnimationRepeat(animation: Animator) {}
 
                 })
                 set.start()

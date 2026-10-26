@@ -34,7 +34,7 @@ class FloatingImageView @JvmOverloads constructor(
 
     private val gestureListener = object : GestureDetector.SimpleOnGestureListener() {
 
-        override fun onDown(e: MotionEvent?): Boolean {
+        override fun onDown(e: MotionEvent): Boolean {
             lastX = e?.rawX?.toIntDefult() ?: 0
             lastY = e?.rawY?.toIntDefult() ?: 0
             downX = lastX
@@ -43,14 +43,14 @@ class FloatingImageView @JvmOverloads constructor(
         }
 
         override fun onScroll(
-            e1: MotionEvent?,
-            e2: MotionEvent?,
+            e1: MotionEvent,
+            e2: MotionEvent,
             distanceX: Float,
             distanceY: Float
         ): Boolean {
             // 记录当前位置
-            val rawX = e2?.rawX?.toIntDefult()
-            val rawY = e2?.rawY?.toIntDefult()
+            val rawX = e2.rawX?.toIntDefult()
+            val rawY = e2.rawY?.toIntDefult()
             //变化量
             dx = (rawX ?: 0) - lastX
             dy = (rawY ?: 0) - lastY
@@ -99,8 +99,8 @@ class FloatingImageView @JvmOverloads constructor(
         setMeasuredDimension(50.dp,50.dp)
     }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        when (event?.action) {
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        when (event.action) {
             MotionEvent.ACTION_UP->{
                 //抬起后的x,y
                 val x = event.rawX.toInt()
